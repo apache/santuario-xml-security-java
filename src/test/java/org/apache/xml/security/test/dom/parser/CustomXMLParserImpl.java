@@ -34,7 +34,7 @@ public class CustomXMLParserImpl extends XMLParserImpl {
 
     @Override
     public Document parse(InputStream inputStream, boolean disallowDocTypeDeclarations) throws XMLParserException {
-        Document doc = super.parse(inputStream, disallowDocTypeDeclarations);
+        final Document doc = super.parse(inputStream, disallowDocTypeDeclarations);
         called = true;
         return doc;
     }

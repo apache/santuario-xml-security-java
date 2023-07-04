@@ -51,8 +51,8 @@ public class LogInputProcessor extends AbstractInputProcessor {
     @Override
     public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
-        XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
-        StringWriter stringWriter = new StringWriter();
+        final XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
+        final StringWriter stringWriter = new StringWriter();
         xmlSecEvent.writeAsEncodedUnicode(stringWriter);
         LOG.trace(stringWriter.toString());
         return xmlSecEvent;

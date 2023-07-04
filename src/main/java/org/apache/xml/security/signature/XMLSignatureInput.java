@@ -220,7 +220,7 @@ public class XMLSignatureInput {
             return inputNodeSet;
         } else if (isOctetStream()) {
             convertToNodes();
-            Set<Node> result = new LinkedHashSet<>();
+            final Set<Node> result = new LinkedHashSet<>();
             XMLUtils.getSet(subNode, result, null, false);
             return result;
         }
@@ -267,12 +267,12 @@ public class XMLSignatureInput {
      * @throws IOException
      */
     public byte[] getBytes() throws IOException, CanonicalizationException {
-        byte[] inputBytes = getBytesFromInputStream();
+        final byte[] inputBytes = getBytesFromInputStream();
         if (inputBytes != null) {
             return inputBytes;
         }
         if (isOctetStream() || isElement() || isNodeSet()) {
-            Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();
+            final Canonicalizer20010315OmitComments c14nizer = new Canonicalizer20010315OmitComments();
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                 c14nizer.engineCanonicalize(this, baos, secureValidation);
                 bytes = baos.toByteArray();
@@ -399,7 +399,7 @@ public class XMLSignatureInput {
                 + excludeComments +"/" + getSourceURI();
         }
         try {
-            byte[] bytes = getBytes();
+            final byte[] bytes = getBytes();
             return "XMLSignatureInput/OctetStream/"
                    + (bytes != null ? bytes.length : 0)
                    + " octets/" + getSourceURI();
@@ -415,7 +415,7 @@ public class XMLSignatureInput {
      * @return The HTML representation for this XMLSignature
      */
     public String getHTMLRepresentation() throws XMLSignatureException {
-        XMLSignatureInputDebugger db = new XMLSignatureInputDebugger(this);
+        final XMLSignatureInputDebugger db = new XMLSignatureInputDebugger(this);
         return db.getHTMLRepresentation();
     }
 
@@ -428,7 +428,7 @@ public class XMLSignatureInput {
      */
     public String getHTMLRepresentation(Set<String> inclusiveNamespaces)
        throws XMLSignatureException {
-        XMLSignatureInputDebugger db =
+        final XMLSignatureInputDebugger db =
             new XMLSignatureInputDebugger(this, inclusiveNamespaces);
         return db.getHTMLRepresentation();
     }
@@ -497,13 +497,13 @@ public class XMLSignatureInput {
             }
             c14nizer.engineCanonicalize(this, diOs, secureValidation);
         } else {
-            byte[] buffer = new byte[4 * 1024];
+            final byte[] buffer = new byte[4 * 1024];
             int bytesread = 0;
             try {
                 while ((bytesread = inputOctetStreamProxy.read(buffer)) != -1) {
                     diOs.write(buffer, 0, bytesread);
                 }
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 inputOctetStreamProxy.close();
                 throw ex;
             }
@@ -559,7 +559,7 @@ public class XMLSignatureInput {
     private void convertToNodes() throws XMLParserException, IOException {
         // select all nodes, also the comments.
         try {
-            Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);
+            final Document doc = XMLUtils.read(this.getOctetStream(), secureValidation);
             this.subNode = doc;
         } finally {
             if (this.inputOctetStreamProxy != null) {

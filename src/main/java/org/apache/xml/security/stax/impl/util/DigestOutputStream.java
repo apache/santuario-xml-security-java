@@ -50,7 +50,7 @@ public class DigestOutputStream extends OutputStream {
 
     @Override
     public void write(int arg0) {
-        byte asByte = (byte) arg0;
+        final byte asByte = (byte) arg0;
         messageDigest.update(asByte);
         if (isDebugEnabled) {
             stringBuilder.append((char)asByte);

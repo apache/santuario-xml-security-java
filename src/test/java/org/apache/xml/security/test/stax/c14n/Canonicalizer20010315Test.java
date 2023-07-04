@@ -53,7 +53,7 @@ public class Canonicalizer20010315Test {
     public Canonicalizer20010315Test() throws Exception {
         this.xmlInputFactory = XMLInputFactory.newInstance();
         this.xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
-        XMLResolver xmlResolver = new XMLResolver() {
+        final XMLResolver xmlResolver = new XMLResolver() {
             @Override
             public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace) throws XMLStreamException {
                 return this.getClass().getClassLoader().getResourceAsStream(
@@ -66,10 +66,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test221() throws Exception {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
         c.setOutputStream(baos);
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                     "org/apache/xml/security/c14n/inExcl/example2_2_1.xml")
         );
@@ -91,9 +91,9 @@ public class Canonicalizer20010315Test {
             xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
         }
 
-        byte[] reference = getBytesFromResource(this.getClass().getClassLoader().getResource(
+        final byte[] reference = getBytesFromResource(this.getClass().getClassLoader().getResource(
             "org/apache/xml/security/c14n/inExcl/example2_2_1_c14nized.xml"));
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
             System.out.println("Expected:\n" + new String(reference, StandardCharsets.UTF_8));
@@ -107,10 +107,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test222() throws Exception {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
         c.setOutputStream(baos);
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                     "org/apache/xml/security/c14n/inExcl/example2_2_2.xml")
         );
@@ -132,10 +132,10 @@ public class Canonicalizer20010315Test {
             xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
         }
 
-        byte[] reference =
+        final byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/example2_2_2_c14nized.xml"));
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
             System.out.println("Expected:\n" + new String(reference, StandardCharsets.UTF_8));
@@ -152,10 +152,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test31withCommentsSubtree() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_input.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_c14n-comments.xml");
 
@@ -170,10 +170,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test31subtree() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_input.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/31_c14n.xml");
 
@@ -188,10 +188,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test32subtree() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/32_input.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/32_c14n.xml");
 
@@ -206,10 +206,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test33subtree() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/33_input.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/33_c14n.xml");
 
@@ -224,10 +224,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test34() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_input.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_c14n.xml");
 
@@ -249,10 +249,10 @@ public class Canonicalizer20010315Test {
      */
     @Test
     public void test34subtree() throws Exception {
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_input_validatingParser.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_c14n_validatingParser.xml");
 
@@ -267,10 +267,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test35subtree() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/35_input.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/35_c14n.xml");
 
@@ -285,10 +285,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void test36subtree() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/36_input.xml");
-        URL fileRef =
+        final URL fileRef =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/36_c14n.xml");
 
@@ -357,14 +357,14 @@ public class Canonicalizer20010315Test {
     @Test
     public void testRelativeNSbehaviour() throws Exception {
 
-        URL fileIn =
+        final URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/relative-ns-behaviour.xml");
 
         try {
             c14nAndCompare(fileIn, fileIn, true);
             fail();
-        } catch (XMLStreamException cex) {
+        } catch (final XMLStreamException cex) {
             assertNotNull(cex);
         }
     }
@@ -372,10 +372,10 @@ public class Canonicalizer20010315Test {
     @Test
     public void testDefault_ns_redefinition() throws Exception {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
         c.setOutputStream(baos);
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/c14n/in/default_ns_redefinition_input.xml")
         );
@@ -397,10 +397,10 @@ public class Canonicalizer20010315Test {
             xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
         }
 
-        byte[] reference =
+        final byte[] reference =
                 getBytesFromResource(this.getClass().getClassLoader().getResource(
                         "org/apache/xml/security/c14n/in/default_ns_redefinition_c14n.xml"), true);
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
             System.out.println("Expected:\n" + new String(reference, StandardCharsets.UTF_8));
@@ -693,7 +693,7 @@ public class Canonicalizer20010315Test {
             URL fileIn, URL fileRef, boolean ommitComments) throws Exception {
 
         CanonicalizerBase canonicalizerBase;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         if (ommitComments) {
             canonicalizerBase = new Canonicalizer20010315_OmitCommentsTransformer();
             canonicalizerBase.setOutputStream(baos);
@@ -702,18 +702,18 @@ public class Canonicalizer20010315Test {
             canonicalizerBase.setOutputStream(baos);
         }
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(fileIn.openStream());
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(fileIn.openStream());
         while (xmlSecEventReader.hasNext()) {
-            XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+            final XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             canonicalizerBase.transform(xmlSecEvent);
         }
 
         // org.xml.sax.InputSource refIs = resolver.resolveEntity(null, fileRef);
         // byte[] refBytes = JavaUtils.getBytesFromStream(refIs.getByteStream());
-        byte[] refBytes = getBytesFromResource(fileRef);
+        final byte[] refBytes = getBytesFromResource(fileRef);
 
         // if everything is OK, result is true; we do a binary compare, byte by byte
-        boolean result = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
+        final boolean result = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
         if (!result) {
             assertEquals(new String(baos.toByteArray(), StandardCharsets.UTF_8), new String(refBytes, StandardCharsets.UTF_8));
         }
@@ -726,13 +726,13 @@ public class Canonicalizer20010315Test {
 
     public static byte[] getBytesFromResource(URL resource, boolean unix) throws IOException {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         InputStream inputStream = resource.openStream();
         if (unix) {
             inputStream = new UnixInputStream(inputStream);
         }
         try {
-            byte[] buf = new byte[1024];
+            final byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);

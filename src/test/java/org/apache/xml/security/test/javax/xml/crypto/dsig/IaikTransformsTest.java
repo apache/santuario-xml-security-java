@@ -49,15 +49,15 @@ public class IaikTransformsTest {
     }
 
     public IaikTransformsTest() {
-        Path base = resolvePath("src", "test", "resources", "at", "iaik", "ixsil");
+        final Path base = resolvePath("src", "test", "resources", "at", "iaik", "ixsil");
         validator = new SignatureValidator(resolveFile(base, "transforms", "signatures"));
     }
 
     @Test
     public void test_base64DecodeSignature() throws Exception {
-        String file = "base64DecodeSignature.xml";
+        final String file = "base64DecodeSignature.xml";
 
-        boolean coreValidity = validator.validate
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
 
@@ -65,27 +65,27 @@ public class IaikTransformsTest {
 
     @Test
     public void test_envelopedSignatureSignature() throws Exception {
-        String file = "envelopedSignatureSignature.xml";
+        final String file = "envelopedSignatureSignature.xml";
 
-        boolean coreValidity = validator.validate
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_c14nSignature() throws Exception {
-        String file = "c14nSignature.xml";
+        final String file = "c14nSignature.xml";
 
-        boolean coreValidity = validator.validate
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_xPathSignature() throws Exception {
-        String file = "xPathSignature.xml";
+        final String file = "xPathSignature.xml";
 
-        boolean coreValidity = validator.validate
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }

@@ -44,13 +44,13 @@ public class XMLSignatureInputHandler extends AbstractSignatureInputHandler {
 
         final InboundSecurityContext inboundSecurityContext = inputProcessorChain.getSecurityContext();
 
-        AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
+        final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
         algorithmSuiteSecurityEvent.setAlgorithmURI(signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm());
         algorithmSuiteSecurityEvent.setAlgorithmUsage(XMLSecurityConstants.SigC14n);
         algorithmSuiteSecurityEvent.setCorrelationID(signatureType.getId());
         inboundSecurityContext.registerSecurityEvent(algorithmSuiteSecurityEvent);
 
-        SignatureValueSecurityEvent signatureValueSecurityEvent = new SignatureValueSecurityEvent();
+        final SignatureValueSecurityEvent signatureValueSecurityEvent = new SignatureValueSecurityEvent();
         signatureValueSecurityEvent.setSignatureValue(signatureType.getSignatureValue().getValue());
         signatureValueSecurityEvent.setCorrelationID(signatureType.getId());
         inboundSecurityContext.registerSecurityEvent(signatureValueSecurityEvent);
@@ -80,14 +80,14 @@ public class XMLSignatureInputHandler extends AbstractSignatureInputHandler {
                 SignatureType signatureType, XMLSecurityProperties securityProperties,
                 InboundSecurityContext inboundSecurityContext) throws XMLSecurityException {
 
-            InboundSecurityToken inboundSecurityToken = SecurityTokenFactory.getInstance().getSecurityToken(signatureType.getKeyInfo(),
+            final InboundSecurityToken inboundSecurityToken = SecurityTokenFactory.getInstance().getSecurityToken(signatureType.getKeyInfo(),
                     SecurityTokenConstants.KeyUsage_Signature_Verification, securityProperties, inboundSecurityContext);
 
             inboundSecurityToken.verify();
 
             inboundSecurityToken.addTokenUsage(SecurityTokenConstants.TokenUsage_Signature);
 
-            TokenSecurityEvent<?> tokenSecurityEvent = XMLSecurityUtils.createTokenSecurityEvent(inboundSecurityToken, signatureType.getId());
+            final TokenSecurityEvent<?> tokenSecurityEvent = XMLSecurityUtils.createTokenSecurityEvent(inboundSecurityToken, signatureType.getId());
             inboundSecurityContext.registerSecurityEvent(tokenSecurityEvent);
 
             return inboundSecurityToken;

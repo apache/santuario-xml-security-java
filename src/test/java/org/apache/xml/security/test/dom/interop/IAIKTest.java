@@ -66,18 +66,18 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_hMACShortSignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACShortSignature.xml");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACShortSignature.xml");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
 
         try {
             this.verifyHMAC(filename, resolver, followManifests, hmacKey);
             fail("HMACOutputLength Exception not caught");
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
-        } catch (XMLSignatureException ex) {
+        } catch (final XMLSignatureException ex) {
             if (!"algorithms.HMACOutputLengthMin".equals(ex.getMsgID())) {
                 fail(ex.getMessage());
             }
@@ -93,15 +93,15 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_hMACSignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACSignature.xml");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACSignature.xml");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
         boolean verify = false;
 
         try {
             verify = this.verifyHMAC(filename, resolver, followManifests, hmacKey);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -123,14 +123,14 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_manifestSignature_core()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Core validation crashed for " + filename);
 
             throw ex;
@@ -152,14 +152,14 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_manifestSignature_manifest()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = true;
+        final File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = true;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests, false);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -181,14 +181,14 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_signatureTypesSignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "signatureTypesSignature.xml");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "signatureTypesSignature.xml");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests, false     );
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -210,16 +210,16 @@ public class IAIKTest extends InteropTestBase {
     public void test_coreFeatures_signatures_anonymousReferenceSignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "anonymousReferenceSignature.xml");
-        String anonymousRef = resolveFile(gregorsDir, "coreFeatures", "samples", "anonymousReferenceContent.xml")
+        final File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "anonymousReferenceSignature.xml");
+        final String anonymousRef = resolveFile(gregorsDir, "coreFeatures", "samples", "anonymousReferenceContent.xml")
             .getAbsolutePath();
-        ResourceResolverSpi resolver = new ResolverAnonymous(anonymousRef);
-        boolean followManifests = false;
+        final ResourceResolverSpi resolver = new ResolverAnonymous(anonymousRef);
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -241,14 +241,14 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_dSASignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "dSASignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "dSASignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -270,14 +270,14 @@ public class IAIKTest extends InteropTestBase {
     public void test_signatureAlgorithms_signatures_rSASignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "rSASignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "rSASignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -299,14 +299,14 @@ public class IAIKTest extends InteropTestBase {
     public void test_transforms_signatures_base64DecodeSignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "transforms", "signatures", "base64DecodeSignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "transforms", "signatures", "base64DecodeSignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests, false);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -327,14 +327,14 @@ public class IAIKTest extends InteropTestBase {
     @Test
     public void test_transforms_signatures_c14nSignature() throws Exception {
 
-        File filename = resolveFile(gregorsDir, "transforms", "signatures", "c14nSignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "transforms", "signatures", "c14nSignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests, false);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -356,14 +356,14 @@ public class IAIKTest extends InteropTestBase {
     public void test_transforms_signatures_envelopedSignatureSignature()
         throws Exception {
 
-        File filename = resolveFile(gregorsDir, "transforms", "signatures", "envelopedSignatureSignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "transforms", "signatures", "envelopedSignatureSignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;
@@ -384,14 +384,14 @@ public class IAIKTest extends InteropTestBase {
     @Test
     public void test_transforms_signatures_xPathSignature() throws Exception {
 
-        File filename = resolveFile(gregorsDir, "transforms", "signatures", "xPathSignature.xml");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = resolveFile(gregorsDir, "transforms", "signatures", "xPathSignature.xml");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
 
             throw ex;

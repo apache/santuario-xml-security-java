@@ -43,10 +43,10 @@ public class RsaKeyValueSecurityToken extends AbstractInboundSecurityToken {
     }
 
     private PublicKey buildPublicKey(RSAKeyValueType rsaKeyValueType) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        RSAPublicKeySpec rsaPublicKeySpec = new RSAPublicKeySpec(
+        final RSAPublicKeySpec rsaPublicKeySpec = new RSAPublicKeySpec(
                 new BigInteger(1, rsaKeyValueType.getModulus()),
                 new BigInteger(1, rsaKeyValueType.getExponent()));
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         return keyFactory.generatePublic(rsaPublicKeySpec);
     }
 
@@ -55,9 +55,9 @@ public class RsaKeyValueSecurityToken extends AbstractInboundSecurityToken {
         if (super.getPublicKey() == null) {
             try {
                 setPublicKey(buildPublicKey(this.rsaKeyValueType));
-            } catch (InvalidKeySpecException e) {
+            } catch (final InvalidKeySpecException e) {
                 throw new XMLSecurityException(e);
-            } catch (NoSuchAlgorithmException e) {
+            } catch (final NoSuchAlgorithmException e) {
                 throw new XMLSecurityException(e);
             }
         }

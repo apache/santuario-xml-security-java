@@ -41,13 +41,13 @@ public final class SignatureAlgorithmFactory {
     }
 
     public SignatureAlgorithm getSignatureAlgorithm(String algoURI) throws XMLSecurityException, NoSuchProviderException, NoSuchAlgorithmException {
-        String algorithmClass = JCEAlgorithmMapper.getAlgorithmClassFromURI(algoURI);
+        final String algorithmClass = JCEAlgorithmMapper.getAlgorithmClassFromURI(algoURI);
         if (algorithmClass == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {algoURI});
         }
-        String jceName = JCEAlgorithmMapper.translateURItoJCEID(algoURI);
-        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algoURI);
+        final String jceName = JCEAlgorithmMapper.translateURItoJCEID(algoURI);
+        final String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algoURI);
         if ("MAC".equalsIgnoreCase(algorithmClass)) {
             return new HMACSignatureAlgorithm(jceName, jceProvider);
         } else if ("Signature".equalsIgnoreCase(algorithmClass)) {

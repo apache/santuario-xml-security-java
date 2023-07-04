@@ -64,12 +64,12 @@ public class IVSplittingOutputStream extends FilterOutputStream {
     }
 
     private void initializeCipher() throws IOException {
-        AlgorithmParameterSpec iv = XMLCipherUtil.constructBlockCipherParameters(cipher.getAlgorithm().toUpperCase().contains("GCM"), this.getIv());
+        final AlgorithmParameterSpec iv = XMLCipherUtil.constructBlockCipherParameters(cipher.getAlgorithm().toUpperCase().contains("GCM"), this.getIv());
         try {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new IOException(e);
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (final InvalidAlgorithmParameterException e) {
             throw new IOException(e);
         }
     }
@@ -92,7 +92,7 @@ public class IVSplittingOutputStream extends FilterOutputStream {
 
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
-        int missingBytes = ivLength - pos;
+        final int missingBytes = ivLength - pos;
         if (missingBytes > len) {
             System.arraycopy(b, off, iv, pos, len);
             pos += len;

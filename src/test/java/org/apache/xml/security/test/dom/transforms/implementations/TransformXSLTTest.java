@@ -51,17 +51,17 @@ public class TransformXSLTTest {
      */
     @Test
     public void test1() throws Exception {
-        Document doc1 = getDocument(SIGNATURE_FILE);
-        Document doc2 = getDocument(STYLESHEET_FILE);
+        final Document doc1 = getDocument(SIGNATURE_FILE);
+        final Document doc2 = getDocument(STYLESHEET_FILE);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Transform[1]";
-        Element transformEl = (Element) xpath.evaluate(expression, doc1, XPathConstants.NODE);
+        final String expression = "//ds:Transform[1]";
+        final Element transformEl = (Element) xpath.evaluate(expression, doc1, XPathConstants.NODE);
 
-        Transform transform = new Transform(doc1, Transforms.TRANSFORM_XSLT, transformEl.getChildNodes());
+        final Transform transform = new Transform(doc1, Transforms.TRANSFORM_XSLT, transformEl.getChildNodes());
         transform.performTransform(new XMLSignatureInput(doc2), false);
     }
 

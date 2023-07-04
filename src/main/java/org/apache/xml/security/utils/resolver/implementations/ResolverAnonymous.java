@@ -54,10 +54,10 @@ public class ResolverAnonymous extends ResourceResolverSpi {
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context) throws ResourceResolverException {
         try {
-            XMLSignatureInput input = new XMLSignatureInput(Files.newInputStream(resourcePath));
+            final XMLSignatureInput input = new XMLSignatureInput(Files.newInputStream(resourcePath));
             input.setSecureValidation(context.secureValidation);
             return input;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         }
     }

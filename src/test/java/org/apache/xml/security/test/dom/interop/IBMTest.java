@@ -70,7 +70,7 @@ public class IBMTest extends InteropTestBase {
      */
     public IBMTest() {
         super();
-        File f = resolveFile("src", "test", "resources", "com", "ibm", "xss4j-20011029", "enveloped-rsa.sig");
+        final File f = resolveFile("src", "test", "resources", "com", "ibm", "xss4j-20011029", "enveloped-rsa.sig");
         if (f.exists()) {
             runTests = true;
         }
@@ -86,15 +86,15 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "enveloping-hmac.sig");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
-        byte[] hmacKey = Files.readAllBytes(new File(kentsDir, "enveloping-hmac.key").toPath());
+        final File filename = new File(kentsDir, "enveloping-hmac.sig");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
+        final byte[] hmacKey = Files.readAllBytes(new File(kentsDir, "enveloping-hmac.key").toPath());
         boolean verify = false;
 
         try {
             verify = this.verifyHMAC(filename, resolver, followManifests, hmacKey);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -116,14 +116,14 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "detached-dsa.sig");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
+        final File filename = new File(kentsDir, "detached-dsa.sig");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -145,14 +145,14 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "detached-rsa.sig");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
+        final File filename = new File(kentsDir, "detached-rsa.sig");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -174,14 +174,14 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "enveloped-dsa.sig");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = new File(kentsDir, "enveloped-dsa.sig");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -203,14 +203,14 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "enveloped-rsa.sig");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = new File(kentsDir, "enveloped-rsa.sig");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -232,14 +232,14 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "enveloping-dsa.sig");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = new File(kentsDir, "enveloping-dsa.sig");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -261,14 +261,14 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "enveloping-rsa.sig");
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final File filename = new File(kentsDir, "enveloping-rsa.sig");
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -290,18 +290,18 @@ public class IBMTest extends InteropTestBase {
         if (!runTests) {
             return;
         }
-        File filename = new File(kentsDir, "enveloping-dsa-soaped-broken.sig");
+        final File filename = new File(kentsDir, "enveloping-dsa-soaped-broken.sig");
         if (!filename.exists() ) {
             System.err.println("Couldn't find: " + filename + " and couldn't do the test");
             return;
         }
-        ResourceResolverSpi resolver = null;
-        boolean followManifests = false;
+        final ResourceResolverSpi resolver = null;
+        final boolean followManifests = false;
         boolean verify = true;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }

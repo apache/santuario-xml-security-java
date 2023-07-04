@@ -79,33 +79,33 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     ) {
         try {
             // Create a retrieval method over the given element
-            RetrievalMethod rm = new RetrievalMethod(element, baseURI);
-            String type = rm.getType();
-            XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
+            final RetrievalMethod rm = new RetrievalMethod(element, baseURI);
+            final String type = rm.getType();
+            final XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
             if (RetrievalMethod.TYPE_RAWX509.equals(type)) {
                 // a raw certificate, direct parsing is done!
-                X509Certificate cert = getRawCertificate(resource);
+                final X509Certificate cert = getRawCertificate(resource);
                 if (cert != null) {
                     return cert.getPublicKey();
                 }
                 return null;
             }
-            Element e = obtainReferenceElement(resource, secureValidation);
+            final Element e = obtainReferenceElement(resource, secureValidation);
 
             // Check to make sure that the reference is not to another RetrievalMethod
             // which points to this element
             if (XMLUtils.elementIsInSignatureSpace(e, Constants._TAG_RETRIEVALMETHOD)) {
                 if (secureValidation) {
                     if (LOG.isDebugEnabled()) {
-                        String error = "Error: It is forbidden to have one RetrievalMethod "
+                        final String error = "Error: It is forbidden to have one RetrievalMethod "
                                 + "point to another with secure validation";
                         LOG.debug(error);
                     }
                     return null;
                 }
-                RetrievalMethod rm2 = new RetrievalMethod(e, baseURI);
-                XMLSignatureInput resource2 = resolveInput(rm2, baseURI, secureValidation);
-                Element e2 = obtainReferenceElement(resource2, secureValidation);
+                final RetrievalMethod rm2 = new RetrievalMethod(e, baseURI);
+                final XMLSignatureInput resource2 = resolveInput(rm2, baseURI, secureValidation);
+                final Element e2 = obtainReferenceElement(resource2, secureValidation);
                 if (e2 == element) {
                     LOG.debug("Error: Can't have RetrievalMethods pointing to each other");
                     return null;
@@ -113,11 +113,11 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             }
 
             return resolveKey(e, baseURI, storage, secureValidation);
-         } catch (XMLSecurityException ex) {
+         } catch (final XMLSecurityException ex) {
              LOG.debug("XMLSecurityException", ex);
-         } catch (CertificateException ex) {
+         } catch (final CertificateException ex) {
              LOG.debug("CertificateException", ex);
-         } catch (IOException ex) {
+         } catch (final IOException ex) {
              LOG.debug("IOException", ex);
          }
          return null;
@@ -128,29 +128,29 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     protected X509Certificate engineResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage, boolean secureValidation) {
         try {
-            RetrievalMethod rm = new RetrievalMethod(element, baseURI);
-            String type = rm.getType();
-            XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
+            final RetrievalMethod rm = new RetrievalMethod(element, baseURI);
+            final String type = rm.getType();
+            final XMLSignatureInput resource = resolveInput(rm, baseURI, secureValidation);
             if (RetrievalMethod.TYPE_RAWX509.equals(type)) {
                 return getRawCertificate(resource);
             }
 
-            Element e = obtainReferenceElement(resource, secureValidation);
+            final Element e = obtainReferenceElement(resource, secureValidation);
 
             // Check to make sure that the reference is not to another RetrievalMethod
             // which points to this element
             if (XMLUtils.elementIsInSignatureSpace(e, Constants._TAG_RETRIEVALMETHOD)) {
                 if (secureValidation) {
                     if (LOG.isDebugEnabled()) {
-                        String error = "Error: It is forbidden to have one RetrievalMethod "
+                        final String error = "Error: It is forbidden to have one RetrievalMethod "
                             + "point to another with secure validation";
                         LOG.debug(error);
                     }
                     return null;
                 }
-                RetrievalMethod rm2 = new RetrievalMethod(e, baseURI);
-                XMLSignatureInput resource2 = resolveInput(rm2, baseURI, secureValidation);
-                Element e2 = obtainReferenceElement(resource2, secureValidation);
+                final RetrievalMethod rm2 = new RetrievalMethod(e, baseURI);
+                final XMLSignatureInput resource2 = resolveInput(rm2, baseURI, secureValidation);
+                final Element e2 = obtainReferenceElement(resource2, secureValidation);
                 if (e2 == element) {
                     LOG.debug("Error: Can't have RetrievalMethods pointing to each other");
                     return null;
@@ -158,11 +158,11 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             }
 
             return resolveCertificate(e, baseURI, storage, secureValidation);
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.debug("XMLSecurityException", ex);
-        } catch (CertificateException ex) {
+        } catch (final CertificateException ex) {
             LOG.debug("CertificateException", ex);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             LOG.debug("IOException", ex);
         }
         return null;
@@ -223,7 +223,7 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             e = getDocumentElement(resource.getNodeSet());
         } else {
             // Retrieved resource is an inputStream
-            byte[] inputBytes = resource.getBytes();
+            final byte[] inputBytes = resource.getBytes();
             e = getDocFromBytes(inputBytes, secureValidation);
             // otherwise, we parse the resource, create an Element and delegate
             LOG.debug("we have to parse {} bytes", inputBytes.length);
@@ -233,9 +233,9 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
 
     private static X509Certificate getRawCertificate(XMLSignatureInput resource)
         throws CanonicalizationException, IOException, CertificateException {
-        byte[] inputBytes = resource.getBytes();
+        final byte[] inputBytes = resource.getBytes();
         // if the resource stores a raw certificate, we have to handle it
-        CertificateFactory certFact =
+        final CertificateFactory certFact =
             CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
         try (InputStream is = new ByteArrayInputStream(inputBytes)) {
             return (X509Certificate) certFact.generateCertificate(is);
@@ -250,10 +250,10 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
     private static XMLSignatureInput resolveInput(
         RetrievalMethod rm, String baseURI, boolean secureValidation
     ) throws XMLSecurityException {
-        Attr uri = rm.getURIAttr();
+        final Attr uri = rm.getURIAttr();
         // Apply the transforms
-        Transforms transforms = rm.getTransforms();
-        ResourceResolverContext resContext = new ResourceResolverContext(uri, baseURI, secureValidation);
+        final Transforms transforms = rm.getTransforms();
+        final ResourceResolverContext resContext = new ResourceResolverContext(uri, baseURI, secureValidation);
         if (resContext.isURISafeToResolve()) {
             XMLSignatureInput resource = ResourceResolver.resolve(resContext);
             if (transforms != null) {
@@ -262,8 +262,8 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
             }
             return resource;
         }
-        String uriToResolve = uri != null ? uri.getValue() : null;
-        Object[] exArgs = { uriToResolve != null ? uriToResolve : "null", baseURI };
+        final String uriToResolve = uri != null ? uri.getValue() : null;
+        final Object[] exArgs = { uriToResolve != null ? uriToResolve : "null", baseURI };
 
         throw new ResourceResolverException("utils.resolver.noClass", exArgs, uriToResolve, baseURI);
     }
@@ -286,25 +286,25 @@ public class RetrievalMethodResolver extends KeyResolverSpi {
 
     private static Element getDocumentElement(Set<Node> set) {
         Element e = null;
-        for (Node currentNode : set) {
+        for (final Node currentNode : set) {
             if (currentNode != null && Node.ELEMENT_NODE == currentNode.getNodeType()) {
                 e = (Element) currentNode;
                 break;
             }
         }
-        List<Node> parents = new ArrayList<>();
+        final List<Node> parents = new ArrayList<>();
 
         // Obtain all the parents of the element
         while (e != null) {
             parents.add(e);
-            Node n = e.getParentNode();
+            final Node n = e.getParentNode();
             if (n == null || Node.ELEMENT_NODE != n.getNodeType()) {
                 break;
             }
             e = (Element) n;
         }
         // Visit them in reverse order.
-        ListIterator<Node> it2 = parents.listIterator(parents.size()-1);
+        final ListIterator<Node> it2 = parents.listIterator(parents.size()-1);
         Element ele = null;
         while (it2.hasPrevious()) {
             ele = (Element) it2.previous();

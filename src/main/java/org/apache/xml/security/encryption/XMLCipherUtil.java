@@ -76,7 +76,7 @@ public final class XMLCipherUtil {
 
         LOG.debug("Saw AES-GCM block cipher, attempting to create GCMParameterSpec: {}", algorithm);
 
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
+        final GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
         LOG.debug("Successfully created GCMParameterSpec");
         return gcmSpec;
     }

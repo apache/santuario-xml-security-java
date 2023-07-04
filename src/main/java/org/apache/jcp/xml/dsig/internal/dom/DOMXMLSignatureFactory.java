@@ -212,8 +212,8 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         }
 
         // check tag
-        String tag = element.getLocalName();
-        String namespace = element.getNamespaceURI();
+        final String tag = element.getLocalName();
+        final String namespace = element.getNamespaceURI();
         if (tag == null || namespace == null) {
             throw new MarshalException("Document implementation must " +
                 "support DOM Level 2 and be namespace aware");
@@ -221,9 +221,9 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         if ("Signature".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
             try {
                 return new DOMXMLSignature(element, context, getProvider());
-            } catch (MarshalException me) {
+            } catch (final MarshalException me) {
                 throw me;
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new MarshalException(e);
             }
         } else {
@@ -355,7 +355,7 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         } else {
             try {
                 spi = TransformService.getInstance(algorithm, "DOM", getProvider());
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 spi = TransformService.getInstance(algorithm, "DOM");
             }
         }
@@ -374,7 +374,7 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         } else {
             try {
                 spi = TransformService.getInstance(algorithm, "DOM", getProvider());
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 spi = TransformService.getInstance(algorithm, "DOM");
             }
         }
@@ -397,7 +397,7 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         } else {
             try {
                 spi = TransformService.getInstance(algorithm, "DOM", getProvider());
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 spi = TransformService.getInstance(algorithm, "DOM");
             }
         }
@@ -416,7 +416,7 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         } else {
             try {
                 spi = TransformService.getInstance(algorithm, "DOM", getProvider());
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 spi = TransformService.getInstance(algorithm, "DOM");
             }
         }

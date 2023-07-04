@@ -54,7 +54,7 @@ public class HMACOutputLengthTest {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-0-attack.xml");
             fail("Expected HMACOutputLength exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
             if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
                 fail(xse.getMessage());
@@ -66,7 +66,7 @@ public class HMACOutputLengthTest {
     public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-8-attack.xml");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
             if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
                 fail(xse.getMessage());
@@ -76,14 +76,14 @@ public class HMACOutputLengthTest {
 
     @Test
     public void test_generate_hmac_sha1_40() throws Exception {
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
         try {
             new XMLSignature(
                 doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
                  40, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
             );
             fail("Expected HMACOutputLength Exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
             if (!"algorithms.HMACOutputLengthMin".equals(xse.getMsgID())) {
                 fail(xse.getMessage());
@@ -93,62 +93,62 @@ public class HMACOutputLengthTest {
 
     @Test
     public void testValidHMACOutputLength() throws Exception {
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
         doc.appendChild(doc.createComment(" Comment before "));
-        Element root = doc.createElementNS("", "RootElement");
+        final Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
-        Element canonElem =
+        final Element canonElem =
             XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
         canonElem.setAttributeNS(
             null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
         );
 
-        XMLSignature sig =
+        final XMLSignature sig =
             new XMLSignature(doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1, 160);
 
         root.appendChild(sig.getElement());
         doc.appendChild(doc.createComment(" Comment after "));
-        Transforms transforms = new Transforms(doc);
+        final Transforms transforms = new Transforms(doc);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         sig.addDocument("", transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
 
-        SecretKey sk = sig.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
+        final SecretKey sk = sig.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
         sig.sign(sk);
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         XMLUtils.outputDOMc14nWithComments(doc, bos);
-        String signedContent = new String(bos.toByteArray());
+        final String signedContent = new String(bos.toByteArray());
 
         assertTrue(signedContent.contains("ds:HMACOutputLength>160</ds:HMACOutputLength>"));
 
         // Verify
-        NodeList nl =
+        final NodeList nl =
             doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Couldn't find signature Element");
         }
-        Element sigElement = (Element) nl.item(0);
-        XMLSignature signature = new XMLSignature(sigElement, null);
+        final Element sigElement = (Element) nl.item(0);
+        final XMLSignature signature = new XMLSignature(sigElement, null);
         assertTrue(signature.checkSignatureValue(sk));
     }
 
     private boolean validate(String data) throws Exception {
-        File file = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "test", "javax", "xml",
+        final File file = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "test", "javax", "xml",
             "crypto", "dsig", data);
-        Document doc = XMLUtils.read(file, false);
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
+        final Document doc = XMLUtils.read(file, false);
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Couldn't find signature Element");
         }
-        Element sigElement = (Element) nl.item(0);
-        XMLSignature signature = new XMLSignature(sigElement, file.toURI().toString());
-        SecretKey sk = signature.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
+        final Element sigElement = (Element) nl.item(0);
+        final XMLSignature signature = new XMLSignature(sigElement, file.toURI().toString());
+        final SecretKey sk = signature.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
         return signature.checkSignatureValue(sk);
     }
 

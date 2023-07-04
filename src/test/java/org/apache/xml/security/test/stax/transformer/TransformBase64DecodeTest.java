@@ -61,11 +61,11 @@ public class TransformBase64DecodeTest {
 
     @Test
     public void testXMLSecEventToXMLSecEventAPI() throws Exception {
-        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        final TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
 
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -99,7 +99,7 @@ public class TransformBase64DecodeTest {
         };
         transformBase64Decode.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
@@ -126,11 +126,11 @@ public class TransformBase64DecodeTest {
 
     @Test
     public void testXMLSecEventToInputStreamAPI() throws Exception {
-        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        final TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -157,7 +157,7 @@ public class TransformBase64DecodeTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -168,7 +168,7 @@ public class TransformBase64DecodeTest {
         };
         transformBase64Decode.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
@@ -195,11 +195,11 @@ public class TransformBase64DecodeTest {
 
     @Test
     public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
-        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        final TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformBase64Decode.setOutputStream(byteArrayOutputStream);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
@@ -226,7 +226,7 @@ public class TransformBase64DecodeTest {
 
     @Test
     public void testInputStreamToOutputStreamStreamAPI() throws Exception {
-        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        final TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformBase64Decode.setOutputStream(byteArrayOutputStream);
 
@@ -238,10 +238,10 @@ public class TransformBase64DecodeTest {
 
     @Test
     public void testInputStreamToXMLSecEventAPI() throws Exception {
-        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        final TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -286,10 +286,10 @@ public class TransformBase64DecodeTest {
 
     @Test
     public void testInputStreamToInputStreamAPI() throws Exception {
-        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        final TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -316,7 +316,7 @@ public class TransformBase64DecodeTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }

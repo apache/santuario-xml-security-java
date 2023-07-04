@@ -64,7 +64,7 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
     public void engineInitSign(Key signingKey) throws XMLSecurityException {
         try {
             mac.init(signingKey);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -73,7 +73,7 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
     public void engineInitSign(Key signingKey, SecureRandom secureRandom) throws XMLSecurityException {
         try {
             mac.init(signingKey);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -96,14 +96,14 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
     public void engineInitVerify(Key verificationKey) throws XMLSecurityException {
         try {
             mac.init(verificationKey);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }
     }
 
     @Override
     public boolean engineVerify(byte[] signature) throws XMLSecurityException {
-        byte[] completeResult = mac.doFinal();
+        final byte[] completeResult = mac.doFinal();
         return MessageDigest.isEqual(completeResult, signature);
     }
 

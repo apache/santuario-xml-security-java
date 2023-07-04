@@ -51,37 +51,37 @@ public class IaikSignatureAlgosTest {
     }
 
     public IaikSignatureAlgosTest() {
-        Path base = resolvePath("src", "test", "resources", "at", "iaik", "ixsil");
+        final Path base = resolvePath("src", "test", "resources", "at", "iaik", "ixsil");
         validator = new SignatureValidator(resolveFile(base, "signatureAlgorithms", "signatures"));
     }
 
     @Test
     public void test_dsaSignature() throws Exception {
-        String file = "dSASignature.xml";
+        final String file = "dSASignature.xml";
 
-        boolean coreValidity = validator.validate(file, new
+        final boolean coreValidity = validator.validate(file, new
             KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_rsaSignature() throws Exception {
-        String file = "rSASignature.xml";
+        final String file = "rSASignature.xml";
 
-        boolean coreValidity = validator.validate(file, new
+        final boolean coreValidity = validator.validate(file, new
             KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_hmacShortSignature() throws Exception {
-        String file = "hMACShortSignature.xml";
+        final String file = "hMACShortSignature.xml";
 
         try {
             validator.validate(file, new
                 KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
             fail("Expected HMACOutputLength Exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
             // pass
         }
@@ -89,9 +89,9 @@ public class IaikSignatureAlgosTest {
 
     @Test
     public void test_hmacSignature() throws Exception {
-        String file = "hMACSignature.xml";
+        final String file = "hMACSignature.xml";
 
-        boolean coreValidity = validator.validate(file, new
+        final boolean coreValidity = validator.validate(file, new
             KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
         assertTrue(coreValidity, "Signature failed core validation");
     }

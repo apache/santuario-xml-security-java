@@ -56,9 +56,9 @@ public class JSRForbiddenReferenceTest {
 
     @Test
     public void testLocalFilesystem() throws Exception {
-        String file = "signature-external-c14n-xmlatrs.xml";
+        final String file = "signature-external-c14n-xmlatrs.xml";
 
-        DOMValidateContext vc =
+        final DOMValidateContext vc =
             validator.getValidateContext(
                 file, new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII))
             );
@@ -66,7 +66,7 @@ public class JSRForbiddenReferenceTest {
         try {
             validator.validate(vc);
             fail("Failure expected by default");
-        } catch (XMLSignatureException ex) {
+        } catch (final XMLSignatureException ex) {
             assertTrue(ex.getMessage().contains("URIReferenceException"));
         }
 

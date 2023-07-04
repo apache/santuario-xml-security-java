@@ -46,14 +46,14 @@ public class ResolverXPointer implements ResourceResolver, ResourceResolverLooku
     }
 
     public ResolverXPointer(String uri) {
-        Matcher matcher = pattern.matcher(uri);
+        final Matcher matcher = pattern.matcher(uri);
         if (matcher.find() && matcher.groupCount() == 3) {
-            String slash = matcher.group(1);
+            final String slash = matcher.group(1);
             if (slash != null) {
                 this.id = null;
                 return;
             }
-            String id = matcher.group(3);
+            final String id = matcher.group(3);
             if (id != null) {
                 this.id = id;
                 return;
@@ -106,7 +106,7 @@ public class ResolverXPointer implements ResourceResolver, ResourceResolverLooku
             return false;
         }
         //case #xpointer(id('ID')):
-        Attribute attribute = xmlSecStartElement.getAttributeByName(idAttributeNS);
+        final Attribute attribute = xmlSecStartElement.getAttributeByName(idAttributeNS);
         return attribute != null && attribute.getValue().equals(id);
     }
 

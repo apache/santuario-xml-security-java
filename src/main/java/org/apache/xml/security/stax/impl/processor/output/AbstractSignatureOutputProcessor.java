@@ -83,10 +83,10 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     }
 
     protected void doFinalInternal(OutputProcessorChain outputProcessorChain) throws XMLSecurityException, XMLStreamException {
-        Map<Object, SecurePart> dynamicSecureParts =
+        final Map<Object, SecurePart> dynamicSecureParts =
                 outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
         if (dynamicSecureParts != null) {
-            for (Map.Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
+            for (final Map.Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
                 final SecurePart securePart = securePartEntry.getValue();
                 if (securePart.getExternalReference() != null) {
                     digestExternalReference(outputProcessorChain, securePart);
@@ -102,7 +102,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
             throws XMLSecurityException, XMLStreamException {
 
         final String externalReference = securePart.getExternalReference();
-        ResourceResolver resourceResolver =
+        final ResourceResolver resourceResolver =
                 ResourceResolverMapper.getResourceResolver(
                         externalReference, outputProcessorChain.getDocumentContext().getBaseURI());
 
@@ -111,10 +111,10 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
             digestAlgo = getSecurityProperties().getSignatureDigestAlgorithm();
         }
 
-        DigestOutputStream digestOutputStream = createMessageDigestOutputStream(digestAlgo);    //NOPMD
-        InputStream inputStream = resourceResolver.getInputStreamFromExternalReference();   //NOPMD
+        final DigestOutputStream digestOutputStream = createMessageDigestOutputStream(digestAlgo);    //NOPMD
+        final InputStream inputStream = resourceResolver.getInputStreamFromExternalReference();   //NOPMD
 
-        SignaturePartDef signaturePartDef = new SignaturePartDef();
+        final SignaturePartDef signaturePartDef = new SignaturePartDef();
         signaturePartDef.setSecurePart(securePart);
         signaturePartDef.setSigRefId(externalReference);
         signaturePartDef.setExternalResource(true);
@@ -124,18 +124,18 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         try {
             if (securePart.getTransforms() != null) {
                 signaturePartDef.setExcludeVisibleC14Nprefixes(true);
-                Transformer transformer = buildTransformerChain(digestOutputStream, signaturePartDef, null);
+                final Transformer transformer = buildTransformerChain(digestOutputStream, signaturePartDef, null);
                 transformer.transform(inputStream);
                 transformer.doFinal();
             } else {
                 XMLSecurityUtils.copy(inputStream, digestOutputStream);
             }
             digestOutputStream.close();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLSecurityException(e);
         }
 
-        String calculatedDigest =
+        final String calculatedDigest =
             XMLUtils.encodeToString(digestOutputStream.getDigestValue());
         LOG.debug("Calculated Digest: {}", calculatedDigest);
 
@@ -145,12 +145,12 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     }
 
     protected void verifySignatureParts(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
-        List<SignaturePartDef> signaturePartDefs = getSignaturePartDefList();
-        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
+        final List<SignaturePartDef> signaturePartDefs = getSignaturePartDefList();
+        final Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
         if (dynamicSecureParts == null) {
             return;
         }
-        for (Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
+        for (final Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
             final SecurePart securePart = securePartEntry.getValue();
             if (securePart.isRequired() && !findSecurePart(securePart, signaturePartDefs)) {
                 throw new XMLSecurityException("stax.signature.securePartNotFound",
@@ -160,7 +160,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     }
 
     private boolean findSecurePart(final SecurePart securePart, List<SignaturePartDef> signaturePartDefs) {
-        for (SignaturePartDef signaturePartDef : signaturePartDefs) {
+        for (final SignaturePartDef signaturePartDef : signaturePartDefs) {
             if (signaturePartDef.getSecurePart() == securePart) {
                 return true;
             }
@@ -180,8 +180,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     protected DigestOutputStream createMessageDigestOutputStream(String digestAlgorithm)
             throws XMLSecurityException {
 
-        String jceName = JCEMapper.translateURItoJCEID(digestAlgorithm);
-        String jceProvider = JCEMapper.getJCEProviderFromURI(digestAlgorithm);
+        final String jceName = JCEMapper.translateURItoJCEID(digestAlgorithm);
+        final String jceProvider = JCEMapper.getJCEProviderFromURI(digestAlgorithm);
         if (jceName == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {digestAlgorithm});
@@ -204,34 +204,34 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                                                 XMLSecStartElement xmlSecStartElement)
             throws XMLSecurityException {
 
-        String[] transforms = signaturePartDef.getTransforms();
+        final String[] transforms = signaturePartDef.getTransforms();
 
         if (transforms == null || transforms.length == 0) {
-            Transformer transformer = new TransformIdentity();
+            final Transformer transformer = new TransformIdentity();
             transformer.setOutputStream(outputStream);
             return transformer;
         }
 
         Transformer parentTransformer = null;
         for (int i = transforms.length - 1; i >= 0; i--) {
-            String transform = transforms[i];
+            final String transform = transforms[i];
 
             Map<String, Object> transformerProperties = null;
             if (getSecurityProperties().isAddExcC14NInclusivePrefixes() &&
                     XMLSecurityConstants.NS_C14N_EXCL_OMIT_COMMENTS.equals(transform)) {
 
-                Set<String> prefixSet = XMLSecurityUtils.getExcC14NInclusiveNamespacePrefixes(
+                final Set<String> prefixSet = XMLSecurityUtils.getExcC14NInclusiveNamespacePrefixes(
                         xmlSecStartElement, signaturePartDef.isExcludeVisibleC14Nprefixes()
                 );
-                StringBuilder prefixes = new StringBuilder();
-                for (String prefix : prefixSet) {
+                final StringBuilder prefixes = new StringBuilder();
+                for (final String prefix : prefixSet) {
                     if (prefixes.length() != 0) {
                         prefixes.append(' ');
                     }
                     prefixes.append(prefix);
                 }
                 signaturePartDef.setInclusiveNamespacesPrefixes(prefixes.toString());
-                List<String> inclusiveNamespacePrefixes = new ArrayList<>(prefixSet);
+                final List<String> inclusiveNamespacePrefixes = new ArrayList<>(prefixSet);
                 transformerProperties = new HashMap<>();
                 transformerProperties.put(
                         Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespacePrefixes);
@@ -291,10 +291,10 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                     transformer.doFinal();
                     try {
                         bufferedDigestOutputStream.close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         throw new XMLSecurityException(e);
                     }
-                    String calculatedDigest =
+                    final String calculatedDigest =
                         XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
                     LOG.debug("Calculated Digest: {}", calculatedDigest);
                     signaturePartDef.setDigestValue(calculatedDigest);

@@ -56,12 +56,12 @@ public final class DOMCanonicalXMLC14NMethod extends ApacheCanonicalizer {
         // you to omit comments, even if the Transform says otherwise -
         // this is to be compliant with section 4.3.3.3 of W3C Rec.
         if (data instanceof DOMSubTreeData) {
-            DOMSubTreeData subTree = (DOMSubTreeData) data;
+            final DOMSubTreeData subTree = (DOMSubTreeData) data;
             if (subTree.excludeComments()) {
                 try {
                     canonicalizer = Canonicalizer.getInstance
                         (CanonicalizationMethod.INCLUSIVE);
-                } catch (InvalidCanonicalizerException ice) {
+                } catch (final InvalidCanonicalizerException ice) {
                     throw new TransformException
                         ("Couldn't find Canonicalizer for: " +
                          CanonicalizationMethod.INCLUSIVE + ": " +

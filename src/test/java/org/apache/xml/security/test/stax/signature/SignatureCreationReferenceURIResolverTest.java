@@ -75,36 +75,36 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     @Test
     public void testSignatureCreationWithExternalFilesystemXMLReference() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = getKeyStore();
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final KeyStore keyStore = getKeyStore();
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
         SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addSignaturePart(securePart);
 
-        File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        final File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         securePart = new SecurePart(file.toURI().toString(),
                 new String[]{"http://www.w3.org/TR/2001/REC-xml-c14n-20010315"},
                 XMLSecurityConstants.NS_XMLDSIG_SHA1);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -121,37 +121,37 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     @Test
     public void testSignatureCreationWithExternalFilesystemBinaryReference() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = getKeyStore();
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final KeyStore keyStore = getKeyStore();
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
         SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addSignaturePart(securePart);
 
-        File file = resolveFile(
+        final File file = resolveFile(
             "target/test-classes/org/apache/xml/security/test/stax/signature/SignatureVerificationReferenceURIResolverTest.class");
         securePart = new SecurePart(file.toURI().toString(),
                 null,
                 XMLSecurityConstants.NS_XMLDSIG_SHA1);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -168,27 +168,27 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     @Test
     public void testSignatureCreationWithExternalHttpReference() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
-            Map<String, String> resolverProperties = new HashMap<>();
+            final Map<String, String> resolverProperties = new HashMap<>();
             resolverProperties.put("http.proxy.host", ((InetSocketAddress)proxy.address()).getAddress().getHostAddress());
             resolverProperties.put("http.proxy.port", "" + ((InetSocketAddress)proxy.address()).getPort());
-            ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP(resolverProperties);
+            final ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP(resolverProperties);
 
             // Set up the Configuration
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
+            final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
             actions.add(XMLSecurityConstants.SIGNATURE);
             properties.setActions(actions);
 
             // Set the key up
-            KeyStore keyStore = getKeyStore();
-            Key key = keyStore.getKey("transmitter", "default".toCharArray());
+            final KeyStore keyStore = getKeyStore();
+            final Key key = keyStore.getKey("transmitter", "default".toCharArray());
             properties.setSignatureKey(key);
-            X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+            final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
             properties.setSignatureCerts(new X509Certificate[]{cert});
 
             SecurePart securePart =
@@ -198,14 +198,14 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
             securePart = new SecurePart("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64", null, XMLSecurityConstants.NS_XMLDSIG_SHA1);
             properties.addSignaturePart(securePart);
 
-            OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+            final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+            final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
             XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
             xmlStreamWriter.close();
@@ -225,30 +225,30 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
     @Test
     public void testSignatureCreationWithSameDocumentXPointerIdApostropheReference() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = getKeyStore();
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final KeyStore keyStore = getKeyStore();
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PaymentInfo"), true, SecurePart.Modifier.Element);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -258,10 +258,10 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Reference");
+        final NodeList nodeList = document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Reference");
         assertEquals(1, nodeList.getLength());
 
-        String uri = ((Element) nodeList.item(0)).getAttribute("URI");
+        final String uri = ((Element) nodeList.item(0)).getAttribute("URI");
         assertNotNull(uri);
         assertTrue(uri.startsWith("#xpointer"));
 
@@ -271,7 +271,7 @@ public class SignatureCreationReferenceURIResolverTest extends AbstractSignature
 
 
     private KeyStore getKeyStore() throws GeneralSecurityException, IOException {
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         try (InputStream inputStream = getClass().getClassLoader().getResource("transmitter.jks").openStream()) {
             keyStore.load(inputStream, "default".toCharArray());
         }

@@ -141,14 +141,14 @@ public abstract class ApacheTransform extends TransformService {
                     new Transform(ownerDoc, getAlgorithm(), transformElem.getChildNodes());
                 transform.setElement(transformElem, xc.getBaseURI());
                 LOG.debug("Created transform for algorithm: {}", getAlgorithm());
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new TransformException("Couldn't find Transform for: " +
                                              getAlgorithm(), ex);
             }
         }
 
         if (Utils.secureValidation(xc)) {
-            String algorithm = getAlgorithm();
+            final String algorithm = getAlgorithm();
             if (Transforms.TRANSFORM_XSLT.equals(algorithm)) {
                 throw new TransformException(
                     "Transform " + algorithm + " is forbidden when secure validation is enabled"
@@ -164,11 +164,12 @@ public abstract class ApacheTransform extends TransformService {
             LOG.debug("isNodeSet() = true");
             if (data instanceof DOMSubTreeData) {
                 LOG.debug("DOMSubTreeData = true");
-                DOMSubTreeData subTree = (DOMSubTreeData)data;
+                final DOMSubTreeData subTree = (DOMSubTreeData)data;
                 in = new XMLSignatureInput(subTree.getRoot());
                 in.setExcludeComments(subTree.excludeComments());
             } else {
                 @SuppressWarnings("unchecked")
+                final
                 Set<Node> nodeSet =
                     Utils.toNodeSet(((NodeSetData)data).iterator());
                 in = new XMLSignatureInput(nodeSet);
@@ -178,11 +179,11 @@ public abstract class ApacheTransform extends TransformService {
             try {
                 in = new XMLSignatureInput
                     (((OctetStreamData)data).getOctetStream());
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new TransformException(ex);
             }
         }
-        boolean secVal = Utils.secureValidation(xc);
+        final boolean secVal = Utils.secureValidation(xc);
         in.setSecureValidation(secVal);
 
         try {
@@ -199,7 +200,7 @@ public abstract class ApacheTransform extends TransformService {
             } else {
                 return new ApacheNodeSetData(in);
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new TransformException(ex);
         }
     }

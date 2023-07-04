@@ -62,7 +62,7 @@ public final class XmlReaderToWriter {
                 }
 
                 for (int i = 0, len = xmlr.getNamespaceCount(); i < len; i++) {
-                    String prefix = xmlr.getNamespacePrefix(i);
+                    final String prefix = xmlr.getNamespacePrefix(i);
                     if (prefix == null) {
                         writer.writeDefaultNamespace(xmlr.getNamespaceURI(i));
                     } else {
@@ -91,7 +91,7 @@ public final class XmlReaderToWriter {
                 break;
             case XMLStreamConstants.SPACE:
             case XMLStreamConstants.CHARACTERS:
-                char[] text = new char[xmlr.getTextLength()];
+                final char[] text = new char[xmlr.getTextLength()];
                 xmlr.getTextCharacters(0, text, 0, xmlr.getTextLength());
                 writer.writeCharacters(text, 0, text.length);
                 break;
@@ -108,8 +108,8 @@ public final class XmlReaderToWriter {
                 writer.writeEntityRef(xmlr.getLocalName());
                 break;
             case XMLStreamConstants.START_DOCUMENT:
-                String encoding = xmlr.getCharacterEncodingScheme();
-                String version = xmlr.getVersion();
+                final String encoding = xmlr.getCharacterEncodingScheme();
+                final String version = xmlr.getVersion();
 
                 if (encoding != null && version != null) {
                     writer.writeStartDocument(encoding, version);

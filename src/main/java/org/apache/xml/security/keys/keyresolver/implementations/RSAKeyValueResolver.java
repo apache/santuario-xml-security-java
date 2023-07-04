@@ -53,7 +53,7 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
 
         LOG.debug("Can I resolve {}", element.getTagName());
 
-        boolean isKeyValue = XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYVALUE);
+        final boolean isKeyValue = XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYVALUE);
         Element rsaKeyElement = null;
         if (isKeyValue) {
             rsaKeyElement =
@@ -69,10 +69,10 @@ public class RSAKeyValueResolver extends KeyResolverSpi {
         }
 
         try {
-            RSAKeyValue rsaKeyValue = new RSAKeyValue(rsaKeyElement, baseURI);
+            final RSAKeyValue rsaKeyValue = new RSAKeyValue(rsaKeyElement, baseURI);
 
             return rsaKeyValue.getPublicKey();
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.debug("XMLSecurityException", ex);
         }
 

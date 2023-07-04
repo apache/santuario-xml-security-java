@@ -63,11 +63,11 @@ public class TransformIdentityTest {
 
     @Test
     public void testXMLSecEventToXMLSecEventAPI() throws Exception {
-        TransformIdentity transformIdentity = new TransformIdentity();
+        final TransformIdentity transformIdentity = new TransformIdentity();
 
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -101,7 +101,7 @@ public class TransformIdentityTest {
         };
         transformIdentity.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
@@ -128,11 +128,11 @@ public class TransformIdentityTest {
 
     @Test
     public void testXMLSecEventToInputStreamAPI() throws Exception {
-        TransformIdentity transformIdentity = new TransformIdentity();
+        final TransformIdentity transformIdentity = new TransformIdentity();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -159,7 +159,7 @@ public class TransformIdentityTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -170,7 +170,7 @@ public class TransformIdentityTest {
         };
         transformIdentity.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
@@ -197,11 +197,11 @@ public class TransformIdentityTest {
 
     @Test
     public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
-        TransformIdentity transformIdentity = new TransformIdentity();
+        final TransformIdentity transformIdentity = new TransformIdentity();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformIdentity.setOutputStream(byteArrayOutputStream);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
@@ -228,7 +228,7 @@ public class TransformIdentityTest {
 
     @Test
     public void testInputStreamToOutputStreamStreamAPI() throws Exception {
-        TransformIdentity transformIdentity = new TransformIdentity();
+        final TransformIdentity transformIdentity = new TransformIdentity();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformIdentity.setOutputStream(byteArrayOutputStream);
 
@@ -240,10 +240,10 @@ public class TransformIdentityTest {
 
     @Test
     public void testInputStreamToXMLSecEventAPI() throws Exception {
-        TransformIdentity transformIdentity = new TransformIdentity();
+        final TransformIdentity transformIdentity = new TransformIdentity();
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -288,10 +288,10 @@ public class TransformIdentityTest {
 
     @Test
     public void testInputStreamToInputStreamAPI() throws Exception {
-        TransformIdentity transformIdentity = new TransformIdentity();
+        final TransformIdentity transformIdentity = new TransformIdentity();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -318,7 +318,7 @@ public class TransformIdentityTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }

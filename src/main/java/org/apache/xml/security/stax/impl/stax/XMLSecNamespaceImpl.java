@@ -71,7 +71,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
             }
         } else {
             nsMap = new WeakHashMap<>();
-            XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
+            final XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
             nsMap.put(uriToUse, xmlSecNamespace);
             XMLSEC_NS_MAP.put(prefixToUse, nsMap);
             return xmlSecNamespace;
@@ -90,7 +90,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
         if (!(obj instanceof XMLSecNamespace)) {
             return false;
         }
-        XMLSecNamespace comparableNamespace = (XMLSecNamespace) obj;
+        final XMLSecNamespace comparableNamespace = (XMLSecNamespace) obj;
 
         if (comparableNamespace.hashCode() != this.hashCode()) {
             return false;
@@ -164,7 +164,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
             writer.write("=\"");
             writeEncoded(writer, getValue());
             writer.write("\"");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }
@@ -175,7 +175,7 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
         int i = 0;
         int idx = 0;
         while (i < length) {
-            char c = text.charAt(i);
+            final char c = text.charAt(i);
             if (c == '&') {
                 writer.write(text, idx, i - idx);
                 writer.write("&amp;");

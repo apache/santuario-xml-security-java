@@ -111,24 +111,24 @@ public class XMLSecEventTest {
 
     @Test
     public void testWriteComment() throws Exception {
-        StringWriter stringWriter = new StringWriter();
-        XMLSecComment xmlSecAttribute = new XMLSecCommentImpl(" < > & \" '", null);
+        final StringWriter stringWriter = new StringWriter();
+        final XMLSecComment xmlSecAttribute = new XMLSecCommentImpl(" < > & \" '", null);
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
         assertEquals("<!-- < > & \" '-->", stringWriter.toString());
     }
 
     @Test
     public void testWriteEntityDeclaration() throws Exception {
-        StringWriter stringWriter = new StringWriter();
-        XMLSecEntityDeclaration xmlSecEntityDeclaration = new XMLSecEntityDeclarationImpl("test");
+        final StringWriter stringWriter = new StringWriter();
+        final XMLSecEntityDeclaration xmlSecEntityDeclaration = new XMLSecEntityDeclarationImpl("test");
         xmlSecEntityDeclaration.writeAsEncodedUnicode(stringWriter);
         assertEquals("<!ENTITY test \"\">", stringWriter.toString());
     }
 
     @Test
     public void testWriteEntityReference() throws Exception {
-        StringWriter stringWriter = new StringWriter();
-        XMLSecEntityReference xmlSecEntityReference = new XMLSecEntityReferenceImpl("test", null, null);
+        final StringWriter stringWriter = new StringWriter();
+        final XMLSecEntityReference xmlSecEntityReference = new XMLSecEntityReferenceImpl("test", null, null);
         xmlSecEntityReference.writeAsEncodedUnicode(stringWriter);
         assertEquals("&test;", stringWriter.toString());
     }
@@ -158,8 +158,8 @@ public class XMLSecEventTest {
 
     @Test
     public void testWriteProcessingInstruction() throws Exception {
-        StringWriter stringWriter = new StringWriter();
-        XMLSecProcessingInstruction xmlSecProcessingInstruction =
+        final StringWriter stringWriter = new StringWriter();
+        final XMLSecProcessingInstruction xmlSecProcessingInstruction =
                 new XMLSecProcessingInstructionImpl("test", "test", null);
         xmlSecProcessingInstruction.writeAsEncodedUnicode(stringWriter);
         assertEquals("<?test test?>", stringWriter.toString());
@@ -167,12 +167,12 @@ public class XMLSecEventTest {
 
     @Test
     public void testwWiteAsEncodedUnicode() throws Exception {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader xmlStreamReader =
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
-        Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
+        final Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
         do {
             xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));
             xmlStreamReader.next();
@@ -180,17 +180,17 @@ public class XMLSecEventTest {
         while (xmlStreamReader.hasNext());
         xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
-        XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0);
+        final XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0);
 
-        XMLEventReader xmlEventReader =
+        final XMLEventReader xmlEventReader =
                 xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
         final StringWriter stdWriter = new StringWriter();
         final StringWriter secWriter = new StringWriter();
         while (xmlEventReader.hasNext()) {
-            XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
-            XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
+            final XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
+            final XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
 
             stdXmlEvent.writeAsEncodedUnicode(stdWriter);
             secXmlEvent.writeAsEncodedUnicode(secWriter);

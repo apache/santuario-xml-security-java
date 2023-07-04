@@ -63,37 +63,37 @@ public final class DOMURIDereferencer implements URIDereferencer {
             throw new NullPointerException("context cannot be null");
         }
 
-        DOMURIReference domRef = (DOMURIReference) uriRef;
-        Attr uriAttr = (Attr) domRef.getHere();
-        String uri = uriRef.getURI();
-        DOMCryptoContext dcc = (DOMCryptoContext) context;
-        String baseURI = context.getBaseURI();
+        final DOMURIReference domRef = (DOMURIReference) uriRef;
+        final Attr uriAttr = (Attr) domRef.getHere();
+        final String uri = uriRef.getURI();
+        final DOMCryptoContext dcc = (DOMCryptoContext) context;
+        final String baseURI = context.getBaseURI();
 
-        boolean secVal = Utils.secureValidation(context);
+        final boolean secVal = Utils.secureValidation(context);
 
         // Check if same-document URI and already registered on the context
         if (uri != null && uri.length() != 0 && uri.charAt(0) == '#') {
             String id = uri.substring(1);
 
             if (id.startsWith("xpointer(id(")) {
-                int i1 = id.indexOf('\'');
-                int i2 = id.indexOf('\'', i1+1);
+                final int i1 = id.indexOf('\'');
+                final int i2 = id.indexOf('\'', i1+1);
                 if (i1 >= 0 && i2 >= 0) {
                     id = id.substring(i1 + 1, i2);
                 }
             }
 
-            Node referencedElem = dcc.getElementById(id);
+            final Node referencedElem = dcc.getElementById(id);
             if (referencedElem != null) {
                 if (secVal) {
-                    Element start = referencedElem.getOwnerDocument().getDocumentElement();
+                    final Element start = referencedElem.getOwnerDocument().getDocumentElement();
                     if (!XMLUtils.protectAgainstWrappingAttack(start, (Element)referencedElem, id)) {
-                        String error = "Multiple Elements with the same ID " + id + " were detected";
+                        final String error = "Multiple Elements with the same ID " + id + " were detected";
                         throw new URIReferenceException(error);
                     }
                 }
 
-                XMLSignatureInput result = new XMLSignatureInput(referencedElem);
+                final XMLSignatureInput result = new XMLSignatureInput(referencedElem);
                 result.setSecureValidation(secVal);
                 if (!uri.substring(1).startsWith("xpointer(id(")) {
                     result.setExcludeComments(true);
@@ -109,16 +109,16 @@ public final class DOMURIDereferencer implements URIDereferencer {
             }
         }
 
-        ResourceResolverContext resContext = new ResourceResolverContext(uriAttr, baseURI, secVal);
+        final ResourceResolverContext resContext = new ResourceResolverContext(uriAttr, baseURI, secVal);
         if ((uriRef instanceof javax.xml.crypto.dsig.Reference) || resContext.isURISafeToResolve()) {
             try {
-                XMLSignatureInput in = ResourceResolver.resolve(resContext);
+                final XMLSignatureInput in = ResourceResolver.resolve(resContext);
                 if (in.isOctetStream()) {
                     return new ApacheOctetStreamData(in);
                 } else {
                     return new ApacheNodeSetData(in);
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new URIReferenceException(e);
             }
         }

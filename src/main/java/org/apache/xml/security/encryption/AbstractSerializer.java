@@ -90,14 +90,14 @@ public abstract class AbstractSerializer implements Serializer {
             outputStreamWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?><dummy");
 
             // Run through each node up to the document node and find any xmlns: nodes
-            Map<String, String> storedNamespaces = new HashMap<>();
+            final Map<String, String> storedNamespaces = new HashMap<>();
             Node wk = ctx;
             while (wk != null) {
-                NamedNodeMap atts = wk.getAttributes();
+                final NamedNodeMap atts = wk.getAttributes();
                 if (atts != null) {
                     for (int i = 0; i < atts.getLength(); ++i) {    //NOPMD
-                        Node att = atts.item(i);
-                        String nodeName = att.getNodeName();
+                        final Node att = atts.item(i);
+                        final String nodeName = att.getNodeName();
                         if (("xmlns".equals(nodeName) || nodeName.startsWith("xmlns:"))
                                 && !storedNamespaces.containsKey(att.getNodeName())) {
                             outputStreamWriter.write(" ");
@@ -119,7 +119,7 @@ public abstract class AbstractSerializer implements Serializer {
             outputStreamWriter.close();
 
             return byteArrayOutputStream.toByteArray();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLEncryptionException(e);
         }
     }

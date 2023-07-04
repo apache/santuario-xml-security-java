@@ -112,13 +112,13 @@ public abstract class ElementProxy {
     protected Element createElementForFamilyLocal(
         String namespace, String localName
     ) {
-        Document doc = getDocument();
+        final Document doc = getDocument();
         Element result = null;
         if (namespace == null) {
             result = doc.createElementNS(null, localName);
         } else {
-            String baseName = this.getBaseNamespace();
-            String prefix = ElementProxy.getDefaultPrefix(baseName);
+            final String baseName = this.getBaseNamespace();
+            final String prefix = ElementProxy.getDefaultPrefix(baseName);
             if (prefix == null || prefix.length() == 0) {
                 result = doc.createElementNS(namespace, localName);
                 result.setAttributeNS(Constants.NamespaceSpecNS, "xmlns", namespace);
@@ -145,7 +145,7 @@ public abstract class ElementProxy {
      */
     public static Element createElementForFamily(Document doc, String namespace, String localName) {
         Element result = null;
-        String prefix = ElementProxy.getDefaultPrefix(namespace);
+        final String prefix = ElementProxy.getDefaultPrefix(namespace);
 
         if (namespace == null) {
             result = doc.createElementNS(null, localName);
@@ -196,7 +196,7 @@ public abstract class ElementProxy {
      */
     public final NodeList getElementPlusReturns() {
 
-        HelperNodeList nl = new HelperNodeList();
+        final HelperNodeList nl = new HelperNodeList();
 
         nl.appendChild(createText("\n"));
         nl.appendChild(getElement());
@@ -237,15 +237,15 @@ public abstract class ElementProxy {
      */
     void guaranteeThatElementInCorrectSpace() throws XMLSecurityException {
 
-        String expectedLocalName = this.getBaseLocalName();
-        String expectedNamespaceUri = this.getBaseNamespace();
+        final String expectedLocalName = this.getBaseLocalName();
+        final String expectedNamespaceUri = this.getBaseNamespace();
 
-        String actualLocalName = getElement().getLocalName();
-        String actualNamespaceUri = getElement().getNamespaceURI();
+        final String actualLocalName = getElement().getLocalName();
+        final String actualNamespaceUri = getElement().getNamespaceURI();
 
         if(!expectedNamespaceUri.equals(actualNamespaceUri)
             && !expectedLocalName.equals(actualLocalName)) {
-            Object[] exArgs = { actualNamespaceUri + ":" + actualLocalName,
+            final Object[] exArgs = { actualNamespaceUri + ":" + actualLocalName,
                                 expectedNamespaceUri + ":" + expectedLocalName};
             throw new XMLSecurityException("xml.WrongElement", exArgs);
         }
@@ -259,13 +259,13 @@ public abstract class ElementProxy {
      */
     public void addBigIntegerElement(BigInteger bi, String localname) {
         if (bi != null) {
-            Element e = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
+            final Element e = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
 
-            byte[] bytes = XMLUtils.getBytes(bi, bi.bitLength());
-            String encodedInt = XMLUtils.encodeToString(bytes);
+            final byte[] bytes = XMLUtils.getBytes(bi, bi.bitLength());
+            final String encodedInt = XMLUtils.encodeToString(bytes);
 
-            Document doc = e.getOwnerDocument();
-            Text text = doc.createTextNode(encodedInt);
+            final Document doc = e.getOwnerDocument();
+            final Text text = doc.createTextNode(encodedInt);
 
             e.appendChild(text);
 
@@ -297,8 +297,8 @@ public abstract class ElementProxy {
      * @param localname
      */
     public void addTextElement(String text, String localname) {
-        Element e = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
-        Text t = createText(text);
+        final Element e = XMLUtils.createElementInSignatureSpace(getDocument(), localname);
+        final Text t = createText(text);
 
         appendOther(e, t);
         appendSelf(e);
@@ -312,7 +312,7 @@ public abstract class ElementProxy {
      */
     public void addBase64Text(byte[] bytes) {
         if (bytes != null) {
-            Text t = XMLUtils.ignoreLineBreaks()
+            final Text t = XMLUtils.ignoreLineBreaks()
                 ? createText(XMLUtils.encodeToString(bytes))
                 : createText("\n" + XMLUtils.encodeToString(bytes) + "\n");
             appendSelf(t);
@@ -338,7 +338,7 @@ public abstract class ElementProxy {
      */
     public void addText(String text) {
         if (text != null) {
-            Text t = createText(text);
+            final Text t = createText(text);
 
             appendSelf(t);
         }
@@ -354,7 +354,7 @@ public abstract class ElementProxy {
     public BigInteger getBigIntegerFromChildElement(
         String localname, String namespace
     ) {
-        Node n = XMLUtils.selectNode(getFirstChild(), namespace, localname, 0);
+        final Node n = XMLUtils.selectNode(getFirstChild(), namespace, localname, 0);
         if (n != null) {
             return new BigInteger(1, XMLUtils.decode(XMLUtils.getFullTextChildrenFromNode(n)));
         }
@@ -443,11 +443,11 @@ public abstract class ElementProxy {
             ns = "xmlns:" + prefix;
         }
 
-        Attr a = getElement().getAttributeNodeNS(Constants.NamespaceSpecNS, ns);
+        final Attr a = getElement().getAttributeNodeNS(Constants.NamespaceSpecNS, ns);
 
         if (a != null) {
             if (!a.getNodeValue().equals(uri)) {
-                Object[] exArgs = { ns, getElement().getAttributeNS(null, ns) };
+                final Object[] exArgs = { ns, getElement().getAttributeNS(null, ns) };
 
                 throw new XMLSecurityException("namespacePrefixAlreadyUsedByOtherURI", exArgs);
             }
@@ -475,9 +475,9 @@ public abstract class ElementProxy {
     private static void setNamespacePrefix(String namespace, String prefix)
         throws XMLSecurityException {
         if (prefixMappings.containsValue(prefix)) {
-            String storedPrefix = prefixMappings.get(namespace);
+            final String storedPrefix = prefixMappings.get(namespace);
             if (!storedPrefix.equals(prefix)) {
-                Object[] exArgs = { prefix, namespace, storedPrefix };
+                final Object[] exArgs = { prefix, namespace, storedPrefix };
 
                 throw new XMLSecurityException("prefix.AlreadyAssigned", exArgs);
             }
@@ -553,7 +553,7 @@ public abstract class ElementProxy {
     protected void setLocalIdAttribute(String attrName, String value) {
 
         if (value != null) {
-            Attr attr = getDocument().createAttributeNS(null, attrName);
+            final Attr attr = getDocument().createAttributeNS(null, attrName);
             attr.setValue(value);
             getElement().setAttributeNodeNS(attr);
             getElement().setIdAttributeNode(attr, true);

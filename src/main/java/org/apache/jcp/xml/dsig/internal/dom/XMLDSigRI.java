@@ -80,13 +80,13 @@ public final class XMLDSigRI extends Provider {
         @Override
         public Object newInstance(Object ctrParamObj)
             throws NoSuchAlgorithmException {
-            String type = getType();
+            final String type = getType();
             if (ctrParamObj != null) {
                 throw new InvalidParameterException
                     ("constructorParameter not used with " + type + " engines");
             }
 
-            String algo = getAlgorithm();
+            final String algo = getAlgorithm();
             try {
                 if ("XMLSignatureFactory".equals(type)) {
                     if ("DOM".equals(algo)) {
@@ -118,7 +118,7 @@ public final class XMLDSigRI extends Provider {
                         return new DOMXSLTTransform();
                     }
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new NoSuchAlgorithmException("Error constructing " +
                     type + " for " + algo + " using XMLDSig", ex);
             }
@@ -135,7 +135,7 @@ public final class XMLDSigRI extends Provider {
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
             @Override
             public Void run() {
-                Map<String, String> MECH_TYPE = new HashMap<>();
+                final Map<String, String> MECH_TYPE = new HashMap<>();
                 MECH_TYPE.put("MechanismType", "DOM");
 
                 putService(new ProviderService(p, "XMLSignatureFactory",

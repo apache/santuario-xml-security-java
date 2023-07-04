@@ -52,20 +52,20 @@ public class X509IssuerSerialTest {
 
     @Test
     public void testgetIssuerName() {
-        X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
+        final X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getIssuerName());
     }
 
     @Test
     public void testgetSerialNumber() {
-        X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
+        final X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getSerialNumber());
     }
 
     @Test
     public void testConstructor() {
         // test newX509IssuerSerial(String, BigInteger)
-        X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
+        final X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
         assertEquals(name, x509is.getIssuerName());
         assertEquals(BigInteger.ONE, x509is.getSerialNumber());
     }
@@ -77,12 +77,12 @@ public class X509IssuerSerialTest {
     @Test
     public void testConstructorBadIssuerName() {
         // test newX509IssuerSerial(String, BigInteger)
-        String badName = "cn=bad,=+bad,";
+        final String badName = "cn=bad,=+bad,";
         try {
             fac.newX509IssuerSerial(badName, BigInteger.ONE);
             fail("Should raise an IllegalArgumentException when issuer " +
                 "distinguished name does not conform to RFC 2253");
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             // success
         }
     }
@@ -90,11 +90,11 @@ public class X509IssuerSerialTest {
     @Test
     public void testisFeatureSupported() {
 
-        X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
+        final X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
         try {
             x509is.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(x509is.isFeatureSupported("not supported"));
     }

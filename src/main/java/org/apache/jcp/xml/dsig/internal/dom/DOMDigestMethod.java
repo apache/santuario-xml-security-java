@@ -84,19 +84,19 @@ public abstract class DOMDigestMethod extends DOMStructure
      * @param dmElem a DigestMethod element
      */
     DOMDigestMethod(Element dmElem) throws MarshalException {
-        Element paramsElem = DOMUtils.getFirstChildElement(dmElem);
+        final Element paramsElem = DOMUtils.getFirstChildElement(dmElem);
         if (paramsElem != null) {
             params = unmarshalParams(paramsElem);
         }
         try {
             checkParams(params);
-        } catch (InvalidAlgorithmParameterException iape) {
+        } catch (final InvalidAlgorithmParameterException iape) {
             throw new MarshalException(iape);
         }
     }
 
     static DigestMethod unmarshal(Element dmElem) throws MarshalException {
-        String alg = DOMUtils.getAttributeValue(dmElem, "Algorithm");
+        final String alg = DOMUtils.getAttributeValue(dmElem, "Algorithm");
         if (alg.equals(DigestMethod.SHA1)) {
             return new SHA1(dmElem);
         } else if (alg.equals(SHA224)) {
@@ -177,9 +177,9 @@ public abstract class DOMDigestMethod extends DOMStructure
     public void marshal(Node parent, String prefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
-        Element dmElem = DOMUtils.createElement(ownerDoc, "DigestMethod",
+        final Element dmElem = DOMUtils.createElement(ownerDoc, "DigestMethod",
                                                 XMLSignature.XMLNS, prefix);
         DOMUtils.setAttribute(dmElem, "Algorithm", getAlgorithm());
 
@@ -199,9 +199,9 @@ public abstract class DOMDigestMethod extends DOMStructure
         if (!(o instanceof DigestMethod)) {
             return false;
         }
-        DigestMethod odm = (DigestMethod)o;
+        final DigestMethod odm = (DigestMethod)o;
 
-        boolean paramsEqual = params == null ? odm.getParameterSpec() == null :
+        final boolean paramsEqual = params == null ? odm.getParameterSpec() == null :
             params.equals(odm.getParameterSpec());
 
         return getAlgorithm().equals(odm.getAlgorithm()) && paramsEqual;

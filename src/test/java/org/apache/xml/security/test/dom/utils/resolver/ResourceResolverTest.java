@@ -52,11 +52,11 @@ public class ResourceResolverTest {
      */
     @Test
     public void testCustomResolver() throws Exception {
-        String className =
+        final String className =
             "org.apache.xml.security.test.dom.utils.resolver.OfflineResolver";
         ResourceResolver.registerAtStart(className);
-        Document doc = TestUtils.newDocument();
-        Attr uriAttr = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
 
         ResourceResolverContext resolverContext =
@@ -65,7 +65,7 @@ public class ResourceResolverTest {
             uriAttr.setValue("http://xmldsig.pothole.com/xml-stylesheet.txt");
             resolverContext = new ResourceResolverContext(uriAttr, null, true);
             assertNotNull(ResourceResolver.resolve(resolverContext));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail(uriAttr.getValue()
                 + " should be resolvable by the OfflineResolver");
         }
@@ -74,16 +74,16 @@ public class ResourceResolverTest {
             resolverContext = new ResourceResolverContext(uriAttr, null, true);
             ResourceResolver.resolve(resolverContext);
             fail(uriAttr.getValue() + " should not be resolvable by the OfflineResolver");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             //
         }
     }
 
     @Test
     public void testLocalFileWithEmptyBaseURI() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uriAttr = doc.createAttribute("URI");
-        String file = resolveFile("pom.xml").toURI().toString();
+        final Document doc = TestUtils.newDocument();
+        final Attr uriAttr = doc.createAttribute("URI");
+        final String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue(file);
 
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
@@ -92,64 +92,64 @@ public class ResourceResolverTest {
         try {
             resolverContext = new ResourceResolverContext(uriAttr, "", false);
             assertNotNull(ResourceResolver.resolve(resolverContext));
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail(e.getMessage());
         }
     }
 
     @Test
     public void testIsSafeURIToResolveFile() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uriAttr = doc.createAttribute("URI");
-        String file = resolveFile("pom.xml").toURI().toString();
+        final Document doc = TestUtils.newDocument();
+        final Attr uriAttr = doc.createAttribute("URI");
+        final String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue(file);
 
-        ResourceResolverContext resolverContext =
+        final ResourceResolverContext resolverContext =
                 new ResourceResolverContext(uriAttr, null, false);
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
     @Test
     public void testIsSafeURIToResolveFileBaseURI() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uriAttr = doc.createAttribute("URI");
-        String file = resolveFile("pom.xml").toURI().toString();
+        final Document doc = TestUtils.newDocument();
+        final Attr uriAttr = doc.createAttribute("URI");
+        final String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue("xyz");
 
-        ResourceResolverContext resolverContext =
+        final ResourceResolverContext resolverContext =
                 new ResourceResolverContext(uriAttr, file, false);
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
     @Test
     public void testIsSafeURIToResolveHTTP() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uriAttr = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
 
-        ResourceResolverContext resolverContext =
+        final ResourceResolverContext resolverContext =
                 new ResourceResolverContext(uriAttr, null, false);
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
     @Test
     public void testIsSafeURIToResolveHTTPBaseURI() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uriAttr = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("xyz");
 
-        ResourceResolverContext resolverContext =
+        final ResourceResolverContext resolverContext =
                 new ResourceResolverContext(uriAttr, "http://www.apache.org", false);
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
     @Test
     public void testIsSafeURIToResolveLocalReference() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uriAttr = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("#1234");
 
-        ResourceResolverContext resolverContext =
+        final ResourceResolverContext resolverContext =
                 new ResourceResolverContext(uriAttr, null, false);
         assertTrue(resolverContext.isURISafeToResolve());
     }

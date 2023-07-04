@@ -64,7 +64,7 @@ public class RFC2253ParserTest {
 
     @Test
     public void testToXML8() throws Exception {
-        StringBuilder sb = new StringBuilder("Lu\uc48di\uc487");
+        final StringBuilder sb = new StringBuilder("Lu\uc48di\uc487");
         assertEquals(RFC2253Parser.rfc2253toXMLdsig("SN=" + sb.toString()), "SN=Lu\uc48di\uc487");
     }
 
@@ -105,7 +105,7 @@ public class RFC2253ParserTest {
 
     @Test
     public void testToRFC8() throws Exception {
-        StringBuilder sb = new StringBuilder("Lu\uc48di\uc487");
+        final StringBuilder sb = new StringBuilder("Lu\uc48di\uc487");
         assertEquals(RFC2253Parser.xmldsigtoRFC2253("SN=" + sb.toString()), "SN=Lu\uc48di\uc487");
     }
 }

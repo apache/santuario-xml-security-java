@@ -43,7 +43,7 @@ public class C14nHelperTest {
     @Test
     public void testNamespaceIsAbsolute01() {
 
-        String namespaceURI = "http://www.w3.org/Signature/";
+        final String namespaceURI = "http://www.w3.org/Signature/";
 
         assertTrue(C14nHelper.namespaceIsAbsolute(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
@@ -54,7 +54,7 @@ public class C14nHelperTest {
     @Test
     public void testNamespaceIsAbsolute02() {
 
-        String namespaceURI = "http://www.w3.org/../blah";
+        final String namespaceURI = "http://www.w3.org/../blah";
 
         assertTrue(C14nHelper.namespaceIsAbsolute(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
@@ -66,7 +66,7 @@ public class C14nHelperTest {
     public void testNamespaceIsAbsolute03() {
 
         // unknown protocol?
-        String namespaceURI = "hxxp://www.w3.org/";
+        final String namespaceURI = "hxxp://www.w3.org/";
 
         assertTrue(C14nHelper.namespaceIsAbsolute(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
@@ -77,7 +77,7 @@ public class C14nHelperTest {
     @Test
     public void testNamespaceIsRelative01() {
 
-        String namespaceURI = "../blah";
+        final String namespaceURI = "../blah";
 
         assertTrue(C14nHelper.namespaceIsRelative(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
@@ -88,7 +88,7 @@ public class C14nHelperTest {
     @Test
     public void testNamespaceIsRelative02() {
 
-        String namespaceURI = "blah";
+        final String namespaceURI = "blah";
 
         assertTrue(C14nHelper.namespaceIsRelative(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }
@@ -100,7 +100,7 @@ public class C14nHelperTest {
     @Disabled
     public void testNamespaceIsRelative03() {
 
-        String namespaceURI = "http://...";
+        final String namespaceURI = "http://...";
 
         assertTrue(C14nHelper.namespaceIsRelative(namespaceURI), "URI fails: \"" + namespaceURI + "\"");
     }

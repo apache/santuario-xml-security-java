@@ -86,14 +86,14 @@ public class Santuario273Test {
             doc = XMLUtils.read(is, false);
         }
 
-        Canonicalizer c14n =
+        final Canonicalizer c14n =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xPath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xPath = xpf.newXPath();
         xPath.setNamespaceContext(new DSNamespaceContext());
 
-        Node signedInfo =
+        final Node signedInfo =
             (Node) xPath.evaluate("//ds:SignedInfo[1]", doc, XPathConstants.NODE);
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             c14n.canonicalizeSubtree(signedInfo, output);

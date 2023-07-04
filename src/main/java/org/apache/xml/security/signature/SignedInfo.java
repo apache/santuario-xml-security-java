@@ -245,7 +245,7 @@ public class SignedInfo extends Manifest {
         if (c14nMethod == null ||
             !(Constants.SignatureSpecNS.equals(c14nMethod.getNamespaceURI())
                 && Constants._TAG_CANONICALIZATIONMETHOD.equals(c14nMethod.getLocalName()))) {
-            Object[] exArgs = { Constants._TAG_CANONICALIZATIONMETHOD, Constants._TAG_SIGNEDINFO };
+            final Object[] exArgs = { Constants._TAG_CANONICALIZATIONMETHOD, Constants._TAG_SIGNEDINFO };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
 
@@ -253,7 +253,7 @@ public class SignedInfo extends Manifest {
         if (signatureMethod == null ||
             !(Constants.SignatureSpecNS.equals(signatureMethod.getNamespaceURI())
                 && Constants._TAG_SIGNATUREMETHOD.equals(signatureMethod.getLocalName()))) {
-            Object[] exArgs = { Constants._TAG_SIGNATUREMETHOD, Constants._TAG_SIGNEDINFO };
+            final Object[] exArgs = { Constants._TAG_SIGNATUREMETHOD, Constants._TAG_SIGNEDINFO };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
 
@@ -298,10 +298,10 @@ public class SignedInfo extends Manifest {
     public byte[] getCanonicalizedOctetStream()
         throws CanonicalizationException, InvalidCanonicalizerException, XMLSecurityException, IOException {
         if (this.c14nizedBytes == null) {
-            Canonicalizer c14nizer =
+            final Canonicalizer c14nizer =
                 Canonicalizer.getInstance(this.getCanonicalizationMethodURI());
 
-            String inclusiveNamespaces = this.getInclusiveNamespaces();
+            final String inclusiveNamespaces = this.getInclusiveNamespaces();
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                 if (inclusiveNamespaces == null) {
                     c14nizer.canonicalizeSubtree(getElement(), baos);
@@ -326,9 +326,9 @@ public class SignedInfo extends Manifest {
     public void signInOctetStream(OutputStream os)
         throws CanonicalizationException, InvalidCanonicalizerException, XMLSecurityException {
         if (this.c14nizedBytes == null) {
-            Canonicalizer c14nizer =
+            final Canonicalizer c14nizer =
                 Canonicalizer.getInstance(this.getCanonicalizationMethodURI());
-            String inclusiveNamespaces = this.getInclusiveNamespaces();
+            final String inclusiveNamespaces = this.getInclusiveNamespaces();
 
             if (inclusiveNamespaces == null) {
                 c14nizer.canonicalizeSubtree(getElement(), os);
@@ -338,7 +338,7 @@ public class SignedInfo extends Manifest {
         } else {
             try {
                 os.write(this.c14nizedBytes);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -359,7 +359,7 @@ public class SignedInfo extends Manifest {
      * @return the Signature method URI
      */
     public String getSignatureMethodURI() {
-        Element signatureElement = this.getSignatureMethodElement();
+        final Element signatureElement = this.getSignatureMethodElement();
 
         if (signatureElement != null) {
             return signatureElement.getAttributeNS(null, Constants._ATT_ALGORITHM);
@@ -403,23 +403,23 @@ public class SignedInfo extends Manifest {
     }
 
     public String getInclusiveNamespaces() {
-        String c14nMethodURI = getCanonicalizationMethodURI();
+        final String c14nMethodURI = getCanonicalizationMethodURI();
         if (!("http://www.w3.org/2001/10/xml-exc-c14n#".equals(c14nMethodURI) ||
             "http://www.w3.org/2001/10/xml-exc-c14n#WithComments".equals(c14nMethodURI))) {
             return null;
         }
 
-        Element inclusiveElement = XMLUtils.getNextElement(c14nMethod.getFirstChild());
+        final Element inclusiveElement = XMLUtils.getNextElement(c14nMethod.getFirstChild());
 
         if (inclusiveElement != null) {
             try {
-                String inclusiveNamespaces =
+                final String inclusiveNamespaces =
                     new InclusiveNamespaces(
                         inclusiveElement,
                         InclusiveNamespaces.ExclusiveCanonicalizationNamespace
                     ).getInclusiveNamespaces();
                 return inclusiveNamespaces;
-            } catch (XMLSecurityException e) {
+            } catch (final XMLSecurityException e) {
                 return null;
             }
         }

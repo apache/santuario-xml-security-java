@@ -63,7 +63,7 @@ public class RSAPSSParameterSpec implements SignatureMethodParameterSpec {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        RSAPSSParameterSpec other = (RSAPSSParameterSpec)obj;
+        final RSAPSSParameterSpec other = (RSAPSSParameterSpec)obj;
         if (digestName == null) {
             if (other.digestName != null)
                 return false;

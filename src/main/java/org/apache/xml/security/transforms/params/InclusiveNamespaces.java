@@ -75,8 +75,8 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
             prefixList = new TreeSet<>(prefixes);
         }
 
-        StringBuilder sb = new StringBuilder();
-        for (String prefix : prefixList) {
+        final StringBuilder sb = new StringBuilder();
+        for (final String prefix : prefixList) {
             if ("xmlns".equals(prefix)) {
                 sb.append("#default ");
             } else {
@@ -127,14 +127,14 @@ public class InclusiveNamespaces extends ElementProxy implements TransformParam 
      * @return A set to string
      */
     public static SortedSet<String> prefixStr2Set(String inclusiveNamespaces) {
-        SortedSet<String> prefixes = new TreeSet<>();
+        final SortedSet<String> prefixes = new TreeSet<>();
 
         if (inclusiveNamespaces == null || inclusiveNamespaces.length() == 0) {
             return prefixes;
         }
 
-        String[] tokens = inclusiveNamespaces.split("\\s");
-        for (String prefix : tokens) {
+        final String[] tokens = inclusiveNamespaces.split("\\s");
+        for (final String prefix : tokens) {
             if ("#default".equals(prefix)) {
                 prefixes.add("xmlns");
             } else {

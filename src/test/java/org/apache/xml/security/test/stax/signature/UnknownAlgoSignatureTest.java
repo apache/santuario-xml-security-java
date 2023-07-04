@@ -74,33 +74,33 @@ public class UnknownAlgoSignatureTest {
     @Test
     public void testGood() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-good.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
         final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
@@ -110,24 +110,24 @@ public class UnknownAlgoSignatureTest {
     @Test
     public void testBadC14nAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-bad-c14n-algo.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -136,15 +136,15 @@ public class UnknownAlgoSignatureTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad c14n algorithm");
-        } catch (XMLStreamException ex) {
+        } catch (final XMLStreamException ex) {
             assertTrue(ex.getCause() instanceof XMLSecurityException);
             assertEquals("Unknown transformation. No handler installed for URI http://www.apache.org/bad-c14n-algo", ex.getCause().getMessage());
         }
@@ -155,24 +155,24 @@ public class UnknownAlgoSignatureTest {
     @Test
     public void testBadSigAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-bad-sig-algo.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -181,15 +181,15 @@ public class UnknownAlgoSignatureTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad signature algorithm");
-        } catch (XMLStreamException ex) {
+        } catch (final XMLStreamException ex) {
             assertTrue(ex.getCause() instanceof XMLSecurityException);
             assertEquals("The algorithm URI \"http://www.apache.org/bad-sig-algo\" could not be mapped to a JCE algorithm",
                     ex.getCause().getMessage());
@@ -201,24 +201,24 @@ public class UnknownAlgoSignatureTest {
     @Test
     public void testBadTransformAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "org/apache/xml/security/temp/signature/signature-bad-transform-algo.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
         );
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -227,15 +227,15 @@ public class UnknownAlgoSignatureTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a bad transform algorithm");
-        } catch (XMLStreamException ex) {
+        } catch (final XMLStreamException ex) {
             assertTrue(ex.getCause() instanceof XMLSecurityException);
             assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }

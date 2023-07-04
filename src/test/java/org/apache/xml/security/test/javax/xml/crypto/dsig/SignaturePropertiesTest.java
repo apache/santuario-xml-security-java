@@ -66,31 +66,31 @@ public class SignaturePropertiesTest {
         try {
             props = factory.newSignatureProperties(null, id);
             fail("Should raise a NPE for null content");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should raise a NPE for null content instead of " + ex);
         }
 
-        List<SignatureProperty> list = new ArrayList<>();
+        final List<SignatureProperty> list = new ArrayList<>();
         try {
             props = factory.newSignatureProperties(list, id);
             fail("Should raise an IAE for empty content");
-        } catch (IllegalArgumentException iae) {
-        } catch (Exception ex) {
+        } catch (final IllegalArgumentException iae) {
+        } catch (final Exception ex) {
             fail("Should raise an IAE for empty content instead of " + ex);
         }
 
-        String strEntry = "wrong type";
+        final String strEntry = "wrong type";
         // use raw List type to test for invalid SignatureProperty types
-        List invalidList = new ArrayList();
+        final List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
             factory.newSignatureProperties(invalidList, id);
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-SignatureProperty, entries");
-        } catch (ClassCastException cce) {
+        } catch (final ClassCastException cce) {
             // cce.printStackTrace();
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             fail("Should raise a CCE for content with invalid entries " +
                  "instead of " + ex);
         }
@@ -99,12 +99,13 @@ public class SignaturePropertiesTest {
         props = factory.newSignatureProperties(list, id);
         assertNotNull(props);
         @SuppressWarnings("unchecked")
+        final
         List<SignatureProperty> unmodifiable = props.getProperties();
         assertNotNull(unmodifiable);
         try {
             unmodifiable.add(prop);
             fail("Should return an unmodifiable List object");
-        } catch (UnsupportedOperationException uoe) {}
+        } catch (final UnsupportedOperationException uoe) {}
         assertArrayEquals(unmodifiable.toArray(), list.toArray());
         assertNotNull(props);
         assertEquals(props.getId(), id);
@@ -112,13 +113,13 @@ public class SignaturePropertiesTest {
 
     @Test
     public void testisFeatureSupported() {
-        List<SignatureProperty> list = new ArrayList<>();
+        final List<SignatureProperty> list = new ArrayList<>();
         list.add(prop);
-        SignatureProperties props = factory.newSignatureProperties(list, id);
+        final SignatureProperties props = factory.newSignatureProperties(list, id);
         try {
             props.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(props.isFeatureSupported("not supported"));
     }

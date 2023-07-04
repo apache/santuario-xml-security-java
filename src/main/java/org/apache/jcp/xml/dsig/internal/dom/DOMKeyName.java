@@ -69,9 +69,9 @@ public final class DOMKeyName extends DOMStructure implements KeyName {
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
         // prepend namespace prefix, if necessary
-        Element knElem = DOMUtils.createElement(ownerDoc, "KeyName",
+        final Element knElem = DOMUtils.createElement(ownerDoc, "KeyName",
                                                 XMLSignature.XMLNS, dsPrefix);
         knElem.appendChild(ownerDoc.createTextNode(name));
         parent.appendChild(knElem);
@@ -85,7 +85,7 @@ public final class DOMKeyName extends DOMStructure implements KeyName {
         if (!(obj instanceof KeyName)) {
             return false;
         }
-        KeyName okn = (KeyName)obj;
+        final KeyName okn = (KeyName)obj;
         return name.equals(okn.getName());
     }
 

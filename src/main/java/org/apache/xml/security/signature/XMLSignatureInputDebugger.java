@@ -146,9 +146,9 @@ public class XMLSignatureInputDebugger {
         }
 
         // get only a single node as anchor to fetch the owner document
-        Node n = this.xpathNodeSet.iterator().next();
+        final Node n = this.xpathNodeSet.iterator().next();
 
-        Document doc = XMLUtils.getOwnerDocument(n);
+        final Document doc = XMLUtils.getOwnerDocument(n);
 
         try {
             this.writer = new StringWriter();
@@ -157,7 +157,7 @@ public class XMLSignatureInputDebugger {
             this.writer.close();
 
             return this.writer.toString();
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new XMLSignatureException(ex);
         } finally {
             this.xpathNodeSet = null;
@@ -175,7 +175,7 @@ public class XMLSignatureInputDebugger {
     private void canonicalizeXPathNodeSet(Node currentNode)
         throws XMLSignatureException, IOException {
 
-        int currentNodeType = currentNode.getNodeType();
+        final int currentNodeType = currentNode.getNodeType();
         switch (currentNodeType) {
 
 
@@ -268,7 +268,7 @@ public class XMLSignatureInputDebugger {
             break;
 
         case Node.ELEMENT_NODE:
-            Element currentElement = (Element) currentNode;
+            final Element currentElement = (Element) currentNode;
 
             if (this.xpathNodeSet.contains(currentNode)) {
                 this.writer.write(HTMLIncludePrefix);
@@ -282,21 +282,21 @@ public class XMLSignatureInputDebugger {
             this.writer.write(HTMLIncludeOrExcludeSuffix);
 
             // we output all Attrs which are available
-            NamedNodeMap attrs = currentElement.getAttributes();
-            int attrsLength = attrs.getLength();
-            Attr attrs2[] = new Attr[attrsLength];
+            final NamedNodeMap attrs = currentElement.getAttributes();
+            final int attrsLength = attrs.getLength();
+            final Attr attrs2[] = new Attr[attrsLength];
 
             for (int i = 0; i < attrsLength; i++) {
                 attrs2[i] = (Attr)attrs.item(i);
             }
 
             Arrays.sort(attrs2, ATTR_COMPARE);
-            Object[] attrs3 = attrs2;
+            final Object[] attrs3 = attrs2;
 
             for (int i = 0; i < attrsLength; i++) {
-                Attr a = (Attr) attrs3[i];
-                boolean included = this.xpathNodeSet.contains(a);
-                boolean inclusive = this.inclusiveNamespaces.contains(a.getName());
+                final Attr a = (Attr) attrs3[i];
+                final boolean included = this.xpathNodeSet.contains(a);
+                final boolean inclusive = this.inclusiveNamespaces.contains(a.getName());
 
                 if (included) {
                     if (inclusive) {
@@ -374,13 +374,13 @@ public class XMLSignatureInputDebugger {
             return NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
         }
 
-        Document doc = currentNode.getOwnerDocument();
+        final Document doc = currentNode.getOwnerDocument();
 
         if (currentNode.getParentNode() != doc) {
             return NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
         }
 
-        Element documentElement = doc.getDocumentElement();
+        final Element documentElement = doc.getDocumentElement();
 
         if (documentElement == null) {
             return NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
@@ -422,10 +422,10 @@ public class XMLSignatureInputDebugger {
         this.writer.write(name);
         this.writer.write("=\"");
 
-        int length = value.length();
+        final int length = value.length();
 
         for (int i = 0; i < length; i++) {
-            char c = value.charAt(i);
+            final char c = value.charAt(i);
 
             switch (c) {
 
@@ -476,11 +476,11 @@ public class XMLSignatureInputDebugger {
 
         this.writer.write("&lt;?");
 
-        String target = currentPI.getTarget();
+        final String target = currentPI.getTarget();
         int length = target.length();
 
         for (int i = 0; i < length; i++) {
-            char c = target.charAt(i);
+            final char c = target.charAt(i);
 
             switch (c) {
 
@@ -502,7 +502,7 @@ public class XMLSignatureInputDebugger {
             }
         }
 
-        String data = currentPI.getData();
+        final String data = currentPI.getData();
 
         length = data.length();
 
@@ -510,7 +510,7 @@ public class XMLSignatureInputDebugger {
             this.writer.write(" ");
 
             for (int i = 0; i < length; i++) {
-                char c = data.charAt(i);
+                final char c = data.charAt(i);
 
                 if (c == 0x0D) {
                     this.writer.write("&amp;#xD;");
@@ -537,11 +537,11 @@ public class XMLSignatureInputDebugger {
 
         this.writer.write("&lt;!--");
 
-        String data = currentComment.getData();
-        int length = data.length();
+        final String data = currentComment.getData();
+        final int length = data.length();
 
         for (int i = 0; i < length; i++) {
-            char c = data.charAt(i);
+            final char c = data.charAt(i);
 
             switch (c) {
 
@@ -577,10 +577,10 @@ public class XMLSignatureInputDebugger {
             return;
         }
 
-        int length = text.length();
+        final int length = text.length();
 
         for (int i = 0; i < length; i++) {
-            char c = text.charAt(i);
+            final char c = text.charAt(i);
 
             switch (c) {
 

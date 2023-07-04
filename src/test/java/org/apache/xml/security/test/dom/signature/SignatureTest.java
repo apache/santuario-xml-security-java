@@ -57,60 +57,60 @@ public class SignatureTest {
 
     @Test
     public void testSigningVerifyingFromRebuildSignature() throws Throwable {
-        Document doc = getOriginalDocument();
+        final Document doc = getOriginalDocument();
         signDocument(doc);
-        Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
-        XMLSignature signature = new XMLSignature(signatureElem, "");
+        final Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
+        final XMLSignature signature = new XMLSignature(signatureElem, "");
 
-        PublicKey pubKey = getPublicKey();
+        final PublicKey pubKey = getPublicKey();
 
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
     @Test
     public void testSigningVerifyingFromRebuildSignatureWithProvider() throws Throwable {
-        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
-        Document doc = getOriginalDocument();
+        final Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
+        final Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc, provider);
         assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
 
-        Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
+        final Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
         signature = new XMLSignature(signatureElem, "", provider);
         assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
 
-        PublicKey pubKey = getPublicKey();
+        final PublicKey pubKey = getPublicKey();
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
     @Test
     public void testSigningVerifyingFromExistingSignature() throws Throwable {
-        Document doc = getOriginalDocument();
-        XMLSignature signature = signDocument(doc);
+        final Document doc = getOriginalDocument();
+        final XMLSignature signature = signDocument(doc);
 
-        PublicKey pubKey = getPublicKey();
+        final PublicKey pubKey = getPublicKey();
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
     @Test
     public void testSigningVerifyingFromExistingSignatureWithProvider() throws Throwable {
-        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
-        Document doc = getOriginalDocument();
-        XMLSignature signature = signDocument(doc, provider);
+        final Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
+        final Document doc = getOriginalDocument();
+        final XMLSignature signature = signDocument(doc, provider);
         assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
 
-        PublicKey pubKey = getPublicKey();
+        final PublicKey pubKey = getPublicKey();
         assertTrue(signature.checkSignatureValue(pubKey));
     }
 
     @Test
     public void testSigningVerifyingFromExistingSignatureSameThread()
         throws Throwable {
-        Document doc = getOriginalDocument();
-        XMLSignature signature = signDocument(doc);
+        final Document doc = getOriginalDocument();
+        final XMLSignature signature = signDocument(doc);
 
-        PublicKey pubKey = getPublicKey();
+        final PublicKey pubKey = getPublicKey();
 
-        VerifyingRunnable r = new VerifyingRunnable(signature, pubKey);
+        final VerifyingRunnable r = new VerifyingRunnable(signature, pubKey);
         r.run();
         if (r.throwable != null) {
             throw r.throwable;
@@ -121,12 +121,12 @@ public class SignatureTest {
     @Test
     public void testSigningVerifyingFromExistingSignatureSeparateThread()
         throws Throwable {
-        Document doc = getOriginalDocument();
-        XMLSignature signature = signDocument(doc);
+        final Document doc = getOriginalDocument();
+        final XMLSignature signature = signDocument(doc);
 
-        PublicKey pubKey = getPublicKey();
-        VerifyingRunnable r = new VerifyingRunnable(signature, pubKey);
-        Thread t = new Thread(r);
+        final PublicKey pubKey = getPublicKey();
+        final VerifyingRunnable r = new VerifyingRunnable(signature, pubKey);
+        final Thread t = new Thread(r);
         t.start();
         t.join();
         if (r.throwable != null) {
@@ -150,16 +150,16 @@ public class SignatureTest {
         public void run() {
             try {
                 result = signature.checkSignatureValue(pubKey);
-            } catch (XMLSignatureException e) {
+            } catch (final XMLSignatureException e) {
                 throwable = e;
             }
         }
     }
 
     private PublicKey getPublicKey() throws Exception {
-        Enumeration<String> aliases = keyStore.aliases();
+        final Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
+            final String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
                 return keyStore.getCertificate(alias).getPublicKey();
             }
@@ -168,9 +168,9 @@ public class SignatureTest {
     }
 
     private PrivateKey getPrivateKey() throws Exception {
-        Enumeration<String> aliases = keyStore.aliases();
+        final Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
+            final String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
                 return (PrivateKey) keyStore.getKey(alias, XmlSecTestEnvironment.TEST_KS_PASSWORD.toCharArray());
             }
@@ -179,9 +179,9 @@ public class SignatureTest {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
-        Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
+        final Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));
         doc.appendChild(rootElement);
 
@@ -193,13 +193,13 @@ public class SignatureTest {
     }
 
     private XMLSignature signDocument(Document doc, Provider provider) throws Throwable {
-        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA, provider);
-        Element root = doc.getDocumentElement();
+        final XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA, provider);
+        final Element root = doc.getDocumentElement();
         root.appendChild(sig.getElement());
 
         sig.getSignedInfo().addResourceResolver(new ResolverXPointer());
 
-        Transforms transforms = new Transforms(doc);
+        final Transforms transforms = new Transforms(doc);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);

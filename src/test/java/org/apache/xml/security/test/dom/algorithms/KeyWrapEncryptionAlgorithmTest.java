@@ -74,13 +74,13 @@ public class KeyWrapEncryptionAlgorithmTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -97,7 +97,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     @Test
     public void testAES128KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
@@ -105,20 +105,20 @@ public class KeyWrapEncryptionAlgorithmTest {
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128_KeyWrap);
         keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_128;
+        final String encryptionAlgorithm = XMLCipher.AES_128;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -137,7 +137,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     @Test
     public void testAES192KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
@@ -145,20 +145,20 @@ public class KeyWrapEncryptionAlgorithmTest {
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
         keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_192;
+        final String encryptionAlgorithm = XMLCipher.AES_192;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -177,7 +177,7 @@ public class KeyWrapEncryptionAlgorithmTest {
     @Test
     public void testAES256KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
@@ -185,20 +185,20 @@ public class KeyWrapEncryptionAlgorithmTest {
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_256_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_256_KeyWrap);
         keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_256;
+        final String encryptionAlgorithm = XMLCipher.AES_256;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -217,26 +217,26 @@ public class KeyWrapEncryptionAlgorithmTest {
     @Test
     public void testTripleDESKW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES_KeyWrap);
         keygen = KeyGenerator.getInstance("DESede");
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.TRIPLEDES;
+        final String encryptionAlgorithm = XMLCipher.TRIPLEDES;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -255,24 +255,24 @@ public class KeyWrapEncryptionAlgorithmTest {
     @Test
     public void testRSAv15KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        SecretKey key = keygen.generateKey();
+        final KeyGenerator keygen = KeyGenerator.getInstance("DESede");
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
         cipher.init(XMLCipher.WRAP_MODE, rsaKeyPair.getPublic());
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.TRIPLEDES;
+        final String encryptionAlgorithm = XMLCipher.TRIPLEDES;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -291,24 +291,24 @@ public class KeyWrapEncryptionAlgorithmTest {
     @Test
     public void testRSAOAEPKW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        SecretKey key = keygen.generateKey();
+        final KeyGenerator keygen = KeyGenerator.getInstance("DESede");
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_OAEP);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_OAEP);
         cipher.init(XMLCipher.WRAP_MODE, rsaKeyPair.getPublic());
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.TRIPLEDES;
+        final String encryptionAlgorithm = XMLCipher.TRIPLEDES;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -327,24 +327,24 @@ public class KeyWrapEncryptionAlgorithmTest {
     @Test
     public void testRSAOAEP11KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        SecretKey key = keygen.generateKey();
+        final KeyGenerator keygen = KeyGenerator.getInstance("DESede");
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_OAEP_11);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.RSA_OAEP_11);
         cipher.init(XMLCipher.WRAP_MODE, rsaKeyPair.getPublic());
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.TRIPLEDES;
+        final String encryptionAlgorithm = XMLCipher.TRIPLEDES;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -365,7 +365,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
@@ -373,20 +373,20 @@ public class KeyWrapEncryptionAlgorithmTest {
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_128_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_128_KeyWrap);
         keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(128);
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
+        final String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -407,7 +407,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
@@ -415,20 +415,20 @@ public class KeyWrapEncryptionAlgorithmTest {
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_192_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_192_KeyWrap);
         keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(192);
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
+        final String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -449,7 +449,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
@@ -457,20 +457,20 @@ public class KeyWrapEncryptionAlgorithmTest {
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_256_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.CAMELLIA_256_KeyWrap);
         keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(256);
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.CAMELLIA_256;
+        final String encryptionAlgorithm = XMLCipher.CAMELLIA_256;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -491,7 +491,7 @@ public class KeyWrapEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
@@ -499,20 +499,20 @@ public class KeyWrapEncryptionAlgorithmTest {
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("SEED");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set up the Key Wrapping Key
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.SEED_128_KeyWrap);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.SEED_128_KeyWrap);
         keygen = KeyGenerator.getInstance("SEED");
         keygen.init(128);
-        SecretKey keyWrappingKey = keygen.generateKey();
+        final SecretKey keyWrappingKey = keygen.generateKey();
         cipher.init(XMLCipher.WRAP_MODE, keyWrappingKey);
-        EncryptedKey encryptedKey = cipher.encryptKey(document, key);
+        final EncryptedKey encryptedKey = cipher.encryptKey(document, key);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.SEED_128;
+        final String encryptionAlgorithm = XMLCipher.SEED_128;
 
         encrypt(encryptedKey, encryptionAlgorithm, document, localNames, key);
 
@@ -535,14 +535,14 @@ public class KeyWrapEncryptionAlgorithmTest {
         List<String> localNames,
         Key encryptingKey
     ) throws Exception {
-        XMLCipher cipher = XMLCipher.getInstance(algorithm);
+        final XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.ENCRYPT_MODE, encryptingKey);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        EncryptedData builder = cipher.getEncryptedData();
+        final EncryptedData builder = cipher.getEncryptedData();
         KeyInfo builderKeyInfo = builder.getKeyInfo();
         if (builderKeyInfo == null) {
             builderKeyInfo = new KeyInfo(document);
@@ -550,16 +550,16 @@ public class KeyWrapEncryptionAlgorithmTest {
         }
         builderKeyInfo.add(encryptedKey);
 
-        for (String localName : localNames) {
-            String expression = "//*[local-name()='" + localName + "']";
-            Element elementToEncrypt =
+        for (final String localName : localNames) {
+            final String expression = "//*[local-name()='" + localName + "']";
+            final Element elementToEncrypt =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(elementToEncrypt);
 
             document = cipher.doFinal(document, elementToEncrypt, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
@@ -570,22 +570,22 @@ public class KeyWrapEncryptionAlgorithmTest {
         Document document,
         Key keyWrappingKey
     ) throws Exception {
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Element ee = (Element)nodeList.item(0);
+        final Element ee = (Element)nodeList.item(0);
 
         // Need to pre-load the Encrypted Data so we can get the key info
-        XMLCipher cipher = XMLCipher.getInstance();
+        final XMLCipher cipher = XMLCipher.getInstance();
         cipher.init(XMLCipher.DECRYPT_MODE, null);
-        EncryptedData encryptedData = cipher.loadEncryptedData(document, ee);
+        final EncryptedData encryptedData = cipher.loadEncryptedData(document, ee);
 
-        XMLCipher kwCipher = XMLCipher.getInstance();
+        final XMLCipher kwCipher = XMLCipher.getInstance();
         kwCipher.init(XMLCipher.UNWRAP_MODE, keyWrappingKey);
-        KeyInfo ki = encryptedData.getKeyInfo();
-        EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
-        Key symmetricKey =
+        final KeyInfo ki = encryptedData.getKeyInfo();
+        final EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
+        final Key symmetricKey =
             kwCipher.decryptKey(
                 encryptedKey, encryptedData.getEncryptionMethod().getAlgorithm()
             );

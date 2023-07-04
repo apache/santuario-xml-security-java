@@ -52,7 +52,7 @@ public class DocumentSerializer extends AbstractSerializer {
      */
     @Override
     public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
-        byte[] fragment = createContext(source, ctx);
+        final byte[] fragment = createContext(source, ctx);
         try (InputStream is = new ByteArrayInputStream(fragment)) {
             return deserialize(ctx, is);
         }
@@ -66,7 +66,7 @@ public class DocumentSerializer extends AbstractSerializer {
      */
     private Node deserialize(Node ctx, InputStream inputStream) throws XMLEncryptionException {
         try {
-            Document d = XMLUtils.read(inputStream, secureValidation);
+            final Document d = XMLUtils.read(inputStream, secureValidation);
 
             Document contextDocument = null;
             if (Node.DOCUMENT_NODE == ctx.getNodeType()) {
@@ -75,9 +75,9 @@ public class DocumentSerializer extends AbstractSerializer {
                 contextDocument = ctx.getOwnerDocument();
             }
 
-            Element fragElt =
+            final Element fragElt =
                     (Element) contextDocument.importNode(d.getDocumentElement(), true);
-            DocumentFragment result = contextDocument.createDocumentFragment();
+            final DocumentFragment result = contextDocument.createDocumentFragment();
             Node child = fragElt.getFirstChild();
             while (child != null) {
                 fragElt.removeChild(child);
@@ -85,7 +85,7 @@ public class DocumentSerializer extends AbstractSerializer {
                 child = fragElt.getFirstChild();
             }
             return result;
-        } catch (XMLParserException pce) {
+        } catch (final XMLParserException pce) {
             throw new XMLEncryptionException(pce);
         }
     }

@@ -72,7 +72,7 @@ public class SignatureValidator {
 
     public DOMValidateContext getValidateContext(InputStream signedXml, KeySelector ks, boolean secureValidation)
         throws XMLParserException {
-        Document doc = XMLUtils.read(signedXml, false);
+        final Document doc = XMLUtils.read(signedXml, false);
         return getValidateContext(doc, ks, secureValidation);
     }
 
@@ -82,17 +82,17 @@ public class SignatureValidator {
         if (dir == null) {
             throw new IllegalArgumentException("Basic directory was not set, files not supported.");
         }
-        Document doc = XMLUtils.read(new File(dir, fileName), false);
+        final Document doc = XMLUtils.read(new File(dir, fileName), false);
         return getValidateContext(doc, ks, secureValidation);
     }
 
 
     public DOMValidateContext getValidateContext(Document doc, KeySelector ks, boolean secureValidation) {
-        Element sigElement = getSignatureElement(doc);
+        final Element sigElement = getSignatureElement(doc);
         if (sigElement == null) {
             throw new IllegalArgumentException("Couldn't find signature Element");
         }
-        DOMValidateContext vc = new DOMValidateContext(ks, sigElement);
+        final DOMValidateContext vc = new DOMValidateContext(ks, sigElement);
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", secureValidation);
         if (dir != null) {
             vc.setBaseURI(dir.toURI().toString());
@@ -108,7 +108,7 @@ public class SignatureValidator {
 
     public boolean validate(String fileName, KeySelector ks, URIDereferencer ud, boolean secureValidation)
         throws Exception {
-        DOMValidateContext vc = getValidateContext(fileName, ks, secureValidation);
+        final DOMValidateContext vc = getValidateContext(fileName, ks, secureValidation);
         if (ud != null) {
             vc.setURIDereferencer(ud);
         }
@@ -116,14 +116,14 @@ public class SignatureValidator {
     }
 
     public boolean validate(DOMValidateContext vc) throws Exception {
-        XMLSignatureFactory factory = XMLSignatureFactory.getInstance("DOM",
+        final XMLSignatureFactory factory = XMLSignatureFactory.getInstance("DOM",
             new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        XMLSignature signature = factory.unmarshalXMLSignature(vc);
-        boolean coreValidity = signature.validate(vc);
+        final XMLSignature signature = factory.unmarshalXMLSignature(vc);
+        final boolean coreValidity = signature.validate(vc);
 
         // Check core validation status
         if (!coreValidity) {
-            for (Object reference : signature.getSignedInfo().getReferences()) {
+            for (final Object reference : signature.getSignedInfo().getReferences()) {
                 ((Reference) reference).validate(vc);
             }
         }
@@ -131,7 +131,7 @@ public class SignatureValidator {
     }
 
     public static Element getSignatureElement(Document doc) {
-        NodeIterator ni = ((DocumentTraversal) doc).createNodeIterator(doc.getDocumentElement(),
+        final NodeIterator ni = ((DocumentTraversal) doc).createNodeIterator(doc.getDocumentElement(),
             NodeFilter.SHOW_ELEMENT, null, false);
 
         for (Node n = ni.nextNode(); n != null; n = ni.nextNode() ) {

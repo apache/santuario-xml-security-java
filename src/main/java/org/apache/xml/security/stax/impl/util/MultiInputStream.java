@@ -37,7 +37,7 @@ public class MultiInputStream extends InputStream {
     @Override
     public int read() throws IOException {
         for (int i = inputStreamIndex; i < inputStreamCount; i++) {
-            int b = inputStreams[i].read();
+            final int b = inputStreams[i].read();
             if (b >= 0) {
                 return b;
             }
@@ -54,7 +54,7 @@ public class MultiInputStream extends InputStream {
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
         for (int i = inputStreamIndex; i < inputStreamCount; i++) {
-            int read = inputStreams[i].read(b, off, len);
+            final int read = inputStreams[i].read(b, off, len);
             if (read >= 0) {
                 return read;
             }
@@ -81,7 +81,7 @@ public class MultiInputStream extends InputStream {
         for (int i = 0; i < inputStreamCount; i++) {
             try {
                 inputStreams[i].close();
-            } catch (IOException e) { //NOPMD
+            } catch (final IOException e) { //NOPMD
                 //ignore and try to close the others
             }
         }

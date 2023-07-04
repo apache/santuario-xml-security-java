@@ -50,12 +50,12 @@ public class SignerOutputStream extends OutputStream {
     @Override
     public void write(int arg0) {
         try {
-            byte asByte = (byte) arg0;
+            final byte asByte = (byte) arg0;
             signatureAlgorithm.engineUpdate(asByte);
             if (isDebugEnabled) {
                 stringBuilder.append((char)asByte);
             }
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             throw new RuntimeException(e);
         }
     }
@@ -67,7 +67,7 @@ public class SignerOutputStream extends OutputStream {
             if (isDebugEnabled) {
                 stringBuilder.append(new String(arg0, arg1, arg2, java.nio.charset.StandardCharsets.UTF_8));
             }
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             throw new RuntimeException(e);
         }
     }

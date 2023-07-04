@@ -46,7 +46,7 @@ public class LocalHttpCacheURIDereferencer implements URIDereferencer {
     private final Map<String, File> uriMap;
 
     public LocalHttpCacheURIDereferencer() {
-        XMLSignatureFactory xmlSignatureFactory = XMLSignatureFactory.getInstance("DOM",
+        final XMLSignatureFactory xmlSignatureFactory = XMLSignatureFactory.getInstance("DOM",
             new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
         ud = xmlSignatureFactory.getURIDereferencer();
         uriMap = new HashMap<>();
@@ -58,12 +58,12 @@ public class LocalHttpCacheURIDereferencer implements URIDereferencer {
     @Override
     public Data dereference(URIReference uriReference, XMLCryptoContext context)
         throws URIReferenceException {
-        String uri = uriReference.getURI();
+        final String uri = uriReference.getURI();
         if (uriMap.containsKey(uri)) {
             try {
                 return new OctetStreamData(new FileInputStream(uriMap.get(uri)), uriReference.getURI(),
                     uriReference.getType());
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new URIReferenceException(e);
             }
         }
@@ -74,7 +74,7 @@ public class LocalHttpCacheURIDereferencer implements URIDereferencer {
 
 
     private File getExistingFile(String fileName) {
-        File file = new File(DIR, fileName);
+        final File file = new File(DIR, fileName);
         if (file.canRead()) {
             return file;
         }

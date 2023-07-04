@@ -117,20 +117,20 @@ public class BaltimoreTest {
     @Test
     public void test_fifteen_enveloping_hmac_sha1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -139,11 +139,11 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -156,20 +156,20 @@ public class BaltimoreTest {
     @Test
     public void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -178,15 +178,15 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a short HMAC length");
-        } catch (XMLStreamException ex) {
+        } catch (final XMLStreamException ex) {
             assertTrue(ex.getCause() instanceof XMLSecurityException);
             assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
@@ -196,16 +196,16 @@ public class BaltimoreTest {
     @Test
     public void test_fifteen_enveloped_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloped-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -214,10 +214,10 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -230,16 +230,16 @@ public class BaltimoreTest {
     @Test
     public void test_fifteen_enveloping_b64_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -248,10 +248,10 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -264,16 +264,16 @@ public class BaltimoreTest {
     @Test
     public void test_fifteen_enveloping_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -282,10 +282,10 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -298,16 +298,16 @@ public class BaltimoreTest {
     @Test
     public void test_fifteen_enveloping_rsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-rsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -316,10 +316,10 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -332,20 +332,20 @@ public class BaltimoreTest {
     @Test
     public void test_twenty_three_enveloping_hmac_sha1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -354,11 +354,11 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -371,20 +371,20 @@ public class BaltimoreTest {
     @Test
     public void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -393,15 +393,15 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         try {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Failure expected on a short HMAC length");
-        } catch (XMLStreamException ex) {
+        } catch (final XMLStreamException ex) {
             assertTrue(ex.getCause() instanceof XMLSecurityException);
             assertEquals("INVALID signature -- core validation failed.", ex.getCause().getMessage());
         }
@@ -411,19 +411,19 @@ public class BaltimoreTest {
     @Test
     public void test_twenty_three_enveloped_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloped-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        Key publicKey = getPublicKey("DSA", 23);
+        final Key publicKey = getPublicKey("DSA", 23);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -432,11 +432,11 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(publicKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -449,19 +449,19 @@ public class BaltimoreTest {
     @Test
     public void test_twenty_three_enveloping_b64_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        Key publicKey = getPublicKey("DSA", 23);
+        final Key publicKey = getPublicKey("DSA", 23);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -470,11 +470,11 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(publicKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -487,16 +487,16 @@ public class BaltimoreTest {
     @Test
     public void test_twenty_three_enveloping_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -505,10 +505,10 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -521,16 +521,16 @@ public class BaltimoreTest {
     @Test
     public void test_twenty_three_enveloping_rsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-rsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -539,10 +539,10 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -555,16 +555,16 @@ public class BaltimoreTest {
     @Test
     public void testExcSignature() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-exc-c14n-one/exc-signature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -573,16 +573,16 @@ public class BaltimoreTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         StAX2DOM.readDoc(securityStreamReader);
     }
 
     private static PublicKey getPublicKey(String algo, int number)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
-        KeyFactory kf = KeyFactory.getInstance(algo);
+        final KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec = null;
         if ("DSA".equalsIgnoreCase(algo)) {
             if (number == 15) {
@@ -618,36 +618,36 @@ public class BaltimoreTest {
         if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {      //NOPMD
 
         } else if (SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
-            DefaultTokenSecurityEvent tokenEvent =
+            final DefaultTokenSecurityEvent tokenEvent =
                     (DefaultTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.DefaultToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
         } else if (SecurityTokenConstants.KeyIdentifier_KeyName.equals(keyIdentifier)) {
-            KeyNameTokenSecurityEvent tokenEvent =
+            final KeyNameTokenSecurityEvent tokenEvent =
                     (KeyNameTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.KeyNameToken);
             assertNotNull(tokenEvent);
             if (key instanceof SecretKey) {
-                Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+                final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
                 assertEquals(processedKey, key);
             } else {
-                Key processedKey = tokenEvent.getSecurityToken().getPublicKey();
+                final Key processedKey = tokenEvent.getSecurityToken().getPublicKey();
                 assertEquals(processedKey, key);
             }
             assertNotNull(((KeyNameSecurityToken) tokenEvent.getSecurityToken()).getKeyName());
         } else {
-            X509TokenSecurityEvent tokenEvent =
+            final X509TokenSecurityEvent tokenEvent =
                     (X509TokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.X509Token);
             assertNotNull(tokenEvent);
-            X509SecurityToken x509SecurityToken =
+            final X509SecurityToken x509SecurityToken =
                     (X509SecurityToken) tokenEvent.getSecurityToken();
             assertNotNull(x509SecurityToken);
             if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, key);
                 assertNotNull(((X509SubjectNameSecurityToken) x509SecurityToken).getSubjectName());
             } else if (SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, key);
                 assertNotNull(((X509IssuerSerialSecurityToken) x509SecurityToken).getIssuerName());
                 assertNotNull(((X509IssuerSerialSecurityToken) x509SecurityToken).getSerialNumber());

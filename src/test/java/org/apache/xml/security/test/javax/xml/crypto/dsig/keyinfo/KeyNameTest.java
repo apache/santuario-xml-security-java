@@ -48,7 +48,7 @@ public class KeyNameTest {
 
     @Test
     public void testgetName() {
-        KeyName kn = fac.newKeyName("skeleton");
+        final KeyName kn = fac.newKeyName("skeleton");
         assertNotNull(kn.getName());
     }
 
@@ -60,16 +60,16 @@ public class KeyNameTest {
         try {
             kn = fac.newKeyName(null);
             fail("Should raise a NullPointerException");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
     }
 
     @Test
     public void testisFeatureSupported() {
-        KeyName kn = fac.newKeyName("keyName");
+        final KeyName kn = fac.newKeyName("keyName");
         try {
             kn.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(kn.isFeatureSupported("not supported"));
     }

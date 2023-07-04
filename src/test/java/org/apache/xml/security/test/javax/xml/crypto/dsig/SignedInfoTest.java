@@ -93,31 +93,31 @@ public class SignedInfoTest {
                     break;
                 }
                 fail("Should throw a NPE for null parameter");
-            } catch(NullPointerException npe) {
-            } catch(Exception ex) {
+            } catch(final NullPointerException npe) {
+            } catch(final Exception ex) {
                 fail("Should throw a NPE instead of " + ex +
                      " for null parameter");
             }
         }
 
-        List<Reference> empty = new ArrayList<>();
+        final List<Reference> empty = new ArrayList<>();
         try {
             si = fac.newSignedInfo(cm, sm, empty);
             fail("Should throw an IAE for empty references");
-        } catch(IllegalArgumentException iae) {
-        } catch(Exception ex) {
+        } catch(final IllegalArgumentException iae) {
+        } catch(final Exception ex) {
             fail("Should throw an IAE instead of " + ex +
                  " for empty references");
         }
 
         // use raw List type to test for invalid Reference entries
-        List invalidRefs = new ArrayList();
+        final List invalidRefs = new ArrayList();
         addEntryToRawList(invalidRefs, "String");
         try {
             fac.newSignedInfo(cm, sm, invalidRefs);
             fail("Should throw an CCE for illegal references");
-        } catch(ClassCastException cce) {
-        } catch(Exception ex) {
+        } catch(final ClassCastException cce) {
+        } catch(final Exception ex) {
             fail("Should throw an IAE instead of " + ex +
                  " for empty references");
         }

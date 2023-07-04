@@ -54,7 +54,7 @@ public class KeySelectorExceptionTest {
         assertNull(kse.getCause());
 
         // test KeySelectorException(String, Throwable)
-        IllegalArgumentException iae = new IllegalArgumentException("iae");
+        final IllegalArgumentException iae = new IllegalArgumentException("iae");
         kse = new KeySelectorException("random", iae);
         assertEquals("random", kse.getMessage());
         assertTrue(compareThrowable(iae, kse.getCause()));
@@ -69,8 +69,8 @@ public class KeySelectorExceptionTest {
         boolean result = false;
         // first compare their toString presentation
         if (t1.toString().equals(t2.toString())) {
-            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-            ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+            final ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+            final ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
             // then compare their StackTrace
             PrintStream ps = new PrintStream(baos1);
             t1.printStackTrace(ps);

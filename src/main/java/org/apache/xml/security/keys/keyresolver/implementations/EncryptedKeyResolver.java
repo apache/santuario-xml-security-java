@@ -120,15 +120,15 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
         SecretKey key = null;
         LOG.debug("Passed an Encrypted Key");
         try {
-            XMLCipher cipher = XMLCipher.getInstance();
+            final XMLCipher cipher = XMLCipher.getInstance();
             cipher.init(XMLCipher.UNWRAP_MODE, kek);
-            int size = internalKeyResolvers.size();
+            final int size = internalKeyResolvers.size();
             for (int i = 0; i < size; i++) {
                 cipher.registerInternalKeyResolver(internalKeyResolvers.get(i));
             }
-            EncryptedKey ek = cipher.loadEncryptedKey(element);
+            final EncryptedKey ek = cipher.loadEncryptedKey(element);
             key = (SecretKey) cipher.decryptKey(ek, algorithm);
-        } catch (XMLEncryptionException e) {
+        } catch (final XMLEncryptionException e) {
             LOG.debug(e.getMessage(), e);
         }
 

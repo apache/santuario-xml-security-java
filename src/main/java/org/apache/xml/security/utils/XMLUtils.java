@@ -68,7 +68,7 @@ public final class XMLUtils {
     private static XMLParser xmlParserImpl =
             AccessController.doPrivileged(
                     (PrivilegedAction<XMLParser>) () -> {
-                        String xmlParserClass = System.getProperty("org.apache.xml.security.XMLParser");
+                        final String xmlParserClass = System.getProperty("org.apache.xml.security.XMLParser");
                         if (xmlParserClass != null) {
                             try {
                                 return (XMLParser) JavaUtils.newInstanceWithEmptyConstructor(
@@ -166,10 +166,10 @@ public final class XMLUtils {
         switch (rootNode.getNodeType()) { //NOPMD
         case Node.ELEMENT_NODE:
             result.add(rootNode);
-            Element el = (Element)rootNode;
+            final Element el = (Element)rootNode;
             if (el.hasAttributes()) {
-                NamedNodeMap nl = el.getAttributes();
-                int length = nl.getLength();
+                final NamedNodeMap nl = el.getAttributes();
+                final int length = nl.getLength();
                 for (int i = 0; i < length; i++) {
                     result.add(nl.item(i));
                 }
@@ -275,7 +275,7 @@ public final class XMLUtils {
      * @return the string of children
      */
     public static String getFullTextChildrenFromNode(Node node) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         Node child = node.getFirstChild();
         while (child != null) {
@@ -451,7 +451,7 @@ public final class XMLUtils {
         }
         try {
             return node.getOwnerDocument();
-        } catch (NullPointerException npe) {
+        } catch (final NullPointerException npe) {
             throw new NullPointerException(I18n.translate("endorsed.jdk1.4.0")
                                            + " Original message was \""
                                            + npe.getMessage() + "\"");
@@ -469,8 +469,8 @@ public final class XMLUtils {
      */
     public static Document getOwnerDocument(Set<Node> xpathNodeSet) {
         NullPointerException npe = null;
-        for (Node node : xpathNodeSet) {
-            int nodeType = node.getNodeType();
+        for (final Node node : xpathNodeSet) {
+            final int nodeType = node.getNodeType();
             if (nodeType == Node.DOCUMENT_NODE) {
                 return (Document) node;
             }
@@ -479,7 +479,7 @@ public final class XMLUtils {
                     return ((Attr)node).getOwnerElement().getOwnerDocument();
                 }
                 return node.getOwnerDocument();
-            } catch (NullPointerException e) {
+            } catch (final NullPointerException e) {
                 npe = e;
             }
         }
@@ -496,7 +496,7 @@ public final class XMLUtils {
      */
     public static void addReturnToElement(Element e) {
         if (!ignoreLineBreaks) {
-            Document doc = e.getOwnerDocument();
+            final Document doc = e.getOwnerDocument();
             e.appendChild(doc.createTextNode("\n"));
         }
     }
@@ -509,7 +509,7 @@ public final class XMLUtils {
 
     public static void addReturnBeforeChild(Element e, Node child) {
         if (!ignoreLineBreaks) {
-            Document doc = e.getOwnerDocument();
+            final Document doc = e.getOwnerDocument();
             e.insertBefore(doc.createTextNode("\n"), child);
         }
     }
@@ -544,8 +544,8 @@ public final class XMLUtils {
             return new HashSet<>();
         }
 
-        int length = xpathNodeSet.getLength();
-        Set<Node> set = new HashSet<>(length);
+        final int length = xpathNodeSet.getLength();
+        final Set<Node> set = new HashSet<>(length);
 
         for (int i = 0; i < length; i++) {
             set.add(xpathNodeSet.item(i));
@@ -568,10 +568,10 @@ public final class XMLUtils {
      */
     public static void circumventBug2650(Document doc) {
 
-        Element documentElement = doc.getDocumentElement();
+        final Element documentElement = doc.getDocumentElement();
 
         // if the document element has no xmlns definition, we add xmlns=""
-        Attr xmlnsAttr =
+        final Attr xmlnsAttr =
             documentElement.getAttributeNodeNS(Constants.NamespaceSpecNS, "xmlns");
 
         if (xmlnsAttr == null) {
@@ -596,13 +596,13 @@ public final class XMLUtils {
         do {    //NOPMD
             switch (node.getNodeType()) {
             case Node.ELEMENT_NODE :
-                Element element = (Element) node;
+                final Element element = (Element) node;
                 if (!element.hasChildNodes()) {
                     break;
                 }
                 if (element.hasAttributes()) {
-                    NamedNodeMap attributes = element.getAttributes();
-                    int attributesLength = attributes.getLength();
+                    final NamedNodeMap attributes = element.getAttributes();
+                    final int attributesLength = attributes.getLength();
 
                     for (Node child = element.getFirstChild(); child!=null;
                         child = child.getNextSibling()) {
@@ -610,10 +610,10 @@ public final class XMLUtils {
                         if (child.getNodeType() != Node.ELEMENT_NODE) {
                             continue;
                         }
-                        Element childElement = (Element) child;
+                        final Element childElement = (Element) child;
 
                         for (int i = 0; i < attributesLength; i++) {
-                            Attr currentAttr = (Attr) attributes.item(i);
+                            final Attr currentAttr = (Attr) attributes.item(i);
                             if (!namespaceNs.equals(currentAttr.getNamespaceURI())) {
                                 continue;
                             }
@@ -752,7 +752,7 @@ public final class XMLUtils {
      * @return nodes with the constraint
      */
     public static Element[] selectNodes(Node sibling, String uri, String nodeName) {
-        List<Element> list = new ArrayList<>();
+        final List<Element> list = new ArrayList<>();
         while (sibling != null) {
             if (sibling.getNamespaceURI() != null && sibling.getNamespaceURI().equals(uri)
                 && sibling.getLocalName().equals(nodeName)) {
@@ -783,7 +783,7 @@ public final class XMLUtils {
         if (xpathnode.getNodeType() == Node.TEXT_NODE) {
             // we iterate over all siblings of the context node because eventually,
             // the text is "polluted" with pi's or comments
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
 
             for (Node currentSibling = xpathnode.getParentNode().getFirstChild();
                 currentSibling != null;
@@ -860,13 +860,13 @@ public final class XMLUtils {
 
         while (startNode != null) {
             if (startNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element se = (Element) startNode;
+                final Element se = (Element) startNode;
 
-                NamedNodeMap attributes = se.getAttributes();
+                final NamedNodeMap attributes = se.getAttributes();
                 if (attributes != null) {
-                    int length = attributes.getLength();
+                    final int length = attributes.getLength();
                     for (int i = 0; i < length; i++) {
-                        Attr attr = (Attr)attributes.item(i);
+                        final Attr attr = (Attr)attributes.item(i);
                         if (attr.isId() && id.equals(attr.getValue())) {
                             if (foundElement == null) {
                                 // Continue searching to find duplicates
@@ -924,13 +924,13 @@ public final class XMLUtils {
 
         while (startNode != null) {
             if (startNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element se = (Element) startNode;
+                final Element se = (Element) startNode;
 
-                NamedNodeMap attributes = se.getAttributes();
+                final NamedNodeMap attributes = se.getAttributes();
                 if (attributes != null) {
-                    int length = attributes.getLength();
+                    final int length = attributes.getLength();
                     for (int i = 0; i < length; i++) {
-                        Attr attr = (Attr)attributes.item(i);
+                        final Attr attr = (Attr)attributes.item(i);
                         if (attr.isId() && id.equals(attr.getValue()) && se != knownElement) {
                             LOG.warn("Multiple elements with the same 'Id' attribute value!");
                             return false;
@@ -1030,7 +1030,7 @@ public final class XMLUtils {
             throw new IllegalArgumentException(I18n.translate("utils.Base64.IllegalBitlength"));
         }
 
-        byte[] bigBytes = big.toByteArray();
+        final byte[] bigBytes = big.toByteArray();
 
         if (big.bitLength() % 8 != 0
             && big.bitLength() / 8 + 1 == bitlen / 8) {
@@ -1047,8 +1047,8 @@ public final class XMLUtils {
             bigLen--;    // valid length of the string
         }
 
-        int startDst = bitlen / 8 - bigLen;    //pad with leading nulls
-        byte[] resizedBytes = new byte[bitlen / 8];
+        final int startDst = bitlen / 8 - bigLen;    //pad with leading nulls
+        final byte[] resizedBytes = new byte[bitlen / 8];
 
         System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, bigLen);
 

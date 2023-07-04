@@ -107,9 +107,9 @@ abstract class AbstractDOMSignatureMethod extends DOMStructure
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
-        Element smElem = DOMUtils.createElement(ownerDoc, "SignatureMethod",
+        final Element smElem = DOMUtils.createElement(ownerDoc, "SignatureMethod",
                                                 XMLSignature.XMLNS, dsPrefix);
         DOMUtils.setAttribute(smElem, "Algorithm", getAlgorithm());
 
@@ -186,7 +186,7 @@ abstract class AbstractDOMSignatureMethod extends DOMStructure
         if (!(o instanceof SignatureMethod)) {
             return false;
         }
-        SignatureMethod osm = (SignatureMethod)o;
+        final SignatureMethod osm = (SignatureMethod)o;
 
         return getAlgorithm().equals(osm.getAlgorithm()) &&
             paramsEqual(osm.getParameterSpec());
@@ -196,7 +196,7 @@ abstract class AbstractDOMSignatureMethod extends DOMStructure
     public int hashCode() {
         int result = 17;
         result = 31 * result + getAlgorithm().hashCode();
-        AlgorithmParameterSpec spec = getParameterSpec();
+        final AlgorithmParameterSpec spec = getParameterSpec();
         if (spec != null) {
             result = 31 * result + spec.hashCode();
         }

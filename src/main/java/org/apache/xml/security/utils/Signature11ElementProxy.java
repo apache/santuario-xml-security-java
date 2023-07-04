@@ -44,7 +44,7 @@ public abstract class Signature11ElementProxy extends ElementProxy {
         setDocument(doc);
         setElement(XMLUtils.createElementInSignature11Space(doc, this.getBaseLocalName()));
 
-        String prefix = ElementProxy.getDefaultPrefix(getBaseNamespace());
+        final String prefix = ElementProxy.getDefaultPrefix(getBaseNamespace());
         if (prefix == null || prefix.length() == 0) {
             getElement().setAttributeNS(Constants.NamespaceSpecNS, "xmlns", getBaseNamespace());
         } else {

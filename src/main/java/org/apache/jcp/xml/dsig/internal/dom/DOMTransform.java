@@ -68,28 +68,28 @@ public class DOMTransform extends DOMStructure implements Transform {
                         Provider provider)
         throws MarshalException
     {
-        String algorithm = DOMUtils.getAttributeValue(transElem, "Algorithm");
+        final String algorithm = DOMUtils.getAttributeValue(transElem, "Algorithm");
 
         if (provider == null) {
             try {
                 spi = TransformService.getInstance(algorithm, "DOM");
-            } catch (NoSuchAlgorithmException e1) {
+            } catch (final NoSuchAlgorithmException e1) {
                 throw new MarshalException(e1);
             }
         } else {
             try {
                 spi = TransformService.getInstance(algorithm, "DOM", provider);
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 try {
                     spi = TransformService.getInstance(algorithm, "DOM");
-                } catch (NoSuchAlgorithmException e2) {
+                } catch (final NoSuchAlgorithmException e2) {
                     throw new MarshalException(e2);
                 }
             }
         }
         try {
             spi.init(new javax.xml.crypto.dom.DOMStructure(transElem), context);
-        } catch (InvalidAlgorithmParameterException iape) {
+        } catch (final InvalidAlgorithmParameterException iape) {
             throw new MarshalException(iape);
         }
     }
@@ -111,7 +111,7 @@ public class DOMTransform extends DOMStructure implements Transform {
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
         Element transformElem = null;
         if ("Transforms".equals(parent.getLocalName())) {
@@ -179,7 +179,7 @@ public class DOMTransform extends DOMStructure implements Transform {
         if (!(o instanceof Transform)) {
             return false;
         }
-        Transform otransform = (Transform)o;
+        final Transform otransform = (Transform)o;
 
         return getAlgorithm().equals(otransform.getAlgorithm()) &&
                 DOMUtils.paramsEqual(getParameterSpec(),
@@ -190,7 +190,7 @@ public class DOMTransform extends DOMStructure implements Transform {
     public int hashCode() {
         int result = 17;
         result = 31 * result + getAlgorithm().hashCode();
-        AlgorithmParameterSpec spec = getParameterSpec();
+        final AlgorithmParameterSpec spec = getParameterSpec();
         if (spec != null) {
             result = 31 * result + spec.hashCode();
         }

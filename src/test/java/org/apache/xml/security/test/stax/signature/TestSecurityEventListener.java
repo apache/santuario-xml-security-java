@@ -43,7 +43,7 @@ public class TestSecurityEventListener implements SecurityEventListener {
 
     @SuppressWarnings("unchecked")
     public <T> T getSecurityEvent(Event securityEvent) {
-        for (SecurityEvent event : events) {
+        for (final SecurityEvent event : events) {
             if (event.getSecurityEventType() == securityEvent) {
                 return (T)event;
             }
@@ -53,8 +53,8 @@ public class TestSecurityEventListener implements SecurityEventListener {
 
     @SuppressWarnings("unchecked")
     public <T> List<T> getSecurityEvents(Event securityEvent) {
-        List<T> foundEvents = new ArrayList<>();
-        for (SecurityEvent event : events) {
+        final List<T> foundEvents = new ArrayList<>();
+        for (final SecurityEvent event : events) {
             if (event.getSecurityEventType() == securityEvent) {
                 foundEvents.add((T)event);
             }

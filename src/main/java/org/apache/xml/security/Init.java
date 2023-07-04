@@ -75,8 +75,8 @@ public class Init {
         if (alreadyInitialized) {
             return;
         }
-        PrivilegedAction<InputStream> action = () -> {
-            String cfile = System.getProperty("org.apache.xml.security.resource.config");
+        final PrivilegedAction<InputStream> action = () -> {
+            final String cfile = System.getProperty("org.apache.xml.security.resource.config");
             if (cfile == null) {
                 return null;
             }
@@ -88,7 +88,7 @@ public class Init {
             } else {
                 fileInit(is);
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             LOG.warn(ex.getMessage(), ex);
         }
 
@@ -112,7 +112,7 @@ public class Init {
             // Bind the default prefixes
             //
             ElementProxy.registerDefaultPrefixes();
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.error(ex.getMessage(), ex);
         }
 
@@ -153,7 +153,7 @@ public class Init {
     private static void fileInit(InputStream is) {
         try {
             /* read library configuration file */
-            Document doc = XMLUtils.read(is, true);
+            final Document doc = XMLUtils.read(is, true);
             Node config = doc.getFirstChild();
             for (; config != null; config = config.getNextSibling()) {
                 if ("Configuration".equals(config.getLocalName())) {
@@ -168,77 +168,77 @@ public class Init {
                 if (Node.ELEMENT_NODE != el.getNodeType()) {
                     continue;
                 }
-                String tag = el.getLocalName();
+                final String tag = el.getLocalName();
                 if ("ResourceBundles".equals(tag)) {
-                    Element resource = (Element)el;
+                    final Element resource = (Element)el;
                     /* configure internationalization */
-                    Attr langAttr = resource.getAttributeNodeNS(null, "defaultLanguageCode");
-                    Attr countryAttr = resource.getAttributeNodeNS(null, "defaultCountryCode");
-                    String languageCode =
+                    final Attr langAttr = resource.getAttributeNodeNS(null, "defaultLanguageCode");
+                    final Attr countryAttr = resource.getAttributeNodeNS(null, "defaultCountryCode");
+                    final String languageCode =
                         (langAttr == null) ? null : langAttr.getNodeValue();
-                    String countryCode =
+                    final String countryCode =
                         (countryAttr == null) ? null : countryAttr.getNodeValue();
                     I18n.init(languageCode, countryCode);
                 }
 
                 if ("CanonicalizationMethods".equals(tag)) {
-                    Element[] list =
+                    final Element[] list =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "CanonicalizationMethod");
 
-                    for (Element element : list) {
-                        String uri = element.getAttributeNS(null, "URI");
-                        String javaClass =
+                    for (final Element element : list) {
+                        final String uri = element.getAttributeNS(null, "URI");
+                        final String javaClass =
                             element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Canonicalizer.register(uri, javaClass);
                             LOG.debug("Canonicalizer.register({}, {})", uri, javaClass);
-                        } catch (ClassNotFoundException e) {
-                            Object[] exArgs = { uri, javaClass };
+                        } catch (final ClassNotFoundException e) {
+                            final Object[] exArgs = { uri, javaClass };
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }
                     }
                 }
 
                 if ("TransformAlgorithms".equals(tag)) {
-                    Element[] tranElem =
+                    final Element[] tranElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "TransformAlgorithm");
 
-                    for (Element element : tranElem) {
-                        String uri = element.getAttributeNS(null, "URI");
-                        String javaClass =
+                    for (final Element element : tranElem) {
+                        final String uri = element.getAttributeNS(null, "URI");
+                        final String javaClass =
                             element.getAttributeNS(null, "JAVACLASS");
                         try {
                             Transform.register(uri, javaClass);
                             LOG.debug("Transform.register({}, {})", uri, javaClass);
-                        } catch (ClassNotFoundException e) {
-                            Object[] exArgs = { uri, javaClass };
+                        } catch (final ClassNotFoundException e) {
+                            final Object[] exArgs = { uri, javaClass };
 
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
-                        } catch (NoClassDefFoundError ex) {
+                        } catch (final NoClassDefFoundError ex) {
                             LOG.warn("Not able to found dependencies for algorithm, I'll keep working.");
                         }
                     }
                 }
 
                 if ("JCEAlgorithmMappings".equals(tag)) {
-                    Node algorithmsNode = ((Element)el).getElementsByTagName("Algorithms").item(0);
+                    final Node algorithmsNode = ((Element)el).getElementsByTagName("Algorithms").item(0);
                     if (algorithmsNode != null) {
-                        Element[] algorithms =
+                        final Element[] algorithms =
                             XMLUtils.selectNodes(algorithmsNode.getFirstChild(), CONF_NS, "Algorithm");
-                        for (Element element : algorithms) {
-                            String id = element.getAttributeNS(null, "URI");
+                        for (final Element element : algorithms) {
+                            final String id = element.getAttributeNS(null, "URI");
                             JCEMapper.register(id, new JCEMapper.Algorithm(element));
                         }
                     }
                 }
 
                 if ("SignatureAlgorithms".equals(tag)) {
-                    Element[] sigElems =
+                    final Element[] sigElems =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "SignatureAlgorithm");
 
-                    for (Element sigElem : sigElems) {
-                        String uri = sigElem.getAttributeNS(null, "URI");
-                        String javaClass =
+                    for (final Element sigElem : sigElems) {
+                        final String uri = sigElem.getAttributeNS(null, "URI");
+                        final String javaClass =
                             sigElem.getAttributeNS(null, "JAVACLASS");
 
                         /** $todo$ handle registering */
@@ -246,8 +246,8 @@ public class Init {
                         try {
                             SignatureAlgorithm.register(uri, javaClass);
                             LOG.debug("SignatureAlgorithm.register({}, {})", uri, javaClass);
-                        } catch (ClassNotFoundException e) {
-                            Object[] exArgs = { uri, javaClass };
+                        } catch (final ClassNotFoundException e) {
+                            final Object[] exArgs = { uri, javaClass };
 
                             LOG.error(I18n.translate("algorithm.classDoesNotExist", exArgs));
                         }
@@ -255,13 +255,13 @@ public class Init {
                 }
 
                 if ("ResourceResolvers".equals(tag)) {
-                    Element[] resolverElem =
+                    final Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
-                    List<String> classNames = new ArrayList<>(resolverElem.length);
-                    for (Element element : resolverElem) {
-                        String javaClass =
+                    final List<String> classNames = new ArrayList<>(resolverElem.length);
+                    for (final Element element : resolverElem) {
+                        final String javaClass =
                             element.getAttributeNS(null, "JAVACLASS");
-                        String description =
+                        final String description =
                             element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
@@ -275,13 +275,13 @@ public class Init {
                 }
 
                 if ("KeyResolver".equals(tag)){
-                    Element[] resolverElem =
+                    final Element[] resolverElem =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "Resolver");
-                    List<String> classNames = new ArrayList<>(resolverElem.length);
-                    for (Element element : resolverElem) {
-                        String javaClass =
+                    final List<String> classNames = new ArrayList<>(resolverElem.length);
+                    for (final Element element : resolverElem) {
+                        final String javaClass =
                             element.getAttributeNS(null, "JAVACLASS");
-                        String description =
+                        final String description =
                             element.getAttributeNS(null, "DESCRIPTION");
 
                         if (description != null && description.length() > 0) {
@@ -298,18 +298,18 @@ public class Init {
                 if ("PrefixMappings".equals(tag)){
                     LOG.debug("Now I try to bind prefixes:");
 
-                    Element[] nl =
+                    final Element[] nl =
                         XMLUtils.selectNodes(el.getFirstChild(), CONF_NS, "PrefixMapping");
 
-                    for (Element element : nl) {
-                        String namespace = element.getAttributeNS(null, "namespace");
-                        String prefix = element.getAttributeNS(null, "prefix");
+                    for (final Element element : nl) {
+                        final String namespace = element.getAttributeNS(null, "namespace");
+                        final String prefix = element.getAttributeNS(null, "prefix");
                         LOG.debug("Now I try to bind {} to {}", prefix, namespace);
                         ElementProxy.setDefaultPrefix(namespace, prefix);
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOG.error("Bad: ", e);
         }
     }

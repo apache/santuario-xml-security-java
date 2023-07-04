@@ -82,9 +82,9 @@ public class XMLX509SubjectName extends SignatureElementProxy implements XMLX509
             return false;
         }
 
-        XMLX509SubjectName other = (XMLX509SubjectName) obj;
-        String otherSubject = other.getSubjectName();
-        String thisSubject = this.getSubjectName();
+        final XMLX509SubjectName other = (XMLX509SubjectName) obj;
+        final String otherSubject = other.getSubjectName();
+        final String thisSubject = this.getSubjectName();
 
         return thisSubject.equals(otherSubject);
     }

@@ -34,7 +34,7 @@ public class TestUtils {
         DBF.setNamespaceAware(true);
         try {
             DBF.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        } catch (ParserConfigurationException e) {
+        } catch (final ParserConfigurationException e) {
             // Ignore: DocumentBuilderFactory is required to support the secure processing feature
             e.printStackTrace();        // NOPMD
         }
@@ -63,7 +63,7 @@ public class TestUtils {
             throw new IllegalArgumentException("You must supply a prefix");
         }
 
-        Element ctx = doc.createElementNS(null, "namespaceContext");
+        final Element ctx = doc.createElementNS(null, "namespaceContext");
         ctx.setAttributeNS(Constants.NamespaceSpecNS, "xmlns:" + prefix.trim(), namespace);
         return ctx;
     }

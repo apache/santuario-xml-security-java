@@ -83,14 +83,14 @@ public class CreateInteropExcC14NTest {
         kifac = fac.getKeyInfoFactory();
 
         ks = XmlSecTestEnvironment.getTestKeyStore();
-        Certificate signingCert = ks.getCertificate("mullan");
+        final Certificate signingCert = ks.getCertificate("mullan");
         signingKey = ks.getKey("mullan", "changeit".toCharArray());
         validatingKey = signingCert.getPublicKey();
     }
 
     @Test
     public void test_create_Y1() throws Exception {
-        List<Reference> refs = new ArrayList<>(4);
+        final List<Reference> refs = new ArrayList<>(4);
 
         // create reference 1
         refs.add(fac.newReference
@@ -136,44 +136,44 @@ public class CreateInteropExcC14NTest {
              null, null));
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(
+        final SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
                 (CanonicalizationMethod.EXCLUSIVE,
                  (C14NMethodParameterSpec) null),
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), refs);
 
         // create KeyInfo
-        List<KeyValue> kits = new ArrayList<>(2);
+        final List<KeyValue> kits = new ArrayList<>(2);
         kits.add(kifac.newKeyValue(validatingKey));
-        KeyInfo ki = kifac.newKeyInfo(kits);
+        final KeyInfo ki = kifac.newKeyInfo(kits);
 
         // create Objects
-        Document doc = TestUtils.newDocument();
-        Element baz = doc.createElementNS("urn:bar", "bar:Baz");
-        Comment com = doc.createComment(" comment ");
+        final Document doc = TestUtils.newDocument();
+        final Element baz = doc.createElementNS("urn:bar", "bar:Baz");
+        final Comment com = doc.createComment(" comment ");
         baz.appendChild(com);
-        XMLObject obj = fac.newXMLObject(Collections.singletonList
+        final XMLObject obj = fac.newXMLObject(Collections.singletonList
             (new DOMStructure(baz)), "to-be-signed", null, null);
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature
+        final XMLSignature sig = fac.newXMLSignature
             (si, ki, Collections.singletonList(obj), null, null);
 
-        Element foo = doc.createElementNS("urn:foo", "Foo");
+        final Element foo = doc.createElementNS("urn:foo", "Foo");
         foo.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "urn:foo");
         foo.setAttributeNS
             ("http://www.w3.org/2000/xmlns/", "xmlns:bar", "urn:bar");
         doc.appendChild(foo);
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, foo);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, foo);
         dsc.putNamespacePrefix(XMLSignature.XMLNS, "dsig");
 
         sig.sign(dsc);
         TestUtils.validateSecurityOrEncryptionElement(foo.getLastChild());
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.KeyValueKeySelector(), foo.getLastChild());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
 

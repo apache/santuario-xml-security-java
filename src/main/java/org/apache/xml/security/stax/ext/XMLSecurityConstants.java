@@ -50,15 +50,15 @@ public class XMLSecurityConstants {
 
     static {
         try {
-            String PrngAlgorithm = System.getProperty(RANDOM_ALGORITHM_KEY);
+            final String PrngAlgorithm = System.getProperty(RANDOM_ALGORITHM_KEY);
             SECURE_RANDOM = PrngAlgorithm != null ? SecureRandom.getInstance(PrngAlgorithm) : new SecureRandom();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
 
         try {
             datatypeFactory = DatatypeFactory.newInstance();
-        } catch (DatatypeConfigurationException e) {
+        } catch (final DatatypeConfigurationException e) {
             throw new RuntimeException(e);
         }
 
@@ -82,10 +82,10 @@ public class XMLSecurityConstants {
      */
     public static byte[] generateBytes(int length) throws XMLSecurityException {
         try {
-            byte[] temp = new byte[length];
+            final byte[] temp = new byte[length];
             SECURE_RANDOM.nextBytes(temp);
             return temp;
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new XMLSecurityException(ex);
         }
     }
@@ -103,7 +103,7 @@ public class XMLSecurityConstants {
     }
 
     public static Unmarshaller getJaxbUnmarshaller(boolean disableSchemaValidation) throws JAXBException {
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        final Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         if (!disableSchemaValidation) {
             unmarshaller.setSchema(schema);
         }

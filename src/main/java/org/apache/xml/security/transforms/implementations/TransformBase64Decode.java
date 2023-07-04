@@ -79,37 +79,37 @@ public class TransformBase64Decode extends TransformSpi {
             if (input.getSubNode().getNodeType() == Node.TEXT_NODE) {
                 el = el.getParentNode();
             }
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             traverseElement((Element)el, sb);
             if (os == null) {
-                byte[] decodedBytes = XMLUtils.decode(sb.toString());
-                XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
+                final byte[] decodedBytes = XMLUtils.decode(sb.toString());
+                final XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                 output.setSecureValidation(secureValidation);
                 return output;
             }
-            byte[] bytes = XMLUtils.decode(sb.toString());
+            final byte[] bytes = XMLUtils.decode(sb.toString());
             os.write(bytes);
-            XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+            final XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(os);
             return output;
         } else if (input.isOctetStream() || input.isNodeSet()) {
             if (os == null) {
-                byte[] base64Bytes = input.getBytes();
-                byte[] decodedBytes = XMLUtils.decode(base64Bytes);
-                XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
+                final byte[] base64Bytes = input.getBytes();
+                final byte[] decodedBytes = XMLUtils.decode(base64Bytes);
+                final XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                 output.setSecureValidation(secureValidation);
                 return output;
             }
             if (input.isByteArray() || input.isNodeSet()) {
-                byte[] bytes = XMLUtils.decode(input.getBytes());
+                final byte[] bytes = XMLUtils.decode(input.getBytes());
                 os.write(bytes);
             } else {
-                byte[] inputBytes = JavaUtils.getBytesFromStream(input.getOctetStreamReal());
-                byte[] bytes = XMLUtils.decode(inputBytes);
+                final byte[] inputBytes = JavaUtils.getBytesFromStream(input.getOctetStreamReal());
+                final byte[] bytes = XMLUtils.decode(inputBytes);
                 os.write(bytes);
             }
-            XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+            final XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(os);
             return output;

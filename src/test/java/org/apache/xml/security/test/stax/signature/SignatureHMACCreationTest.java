@@ -50,34 +50,34 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testHMACSHA1() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
 
         properties.setSignatureAlgorithm(signatureAlgorithm);
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -95,34 +95,34 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testHMACSHA_224() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
 
         properties.setSignatureAlgorithm(signatureAlgorithm);
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -140,34 +140,34 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testHMACSHA_256() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
 
         properties.setSignatureAlgorithm(signatureAlgorithm);
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -185,34 +185,34 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testHMACSHA_384() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
 
         properties.setSignatureAlgorithm(signatureAlgorithm);
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -230,34 +230,34 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testHMACSHA_512() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
 
         properties.setSignatureAlgorithm(signatureAlgorithm);
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -277,34 +277,34 @@ public class SignatureHMACCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
         properties.setSignatureKey(key);
 
         properties.setSignatureAlgorithm(signatureAlgorithm);
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();

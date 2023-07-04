@@ -94,11 +94,11 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
     }
 
     protected void verifyEncryptionParts(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
-        List<EncryptionPartDef> encryptionPartDefs = outputProcessorChain.getSecurityContext()
+        final List<EncryptionPartDef> encryptionPartDefs = outputProcessorChain.getSecurityContext()
             .getAsList(EncryptionPartDef.class);
-        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext()
+        final Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext()
             .getAsMap(XMLSecurityConstants.ENCRYPTION_PARTS);
-        for (Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
+        for (final Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
             final SecurePart securePart = securePartEntry.getValue();
             if (securePart.isRequired() && !findSecurePart(securePart, encryptionPartDefs)) {
                 throw new XMLSecurityException("stax.encryption.securePartNotFound",
@@ -111,7 +111,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
         if (encryptionPartDefs == null) {
             return false;
         }
-        for (EncryptionPartDef encryptionPartDef : encryptionPartDefs) {
+        for (final EncryptionPartDef encryptionPartDef : encryptionPartDefs) {
             if (encryptionPartDef.getSecurePart() == securePart) {
                 return true;
             }
@@ -158,19 +158,19 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
         @Override
         public void init(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
 
-            String encryptionSymAlgorithm = securityProperties.getEncryptionSymAlgorithm();
+            final String encryptionSymAlgorithm = securityProperties.getEncryptionSymAlgorithm();
             try {
                 //initialize the cipher
-                String jceAlgorithm = JCEMapper.translateURItoJCEID(encryptionSymAlgorithm);
+                final String jceAlgorithm = JCEMapper.translateURItoJCEID(encryptionSymAlgorithm);
                 if (jceAlgorithm == null) {
                     throw new XMLSecurityException("algorithms.NoSuchMap",
                                                    new Object[] {encryptionSymAlgorithm});
                 }
-                Cipher symmetricCipher = Cipher.getInstance(jceAlgorithm);
+                final Cipher symmetricCipher = Cipher.getInstance(jceAlgorithm);
 
-                int ivLen = JCEMapper.getIVLengthFromURI(encryptionSymAlgorithm) / 8;
-                byte[] iv = XMLSecurityConstants.generateBytes(ivLen);
-                AlgorithmParameterSpec parameterSpec =
+                final int ivLen = JCEMapper.getIVLengthFromURI(encryptionSymAlgorithm) / 8;
+                final byte[] iv = XMLSecurityConstants.generateBytes(ivLen);
+                final AlgorithmParameterSpec parameterSpec =
                     XMLCipherUtil.constructBlockCipherParameters(encryptionSymAlgorithm, iv);
                 symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), parameterSpec);
 
@@ -195,17 +195,17 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                                 cipherOutputStream, java.nio.charset.StandardCharsets.UTF_8.name()));
                 //we have to output a fake element to workaround text-only encryption:
                 xmlEventWriter.add(wrapperStartElement);
-            } catch (NoSuchPaddingException e) {
+            } catch (final NoSuchPaddingException e) {
                 throw new XMLSecurityException(e);
-            } catch (NoSuchAlgorithmException e) {
+            } catch (final NoSuchAlgorithmException e) {
                 throw new XMLSecurityException(e);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new XMLSecurityException(e);
-            } catch (XMLStreamException e) {
+            } catch (final XMLStreamException e) {
                 throw new XMLSecurityException(e);
-            } catch (InvalidKeyException e) {
+            } catch (final InvalidKeyException e) {
                 throw new XMLSecurityException(e);
-            } catch (InvalidAlgorithmParameterException e) {
+            } catch (final InvalidAlgorithmParameterException e) {
                 throw new XMLSecurityException(e);
             }
             super.init(outputProcessorChain);
@@ -221,12 +221,12 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
 
             switch (xmlSecEvent.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT:
-                    XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
+                    final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
 
                     if (this.elementCounter == 0 && xmlSecStartElement.getName().equals(this.getXmlSecStartElement().getName())) {
                         //if the user selected element encryption we have to encrypt the current element-event...
                         if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
-                            OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                            final OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
                             processEventInternal(xmlSecStartElement, subOutputProcessorChain);
                             //encrypt the current element event
                             encryptEvent(xmlSecEvent);
@@ -246,7 +246,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                     this.elementCounter--;
 
                     if (this.elementCounter == 0 && xmlSecEvent.asEndElement().getName().equals(this.getXmlSecStartElement().getName())) {
-                        OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                        final OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
                         if (SecurePart.Modifier.Element == getEncryptionPartDef().getModifier()) {
                             encryptEvent(xmlSecEvent);
                             doFinalInternal(subOutputProcessorChain);
@@ -270,10 +270,10 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                     //push all buffered encrypted character events through the chain
                     final Deque<XMLSecCharacters> charactersBuffer = characterEventGeneratorOutputStream.getCharactersBuffer();
                     if (charactersBuffer.size() > 5) {
-                        OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
-                        Iterator<XMLSecCharacters> charactersIterator = charactersBuffer.iterator();
+                        final OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+                        final Iterator<XMLSecCharacters> charactersIterator = charactersBuffer.iterator();
                         while (charactersIterator.hasNext()) {
-                            XMLSecCharacters characters = charactersIterator.next();
+                            final XMLSecCharacters characters = charactersIterator.next();
                             outputAsEvent(subOutputProcessorChain, characters);
                             charactersIterator.remove();
                         }
@@ -337,16 +337,16 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 xmlEventWriter.close();
                 //call close to force a cipher.doFinal()
                 cipherOutputStream.close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new XMLStreamException(e);
             }
 
             //push all buffered encrypted character events through the chain
             final Deque<XMLSecCharacters> charactersBuffer = characterEventGeneratorOutputStream.getCharactersBuffer();
             if (!charactersBuffer.isEmpty()) {
-                Iterator<XMLSecCharacters> charactersIterator = charactersBuffer.iterator();
+                final Iterator<XMLSecCharacters> charactersIterator = charactersBuffer.iterator();
                 while (charactersIterator.hasNext()) {
-                    XMLSecCharacters characters = charactersIterator.next();
+                    final XMLSecCharacters characters = charactersIterator.next();
                     outputAsEvent(outputProcessorChain, characters);
                     charactersIterator.remove();
                 }
@@ -410,7 +410,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
     }
 
     private char[] byteToCharArray(byte[]  bytes, int off, int len) {
-        char[] chars = new char[len - off];
+        final char[] chars = new char[len - off];
         for (int i = off; i < len; i++) {
             chars[i] = (char)bytes[i];
         }

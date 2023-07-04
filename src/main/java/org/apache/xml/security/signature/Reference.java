@@ -140,7 +140,7 @@ public class Reference extends SignatureElementProxy {
     private static final Set<String> TRANSFORM_ALGORITHMS;
 
     static {
-        Set<String> algorithms = new HashSet<>();
+        final Set<String> algorithms = new HashSet<>();
         algorithms.add(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         algorithms.add(Transforms.TRANSFORM_C14N_EXCL_WITH_COMMENTS);
         algorithms.add(Transforms.TRANSFORM_C14N_OMIT_COMMENTS);
@@ -187,7 +187,7 @@ public class Reference extends SignatureElementProxy {
         }
 
         // Create DigestMethod Element without actually instantiating a MessageDigest Object
-        Algorithm digestAlgorithm = new Algorithm(getDocument(), messageDigestAlgorithm) {
+        final Algorithm digestAlgorithm = new Algorithm(getDocument(), messageDigestAlgorithm) {
             @Override
             public String getBaseNamespace() {
                 return Constants.SignatureSpecNS;
@@ -249,7 +249,7 @@ public class Reference extends SignatureElementProxy {
             transforms = new Transforms(el, this.baseURI);
             transforms.setSecureValidation(secureValidation);
             if (secureValidation && transforms.getLength() > MAXIMUM_TRANSFORM_COUNT) {
-                Object[] exArgs = { transforms.getLength(), MAXIMUM_TRANSFORM_COUNT };
+                final Object[] exArgs = { transforms.getLength(), MAXIMUM_TRANSFORM_COUNT };
 
                 throw new XMLSecurityException("signature.tooManyTransforms", exArgs);
             }
@@ -285,14 +285,14 @@ public class Reference extends SignatureElementProxy {
             return null;
         }
 
-        String uri = digestMethodElem.getAttributeNS(null, Constants._ATT_ALGORITHM);
+        final String uri = digestMethodElem.getAttributeNS(null, Constants._ATT_ALGORITHM);
 
         if (uri.isEmpty()) {
             return null;
         }
 
         if (secureValidation && MessageDigestAlgorithm.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5.equals(uri)) {
-            Object[] exArgs = { uri };
+            final Object[] exArgs = { uri };
 
             throw new XMLSignatureException("signature.signatureAlgorithm", exArgs);
         }
@@ -402,8 +402,8 @@ public class Reference extends SignatureElementProxy {
             n = n.getNextSibling();
         }
 
-        String base64codedValue = XMLUtils.encodeToString(digestValue);
-        Text t = createText(base64codedValue);
+        final String base64codedValue = XMLUtils.encodeToString(digestValue);
+        final Text t = createText(base64codedValue);
 
         digestValueElement.appendChild(t);
     }
@@ -428,15 +428,15 @@ public class Reference extends SignatureElementProxy {
     public XMLSignatureInput getContentsBeforeTransformation()
         throws ReferenceNotInitializedException {
         try {
-            Attr uriAttr =
+            final Attr uriAttr =
                 getElement().getAttributeNodeNS(null, Constants._ATT_URI);
 
-            ResourceResolverContext resolverContext =
+            final ResourceResolverContext resolverContext =
                 new ResourceResolverContext(uriAttr, this.baseURI,
                     secureValidation, this.manifest.getResolverProperties());
 
             return ResourceResolver.resolve(this.manifest.getPerManifestResolvers(), resolverContext);
-        }  catch (ResourceResolverException ex) {
+        }  catch (final ResourceResolverException ex) {
             throw new ReferenceNotInitializedException(ex);
         }
     }
@@ -445,7 +445,7 @@ public class Reference extends SignatureElementProxy {
         XMLSignatureInput input, OutputStream os
     ) throws XMLSignatureException {
         try {
-            Transforms transforms = this.getTransforms();
+            final Transforms transforms = this.getTransforms();
             XMLSignatureInput output = null;
 
             if (transforms != null) {
@@ -458,7 +458,7 @@ public class Reference extends SignatureElementProxy {
             }
 
             return output;
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -470,7 +470,7 @@ public class Reference extends SignatureElementProxy {
      */
     public XMLSignatureInput getContentsAfterTransformation()
         throws XMLSignatureException {
-        XMLSignatureInput input = this.getContentsBeforeTransformation();
+        final XMLSignatureInput input = this.getContentsBeforeTransformation();
         cacheDereferencedElement(input);
 
         return this.getContentsAfterTransformation(input, null);
@@ -486,15 +486,15 @@ public class Reference extends SignatureElementProxy {
     public XMLSignatureInput getNodesetBeforeFirstCanonicalization()
         throws XMLSignatureException {
         try {
-            XMLSignatureInput input = this.getContentsBeforeTransformation();
+            final XMLSignatureInput input = this.getContentsBeforeTransformation();
             cacheDereferencedElement(input);
             XMLSignatureInput output = input;
-            Transforms transforms = this.getTransforms();
+            final Transforms transforms = this.getTransforms();
 
             if (transforms != null) {
                 for (int i = 0; i < transforms.getLength(); i++) {
-                    Transform t = transforms.item(i);
-                    String uri = t.getURI();
+                    final Transform t = transforms.item(i);
+                    final String uri = t.getURI();
 
                     if (TRANSFORM_ALGORITHMS.contains(uri)) {
                         break;
@@ -518,15 +518,15 @@ public class Reference extends SignatureElementProxy {
      */
     public String getHTMLRepresentation() throws XMLSignatureException {
         try {
-            XMLSignatureInput nodes = this.getNodesetBeforeFirstCanonicalization();
+            final XMLSignatureInput nodes = this.getNodesetBeforeFirstCanonicalization();
 
-            Transforms transforms = this.getTransforms();
+            final Transforms transforms = this.getTransforms();
             Transform c14nTransform = null;
 
             if (transforms != null) {
                 for (int i = 0; i < transforms.getLength(); i++) {
-                    Transform t = transforms.item(i);
-                    String uri = t.getURI();
+                    final Transform t = transforms.item(i);
+                    final String uri = t.getURI();
 
                     if (uri.equals(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS)
                         || uri.equals(Transforms.TRANSFORM_C14N_EXCL_WITH_COMMENTS)) {
@@ -543,7 +543,7 @@ public class Reference extends SignatureElementProxy {
                     InclusiveNamespaces._TAG_EC_INCLUSIVENAMESPACES) == 1) {
 
                 // there is one InclusiveNamespaces element
-                InclusiveNamespaces in =
+                final InclusiveNamespaces in =
                     new InclusiveNamespaces(
                         XMLUtils.selectNode(
                             c14nTransform.getElement().getFirstChild(),
@@ -557,7 +557,7 @@ public class Reference extends SignatureElementProxy {
             }
 
             return nodes.getHTMLRepresentation(inclusiveNamespaces);
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -590,13 +590,13 @@ public class Reference extends SignatureElementProxy {
     protected XMLSignatureInput dereferenceURIandPerformTransforms(OutputStream os)
         throws XMLSignatureException {
         try {
-            XMLSignatureInput input = this.getContentsBeforeTransformation();
+            final XMLSignatureInput input = this.getContentsBeforeTransformation();
             cacheDereferencedElement(input);
 
-            XMLSignatureInput output = this.getContentsAfterTransformation(input, os);
+            final XMLSignatureInput output = this.getContentsAfterTransformation(input, os);
             this.transformsOutput = output;
             return output;
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new ReferenceNotInitializedException(ex);
         }
     }
@@ -632,7 +632,7 @@ public class Reference extends SignatureElementProxy {
                         };
                     }
                 };
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 // LOG a warning
                 LOG.warn("cannot cache dereferenced data: " + e);
             }
@@ -644,7 +644,7 @@ public class Reference extends SignatureElementProxy {
                 referenceData = new ReferenceOctetStreamData
                     (input.getOctetStream(), input.getSourceURI(),
                         input.getMIMEType());
-            } catch (IOException ioe) {
+            } catch (final IOException ioe) {
                 // LOG a warning
                 LOG.warn("cannot cache dereferenced data: " + ioe);
             }
@@ -676,7 +676,7 @@ public class Reference extends SignatureElementProxy {
     public byte[] getReferencedBytes()
         throws ReferenceNotInitializedException, XMLSignatureException {
         try {
-            XMLSignatureInput output = this.dereferenceURIandPerformTransforms(null);
+            final XMLSignatureInput output = this.dereferenceURIandPerformTransforms(null);
             return output.getBytes();
         } catch (IOException | CanonicalizationException ex) {
             throw new ReferenceNotInitializedException(ex);
@@ -694,14 +694,14 @@ public class Reference extends SignatureElementProxy {
      */
     private byte[] calculateDigest(boolean validating)
         throws ReferenceNotInitializedException, XMLSignatureException {
-        XMLSignatureInput input = this.getContentsBeforeTransformation();
+        final XMLSignatureInput input = this.getContentsBeforeTransformation();
         if (input.isPreCalculatedDigest()) {
             return getPreCalculatedDigest(input);
         }
 
         cacheDereferencedElement(input);
 
-        MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
+        final MessageDigestAlgorithm mda = this.getMessageDigestAlgorithm();
         mda.reset();
 
         XMLSignatureInput output = null;
@@ -738,7 +738,7 @@ public class Reference extends SignatureElementProxy {
                 if (output != null && output.getOctetStreamReal() != null) {
                     output.getOctetStreamReal().close();
                 }
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 throw new ReferenceNotInitializedException(ex);
             }
         }
@@ -755,7 +755,7 @@ public class Reference extends SignatureElementProxy {
     private byte[] getPreCalculatedDigest(XMLSignatureInput input)
             throws ReferenceNotInitializedException {
         LOG.debug("Verifying element with pre-calculated digest");
-        String preCalculatedDigest = input.getPreCalculatedDigest();
+        final String preCalculatedDigest = input.getPreCalculatedDigest();
         return XMLUtils.decode(preCalculatedDigest);
     }
 
@@ -768,12 +768,12 @@ public class Reference extends SignatureElementProxy {
     public byte[] getDigestValue() throws XMLSecurityException {
         if (digestValueElement == null) {
             // The required element is not in the XML!
-            Object[] exArgs ={ Constants._TAG_DIGESTVALUE, Constants.SignatureSpecNS };
+            final Object[] exArgs ={ Constants._TAG_DIGESTVALUE, Constants.SignatureSpecNS };
             throw new XMLSecurityException(
                 "signature.Verification.NoSignatureElement", exArgs
             );
         }
-        String content = XMLUtils.getFullTextChildrenFromNode(digestValueElement);
+        final String content = XMLUtils.getFullTextChildrenFromNode(digestValueElement);
         return XMLUtils.decode(content);
     }
 
@@ -787,9 +787,9 @@ public class Reference extends SignatureElementProxy {
      */
     public boolean verify()
         throws ReferenceNotInitializedException, XMLSecurityException {
-        byte[] elemDig = this.getDigestValue();
-        byte[] calcDig = this.calculateDigest(true);
-        boolean equal = MessageDigestAlgorithm.isEqual(elemDig, calcDig);
+        final byte[] elemDig = this.getDigestValue();
+        final byte[] calcDig = this.calculateDigest(true);
+        final boolean equal = MessageDigestAlgorithm.isEqual(elemDig, calcDig);
 
         if (!equal) {
             LOG.warn("Verification failed for URI \"" + this.getURI() + "\"");

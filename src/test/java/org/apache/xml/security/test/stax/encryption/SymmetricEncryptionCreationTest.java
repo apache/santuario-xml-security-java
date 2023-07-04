@@ -72,13 +72,13 @@ public class SymmetricEncryptionCreationTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -100,32 +100,32 @@ public class SymmetricEncryptionCreationTest {
     @Test
     public void testAES128() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -151,7 +151,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -161,32 +161,32 @@ public class SymmetricEncryptionCreationTest {
     @Test
     public void testAES128_GCM() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2009/xmlenc11#aes128-gcm";
+        final String algorithm = "http://www.w3.org/2009/xmlenc11#aes128-gcm";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -212,7 +212,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -222,32 +222,32 @@ public class SymmetricEncryptionCreationTest {
     @Test
     public void testAES192() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#aes192-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#aes192-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -273,7 +273,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -283,32 +283,32 @@ public class SymmetricEncryptionCreationTest {
     @Test
     public void testAES192_GCM() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2009/xmlenc11#aes192-gcm";
+        final String algorithm = "http://www.w3.org/2009/xmlenc11#aes192-gcm";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -334,7 +334,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -344,32 +344,32 @@ public class SymmetricEncryptionCreationTest {
     @Test
     public void testAES256() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -395,7 +395,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -405,32 +405,32 @@ public class SymmetricEncryptionCreationTest {
     @Test
     public void testAES256_GCM() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2009/xmlenc11#aes256-gcm";
+        final String algorithm = "http://www.w3.org/2009/xmlenc11#aes256-gcm";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -456,7 +456,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -466,31 +466,31 @@ public class SymmetricEncryptionCreationTest {
     @Test
     public void testTRIPLE_DES() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        SecretKey key = keygen.generateKey();
+        final KeyGenerator keygen = KeyGenerator.getInstance("DESede");
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -516,7 +516,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -528,32 +528,32 @@ public class SymmetricEncryptionCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("SEED");
+        final KeyGenerator keygen = KeyGenerator.getInstance("SEED");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2007/05/xmldsig-more#seed128-cbc";
+        final String algorithm = "http://www.w3.org/2007/05/xmldsig-more#seed128-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -579,7 +579,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -590,32 +590,32 @@ public class SymmetricEncryptionCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia128-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia128-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -641,7 +641,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -652,32 +652,32 @@ public class SymmetricEncryptionCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia192-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia192-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -703,7 +703,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -714,32 +714,32 @@ public class SymmetricEncryptionCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia256-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia256-cbc";
         properties.setEncryptionSymAlgorithm(algorithm);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -765,7 +765,7 @@ public class SymmetricEncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc = decryptUsingDOM(algorithm, key, null, document);
+        final Document doc = decryptUsingDOM(algorithm, key, null, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -780,17 +780,17 @@ public class SymmetricEncryptionCreationTest {
         Key wrappingKey,
         Document document
     ) throws Exception {
-        XMLCipher cipher = XMLCipher.getInstance(algorithm);
+        final XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.DECRYPT_MODE, secretKey);
         if (wrappingKey != null) {
             cipher.setKEK(wrappingKey);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Element ee = (Element)nodeList.item(0);
+        final Element ee = (Element)nodeList.item(0);
         return cipher.doFinal(document, ee);
     }
 

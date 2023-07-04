@@ -68,11 +68,11 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
      */
     @Override
     public int compare(Attr attr0, Attr attr1) {
-        String namespaceURI0 = attr0.getNamespaceURI();
-        String namespaceURI1 = attr1.getNamespaceURI();
+        final String namespaceURI0 = attr0.getNamespaceURI();
+        final String namespaceURI1 = attr1.getNamespaceURI();
 
-        boolean isNamespaceAttr0 = XMLNS.equals(namespaceURI0);
-        boolean isNamespaceAttr1 = XMLNS.equals(namespaceURI1);
+        final boolean isNamespaceAttr0 = XMLNS.equals(namespaceURI0);
+        final boolean isNamespaceAttr1 = XMLNS.equals(namespaceURI1);
 
         if (isNamespaceAttr0) {
             if (isNamespaceAttr1) {
@@ -100,8 +100,8 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
         // none is a namespace
         if (namespaceURI0 == null) {
             if (namespaceURI1 == null) {
-                String name0 = attr0.getName();
-                String name1 = attr1.getName();
+                final String name0 = attr0.getName();
+                final String name1 = attr1.getName();
                 return name0.compareTo(name1);
             }
             return ATTR0_BEFORE_ATTR1;
@@ -109,7 +109,7 @@ public class AttrCompare implements Comparator<Attr>, Serializable {
             return ATTR1_BEFORE_ATTR0;
         }
 
-        int a = namespaceURI0.compareTo(namespaceURI1);
+        final int a = namespaceURI0.compareTo(namespaceURI1);
         if (a != 0) {
             return a;
         }

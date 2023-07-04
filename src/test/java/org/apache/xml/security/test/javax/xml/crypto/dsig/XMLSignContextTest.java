@@ -55,7 +55,7 @@ public class XMLSignContextTest {
         KEYS[1] = TestUtils.getPrivateKey("RSA");
         KEYS[2] = new SecretKeySpec(new byte[16], "HmacSHA1");
         // set up the default XMLSignContext
-        SecretKey sk = new SecretKeySpec(new byte[8], "DES");
+        final SecretKey sk = new SecretKeySpec(new byte[8], "DES");
         doc = TestUtils.newDocument();
         defContext = new DOMSignContext(sk, doc);
     }
@@ -64,7 +64,7 @@ public class XMLSignContextTest {
     public void testsetngetBaseURI() throws Exception {
         assertNull(defContext.getBaseURI());
 
-        String uri = "http://www.w3.org/2000/09/xmldsig#";
+        final String uri = "http://www.w3.org/2000/09/xmldsig#";
         defContext.setBaseURI(uri);
         assertEquals(defContext.getBaseURI(), uri);
         defContext.setBaseURI(null);
@@ -74,17 +74,17 @@ public class XMLSignContextTest {
 
     @Test
     public void testsetngetProperty() throws Exception {
-        String name = "key";
+        final String name = "key";
         assertNull(defContext.getProperty(name));
         try {
             defContext.setProperty(null, null);
             fail("Should raise a NPE with a null name");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should raise a NPE instead of " + ex);
         }
-        String value1 = "value#1";
-        String value2 = "value#2";
+        final String value1 = "value#1";
+        final String value2 = "value#2";
         assertNull(defContext.setProperty(name, value1));
         assertEquals(defContext.getProperty(name), value1);
         assertEquals(defContext.setProperty(name, value2), value1);
@@ -96,8 +96,8 @@ public class XMLSignContextTest {
     @Test
     public void testsetngetURIDereferencer() throws Exception {
         assertNull(defContext.getURIDereferencer());
-        byte[] data = "simpleDereferencer".getBytes();
-        URIDereferencer deref = new TestUtils.OctetStreamURIDereferencer(data);
+        final byte[] data = "simpleDereferencer".getBytes();
+        final URIDereferencer deref = new TestUtils.OctetStreamURIDereferencer(data);
 
         defContext.setURIDereferencer(deref);
         assertEquals(defContext.getURIDereferencer(), deref);
@@ -109,7 +109,7 @@ public class XMLSignContextTest {
     public void testsetngetKeySelector() throws Exception {
         defContext.setKeySelector(null);
         assertNull(defContext.getKeySelector());
-        KeySelector ks = KeySelector.singletonKeySelector(KEYS[0]);
+        final KeySelector ks = KeySelector.singletonKeySelector(KEYS[0]);
         defContext.setKeySelector(ks);
         assertEquals(defContext.getKeySelector(), ks);
     }

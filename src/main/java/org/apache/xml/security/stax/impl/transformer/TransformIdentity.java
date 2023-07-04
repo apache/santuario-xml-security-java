@@ -168,7 +168,7 @@ public class TransformIdentity implements Transformer {
                             try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
                                 getTransformer().transform(is);
                                 getTransformer().doFinal();
-                            } catch (IOException ex) {
+                            } catch (final IOException ex) {
                                 throw new XMLStreamException(ex);
                             }
                         }
@@ -187,7 +187,7 @@ public class TransformIdentity implements Transformer {
             //we have an output stream
             try {
                 XMLSecurityUtils.copy(inputStream, getOutputStream());
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new XMLStreamException(e);
             }
         } else {
@@ -216,7 +216,7 @@ public class TransformIdentity implements Transformer {
                                     xmlSecEvent = xmlEventReaderInputProcessor.processEvent(null);
                                     getTransformer().transform(xmlSecEvent);
                                 } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
-                            } catch (XMLSecurityException e) {
+                            } catch (final XMLSecurityException e) {
                                 throw new XMLStreamException(e);
                             }
                         }

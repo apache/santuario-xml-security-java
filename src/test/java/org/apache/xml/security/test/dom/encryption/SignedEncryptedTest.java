@@ -80,10 +80,10 @@ public class SignedEncryptedTest {
     @Test
     public void decryptUsingXalanTransformer() throws Exception {
         try {
-            Class<?> tf = getClass().getClassLoader().loadClass(
+            final Class<?> tf = getClass().getClassLoader().loadClass(
                     "org.apache.xalan.processor.TransformerFactoryImpl");
             secureAndVerify((TransformerFactory) tf.newInstance(), false);
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             System.out.println(
                     "org.apache.xalan.processor.TransformerFactoryImpl not found, skipping test");
         }
@@ -107,39 +107,39 @@ public class SignedEncryptedTest {
         }
 
         // Set up the Key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
 
-        XMLSignature sig = new XMLSignature(document, "", XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1,
+        final XMLSignature sig = new XMLSignature(document, "", XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1,
                 Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
-        Element sigElement = sig.getElement();
+        final Element sigElement = sig.getElement();
         document.getDocumentElement().appendChild(sigElement);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        Element element =
+        final Element element =
                 (Element) xpath.evaluate("//*[local-name()='Body']", document, XPathConstants.NODE);
 
-        String id = UUID.randomUUID().toString();
+        final String id = UUID.randomUUID().toString();
         element.setAttributeNS(null, "Id", id);
         element.setIdAttributeNS(null, "Id", true);
 
-        Transforms transforms = new Transforms(document);
+        final Transforms transforms = new Transforms(document);
         transforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         sig.addDocument("#" + id, transforms, Constants.ALGO_ID_DIGEST_SHA1);
 
         sig.addKeyInfo(pub);
         sig.sign(priv);
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey secretKey = keygen.generateKey();
+        final SecretKey secretKey = keygen.generateKey();
 
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128);
         cipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
 
         document = cipher.doFinal(document, element, true);
@@ -148,8 +148,8 @@ public class SignedEncryptedTest {
         if (useDocumentSerializer) {
             deCipher = XMLCipher.getInstance(new DocumentSerializer(true), XMLCipher.AES_128);
         } else {
-            TransformSerializer serializer = new TransformSerializer(true);
-            Field f = serializer.getClass().getDeclaredField("transformerFactory");
+            final TransformSerializer serializer = new TransformSerializer(true);
+            final Field f = serializer.getClass().getDeclaredField("transformerFactory");
             f.setAccessible(true);
             f.set(serializer, transformerFactory);
             deCipher = XMLCipher.getInstance(serializer, XMLCipher.AES_128);
@@ -157,7 +157,7 @@ public class SignedEncryptedTest {
         deCipher.init(XMLCipher.DECRYPT_MODE, secretKey);
         deCipher.doFinal(document, element, true);
 
-        XMLSignature xmlSignatureVerifier = new XMLSignature(sigElement, "");
+        final XMLSignature xmlSignatureVerifier = new XMLSignature(sigElement, "");
         assertTrue(xmlSignatureVerifier.checkSignatureValue(pub));
     }
 }

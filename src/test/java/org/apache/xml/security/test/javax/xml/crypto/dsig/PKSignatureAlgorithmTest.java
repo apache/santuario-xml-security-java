@@ -92,13 +92,13 @@ public class PKSignatureAlgorithmTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -111,7 +111,7 @@ public class PKSignatureAlgorithmTest {
         // for marshalling ECKeyValue elements
         try {
             AlgorithmParameters.getInstance("EC");
-        } catch (NoSuchAlgorithmException nsae) {
+        } catch (final NoSuchAlgorithmException nsae) {
             ecAlgParamsSupport = false;
         }
 
@@ -136,7 +136,7 @@ public class PKSignatureAlgorithmTest {
         rsaSha384Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1", null);
         rsaSha512Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1", null);
         rsaPss = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#rsa-pss", null);
-        RSAPSSParameterSpec params = new RSAPSSParameterSpec();
+        final RSAPSSParameterSpec params = new RSAPSSParameterSpec();
         params.setTrailerField(1);
         params.setSaltLength(64);
         params.setDigestName("SHA-512");
@@ -151,19 +151,19 @@ public class PKSignatureAlgorithmTest {
 
         kvks = new KeySelectors.KeyValueKeySelector();
 
-        KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
+        final KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
 
-        KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
+        final KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
         ecKpg.initialize(256);
         ecKeyPair = ecKpg.genKeyPair();
 
-        KeyInfoFactory kifac = fac.getKeyInfoFactory();
+        final KeyInfoFactory kifac = fac.getKeyInfoFactory();
         rsaki = kifac.newKeyInfo(Collections.singletonList
                                  (kifac.newKeyValue(rsaKeyPair.getPublic())), "DSig.KeyInfo_1");
 
-        boolean isIBM = "IBM Corporation".equals(System.getProperty("java.vendor"));
+        final boolean isIBM = "IBM Corporation".equals(System.getProperty("java.vendor"));
         if (!isIBM) {
             ecki = kifac.newKeyInfo(Collections.singletonList
                                 (kifac.newKeyValue(ecKeyPair.getPublic())), "DSig.KeyInfo_1");
@@ -310,29 +310,29 @@ public class PKSignatureAlgorithmTest {
     ) throws Exception {
 
         // create reference
-        Reference ref = fac.newReference("#DSig.Object_1", dm, null,
+        final Reference ref = fac.newReference("#DSig.Object_1", dm, null,
                                          XMLObject.TYPE, null);
 
-        Reference ref2 = fac.newReference("#DSig.KeyInfo_1", dm, null,
+        final Reference ref2 = fac.newReference("#DSig.KeyInfo_1", dm, null,
                 null, null);
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(withoutComments, sm,
+        final SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                 Arrays.asList(ref, ref2));
 
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
         // create Objects
-        Element webElem = doc.createElementNS(null, "Web");
-        Text text = doc.createTextNode("up up and away");
+        final Element webElem = doc.createElementNS(null, "Web");
+        final Text text = doc.createTextNode("up up and away");
         webElem.appendChild(text);
-        XMLObject obj = fac.newXMLObject(Collections.singletonList
+        final XMLObject obj = fac.newXMLObject(Collections.singletonList
                                          (new DOMStructure(webElem)), "DSig.Object_1", "text/xml", null);
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature
+        final XMLSignature sig = fac.newXMLSignature
         (si, ki, Collections.singletonList(obj), null, null);
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, doc);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, doc);
         dsc.setDefaultNamespacePrefix("dsig");
 
         sig.sign(dsc);
@@ -340,8 +340,8 @@ public class PKSignatureAlgorithmTest {
 
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 
-        DOMValidateContext dvc = new DOMValidateContext(ks, doc.getDocumentElement());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final DOMValidateContext dvc = new DOMValidateContext(ks, doc.getDocumentElement());
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));

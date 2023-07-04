@@ -45,7 +45,7 @@ public class FinalOutputProcessor extends AbstractOutputProcessor {
         setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         try {
             xmlEventWriter = new XMLSecurityEventWriter(XMLSecurityConstants.xmlOutputFactory.createXMLStreamWriter(outputStream, encoding));
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -66,7 +66,7 @@ public class FinalOutputProcessor extends AbstractOutputProcessor {
         try {
             xmlEventWriter.flush();
             xmlEventWriter.close();
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             throw new XMLSecurityException(e);
         }
     }

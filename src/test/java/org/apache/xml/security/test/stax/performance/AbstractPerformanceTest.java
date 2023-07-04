@@ -72,7 +72,7 @@ public abstract class AbstractPerformanceTest {
 
     @BeforeAll
     public static void genKey() throws Exception {
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
         encryptionSymKey = keygen.generateKey();
     }
@@ -85,7 +85,7 @@ public abstract class AbstractPerformanceTest {
 
         org.apache.xml.security.Init.init();
 
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
@@ -101,18 +101,18 @@ public abstract class AbstractPerformanceTest {
     }
 
     protected File generateLargeXMLFile(int factor) throws Exception {
-        File path = getTmpFilePath();
+        final File path = getTmpFilePath();
         path.mkdirs();
-        File target = new File(path, "tmp.xml");
+        final File target = new File(path, "tmp.xml");
         FileWriter fileWriter = new FileWriter(target, false);
         fileWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<test xmlns=\"http://www.example.com\">");
         fileWriter.close();
-        FileOutputStream fileOutputStream = new FileOutputStream(target, true);
+        final FileOutputStream fileOutputStream = new FileOutputStream(target, true);
         for (int i = 0; i < factor; i++) {
             int read = 0;
-            byte[] buffer = new byte[4096];
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(
+            final byte[] buffer = new byte[4096];
+            final InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(
                     "org/w3c/www/interop/xmlenc-core-11/plaintext.xml");
             while ((read = inputStream.read(buffer)) != -1) {
                 fileOutputStream.write(buffer, 0, read);
@@ -130,8 +130,8 @@ public abstract class AbstractPerformanceTest {
 
     protected int countXMLStartTags(File file) throws Exception {
         int i = 0;
-        FileInputStream fileInputStream = new FileInputStream(file);
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(fileInputStream);
+        final FileInputStream fileInputStream = new FileInputStream(file);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(fileInputStream);
         while (xmlStreamReader.hasNext()) {
             xmlStreamReader.next();
             if (XMLStreamConstants.START_ELEMENT == xmlStreamReader.getEventType()) {
@@ -146,8 +146,8 @@ public abstract class AbstractPerformanceTest {
     protected abstract File getTmpFilePath();
 
     protected void setUpOutboundSignatureXMLSec() throws XMLSecurityException {
-        XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         xmlSecurityProperties.setActions(actions);
         xmlSecurityProperties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier);
@@ -156,7 +156,7 @@ public abstract class AbstractPerformanceTest {
         xmlSecurityProperties.setSignatureCerts(new X509Certificate[]{cert});
         xmlSecurityProperties.setSignatureCanonicalizationAlgorithm("http://www.w3.org/TR/2001/REC-xml-c14n-20010315");
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("http://www.example.com", "test"),
                 SecurePart.Modifier.Element,
                 new String[]{
@@ -171,20 +171,20 @@ public abstract class AbstractPerformanceTest {
     }
 
     protected void setUpInboundSignatureXMLSec() throws XMLSecurityException {
-        XMLSecurityProperties inboundProperties = new XMLSecurityProperties();
+        final XMLSecurityProperties inboundProperties = new XMLSecurityProperties();
         inboundProperties.setSignatureVerificationKey(cert.getPublicKey());
         inboundSignatureXMLSec = XMLSec.getInboundWSSec(inboundProperties);
     }
 
     protected void setUpOutboundEncryptionXMLSec() throws XMLSecurityException {
-        XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties xmlSecurityProperties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         xmlSecurityProperties.setActions(actions);
         xmlSecurityProperties.setEncryptionKey(encryptionSymKey);
         xmlSecurityProperties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("http://www.example.com", "test"),
                 SecurePart.Modifier.Element
         );
@@ -194,7 +194,7 @@ public abstract class AbstractPerformanceTest {
     }
 
     protected void setUpInboundEncryptionXMLSec() throws XMLSecurityException {
-        XMLSecurityProperties inboundProperties = new XMLSecurityProperties();
+        final XMLSecurityProperties inboundProperties = new XMLSecurityProperties();
         inboundProperties.setDecryptionKey(encryptionSymKey);
         inboundDecryptionXMLSec = XMLSec.getInboundWSSec(inboundProperties);
     }
@@ -202,11 +202,11 @@ public abstract class AbstractPerformanceTest {
     protected File doStreamingSignatureOutbound(File file, int tagCount) throws Exception {
 
         final File signedFile = new File(getTmpFilePath(), "signature-stax-" + tagCount + ".xml");
-        OutputStream outputStream = new FileOutputStream(signedFile);
-        XMLStreamWriter xmlStreamWriter = outboundSignatureXMLSec.processOutMessage(outputStream, StandardCharsets.UTF_8.name());
+        final OutputStream outputStream = new FileOutputStream(signedFile);
+        final XMLStreamWriter xmlStreamWriter = outboundSignatureXMLSec.processOutMessage(outputStream, StandardCharsets.UTF_8.name());
 
-        InputStream inputStream = new FileInputStream(file);
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
+        final InputStream inputStream = new FileInputStream(file);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -218,9 +218,9 @@ public abstract class AbstractPerformanceTest {
 
     protected void doStreamingSignatureInbound(File file, int tagCount) throws Exception {
 
-        InputStream inputStream = new FileInputStream(file);
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
-        XMLStreamReader securityStreamReader = inboundSignatureXMLSec.processInMessage(xmlStreamReader);
+        final InputStream inputStream = new FileInputStream(file);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
+        final XMLStreamReader securityStreamReader = inboundSignatureXMLSec.processInMessage(xmlStreamReader);
 
         while (securityStreamReader.hasNext()) {
             securityStreamReader.next();
@@ -232,13 +232,13 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMSignatureOutbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.read(new FileInputStream(file), false);
+        final Document document = XMLUtils.read(new FileInputStream(file), false);
 
-        XMLSignature sig = new XMLSignature(document, "", "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
-        Element root = document.getDocumentElement();
+        final XMLSignature sig = new XMLSignature(document, "", "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
+        final Element root = document.getDocumentElement();
         root.insertBefore(sig.getElement(), root.getFirstChild());
 
-        Transforms transforms = new Transforms(document);
+        final Transforms transforms = new Transforms(document);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_OMIT_COMMENTS);
         sig.addDocument("", transforms, "http://www.w3.org/2000/09/xmldsig#sha1");
@@ -251,22 +251,22 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMSignatureInbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.read(new FileInputStream(file), false);
+        final Document document = XMLUtils.read(new FileInputStream(file), false);
 
-        Element signatureElement = (Element) document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Signature").item(0);
+        final Element signatureElement = (Element) document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Signature").item(0);
         ((Element) signatureElement.getParentNode()).setIdAttributeNS(null, "Id", true);
-        XMLSignature xmlSignature = new XMLSignature(signatureElement, "", true);
+        final XMLSignature xmlSignature = new XMLSignature(signatureElement, "", true);
         xmlSignature.checkSignatureValue(cert);
     }
 
     protected File doStreamingEncryptionOutbound(File file, int tagCount) throws Exception {
 
         final File signedFile = new File(getTmpFilePath(), "encryption-stax-" + tagCount + ".xml");
-        OutputStream outputStream = new FileOutputStream(signedFile);
-        XMLStreamWriter xmlStreamWriter = outboundEncryptionXMLSec.processOutMessage(outputStream, StandardCharsets.UTF_8.name());
+        final OutputStream outputStream = new FileOutputStream(signedFile);
+        final XMLStreamWriter xmlStreamWriter = outboundEncryptionXMLSec.processOutMessage(outputStream, StandardCharsets.UTF_8.name());
 
-        InputStream inputStream = new FileInputStream(file);
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
+        final InputStream inputStream = new FileInputStream(file);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -278,9 +278,9 @@ public abstract class AbstractPerformanceTest {
 
     protected void doStreamingDecryptionInbound(File file, int tagCount) throws Exception {
 
-        InputStream inputStream = new FileInputStream(file);
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
-        XMLStreamReader securityStreamReader = inboundDecryptionXMLSec.processInMessage(xmlStreamReader);
+        final InputStream inputStream = new FileInputStream(file);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
+        final XMLStreamReader securityStreamReader = inboundDecryptionXMLSec.processInMessage(xmlStreamReader);
 
         while (securityStreamReader.hasNext()) {
             securityStreamReader.next();
@@ -294,7 +294,7 @@ public abstract class AbstractPerformanceTest {
 
         Document document = XMLUtils.read(new FileInputStream(file), false);
 
-        XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
+        final XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         cipher.init(XMLCipher.ENCRYPT_MODE, encryptionSymKey);
         document = cipher.doFinal(document, document.getDocumentElement());
 
@@ -303,9 +303,9 @@ public abstract class AbstractPerformanceTest {
 
     protected void doDOMDecryptionInbound(File file, int tagCount) throws Exception {
 
-        Document document = XMLUtils.read(new FileInputStream(file), false);
+        final Document document = XMLUtils.read(new FileInputStream(file), false);
 
-        XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
+        final XMLCipher cipher = XMLCipher.getInstance("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         cipher.init(XMLCipher.DECRYPT_MODE, encryptionSymKey);
         cipher.doFinal(document, document.getDocumentElement());
     }

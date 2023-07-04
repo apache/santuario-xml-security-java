@@ -69,13 +69,13 @@ public class HMACSignatureAlgorithmTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -90,16 +90,16 @@ public class HMACSignatureAlgorithmTest {
     @Test
     public void testHMACSHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign("http://www.w3.org/2000/09/xmldsig#hmac-sha1", document, localNames, key);
@@ -110,16 +110,16 @@ public class HMACSignatureAlgorithmTest {
     @Test
     public void testHMACMD5() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-md5");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-md5");
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-md5", document, localNames, key);
@@ -130,16 +130,16 @@ public class HMACSignatureAlgorithmTest {
     @Test
     public void testHMACSHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224");
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha224", document, localNames, key);
@@ -150,16 +150,16 @@ public class HMACSignatureAlgorithmTest {
     @Test
     public void testHMACSHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256");
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha256", document, localNames, key);
@@ -170,16 +170,16 @@ public class HMACSignatureAlgorithmTest {
     @Test
     public void testHMACSHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384");
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha384", document, localNames, key);
@@ -190,16 +190,16 @@ public class HMACSignatureAlgorithmTest {
     @Test
     public void testHMACSHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512");
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-sha512", document, localNames, key);
@@ -212,16 +212,16 @@ public class HMACSignatureAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160");
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160");
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign("http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160", document, localNames, key);
@@ -235,38 +235,38 @@ public class HMACSignatureAlgorithmTest {
         List<String> localNames,
         Key signingKey
     ) throws Exception {
-        String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
-        XMLSignature sig = new XMLSignature(document, "", algorithm, c14nMethod);
+        final String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        final XMLSignature sig = new XMLSignature(document, "", algorithm, c14nMethod);
 
-        Element root = document.getDocumentElement();
+        final Element root = document.getDocumentElement();
         root.appendChild(sig.getElement());
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        for (String localName : localNames) {
-            String expression = "//*[local-name()='" + localName + "']";
-            NodeList elementsToSign =
+        for (final String localName : localNames) {
+            final String expression = "//*[local-name()='" + localName + "']";
+            final NodeList elementsToSign =
                     (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < elementsToSign.getLength(); i++) {
-                Element elementToSign = (Element)elementsToSign.item(i);
+                final Element elementToSign = (Element)elementsToSign.item(i);
                 assertNotNull(elementToSign);
-                String id = UUID.randomUUID().toString();
+                final String id = UUID.randomUUID().toString();
                 elementToSign.setAttributeNS(null, "Id", id);
                 elementToSign.setIdAttributeNS(null, "Id", true);
 
-                Transforms transforms = new Transforms(document);
+                final Transforms transforms = new Transforms(document);
                 transforms.addTransform(c14nMethod);
-                String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
+                final String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
                 sig.addDocument("#" + id, transforms, digestMethod);
             }
         }
 
         sig.sign(signingKey);
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
 
@@ -287,24 +287,24 @@ public class HMACSignatureAlgorithmTest {
         List<String> localNames,
         boolean secureValidation
     ) throws Exception {
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//dsig:Signature[1]";
-        Element sigElement =
+        final Element sigElement =
             (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
 
-        for (String name : localNames) {
+        for (final String name : localNames) {
             expression = "//*[local-name()='" + name + "']";
-            Element signedElement =
+            final Element signedElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
-        XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
+        final XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
 
         assertTrue(signature.checkSignatureValue(key));
     }

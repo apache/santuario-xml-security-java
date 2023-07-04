@@ -65,7 +65,7 @@ public class VersionTest {
 
         version = convertVersion(version);
 
-        double versionD = Double.parseDouble(version);
+        final double versionD = Double.parseDouble(version);
         assertTrue(versionD == provider.getVersion());
 
         assertTrue(provider.getInfo().contains("Santuario"));
@@ -79,16 +79,16 @@ public class VersionTest {
     private String convertVersion(String version) {
 
         // Remove the "-SNAPSHOT" version if it exists
-        int dash = version.indexOf('-');
+        final int dash = version.indexOf('-');
         if (dash != -1) {
             version = version.substring(0, dash);
         }
 
         // Remove the second decimal point if it exists
-        int lastDot = version.lastIndexOf('.');
+        final int lastDot = version.lastIndexOf('.');
         if (version.indexOf('.') != lastDot) {
-            String prefix = version.substring(0, lastDot);
-            String suffix = version.substring(lastDot + 1, version.length());
+            final String prefix = version.substring(0, lastDot);
+            final String suffix = version.substring(lastDot + 1, version.length());
             version = prefix.concat(suffix);
         }
 

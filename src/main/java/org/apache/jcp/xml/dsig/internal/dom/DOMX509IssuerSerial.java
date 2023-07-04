@@ -74,10 +74,10 @@ public final class DOMX509IssuerSerial extends DOMStructure
      * @param isElem an X509IssuerSerial element
      */
     public DOMX509IssuerSerial(Element isElem) throws MarshalException {
-        Element iNElem = DOMUtils.getFirstChildElement(isElem,
+        final Element iNElem = DOMUtils.getFirstChildElement(isElem,
                                                        "X509IssuerName",
                                                        XMLSignature.XMLNS);
-        Element sNElem = DOMUtils.getNextSiblingElement(iNElem,
+        final Element sNElem = DOMUtils.getNextSiblingElement(iNElem,
                                                         "X509SerialNumber",
                                                         XMLSignature.XMLNS);
         issuerName = iNElem.getFirstChild().getNodeValue();
@@ -98,13 +98,13 @@ public final class DOMX509IssuerSerial extends DOMStructure
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
-        Element isElem = DOMUtils.createElement(ownerDoc, "X509IssuerSerial",
+        final Element isElem = DOMUtils.createElement(ownerDoc, "X509IssuerSerial",
                                                 XMLSignature.XMLNS, dsPrefix);
-        Element inElem = DOMUtils.createElement(ownerDoc, "X509IssuerName",
+        final Element inElem = DOMUtils.createElement(ownerDoc, "X509IssuerName",
                                                 XMLSignature.XMLNS, dsPrefix);
-        Element snElem = DOMUtils.createElement(ownerDoc, "X509SerialNumber",
+        final Element snElem = DOMUtils.createElement(ownerDoc, "X509SerialNumber",
                                                 XMLSignature.XMLNS, dsPrefix);
         inElem.appendChild(ownerDoc.createTextNode(issuerName));
         snElem.appendChild(ownerDoc.createTextNode(serialNumber.toString()));
@@ -121,7 +121,7 @@ public final class DOMX509IssuerSerial extends DOMStructure
         if (!(obj instanceof X509IssuerSerial)) {
             return false;
         }
-        X509IssuerSerial ois = (X509IssuerSerial)obj;
+        final X509IssuerSerial ois = (X509IssuerSerial)obj;
         return issuerName.equals(ois.getIssuerName()) &&
                 serialNumber.equals(ois.getSerialNumber());
     }

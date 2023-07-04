@@ -144,18 +144,18 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
         byte[] pgpKeyId = null;
         byte[] pgpKeyPacket = null;
 
-        List<XMLStructure> other = new ArrayList<>();
+        final List<XMLStructure> other = new ArrayList<>();
         Node firstChild = pdElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElem = (Element)firstChild;
-                String localName = childElem.getLocalName();
-                String namespace = childElem.getNamespaceURI();
+                final Element childElem = (Element)firstChild;
+                final String localName = childElem.getLocalName();
+                final String namespace = childElem.getNamespaceURI();
                 if ("PGPKeyID".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
-                    String content = XMLUtils.getFullTextChildrenFromNode(childElem);
+                    final String content = XMLUtils.getFullTextChildrenFromNode(childElem);
                     pgpKeyId = XMLUtils.decode(content);
                 } else if ("PGPKeyPacket".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
-                    String content = XMLUtils.getFullTextChildrenFromNode(childElem);
+                    final String content = XMLUtils.getFullTextChildrenFromNode(childElem);
                     pgpKeyPacket = XMLUtils.decode(content);
                 } else {
                     other.add
@@ -188,13 +188,13 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
-        Element pdElem = DOMUtils.createElement(ownerDoc, "PGPData",
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Element pdElem = DOMUtils.createElement(ownerDoc, "PGPData",
                                                 XMLSignature.XMLNS, dsPrefix);
 
         // create and append PGPKeyID element
         if (keyId != null) {
-            Element keyIdElem = DOMUtils.createElement(ownerDoc, "PGPKeyID",
+            final Element keyIdElem = DOMUtils.createElement(ownerDoc, "PGPKeyID",
                                                        XMLSignature.XMLNS,
                                                        dsPrefix);
             keyIdElem.appendChild
@@ -204,7 +204,7 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
 
         // create and append PGPKeyPacket element
         if (keyPacket != null) {
-            Element keyPktElem = DOMUtils.createElement(ownerDoc,
+            final Element keyPktElem = DOMUtils.createElement(ownerDoc,
                                                         "PGPKeyPacket",
                                                         XMLSignature.XMLNS,
                                                         dsPrefix);
@@ -214,7 +214,7 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
         }
 
         // create and append any elements
-        for (XMLStructure extElem : externalElements) {
+        for (final XMLStructure extElem : externalElements) {
             DOMUtils.appendChild(pdElem, ((javax.xml.crypto.dom.DOMStructure)
                 extElem).getNode());
         }
@@ -237,7 +237,7 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
                                                "3 bytes long");
         }
 
-        int tag = keyPacket[0];
+        final int tag = keyPacket[0];
         // first bit must be set
         if ((tag & 128) != 128) {
             throw new IllegalArgumentException("keypacket tag is invalid: " +

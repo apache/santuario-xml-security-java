@@ -149,14 +149,14 @@ public class SignatureAlgorithm extends Algorithm {
         super(element, baseURI);
         algorithmURI = this.getURI();
 
-        Attr attr = element.getAttributeNodeNS(null, "Id");
+        final Attr attr = element.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             element.setIdAttributeNode(attr, true);
         }
 
         if (secureValidation && (XMLSignature.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5.equals(algorithmURI)
             || XMLSignature.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5.equals(algorithmURI))) {
-            Object[] exArgs = { algorithmURI };
+            final Object[] exArgs = { algorithmURI };
 
             throw new XMLSecurityException("signature.signatureAlgorithm", exArgs);
         }
@@ -171,19 +171,19 @@ public class SignatureAlgorithm extends Algorithm {
     private static SignatureAlgorithmSpi getSignatureAlgorithmSpi(String algorithmURI, Provider provider)
         throws XMLSignatureException {
         try {
-            Class<? extends SignatureAlgorithmSpi> implementingClass = algorithmHash.get(algorithmURI);
+            final Class<? extends SignatureAlgorithmSpi> implementingClass = algorithmHash.get(algorithmURI);
             LOG.debug("Create URI \"{}\" class \"{}\"", algorithmURI, implementingClass);
             if (implementingClass == null) {
-                Object[] exArgs = { algorithmURI };
+                final Object[] exArgs = { algorithmURI };
                 throw new XMLSignatureException("algorithms.NoSuchAlgorithmNoEx", exArgs);
             }
 
             if (provider != null) {
                 try {
-                    Constructor<? extends SignatureAlgorithmSpi> constructor = implementingClass.getConstructor(Provider.class);
+                    final Constructor<? extends SignatureAlgorithmSpi> constructor = implementingClass.getConstructor(Provider.class);
                     return constructor.newInstance(provider);
 
-                } catch (NoSuchMethodException e) {
+                } catch (final NoSuchMethodException e) {
                     LOG.warn("Class \"{}\" does not have a constructor with Provider", implementingClass);
                 }
             }
@@ -191,7 +191,7 @@ public class SignatureAlgorithm extends Algorithm {
             return JavaUtils.newInstanceWithEmptyConstructor(implementingClass);
 
         }  catch (IllegalAccessException | InstantiationException | InvocationTargetException | NullPointerException ex) {
-            Object[] exArgs = { algorithmURI, ex.getMessage() };
+            final Object[] exArgs = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -364,20 +364,20 @@ public class SignatureAlgorithm extends Algorithm {
         LOG.debug("Try to register {} {}", algorithmURI, implementingClass);
 
         // are we already registered?
-        Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);
+        final Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);
         if (registeredClass != null) {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            final Object[] exArgs = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException(
                 "algorithm.alreadyRegistered", exArgs
             );
         }
         try {
-            Class<? extends SignatureAlgorithmSpi> clazz =
+            final Class<? extends SignatureAlgorithmSpi> clazz =
                 (Class<? extends SignatureAlgorithmSpi>)
                     ClassLoaderUtils.loadClass(implementingClass, SignatureAlgorithm.class);
             algorithmHash.put(algorithmURI, clazz);
-        } catch (NullPointerException ex) {
-            Object[] exArgs = { algorithmURI, ex.getMessage() };
+        } catch (final NullPointerException ex) {
+            final Object[] exArgs = { algorithmURI, ex.getMessage() };
             throw new XMLSignatureException(ex, "algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -400,9 +400,9 @@ public class SignatureAlgorithm extends Algorithm {
         LOG.debug("Try to register {} {}", algorithmURI, implementingClass);
 
         // are we already registered?
-        Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);
+        final Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);
         if (registeredClass != null) {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            final Object[] exArgs = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException(
                 "algorithm.alreadyRegistered", exArgs
             );

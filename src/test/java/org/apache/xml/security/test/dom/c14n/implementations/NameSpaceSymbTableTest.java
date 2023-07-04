@@ -39,23 +39,23 @@ public class NameSpaceSymbTableTest {
     static Attr node1, node2;
     static {
         try {
-            Document doc = TestUtils.newDocument();
+            final Document doc = TestUtils.newDocument();
             node1 = doc.createAttributeNS("a","b");
             node2 = doc.createAttributeNS("b","c");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // e.printStackTrace();
         }
     }
 
     @Test
     public void testNullFirstXmlns() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         assertNull(ns.getMapping("xmlns"));
     }
 
     @Test
     public void testXmlnsPut() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
@@ -63,7 +63,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testXmlnsMap() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
@@ -73,7 +73,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testXmlnsMap2() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
@@ -84,7 +84,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testXmlnsPrefix() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
@@ -98,7 +98,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testXmlnsRemovePrefix() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
@@ -109,7 +109,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testPrefix() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a", node1);
         assertEquals(node1, ns.getMapping("a"));
@@ -127,7 +127,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testSeveralPrefixes() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a",node1);
         ns.addMapping("b", "http://b",node2);
@@ -139,7 +139,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testSeveralPrefixes2() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a",node1);
         ns.push();
@@ -150,23 +150,23 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testGetUnrenderedNodes() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
-        List<Attr> l = new ArrayList<>();
+        final List<Attr> l = new ArrayList<>();
         ns.addMapping("xmlns", "http://a", node1);
         ns.push();
         ns.getUnrenderedNodes(l);
         assertTrue(l.contains(node1));
-        Attr n = (Attr)ns.addMappingAndRender("xmlns", "", node2);
+        final Attr n = (Attr)ns.addMappingAndRender("xmlns", "", node2);
         assertNotNull(n, "xmlns=\"\" not rendered");
         assertEquals(n, node2);
     }
 
     @Test
     public void testUnrederedNodes() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
-        List<Attr> l = new ArrayList<>();
+        final List<Attr> l = new ArrayList<>();
         ns.getUnrenderedNodes(l);
         assertTrue(l.isEmpty());
         l.clear();
@@ -194,7 +194,7 @@ public class NameSpaceSymbTableTest {
 
     @Test
     public void testBug38655() {
-        NameSpaceSymbTable ns = new NameSpaceSymbTable();
+        final NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
 
         ns.addMappingAndRender("generated-command", "http://foo.com/command",node1);

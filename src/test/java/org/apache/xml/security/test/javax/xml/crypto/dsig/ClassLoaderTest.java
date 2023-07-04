@@ -45,19 +45,19 @@ public class ClassLoaderTest {
 
     @Test
     public void testMultipleLoaders() throws Exception {
-        File file0 = resolveFile("build", "classes");
-        File file1 = resolveFile("build", "test");
-        URL[] urls = new URL[2];
+        final File file0 = resolveFile("build", "classes");
+        final File file1 = resolveFile("build", "test");
+        final URL[] urls = new URL[2];
         urls[0] = file0.toURI().toURL();
         urls[1] = file1.toURI().toURL();
         try (URLClassLoader uc1 = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
             URLClassLoader uc2 = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader())) {
-            Class<?> c1 = uc1.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.Driver");
-            Class<?> c2 = uc2.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.Driver");
-            Object o1 = c1.getDeclaredConstructor().newInstance();
-            Object o2 = c2.getDeclaredConstructor().newInstance();
-            Method m1 = c1.getMethod("dsig", (Class[]) null);
-            Method m2 = c2.getMethod("dsig", (Class[]) null);
+            final Class<?> c1 = uc1.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.Driver");
+            final Class<?> c2 = uc2.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.Driver");
+            final Object o1 = c1.getDeclaredConstructor().newInstance();
+            final Object o2 = c2.getDeclaredConstructor().newInstance();
+            final Method m1 = c1.getMethod("dsig", (Class[]) null);
+            final Method m2 = c2.getMethod("dsig", (Class[]) null);
             m1.invoke(o1, (Object[]) null);
             m2.invoke(o2, (Object[]) null);
         }
@@ -65,9 +65,9 @@ public class ClassLoaderTest {
 
     @Test
     public void testProviderMultipleLoaders() throws Exception {
-        File file0 = resolveFile("build", "classes");
-        File file1 = resolveFile("build", "test");
-        URL[] urls = new URL[2];
+        final File file0 = resolveFile("build", "classes");
+        final File file1 = resolveFile("build", "test");
+        final URL[] urls = new URL[2];
         urls[0] = file0.toURI().toURL();
         urls[1] = file1.toURI().toURL();
 
@@ -79,38 +79,38 @@ public class ClassLoaderTest {
             // get the provider from java.security.Security using URLClassLoader.
             // Need to use introspection to invoke methods to avoid using the
             // current class loader
-            String factoryName = "javax.xml.crypto.dsig.XMLSignatureFactory";
-            Class<?> factoryClass = uc1.loadClass(factoryName);
-            Method factoryMethod = factoryClass.getDeclaredMethod("getInstance", new Class[] {String.class});
-            Class<?> methodParameterClass = uc1.loadClass("javax.xml.crypto.dsig.spec.C14NMethodParameterSpec");
-            Method canonicalizationMethod = factoryClass.getDeclaredMethod("newCanonicalizationMethod",
+            final String factoryName = "javax.xml.crypto.dsig.XMLSignatureFactory";
+            final Class<?> factoryClass = uc1.loadClass(factoryName);
+            final Method factoryMethod = factoryClass.getDeclaredMethod("getInstance", new Class[] {String.class});
+            final Class<?> methodParameterClass = uc1.loadClass("javax.xml.crypto.dsig.spec.C14NMethodParameterSpec");
+            final Method canonicalizationMethod = factoryClass.getDeclaredMethod("newCanonicalizationMethod",
                 new Class[] {String.class, methodParameterClass});
-            Object factory = factoryMethod.invoke(null, "DOM");
-            long start = System.currentTimeMillis();
+            final Object factory = factoryMethod.invoke(null, "DOM");
+            final long start = System.currentTimeMillis();
             for (int i = 0; i < 100; i++) {
                 canonicalizationMethod.invoke(factory, new Object[] {CanonicalizationMethod.EXCLUSIVE, null});
             }
-            long end = System.currentTimeMillis();
-            long elapsed = end-start;
+            final long end = System.currentTimeMillis();
+            final long elapsed = end-start;
             LOG.debug("Elapsed: {}", elapsed);
         }
     }
 
     @Test
     public void testProviderMultipleLoadersTwo() throws Exception {
-        File file0 = resolveFile("build", "classes");
-        File file1 = resolveFile("build", "test");
-        URL[] urls = new URL[2];
+        final File file0 = resolveFile("build", "classes");
+        final File file1 = resolveFile("build", "test");
+        final URL[] urls = new URL[2];
         urls[0] = file0.toURI().toURL();
         urls[1] = file1.toURI().toURL();
         try (URLClassLoader uc1 = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader());
             URLClassLoader uc2 = new URLClassLoader(urls, Thread.currentThread().getContextClassLoader())) {
-            Class<?> c1 = uc1.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.AppA");
-            Class<?> c2 = uc2.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.AppB");
-            Object o1 = c1.getDeclaredConstructor().newInstance();
-            Object o2 = c2.getDeclaredConstructor().newInstance();
-            Method m1 = c1.getMethod("dsig", (Class[]) null);
-            Method m2 = c2.getMethod("dsig", (Class[]) null);
+            final Class<?> c1 = uc1.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.AppA");
+            final Class<?> c2 = uc2.loadClass("org.apache.xml.security.test.javax.xml.crypto.dsig.AppB");
+            final Object o1 = c1.getDeclaredConstructor().newInstance();
+            final Object o2 = c2.getDeclaredConstructor().newInstance();
+            final Method m1 = c1.getMethod("dsig", (Class[]) null);
+            final Method m2 = c2.getMethod("dsig", (Class[]) null);
             m1.invoke(o1, (Object[]) null);
             m2.invoke(o2, (Object[]) null);
         }

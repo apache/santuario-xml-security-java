@@ -67,7 +67,7 @@ public class TransformEnvelopedSignature extends TransformSpi {
          * (including comments) in the node-set representing the octet stream.
          */
 
-        Node signatureElement = searchSignatureElement(transformElement);
+        final Node signatureElement = searchSignatureElement(transformElement);
         input.setExcludeNode(signatureElement);
         try {
             input.addNodeFilter(new EnvelopedNodeFilter(signatureElement));
@@ -91,7 +91,7 @@ public class TransformEnvelopedSignature extends TransformSpi {
                 || signatureElement.getNodeType() == Node.DOCUMENT_NODE) {
                 break;
             }
-            Element el = (Element) signatureElement;
+            final Element el = (Element) signatureElement;
             if (el.getNamespaceURI().equals(Constants.SignatureSpecNS)
                 && el.getLocalName().equals(Constants._TAG_SIGNATURE)) {
                 found = true;

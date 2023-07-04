@@ -62,7 +62,7 @@ public final class DOMCryptoBinary extends DOMStructure {
         }
         this.bigNum = bigNum;
         // convert to bitstring
-        byte[] bytes = XMLUtils.getBytes(bigNum, bigNum.bitLength());
+        final byte[] bytes = XMLUtils.getBytes(bigNum, bigNum.bitLength());
         value = XMLUtils.encodeToString(bytes);
     }
 
@@ -76,7 +76,7 @@ public final class DOMCryptoBinary extends DOMStructure {
         value = cbNode.getNodeValue();
         try {
             bigNum = new BigInteger(1, XMLUtils.decode(((Text) cbNode).getData()));
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new MarshalException(ex);
         }
     }

@@ -62,16 +62,16 @@ public class XMLSecurityStreamWriterTest {
 
     @Test
     public void testIdentityTransformResult() throws Exception {
-        StringWriter securityStringWriter = new StringWriter();
-        OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
+        final StringWriter securityStringWriter = new StringWriter();
+        final OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
+        final OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
         outputProcessorChain.addProcessor(new EventWriterProcessor(securityStringWriter));
-        XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
+        final XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
 
-        StringWriter stdStringWriter = new StringWriter();
-        XMLStreamWriter stdXmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(stdStringWriter);
+        final StringWriter stdStringWriter = new StringWriter();
+        final XMLStreamWriter stdXmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(stdStringWriter);
 
-        NamespaceContext namespaceContext = new NamespaceContext() {
+        final NamespaceContext namespaceContext = new NamespaceContext() {
             @Override
             public String getNamespaceURI(String prefix) {
                 if ("t3".equals(prefix)) {
@@ -92,7 +92,7 @@ public class XMLSecurityStreamWriterTest {
 
             @Override
             public Iterator<String> getPrefixes(String namespaceURI) {
-                List<String> ns = new ArrayList<>();
+                final List<String> ns = new ArrayList<>();
                 ns.add(getPrefix(namespaceURI));
                 return ns.iterator();
             }
@@ -195,11 +195,11 @@ public class XMLSecurityStreamWriterTest {
     // @see https://issues.apache.org/jira/browse/SANTUARIO-433
     @Test
     public void testNullPrefix() throws Exception {
-        StringWriter securityStringWriter = new StringWriter();
-        OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
+        final StringWriter securityStringWriter = new StringWriter();
+        final OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
+        final OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
         outputProcessorChain.addProcessor(new EventWriterProcessor(securityStringWriter));
-        XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
+        final XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
 
         xmlSecurityStreamWriter.writeStartElement(null, "element", "http://element.ns");
         xmlSecurityStreamWriter.writeDefaultNamespace("http://element.ns");
@@ -211,7 +211,7 @@ public class XMLSecurityStreamWriterTest {
         private final XMLEventWriter xmlEventWriter;
 
         EventWriterProcessor(Writer writer) throws Exception {
-            XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+            final XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
             xmlEventWriter = xmlOutputFactory.createXMLEventWriter(writer);
         }
 

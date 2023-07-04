@@ -79,18 +79,18 @@ public class ExclusiveC14NInteropTest {
     @Test
     public void test_Y1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream("interop/c14n/Y1/exc-signature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        Key publicKey = getPublicKey();
+        final Key publicKey = getPublicKey();
 
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -99,19 +99,19 @@ public class ExclusiveC14NInteropTest {
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDisableSchemaValidation(true);
         properties.setSignatureVerificationKey(publicKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         StAX2DOM.readDoc(securityStreamReader);
     }
 
     private static PublicKey getPublicKey()
             throws InvalidKeySpecException, NoSuchAlgorithmException {
-        KeyFactory kf = KeyFactory.getInstance("DSA");
-        KeySpec kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
+        final KeyFactory kf = KeyFactory.getInstance("DSA");
+        final KeySpec kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
                         new BigInteger(DSA_P),
                         new BigInteger(DSA_Q),
                         new BigInteger(DSA_G));

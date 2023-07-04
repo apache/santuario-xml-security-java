@@ -53,22 +53,22 @@ public class ForbiddenRefCountTest extends InteropTestBase {
 
     @Test
     public void testReferenceCount() throws Exception {
-        Document doc = getOriginalDocument();
+        final Document doc = getOriginalDocument();
         signDocument(doc, 31);
         assertTrue(verifySignature(doc, false));
 
         try {
             verifySignature(doc, true);
             fail("Failure expected when secure validation is enabled");
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             assertTrue(ex.getMessage().contains("references are contained in the Manifest"));
         }
     }
 
     private Document getOriginalDocument() throws ParserConfigurationException {
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
-        Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
+        final Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));
         doc.appendChild(rootElement);
 
@@ -76,35 +76,35 @@ public class ForbiddenRefCountTest extends InteropTestBase {
     }
 
     private void signDocument(Document doc, int refCount) throws Exception {
-        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
-        Element root = doc.getDocumentElement();
+        final XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        final Element root = doc.getDocumentElement();
         root.appendChild(sig.getElement());
 
         for (int i = 0; i < refCount; i++) {
-            Transforms transforms = new Transforms(doc);
+            final Transforms transforms = new Transforms(doc);
             transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
             transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
             sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
         }
 
-        KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
+        final KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
         sig.addKeyInfo(getPublicKey(ks));
         sig.sign(getPrivateKey(ks));
     }
 
     private boolean verifySignature(Document doc, boolean secValidation) throws XMLSignatureException, XMLSecurityException {
-        Element sigElement =
+        final Element sigElement =
             (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
                                                  Constants._TAG_SIGNATURE).item(0);
-        XMLSignature signature = new XMLSignature(sigElement, null, secValidation);
+        final XMLSignature signature = new XMLSignature(sigElement, null, secValidation);
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
 
 
     private PublicKey getPublicKey(KeyStore keyStore) throws Exception {
-        Enumeration<String> aliases = keyStore.aliases();
+        final Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
+            final String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
                 return keyStore.getCertificate(alias).getPublicKey();
             }
@@ -113,9 +113,9 @@ public class ForbiddenRefCountTest extends InteropTestBase {
     }
 
     private PrivateKey getPrivateKey(KeyStore keyStore) throws Exception {
-        Enumeration<String> aliases = keyStore.aliases();
+        final Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
+            final String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
                 return (PrivateKey) keyStore.getKey(alias, XmlSecTestEnvironment.TEST_KS_PASSWORD.toCharArray());
             }

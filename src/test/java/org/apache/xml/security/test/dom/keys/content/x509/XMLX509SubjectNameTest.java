@@ -39,16 +39,16 @@ public class XMLX509SubjectNameTest {
 
     @Test
     public void testEqualsAndHashCode() throws Exception {
-        File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+        final File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;
         try (FileInputStream fis = new FileInputStream(f)) {
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            final CertificateFactory cf = CertificateFactory.getInstance("X.509");
             cert = (X509Certificate) cf.generateCertificate(fis);
         }
 
-        XMLX509SubjectName x509SubjectName1 = new XMLX509SubjectName(TestUtils.newDocument(), cert);
+        final XMLX509SubjectName x509SubjectName1 = new XMLX509SubjectName(TestUtils.newDocument(), cert);
         assertNotNull(x509SubjectName1.getSubjectName());
-        XMLX509SubjectName x509SubjectName2 = new XMLX509SubjectName(TestUtils.newDocument(), cert);
+        final XMLX509SubjectName x509SubjectName2 = new XMLX509SubjectName(TestUtils.newDocument(), cert);
 
         assertEquals(x509SubjectName1, x509SubjectName2);
         assertEquals(x509SubjectName1.hashCode(), x509SubjectName2.hashCode());

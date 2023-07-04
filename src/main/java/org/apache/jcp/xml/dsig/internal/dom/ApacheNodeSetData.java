@@ -53,7 +53,7 @@ public class ApacheNodeSetData implements ApacheData, NodeSetData {
             }
 
             return Collections.unmodifiableSet(xi.getNodeSet()).iterator();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // should not occur
             throw new RuntimeException
                 ("unrecoverable error retrieving nodeset", e);
@@ -71,15 +71,15 @@ public class ApacheNodeSetData implements ApacheData, NodeSetData {
                 (XMLUtils.getOwnerDocument(xi.getSubNode()));
         }
 
-        Set<Node> inputSet = new LinkedHashSet<>();
+        final Set<Node> inputSet = new LinkedHashSet<>();
         XMLUtils.getSet(xi.getSubNode(), inputSet,
                         null, !xi.isExcludeComments());
-        Set<Node> nodeSet = new LinkedHashSet<>();
-        for (Node currentNode : inputSet) {
-            Iterator<NodeFilter> it = nodeFilters.iterator();
+        final Set<Node> nodeSet = new LinkedHashSet<>();
+        for (final Node currentNode : inputSet) {
+            final Iterator<NodeFilter> it = nodeFilters.iterator();
             boolean skipNode = false;
             while (it.hasNext() && !skipNode) {
-                NodeFilter nf = it.next();
+                final NodeFilter nf = it.next();
                 if (nf.isNodeInclude(currentNode) != 1) {
                     skipNode = true;
                 }

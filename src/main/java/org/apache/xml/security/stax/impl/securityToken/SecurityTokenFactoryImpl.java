@@ -80,7 +80,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
             final String keyName =
                     XMLSecurityUtils.getQNameType(keyInfoType.getContent(), XMLSecurityConstants.TAG_dsig_KeyName);
             if (keyName != null) {
-                KeyNameSecurityToken token = getSecurityToken(keyName, securityProperties, inboundSecurityContext, keyUsage);
+                final KeyNameSecurityToken token = getSecurityToken(keyName, securityProperties, inboundSecurityContext, keyUsage);
                 return token;
             }
         }
@@ -98,7 +98,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
     }
 
     private InboundSecurityToken getDefaultSecurityToken(XMLSecurityProperties securityProperties, final InboundSecurityContext inboundSecurityContext, SecurityTokenConstants.KeyUsage keyUsage) {
-        AbstractInboundSecurityToken token =
+        final AbstractInboundSecurityToken token =
                 new AbstractInboundSecurityToken(inboundSecurityContext, IDGenerator.generateID(null),
                         SecurityTokenConstants.KeyIdentifier_NoKeyInfo, false) {
                     @Override
@@ -112,14 +112,14 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
 
     private KeyNameSecurityToken getSecurityToken(String keyName, XMLSecurityProperties securityProperties, InboundSecurityContext inboundSecurityContext,
             SecurityTokenConstants.KeyUsage keyUsage) throws XMLSecurityException {
-        KeyNameSecurityToken token =
+        final KeyNameSecurityToken token =
                 new KeyNameSecurityToken(keyName, inboundSecurityContext);
 
         // This if is here to preserve the current behaviour when the SignatureVerificationKey is set
         if (SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage)
                 && securityProperties.getSignatureVerificationKey() == null) {
-            Map<String, Key> keyNameMap = securityProperties.getKeyNameMap();
-            Key key = keyNameMap.get(keyName);
+            final Map<String, Key> keyNameMap = securityProperties.getKeyNameMap();
+            final Key key = keyNameMap.get(keyName);
             if (key == null) {
                 throw new XMLSecurityException("stax.keyNotFoundForName", new Object[] {keyName});
             }
@@ -144,7 +144,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         final RSAKeyValueType rsaKeyValueType =
                 XMLSecurityUtils.getQNameType(keyValueType.getContent(), XMLSecurityConstants.TAG_dsig_RSAKeyValue);
         if (rsaKeyValueType != null) {
-            RsaKeyValueSecurityToken token =
+            final RsaKeyValueSecurityToken token =
                 new RsaKeyValueSecurityToken(rsaKeyValueType, inboundSecurityContext);
             setTokenKey(securityProperties, keyUsage, token);
             return token;
@@ -152,7 +152,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         final DSAKeyValueType dsaKeyValueType =
                 XMLSecurityUtils.getQNameType(keyValueType.getContent(), XMLSecurityConstants.TAG_dsig_DSAKeyValue);
         if (dsaKeyValueType != null) {
-            DsaKeyValueSecurityToken token =
+            final DsaKeyValueSecurityToken token =
                     new DsaKeyValueSecurityToken(dsaKeyValueType, inboundSecurityContext);
             setTokenKey(securityProperties, keyUsage, token);
             return token;
@@ -160,7 +160,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         final ECKeyValueType ecKeyValueType =
                 XMLSecurityUtils.getQNameType(keyValueType.getContent(), XMLSecurityConstants.TAG_dsig11_ECKeyValue);
         if (ecKeyValueType != null) {
-            ECKeyValueSecurityToken token =
+            final ECKeyValueSecurityToken token =
                     new ECKeyValueSecurityToken(ecKeyValueType, inboundSecurityContext);
             setTokenKey(securityProperties, keyUsage, token);
             return token;
@@ -174,18 +174,18 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                                                   SecurityTokenConstants.KeyUsage keyUsage)
             throws XMLSecurityException {
         // X509Certificate
-        byte[] certBytes =
+        final byte[] certBytes =
                 XMLSecurityUtils.getQNameType(
                         x509DataType.getX509IssuerSerialOrX509SKIOrX509SubjectName(),
                         XMLSecurityConstants.TAG_dsig_X509Certificate
                 );
         if (certBytes != null) {
-            X509Certificate cert = getCertificateFromBytes(certBytes);
+            final X509Certificate cert = getCertificateFromBytes(certBytes);
             TokenType tokenType = SecurityTokenConstants.X509V3Token;
             if (cert.getVersion() == 1) {
                 tokenType = SecurityTokenConstants.X509V1Token;
             }
-            X509SecurityToken token =
+            final X509SecurityToken token =
                     new X509SecurityToken(tokenType, inboundSecurityContext,
                             IDGenerator.generateID(null), SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier, true);
             token.setX509Certificates(new X509Certificate[]{cert});
@@ -209,7 +209,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                         && securityProperties.getDecryptionKey() == null) {
                 throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
             }
-            X509IssuerSerialSecurityToken token =
+            final X509IssuerSerialSecurityToken token =
                     new X509IssuerSerialSecurityToken(
                             SecurityTokenConstants.X509V3Token, inboundSecurityContext, IDGenerator.generateID(null));
             token.setIssuerName(issuerSerialType.getX509IssuerName());
@@ -220,7 +220,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         }
 
         // Subject Key Identifier
-        byte[] skiBytes =
+        final byte[] skiBytes =
                 XMLSecurityUtils.getQNameType(
                         x509DataType.getX509IssuerSerialOrX509SKIOrX509SubjectName(),
                         XMLSecurityConstants.TAG_dsig_X509SKI
@@ -232,7 +232,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                 && securityProperties.getDecryptionKey() == null) {
                 throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
             }
-            X509SKISecurityToken token =
+            final X509SKISecurityToken token =
                     new X509SKISecurityToken(
                             SecurityTokenConstants.X509V3Token, inboundSecurityContext, IDGenerator.generateID(null));
             token.setSkiBytes(skiBytes);
@@ -242,7 +242,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         }
 
         // Subject Name
-        String subjectName =
+        final String subjectName =
                 XMLSecurityUtils.getQNameType(
                         x509DataType.getX509IssuerSerialOrX509SKIOrX509SubjectName(),
                         XMLSecurityConstants.TAG_dsig_X509SubjectName
@@ -254,9 +254,9 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                 && securityProperties.getDecryptionKey() == null) {
                 throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
             }
-            String normalizedSubjectName =
+            final String normalizedSubjectName =
                     RFC2253Parser.normalize(subjectName);
-            X509SubjectNameSecurityToken token =
+            final X509SubjectNameSecurityToken token =
                     new X509SubjectNameSecurityToken(
                             SecurityTokenConstants.X509V3Token, inboundSecurityContext, IDGenerator.generateID(null));
             token.setSubjectName(normalizedSubjectName);
@@ -295,7 +295,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
     private static X509Certificate getCertificateFromBytes(byte[] data)
             throws XMLSecurityException {
         try (InputStream in = new UnsyncByteArrayInputStream(data)) {
-            CertificateFactory factory = CertificateFactory.getInstance("X.509");
+            final CertificateFactory factory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) factory.generateCertificate(in);
         } catch (CertificateException | IOException e) {
             throw new XMLSecurityException(e);

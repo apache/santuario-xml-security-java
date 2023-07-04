@@ -68,18 +68,18 @@ public class TransformXPath2Filter extends TransformSpi {
         String baseURI, boolean secureValidation
     ) throws TransformationException {
         try {
-            List<NodeList> unionNodes = new ArrayList<>();
-            List<NodeList> subtractNodes = new ArrayList<>();
-            List<NodeList> intersectNodes = new ArrayList<>();
+            final List<NodeList> unionNodes = new ArrayList<>();
+            final List<NodeList> subtractNodes = new ArrayList<>();
+            final List<NodeList> intersectNodes = new ArrayList<>();
 
-            Element[] xpathElements =
+            final Element[] xpathElements =
                 XMLUtils.selectNodes(
                     transformElement.getFirstChild(),
                     XPath2FilterContainer.XPathFilter2NS,
                     XPath2FilterContainer._TAG_XPATH2
                 );
             if (xpathElements.length == 0) {
-                Object[] exArgs = { Transforms.TRANSFORM_XPATH2FILTER, "XPath" };
+                final Object[] exArgs = { Transforms.TRANSFORM_XPATH2FILTER, "XPath" };
 
                 throw new TransformationException("xml.WrongContent", exArgs);
             }
@@ -91,17 +91,17 @@ public class TransformXPath2Filter extends TransformSpi {
                 inputDoc = XMLUtils.getOwnerDocument(input.getNodeSet());
             }
 
-            XPathFactory xpathFactory = getXPathFactory();
-            for (Element xpathElement : xpathElements) {
-                XPath2FilterContainer xpathContainer =
+            final XPathFactory xpathFactory = getXPathFactory();
+            for (final Element xpathElement : xpathElements) {
+                final XPath2FilterContainer xpathContainer =
                     XPath2FilterContainer.newInstance(xpathElement, input.getSourceURI());
 
-                String str =
+                final String str =
                     XMLUtils.getStrFromNode(xpathContainer.getXPathFilterTextNode());
 
-                XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
+                final XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
 
-                NodeList subtreeRoots =
+                final NodeList subtreeRoots =
                     xpathAPIInstance.selectNodeList(
                         inputDoc,
                         xpathContainer.getXPathFilterTextNode(),
@@ -237,7 +237,7 @@ class XPath2NodeFilter implements NodeFilter {
         if (nodeList.contains(currentNode)) {
             return true;
         }
-        for (Node rootNode : nodeList) {
+        for (final Node rootNode : nodeList) {
             if (XMLUtils.isDescendantOrSelf(rootNode, currentNode)) {
                 return true;
             }
@@ -257,12 +257,12 @@ class XPath2NodeFilter implements NodeFilter {
     }
 
     private static Set<Node> convertNodeListToSet(List<NodeList> l) {
-        Set<Node> result = new HashSet<>();
-        for (NodeList rootNodes : l) {
-            int length = rootNodes.getLength();
+        final Set<Node> result = new HashSet<>();
+        for (final NodeList rootNodes : l) {
+            final int length = rootNodes.getLength();
 
             for (int i = 0; i < length; i++) {
-                Node rootNode = rootNodes.item(i);
+                final Node rootNode = rootNodes.item(i);
                 result.add(rootNode);
             }
         }

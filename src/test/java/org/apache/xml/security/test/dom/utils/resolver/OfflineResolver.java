@@ -59,7 +59,7 @@ public class OfflineResolver extends ResourceResolverSpi {
         _uriMap = new HashMap<>();
         _mimeMap = new HashMap<>();
 
-        String basedir = XmlSecTestEnvironment.resolvePath(".") + "/";
+        final String basedir = XmlSecTestEnvironment.resolvePath(".") + "/";
 
         OfflineResolver.register(
             "http://www.w3.org/TR/xml-stylesheet",
@@ -100,26 +100,26 @@ public class OfflineResolver extends ResourceResolverSpi {
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
         try {
-            String URI = context.uriToResolve;
+            final String URI = context.uriToResolve;
             if (OfflineResolver._uriMap.containsKey(URI)) {
-                String newURI = OfflineResolver._uriMap.get(URI);
+                final String newURI = OfflineResolver._uriMap.get(URI);
 
                 LOG.debug("Mapped " + URI + " to " + newURI);
 
-                InputStream is = new FileInputStream(newURI);
+                final InputStream is = new FileInputStream(newURI);
 
                 LOG.debug("Available bytes = " + is.available());
 
-                XMLSignatureInput result = new XMLSignatureInput(is);
+                final XMLSignatureInput result = new XMLSignatureInput(is);
 
                 result.setSourceURI(URI);
                 result.setMIMEType(OfflineResolver._mimeMap.get(URI));
 
                 return result;
             }
-            Object[] exArgs = {"The URI " + URI + " is not configured for offline work" };
+            final Object[] exArgs = {"The URI " + URI + " is not configured for offline work" };
             throw new ResourceResolverException("generic.EmptyMessage", exArgs, context.uriToResolve, context.baseUri);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new ResourceResolverException(ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         }
     }
@@ -131,18 +131,18 @@ public class OfflineResolver extends ResourceResolverSpi {
      */
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
-        String uriNodeValue = context.uriToResolve;
+        final String uriNodeValue = context.uriToResolve;
         if (uriNodeValue.isEmpty() || uriNodeValue.charAt(0) == '#') {
             return false;
         }
 
         try {
-            URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
+            final URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
             if ("http".equals(uriNew.getScheme())) {
                 LOG.debug("I state that I can resolve " + uriNew.toString());
                 return true;
             }
-        } catch (URISyntaxException ex) {
+        } catch (final URISyntaxException ex) {
             //
         }
         return false;
@@ -170,7 +170,7 @@ public class OfflineResolver extends ResourceResolverSpi {
 
         // if the URI contains a fragment, ignore it
         if (newUri.getFragment() != null) {
-            URI uriNewNoFrag = new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
+            final URI uriNewNoFrag = new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
             return uriNewNoFrag;
         }
         return newUri;

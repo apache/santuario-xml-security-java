@@ -70,17 +70,17 @@ public class FuncHere extends Function {
     @Override
     public XObject execute(XPathContext xctxt) throws TransformerException {
 
-        Node xpathOwnerNode = (Node) xctxt.getOwnerObject();
+        final Node xpathOwnerNode = (Node) xctxt.getOwnerObject();
 
         if (xpathOwnerNode == null) {
             return null;
         }
 
-        int xpathOwnerNodeDTM = xctxt.getDTMHandleFromNode(xpathOwnerNode);
+        final int xpathOwnerNodeDTM = xctxt.getDTMHandleFromNode(xpathOwnerNode);
 
-        int currentNode = xctxt.getCurrentNode();
-        DTM dtm = xctxt.getDTM(currentNode);
-        int docContext = dtm.getDocument();
+        final int currentNode = xctxt.getCurrentNode();
+        final DTM dtm = xctxt.getDTM(currentNode);
+        final int docContext = dtm.getDocument();
 
         if (DTM.NULL == docContext) {
             error(xctxt, XPATHErrorResources.ER_CONTEXT_HAS_NO_OWNERDOC, null);
@@ -89,17 +89,17 @@ public class FuncHere extends Function {
         {
             // check whether currentNode and the node containing the XPath expression
             // are in the same document
-            Document currentDoc =
+            final Document currentDoc =
                 XMLUtils.getOwnerDocument(dtm.getNode(currentNode));
-            Document xpathOwnerDoc = XMLUtils.getOwnerDocument(xpathOwnerNode);
+            final Document xpathOwnerDoc = XMLUtils.getOwnerDocument(xpathOwnerNode);
 
             if (currentDoc != xpathOwnerDoc) {
                 throw new TransformerException(I18n.translate("xpath.funcHere.documentsDiffer"));
             }
         }
 
-        XNodeSet nodes = new XNodeSet(xctxt.getDTMManager());
-        NodeSetDTM nodeSet = nodes.mutableNodeset();
+        final XNodeSet nodes = new XNodeSet(xctxt.getDTMManager());
+        final NodeSetDTM nodeSet = nodes.mutableNodeset();
 
         {
             int hereNode = DTM.NULL;

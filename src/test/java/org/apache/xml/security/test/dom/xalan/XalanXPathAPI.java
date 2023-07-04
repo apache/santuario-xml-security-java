@@ -80,7 +80,7 @@ class XalanXPathAPI implements XPathAPI {
     ) throws TransformerException {
 
         // Execute the XPath, and have it return the result
-        XObject list = eval(contextNode, xpathnode, str, namespaceNode);
+        final XObject list = eval(contextNode, xpathnode, str, namespaceNode);
 
         // Return a NodeList.
         return list.nodelist();
@@ -96,7 +96,7 @@ class XalanXPathAPI implements XPathAPI {
     @Override
     public boolean evaluate(Node contextNode, Node xpathnode, String str, Node namespaceNode)
         throws TransformerException {
-        XObject object = eval(contextNode, xpathnode, str, namespaceNode);
+        final XObject object = eval(contextNode, xpathnode, str, namespaceNode);
         return object.bool();
     }
 
@@ -125,10 +125,10 @@ class XalanXPathAPI implements XPathAPI {
         // XPath namespaces are resolved from the input context node's document element
         // if it is a root node, or else the current context node (for lack of a better
         // resolution space, given the simplicity of this sample code).
-        Node resolverNode =
+        final Node resolverNode =
             (namespaceNode.getNodeType() == Node.DOCUMENT_NODE)
                 ? ((Document) namespaceNode).getDocumentElement() : namespaceNode;
-        PrefixResolverDefault prefixResolver = new PrefixResolverDefault(resolverNode);
+        final PrefixResolverDefault prefixResolver = new PrefixResolverDefault(resolverNode);
 
         if (!str.equals(xpathStr)) {
             if (str.indexOf("here()") > 0) {
@@ -139,21 +139,21 @@ class XalanXPathAPI implements XPathAPI {
         }
 
         // Execute the XPath, and have it return the result
-        int ctxtNode = context.getDTMHandleFromNode(contextNode);
+        final int ctxtNode = context.getDTMHandleFromNode(contextNode);
 
         return xpath.execute(context, ctxtNode, prefixResolver);
     }
 
     private XPath createXPath(String str, PrefixResolver prefixResolver) throws TransformerException {
         XPath xpath = null;
-        Class<?>[] classes = new Class<?>[]{String.class, SourceLocator.class, PrefixResolver.class, int.class,
+        final Class<?>[] classes = new Class<?>[]{String.class, SourceLocator.class, PrefixResolver.class, int.class,
                                       ErrorListener.class, FunctionTable.class};
-        Object[] objects =
+        final Object[] objects =
             new Object[]{str, null, prefixResolver, XPath.SELECT, null, funcTable};
         try {
-            Constructor<?> constructor = XPath.class.getConstructor(classes);
+            final Constructor<?> constructor = XPath.class.getConstructor(classes);
             xpath = (XPath) constructor.newInstance(objects);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new IllegalStateException("Could not construct xpath for " + str, ex);
         }
         if (xpath == null) {
@@ -174,25 +174,25 @@ class XalanXPathAPI implements XPathAPI {
          * Try to register our here() implementation as internal function.
          */
         try {
-            Class<?>[] args = {String.class, Expression.class};
-            Method installFunction = FunctionTable.class.getMethod("installFunction", args);
+            final Class<?>[] args = {String.class, Expression.class};
+            final Method installFunction = FunctionTable.class.getMethod("installFunction", args);
             if ((installFunction.getModifiers() & Modifier.STATIC) != 0) {
-                Object[] params = {"here", new FuncHere()};
+                final Object[] params = {"here", new FuncHere()};
                 installFunction.invoke(null, params);
                 installed = true;
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             LOG.debug("Error installing function using the static installFunction method", ex);
         }
         if (!installed) {
             try {
                 funcTable = new FunctionTable();
-                Class<?>[] args = {String.class, Class.class};
-                Method installFunction = FunctionTable.class.getMethod("installFunction", args);
-                Object[] params = {"here", FuncHere.class};
+                final Class<?>[] args = {String.class, Class.class};
+                final Method installFunction = FunctionTable.class.getMethod("installFunction", args);
+                final Object[] params = {"here", FuncHere.class};
                 installFunction.invoke(funcTable, params);
                 installed = true;
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 LOG.debug("Error installing function using the static installFunction method", ex);
             }
         }

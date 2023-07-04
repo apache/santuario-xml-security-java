@@ -382,7 +382,7 @@ public final class XMLSignature extends SignatureElementProxy {
     ) throws XMLSecurityException {
         super(doc);
 
-        String xmlnsDsPrefix = getDefaultPrefix(Constants.SignatureSpecNS);
+        final String xmlnsDsPrefix = getDefaultPrefix(Constants.SignatureSpecNS);
         if (xmlnsDsPrefix == null || xmlnsDsPrefix.length() == 0) {
             getElement().setAttributeNS(
                 Constants.NamespaceSpecNS, "xmlns", Constants.SignatureSpecNS
@@ -437,7 +437,7 @@ public final class XMLSignature extends SignatureElementProxy {
     ) throws XMLSecurityException {
         super(doc);
 
-        String xmlnsDsPrefix = getDefaultPrefix(Constants.SignatureSpecNS);
+        final String xmlnsDsPrefix = getDefaultPrefix(Constants.SignatureSpecNS);
         if (xmlnsDsPrefix == null || xmlnsDsPrefix.length() == 0) {
             getElement().setAttributeNS(
                 Constants.NamespaceSpecNS, "xmlns", Constants.SignatureSpecNS
@@ -525,7 +525,7 @@ public final class XMLSignature extends SignatureElementProxy {
 
         if (!(Constants.SignatureSpecNS.equals(element.getNamespaceURI())
             && Constants._TAG_SIGNATURE.equals(element.getLocalName()))) {
-            Object[] exArgs = { element.getLocalName() };
+            final Object[] exArgs = { element.getLocalName() };
             throw new XMLSignatureException("signature.Verification.InvalidElement", exArgs);
         }
 
@@ -536,7 +536,7 @@ public final class XMLSignature extends SignatureElementProxy {
         if (signedInfoElem == null ||
             !(Constants.SignatureSpecNS.equals(signedInfoElem.getNamespaceURI())
                 && Constants._TAG_SIGNEDINFO.equals(signedInfoElem.getLocalName()))) {
-            Object[] exArgs = { Constants._TAG_SIGNEDINFO, Constants._TAG_SIGNATURE };
+            final Object[] exArgs = { Constants._TAG_SIGNEDINFO, Constants._TAG_SIGNATURE };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
 
@@ -553,16 +553,16 @@ public final class XMLSignature extends SignatureElementProxy {
         if (signatureValueElement == null ||
             !(Constants.SignatureSpecNS.equals(signatureValueElement.getNamespaceURI())
                 && Constants._TAG_SIGNATUREVALUE.equals(signatureValueElement.getLocalName()))) {
-            Object[] exArgs = { Constants._TAG_SIGNATUREVALUE, Constants._TAG_SIGNATURE };
+            final Object[] exArgs = { Constants._TAG_SIGNATUREVALUE, Constants._TAG_SIGNATURE };
             throw new XMLSignatureException("xml.WrongContent", exArgs);
         }
-        Attr signatureValueAttr = signatureValueElement.getAttributeNodeNS(null, "Id");
+        final Attr signatureValueAttr = signatureValueElement.getAttributeNodeNS(null, "Id");
         if (signatureValueAttr != null) {
             signatureValueElement.setIdAttributeNode(signatureValueAttr, true);
         }
 
         // <element ref="ds:KeyInfo" minOccurs="0"/>
-        Element keyInfoElem =
+        final Element keyInfoElem =
             XMLUtils.getNextElement(signatureValueElement.getNextSibling());
 
         // If it exists use it, but it's not mandatory
@@ -583,11 +583,11 @@ public final class XMLSignature extends SignatureElementProxy {
             // Make sure it actually is an Object
             if (!(Constants.SignatureSpecNS.equals(objectElem.getNamespaceURI())
                 && Constants._TAG_OBJECT.equals(objectElem.getLocalName()))) {
-                Object[] exArgs = { objectElem.getLocalName() };
+                final Object[] exArgs = { objectElem.getLocalName() };
                 throw new XMLSignatureException("signature.Verification.InvalidElement", exArgs);
             }
 
-            Attr objectAttr = objectElem.getAttributeNodeNS(null, "Id");
+            final Attr objectAttr = objectElem.getAttributeNodeNS(null, "Id");
             if (objectAttr != null) {
                 objectElem.setIdAttributeNode(objectAttr, true);
             }
@@ -596,8 +596,8 @@ public final class XMLSignature extends SignatureElementProxy {
             // Register Ids of the Object child elements
             while (firstChild != null) {
                 if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
-                    Element childElem = (Element)firstChild;
-                    String tag = childElem.getLocalName();
+                    final Element childElem = (Element)firstChild;
+                    final String tag = childElem.getLocalName();
                     if ("Manifest".equals(tag)) {
                         new Manifest(childElem, baseURI);
                     } else if ("SignatureProperties".equals(tag)) {
@@ -650,7 +650,7 @@ public final class XMLSignature extends SignatureElementProxy {
      * @throws XMLSignatureException If there is no content
      */
     public byte[] getSignatureValue() throws XMLSignatureException {
-        String content = XMLUtils.getFullTextChildrenFromNode(signatureValueElement);
+        final String content = XMLUtils.getFullTextChildrenFromNode(signatureValueElement);
         return XMLUtils.decode(content);
     }
 
@@ -672,7 +672,7 @@ public final class XMLSignature extends SignatureElementProxy {
             base64codedValue = "\n" + base64codedValue + "\n";
         }
 
-        Text t = createText(base64codedValue);
+        final Text t = createText(base64codedValue);
         signatureValueElement.appendChild(t);
     }
 
@@ -692,8 +692,8 @@ public final class XMLSignature extends SignatureElementProxy {
             this.keyInfo = new KeyInfo(getDocument());
 
             // get the Element from KeyInfo
-            Element keyInfoElement = this.keyInfo.getElement();
-            Element firstObject =
+            final Element keyInfoElement = this.keyInfo.getElement();
+            final Element firstObject =
                 XMLUtils.selectDsNode(
                     getElement().getFirstChild(), Constants._TAG_OBJECT, 0
                 );
@@ -743,14 +743,14 @@ public final class XMLSignature extends SignatureElementProxy {
      * or null if no such <code>ds:Object</code> element exists.
      */
     public ObjectContainer getObjectItem(int i) {
-        Element objElem =
+        final Element objElem =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_OBJECT, i
             );
 
         try {
             return new ObjectContainer(objElem, this.baseURI);
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             return null;
         }
     }
@@ -781,8 +781,8 @@ public final class XMLSignature extends SignatureElementProxy {
         }
 
         //Create a SignatureAlgorithm object
-        SignedInfo si = this.getSignedInfo();
-        SignatureAlgorithm sa = si.getSignatureAlgorithm();
+        final SignedInfo si = this.getSignedInfo();
+        final SignatureAlgorithm sa = si.getSignatureAlgorithm();
         try (SignerOutputStream output = new SignerOutputStream(sa);
             OutputStream so = new UnsyncBufferedOutputStream(output)) {
 
@@ -797,7 +797,7 @@ public final class XMLSignature extends SignatureElementProxy {
 
             // set them on the SignatureValue element
             this.setSignatureValueElement(sa.sign());
-        } catch (XMLSignatureException ex) {
+        } catch (final XMLSignatureException ex) {
             throw ex;
         } catch (XMLSecurityException | IOException ex) {
             throw new XMLSignatureException(ex);
@@ -832,7 +832,7 @@ public final class XMLSignature extends SignatureElementProxy {
             return this.checkSignatureValue(cert.getPublicKey());
         }
 
-        Object[] exArgs = { "Didn't get a certificate" };
+        final Object[] exArgs = { "Didn't get a certificate" };
         throw new XMLSignatureException("empty", exArgs);
     }
 
@@ -850,7 +850,7 @@ public final class XMLSignature extends SignatureElementProxy {
         //COMMENT: pk suggests it can only be a public key?
         //check to see if the key is not null
         if (pk == null) {
-            Object[] exArgs = { "Didn't get a key" };
+            final Object[] exArgs = { "Didn't get a key" };
             throw new XMLSignatureException("empty", exArgs);
         }
         // all references inside the signedinfo need to be dereferenced and
@@ -859,10 +859,10 @@ public final class XMLSignature extends SignatureElementProxy {
         // If followManifestsDuringValidation is true it will do the same for
         // References inside a Manifest.
         try {
-            SignedInfo si = this.getSignedInfo();
+            final SignedInfo si = this.getSignedInfo();
             //create a SignatureAlgorithms from the SignatureMethod inside
             //SignedInfo. This is used to validate the signature.
-            SignatureAlgorithm sa = si.getSignatureAlgorithm();
+            final SignatureAlgorithm sa = si.getSignatureAlgorithm();
             LOG.debug("signatureMethodURI = {}", sa.getAlgorithmURI());
             LOG.debug("jceSigAlgorithm = {}", sa.getJCEAlgorithmString());
             LOG.debug("PublicKey = {}", pk);
@@ -878,10 +878,10 @@ public final class XMLSignature extends SignatureElementProxy {
                 si.signInOctetStream(bos);
                 // retrieve the byte[] from the stored signature
                 sigBytes = this.getSignatureValue();
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 LOG.debug(ex.getMessage(), ex);
                 // Impossible...
-            } catch (XMLSecurityException ex) {
+            } catch (final XMLSecurityException ex) {
                 throw ex;
             }
 
@@ -893,9 +893,9 @@ public final class XMLSignature extends SignatureElementProxy {
             }
 
             return si.verify(this.followManifestsDuringValidation);
-        } catch (XMLSignatureException ex) {
+        } catch (final XMLSignatureException ex) {
             throw ex;
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -979,7 +979,7 @@ public final class XMLSignature extends SignatureElementProxy {
      * @throws XMLSecurityException
      */
     public void addKeyInfo(X509Certificate cert) throws XMLSecurityException {
-        X509Data x509data = new X509Data(getDocument());
+        final X509Data x509data = new X509Data(getDocument());
 
         x509data.addCertificate(cert);
         this.getKeyInfo().add(x509data);

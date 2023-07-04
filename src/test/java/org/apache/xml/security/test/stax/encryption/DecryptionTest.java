@@ -108,16 +108,16 @@ public class DecryptionTest {
     @Test
     public void testDecryptElementValidation() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        SecretKey secretKey = generateSecretKey();
+        final SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -131,18 +131,18 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
         final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -163,16 +163,16 @@ public class DecryptionTest {
     @Test
     public void testDecryptContentValidation() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        SecretKey secretKey = generateSecretKey();
+        final SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -186,8 +186,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -196,11 +196,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -220,18 +220,18 @@ public class DecryptionTest {
     @Test
     public void testStrongDecryption() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey secretKey = keygen.generateKey();
+        final SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey, null, null, document,
@@ -245,8 +245,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -255,11 +255,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -279,16 +279,16 @@ public class DecryptionTest {
     @Test
     public void testDecryptMultipleElements() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        SecretKey secretKey = generateSecretKey();
+        final SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         localNames.add("ShippingAddress");
         encryptUsingDOM(
@@ -303,8 +303,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -313,11 +313,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -345,22 +345,22 @@ public class DecryptionTest {
     @Test
     public void testAES128ElementAES192KWCipherUsingKEKInbound() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        SecretKey kek = new SecretKeySpec(bits192, "AES");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final SecretKey kek = new SecretKeySpec(bits192, "AES");
 
         // Generate a traffic key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey secretKey = keygen.generateKey();
+        final SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes128-cbc", secretKey,
@@ -374,8 +374,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -384,11 +384,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(kek);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -414,24 +414,24 @@ public class DecryptionTest {
     @Test
     public void testAES256ElementRSAKWCipherUsingKEKInbound() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
 
         // Generate a traffic key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey secretKey = keygen.generateKey();
+        final SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -445,8 +445,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -455,11 +455,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -481,24 +481,24 @@ public class DecryptionTest {
     @Test
     public void testAES256ElementRSAKWCipherUsingKEKInboundIncludeEKKeyInfo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
 
         // Generate a traffic key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey secretKey = keygen.generateKey();
+        final SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -512,8 +512,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -522,11 +522,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -554,24 +554,24 @@ public class DecryptionTest {
         assumeFalse(isIBMJdK);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        Key kek = keyFactory.generateSecret(keySpec);
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final Key kek = keyFactory.generateSecret(keySpec);
 
         // Generate a traffic key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey secretKey = keygen.generateKey();
+        final SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes192-cbc", secretKey,
@@ -585,8 +585,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -595,11 +595,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(kek);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -621,19 +621,19 @@ public class DecryptionTest {
     @Test
     public void testTripleDesElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey secretKey = keyFactory.generateSecret(keySpec);
+        final byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -647,8 +647,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -657,11 +657,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -681,21 +681,21 @@ public class DecryptionTest {
     @Test
     public void testAes128ElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] bits128 = {
+        final byte[] bits128 = {
                 (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                 (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                 (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                 (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        SecretKey secretKey = new SecretKeySpec(bits128, "AES");
+        final SecretKey secretKey = new SecretKeySpec(bits128, "AES");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes128-cbc", secretKey,
@@ -709,8 +709,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -719,11 +719,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -743,23 +743,23 @@ public class DecryptionTest {
     @Test
     public void testAes192ElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] bits192 = {
+        final byte[] bits192 = {
                 (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
                 (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
                 (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                 (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                 (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                 (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        SecretKey secretKey = new SecretKeySpec(bits192, "AES");
+        final SecretKey secretKey = new SecretKeySpec(bits192, "AES");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes192-cbc", secretKey,
@@ -773,8 +773,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -783,11 +783,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -807,13 +807,13 @@ public class DecryptionTest {
     @Test
     public void testAes256ElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] bits256 = {
+        final byte[] bits256 = {
                 (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
                 (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
                 (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
@@ -822,10 +822,10 @@ public class DecryptionTest {
                 (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                 (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                 (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        SecretKey secretKey = new SecretKeySpec(bits256, "AES");
+        final SecretKey secretKey = new SecretKeySpec(bits256, "AES");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -839,8 +839,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -849,11 +849,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -875,19 +875,19 @@ public class DecryptionTest {
     @Test
     public void testTripleDesDocumentCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey secretKey = keyFactory.generateSecret(keySpec);
+        final byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PurchaseOrder");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -901,8 +901,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -911,11 +911,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -941,13 +941,13 @@ public class DecryptionTest {
         }
 
         // Set up the Key
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey secretKey = keyFactory.generateSecret(keySpec);
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("elem");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -961,8 +961,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -970,11 +970,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -983,11 +983,11 @@ public class DecryptionTest {
         nodeList = document.getElementsByTagNameNS("ns.com", "elem");
         assertEquals(nodeList.getLength(), 1);
 
-        Element decrElem = (Element)document.getDocumentElement().getFirstChild();
+        final Element decrElem = (Element)document.getDocumentElement().getFirstChild();
         assertEquals("ns:elem", decrElem.getNodeName());
         assertEquals("ns.com", decrElem.getNamespaceURI());
         assertEquals(1, decrElem.getAttributes().getLength());
-        Attr attr = (Attr)decrElem.getAttributes().item(0);
+        final Attr attr = (Attr)decrElem.getAttributes().item(0);
         assertEquals("xmlns:ns2", attr.getName());
         assertEquals("ns2.com", attr.getValue());
 
@@ -1008,13 +1008,13 @@ public class DecryptionTest {
         }
 
         // Set up the Key
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey secretKey = keyFactory.generateSecret(keySpec);
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("elem");
         encryptUsingDOM(
             "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey,
@@ -1028,8 +1028,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -1037,11 +1037,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1050,11 +1050,11 @@ public class DecryptionTest {
         nodeList = document.getElementsByTagNameNS("", "elem");
         assertEquals(nodeList.getLength(), 1);
 
-        Element decrElem = (Element)document.getDocumentElement().getFirstChild();
+        final Element decrElem = (Element)document.getDocumentElement().getFirstChild();
         assertEquals("elem", decrElem.getNodeName());
         assertNull(decrElem.getNamespaceURI());
         assertEquals(1, decrElem.getAttributes().getLength());
-        Attr attr = (Attr)decrElem.getAttributes().item(0);
+        final Attr attr = (Attr)decrElem.getAttributes().item(0);
         assertEquals("xmlns", attr.getName());
         assertEquals("", attr.getValue());
 
@@ -1069,9 +1069,9 @@ public class DecryptionTest {
      * Generate a secret key
      */
     private SecretKey generateSecretKey() throws Exception {
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
         return keyFactory.generateSecret(keySpec);
     }
 
@@ -1128,18 +1128,18 @@ public class DecryptionTest {
         List<String> localNames,
         boolean content
     ) throws Exception {
-        XMLCipher cipher = XMLCipher.getInstance(algorithm);
+        final XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
 
         if (wrappingKey != null) {
-            XMLCipher newCipher = XMLCipher.getInstance(keyTransportAlgorithm);
+            final XMLCipher newCipher = XMLCipher.getInstance(keyTransportAlgorithm);
             newCipher.init(XMLCipher.WRAP_MODE, wrappingKey);
-            EncryptedKey encryptedKey = newCipher.encryptKey(document, secretKey);
+            final EncryptedKey encryptedKey = newCipher.encryptKey(document, secretKey);
             if (encryptedKeyKeyInfo != null) {
                 encryptedKey.setKeyInfo(encryptedKeyKeyInfo);
             }
 
-            EncryptedData builder = cipher.getEncryptedData();
+            final EncryptedData builder = cipher.getEncryptedData();
 
             KeyInfo builderKeyInfo = builder.getKeyInfo();
             if (builderKeyInfo == null) {
@@ -1153,20 +1153,20 @@ public class DecryptionTest {
             builderKeyInfo.add(encryptedKey);
         }
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        for (String localName : localNames) {
-            String expression = "//*[local-name()='" + localName + "']";
-            Element elementToEncrypt =
+        for (final String localName : localNames) {
+            final String expression = "//*[local-name()='" + localName + "']";
+            final Element elementToEncrypt =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(elementToEncrypt);
 
             document = cipher.doFinal(document, elementToEncrypt, content);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
@@ -1174,7 +1174,7 @@ public class DecryptionTest {
     }
 
     protected void checkEncryptedElementSecurityEvents(TestSecurityEventListener securityEventListener) {
-        EncryptedElementSecurityEvent encryptedElementEvent =
+        final EncryptedElementSecurityEvent encryptedElementEvent =
                 (EncryptedElementSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.EncryptedElement);
         assertNotNull(encryptedElementEvent);
         assertEquals(encryptedElementEvent.getElementPath().size(), 2);
@@ -1184,7 +1184,7 @@ public class DecryptionTest {
     }
 
     protected void checkMultipleEncryptedElementSecurityEvents(TestSecurityEventListener securityEventListener) {
-        List<SecurityEvent> encryptedElements =
+        final List<SecurityEvent> encryptedElements =
                 securityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement);
         assertTrue(encryptedElements.size() == 2);
 
@@ -1206,7 +1206,7 @@ public class DecryptionTest {
     }
 
     protected void checkEncryptedContentSecurityEvents(TestSecurityEventListener securityEventListener) {
-        ContentEncryptedElementSecurityEvent encryptedElementEvent =
+        final ContentEncryptedElementSecurityEvent encryptedElementEvent =
                 (ContentEncryptedElementSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.ContentEncrypted);
         assertNotNull(encryptedElementEvent);
         assertEquals(encryptedElementEvent.getElementPath().size(), 2);
@@ -1221,17 +1221,17 @@ public class DecryptionTest {
             SecurityTokenConstants.KeyIdentifier keyIdentifier,
             String algorithm) throws XMLSecurityException {
         if (SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
-            DefaultTokenSecurityEvent tokenEvent =
+            final DefaultTokenSecurityEvent tokenEvent =
                     (DefaultTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.DefaultToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
         } else if (SecurityTokenConstants.KeyIdentifier_EncryptedKey.equals(keyIdentifier)) {
-            EncryptedKeyTokenSecurityEvent tokenEvent =
+            final EncryptedKeyTokenSecurityEvent tokenEvent =
                     (EncryptedKeyTokenSecurityEvent) securityEventListener.getSecurityEvent(
                             SecurityEventConstants.EncryptedKeyToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
         }
     }
@@ -1241,14 +1241,14 @@ public class DecryptionTest {
             String encryptionAlgorithm,
             String keywrapAlgorithm
     ) {
-        List<SecurityEvent> algorithmEvents =
+        final List<SecurityEvent> algorithmEvents =
                 securityEventListener.getSecurityEvents(SecurityEventConstants.AlgorithmSuite);
         assertFalse(algorithmEvents.isEmpty());
 
         boolean matchedEncryptionAlgorithm = false;
         boolean matchedKeywrapAlgorithm = false;
-        for (SecurityEvent event : algorithmEvents) {
-            AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
+        for (final SecurityEvent event : algorithmEvents) {
+            final AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
             if (XMLSecurityConstants.Enc.equals(algorithmEvent.getAlgorithmUsage())) {
                 assertEquals(encryptionAlgorithm, algorithmEvent.getAlgorithmURI());
                 matchedEncryptionAlgorithm = true;
@@ -1268,22 +1268,22 @@ public class DecryptionTest {
     @Test
     public void testMaximumAllowedXMLStructureDepth() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         for (int i = 0; i < 7; i++) {
-            NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
-            Element creditCardElement = (Element)nodeList.item(nodeList.getLength() - 1);
+            final NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+            final Element creditCardElement = (Element)nodeList.item(nodeList.getLength() - 1);
             creditCardElement.appendChild(document.getDocumentElement().cloneNode(true));
         }
 
         // Set up the Key
-        SecretKey secretKey = generateSecretKey();
+        final SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -1291,8 +1291,8 @@ public class DecryptionTest {
         );
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -1300,17 +1300,17 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
             document = StAX2DOM.readDoc(securityStreamReader);
             fail("Exception expected");
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
             assertEquals("Maximum depth (100) of the XML structure reached. You can raise the maximum via the " +
                     "\"MaximumAllowedXMLStructureDepth\" property in the configuration.", e.getCause().getMessage());
@@ -1320,24 +1320,24 @@ public class DecryptionTest {
     @Test
     public void testModifiedEncryptedKeyCipherValue() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
 
         // Generate a traffic key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey secretKey = keygen.generateKey();
+        final SecretKey secretKey = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#aes256-cbc", secretKey,
@@ -1345,20 +1345,20 @@ public class DecryptionTest {
         );
 
         // Check the CreditCard encrypted ok
-        NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
+        final NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 0);
 
-        NodeList cipherValues = document.getElementsByTagNameNS(
+        final NodeList cipherValues = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_CipherValue.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_CipherValue.getLocalPart());
-        Element cipherValueElement = (Element)cipherValues.item(0);
+        final Element cipherValueElement = (Element)cipherValues.item(0);
         assertEquals(
                 cipherValueElement.getParentNode().getParentNode().getLocalName(),
                 XMLSecurityConstants.TAG_xenc_EncryptedKey.getLocalPart());
 
-        String cipherValue = cipherValueElement.getTextContent();
-        StringBuilder stringBuilder = new StringBuilder(cipherValue);
-        int index = stringBuilder.length() / 2;
+        final String cipherValue = cipherValueElement.getTextContent();
+        final StringBuilder stringBuilder = new StringBuilder(cipherValue);
+        final int index = stringBuilder.length() / 2;
         char ch = stringBuilder.charAt(index);
         if (ch != 'A') {
             ch = 'A';
@@ -1371,8 +1371,8 @@ public class DecryptionTest {
         //XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1381,16 +1381,16 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
             document = StAX2DOM.readDoc(securityStreamReader);
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             assertFalse(e.getMessage().contains("Unwrapping failed"));
         }
     }
@@ -1398,27 +1398,27 @@ public class DecryptionTest {
     @Test
     public void testKeyValue() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         encryptUsingDOM(
@@ -1433,8 +1433,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -1442,11 +1442,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1459,27 +1459,27 @@ public class DecryptionTest {
     @Test
     public void testIssuerSerial() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1487,7 +1487,7 @@ public class DecryptionTest {
         encryptedKeyKeyInfo.getElement().setAttributeNS(
             "http://www.w3.org/2000/xmlns/", "xmlns:dsig", "http://www.w3.org/2000/09/xmldsig#"
         );
-        X509Data x509Data = new X509Data(document);
+        final X509Data x509Data = new X509Data(document);
         x509Data.addIssuerSerial(cert.getIssuerX500Principal().getName(),
                                  cert.getSerialNumber());
         encryptedKeyKeyInfo.add(x509Data);
@@ -1504,8 +1504,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
         XMLStreamReader xmlStreamReader = null;
         try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
@@ -1513,11 +1513,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1530,27 +1530,27 @@ public class DecryptionTest {
     @Test
     public void testX509Certificate() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1558,7 +1558,7 @@ public class DecryptionTest {
         encryptedKeyKeyInfo.getElement().setAttributeNS(
             "http://www.w3.org/2000/xmlns/", "xmlns:dsig", "http://www.w3.org/2000/09/xmldsig#"
         );
-        X509Data x509Data = new X509Data(document);
+        final X509Data x509Data = new X509Data(document);
         x509Data.addCertificate(cert);
         encryptedKeyKeyInfo.add(x509Data);
 
@@ -1574,8 +1574,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1584,11 +1584,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1601,27 +1601,27 @@ public class DecryptionTest {
     @Test
     public void testSubjectName() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1629,7 +1629,7 @@ public class DecryptionTest {
         encryptedKeyKeyInfo.getElement().setAttributeNS(
             "http://www.w3.org/2000/xmlns/", "xmlns:dsig", "http://www.w3.org/2000/09/xmldsig#"
         );
-        X509Data x509Data = new X509Data(document);
+        final X509Data x509Data = new X509Data(document);
         x509Data.addSubjectName(cert);
         encryptedKeyKeyInfo.add(x509Data);
 
@@ -1645,8 +1645,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1655,11 +1655,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1680,27 +1680,27 @@ public class DecryptionTest {
         }
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("JCEKS");
+        final KeyStore keyStore = KeyStore.getInstance("JCEKS");
         keyStore.load(
             this.getClass().getClassLoader().getResource("test.jceks").openStream(),
             "secret".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("rsakey", "secret".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("rsakey", "secret".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         KeyInfo encryptedKeyKeyInfo = new KeyInfo(document);
@@ -1708,7 +1708,7 @@ public class DecryptionTest {
         encryptedKeyKeyInfo.getElement().setAttributeNS(
             "http://www.w3.org/2000/xmlns/", "xmlns:dsig", "http://www.w3.org/2000/09/xmldsig#"
         );
-        X509Data x509Data = new X509Data(document);
+        final X509Data x509Data = new X509Data(document);
         x509Data.addSKI(cert);
         encryptedKeyKeyInfo.add(x509Data);
 
@@ -1724,8 +1724,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1734,11 +1734,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1751,27 +1751,27 @@ public class DecryptionTest {
     @Test
     public void testNoKeyInfo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         encryptUsingDOM(
@@ -1786,8 +1786,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1796,11 +1796,11 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(priv);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1813,16 +1813,16 @@ public class DecryptionTest {
     @Test
     public void testDecryptElementValidationInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        SecretKey secretKey = generateSecretKey();
+        final SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -1836,8 +1836,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1846,12 +1846,12 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         properties.addAction(XMLSecurityConstants.ENCRYPTION);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1874,16 +1874,16 @@ public class DecryptionTest {
     @Test
     public void testDecryptContentValidationInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        SecretKey secretKey = generateSecretKey();
+        final SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -1897,8 +1897,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1907,12 +1907,12 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         properties.addAction(XMLSecurityConstants.ENCRYPTION);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1932,16 +1932,16 @@ public class DecryptionTest {
     @Test
     public void testDecryptWholeDocumentInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        SecretKey secretKey = generateSecretKey();
+        final SecretKey secretKey = generateSecretKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PurchaseOrder");
         encryptUsingDOM(
                 "http://www.w3.org/2001/04/xmlenc#tripledes-cbc", secretKey, null, null, document,
@@ -1955,8 +1955,8 @@ public class DecryptionTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -1965,12 +1965,12 @@ public class DecryptionTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(secretKey);
         properties.addAction(XMLSecurityConstants.ENCRYPTION);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -1980,7 +1980,7 @@ public class DecryptionTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Check the SecurityEvents
-        EncryptedElementSecurityEvent encryptedElementEvent =
+        final EncryptedElementSecurityEvent encryptedElementEvent =
                 (EncryptedElementSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.EncryptedElement);
         assertNotNull(encryptedElementEvent);
         assertEquals(encryptedElementEvent.getElementPath().size(), 1);

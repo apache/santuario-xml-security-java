@@ -57,7 +57,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
 
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
-        String v = context.uriToResolve;
+        final String v = context.uriToResolve;
 
         if (v == null || v.isEmpty()) {
             return false;
@@ -70,12 +70,12 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
         String xpURI;
         try {
             xpURI = URLDecoder.decode(v, "utf-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             LOG.warn("utf-8 not a valid encoding",e);
             return false;
         }
 
-        String[] parts = xpURI.substring(1).split("\\s");
+        final String[] parts = xpURI.substring(1).split("\\s");
 
         // plain ID reference.
         if (parts.length == 1 && !parts[0].startsWith(XNS_OPEN)) {
@@ -102,7 +102,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
-        String v = context.uriToResolve;
+        final String v = context.uriToResolve;
 
         if (v.charAt(0) != '#') {
             return null;
@@ -111,15 +111,15 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
         String xpURI;
         try {
             xpURI = URLDecoder.decode(v, "utf-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (final UnsupportedEncodingException e) {
             LOG.warn("utf-8 not a valid encoding ", e);
             return null;
         }
 
-        String[] parts = xpURI.substring(1).split("\\s");
+        final String[] parts = xpURI.substring(1).split("\\s");
 
         int i = 0;
-        Map<String, String> namespaces = new HashMap<>();
+        final Map<String, String> namespaces = new HashMap<>();
 
         if (parts.length > 1) {
 
@@ -128,9 +128,9 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
                     return null;
                 }
 
-                String mapping = parts[i].substring(XNS_OPEN.length(), parts[i].length() - 1);
+                final String mapping = parts[i].substring(XNS_OPEN.length(), parts[i].length() - 1);
 
-                int pos = mapping.indexOf('=');
+                final int pos = mapping.indexOf('=');
 
                 if (pos <= 0 || pos >= mapping.length() - 1) {
                     throw new ResourceResolverException(
@@ -157,11 +157,11 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
                     return null;
                 }
 
-                String xpathExpr = parts[i].substring(XP_OPEN.length(), parts[i].length() - 1);
+                final String xpathExpr = parts[i].substring(XP_OPEN.length(), parts[i].length() - 1);
 
-                XPathFactory xpf = XPathFactory.newInstance();
-                XPath xpath = xpf.newXPath();
-                DSNamespaceContext namespaceContext =
+                final XPathFactory xpf = XPathFactory.newInstance();
+                final XPath xpath = xpf.newXPath();
+                final DSNamespaceContext namespaceContext =
                     new DSNamespaceContext(namespaces);
                 xpath.setNamespaceContext(namespaceContext);
 
@@ -183,7 +183,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             if (node != null) {
                 result = new XMLSignatureInput(node);
             } else if (nodes != null) {
-                Set<Node> nodeSet = new HashSet<>(nodes.getLength());
+                final Set<Node> nodeSet = new HashSet<>(nodes.getLength());
 
                 for (int j = 0; j < nodes.getLength(); ++j) {
                     nodeSet.add(nodes.item(j));
@@ -199,7 +199,7 @@ public class XPointerResourceResolver extends ResourceResolverSpi {
             result.setSourceURI((context.baseUri != null) ? context.baseUri.concat(v) : v);
 
             return result;
-        } catch (XPathExpressionException e) {
+        } catch (final XPathExpressionException e) {
             throw new ResourceResolverException(
                  e, context.uriToResolve, context.baseUri, "Problem evaluating XPath expression"
             );

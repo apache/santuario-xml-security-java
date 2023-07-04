@@ -47,50 +47,50 @@ public class ReferenceListTest {
 
     @Test
     public void testReferenceList() throws Exception {
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
-        XMLCipher dataCipher = XMLCipher.getInstance();
+        final XMLCipher dataCipher = XMLCipher.getInstance();
         dataCipher.init(XMLCipher.DECRYPT_MODE, null);
 
-        ReferenceList dataRefList = dataCipher.createReferenceList(ReferenceList.DATA_REFERENCE);
-        Reference dataRef1 = dataRefList.newDataReference("#id1");
+        final ReferenceList dataRefList = dataCipher.createReferenceList(ReferenceList.DATA_REFERENCE);
+        final Reference dataRef1 = dataRefList.newDataReference("#id1");
         dataRefList.add(dataRef1);
-        Reference dataRef2 = dataRefList.newDataReference("#id2");
+        final Reference dataRef2 = dataRefList.newDataReference("#id2");
         dataRefList.add(dataRef2);
 
         assertEquals("#id1", dataRef1.getURI());
 
-        ReferenceList keyRefList = dataCipher.createReferenceList(ReferenceList.KEY_REFERENCE);
-        Reference keyRef10 = keyRefList.newKeyReference("#id10");
+        final ReferenceList keyRefList = dataCipher.createReferenceList(ReferenceList.KEY_REFERENCE);
+        final Reference keyRef10 = keyRefList.newKeyReference("#id10");
         keyRefList.add(keyRef10);
-        Reference keyRef20 = keyRefList.newKeyReference("#id20");
+        final Reference keyRef20 = keyRefList.newKeyReference("#id20");
         keyRefList.add(keyRef20);
 
         assertEquals("#id10", keyRef10.getURI());
 
         // See SANTUARIO-302
         // https://issues.apache.org/jira/browse/SANTUARIO-302
-        Element dataRefListElement = dataCipher.martial(doc, dataRefList);
+        final Element dataRefListElement = dataCipher.martial(doc, dataRefList);
         assertEquals(EncryptionConstants.EncryptionSpecNS, dataRefListElement.getNamespaceURI());
         assertEquals(EncryptionConstants._TAG_REFERENCELIST, dataRefListElement.getLocalName());
-        Element dataRef1Element = (Element)dataRefListElement.getFirstChild();
+        final Element dataRef1Element = (Element)dataRefListElement.getFirstChild();
         assertEquals(EncryptionConstants.EncryptionSpecNS, dataRef1Element.getNamespaceURI());
         assertEquals(EncryptionConstants._TAG_DATAREFERENCE, dataRef1Element.getLocalName());
         assertEquals("#id1", dataRef1Element.getAttribute("URI"));
-        Element dataRef2Element = (Element)dataRef1Element.getNextSibling();
+        final Element dataRef2Element = (Element)dataRef1Element.getNextSibling();
         assertEquals(EncryptionConstants.EncryptionSpecNS, dataRef2Element.getNamespaceURI());
         assertEquals(EncryptionConstants._TAG_DATAREFERENCE, dataRef2Element.getLocalName());
         assertEquals("#id2", dataRef2Element.getAttribute("URI"));
         assertNull(dataRef2Element.getNextSibling());
 
-        Element keyRefListElement = dataCipher.martial(doc, keyRefList);
+        final Element keyRefListElement = dataCipher.martial(doc, keyRefList);
         assertEquals(EncryptionConstants.EncryptionSpecNS, keyRefListElement.getNamespaceURI());
         assertEquals(EncryptionConstants._TAG_REFERENCELIST, keyRefListElement.getLocalName());
-        Element keyRef10Element = (Element)keyRefListElement.getFirstChild();
+        final Element keyRef10Element = (Element)keyRefListElement.getFirstChild();
         assertEquals(EncryptionConstants.EncryptionSpecNS, keyRef10Element.getNamespaceURI());
         assertEquals(EncryptionConstants._TAG_KEYREFERENCE, keyRef10Element.getLocalName());
         assertEquals("#id10", keyRef10Element.getAttribute("URI"));
-        Element keyRef20Element = (Element)keyRef10Element.getNextSibling();
+        final Element keyRef20Element = (Element)keyRef10Element.getNextSibling();
         assertEquals(EncryptionConstants.EncryptionSpecNS, keyRef20Element.getNamespaceURI());
         assertEquals(EncryptionConstants._TAG_KEYREFERENCE, keyRef20Element.getLocalName());
         assertEquals("#id20", keyRef20Element.getAttribute("URI"));

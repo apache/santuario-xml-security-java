@@ -42,12 +42,12 @@ public class NoKeyInfoTest {
 
     @Test
     public void testNullKeyInfo() throws Exception {
-        String filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
-        File f = XmlSecTestEnvironment.resolveFile(filename);
-        Document doc = XMLUtils.read(f, false);
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
-        XMLSignature sig = new XMLSignature((Element) nl.item(0), f.toURI().toURL().toString());
-        KeyInfo ki = sig.getKeyInfo();
+        final String filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
+        final File f = XmlSecTestEnvironment.resolveFile(filename);
+        final Document doc = XMLUtils.read(f, false);
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
+        final XMLSignature sig = new XMLSignature((Element) nl.item(0), f.toURI().toURL().toString());
+        final KeyInfo ki = sig.getKeyInfo();
         assertNull(ki);
     }
 

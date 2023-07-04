@@ -47,9 +47,9 @@ public abstract class EdDSATestAbstract {
         // Add BouncyCastleProvider only for java versions before JDK 15.
         boolean isNotJDK15up;
         try {
-            int javaVersion = Integer.getInteger("java.specification.version", 0);
+            final int javaVersion = Integer.getInteger("java.specification.version", 0);
             isNotJDK15up = javaVersion < 15;
-        } catch (NumberFormatException ex) {
+        } catch (final NumberFormatException ex) {
             isNotJDK15up = true;
         }
         if (isNotJDK15up && Security.getProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME) == null) {
@@ -66,8 +66,8 @@ public abstract class EdDSATestAbstract {
     }
 
     public void updateIdReferences(DOMValidateContext vc, String elementName, String idAttributeName) {
-        Document doc = vc.getNode().getOwnerDocument();
-        NodeList nl = doc.getElementsByTagName(elementName);
+        final Document doc = vc.getNode().getOwnerDocument();
+        final NodeList nl = doc.getElementsByTagName(elementName);
         vc.setIdAttributeNS((Element) nl.item(0), null, idAttributeName);
     }
 }

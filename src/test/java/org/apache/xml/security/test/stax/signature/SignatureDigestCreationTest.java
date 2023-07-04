@@ -55,39 +55,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testSHA1() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
+        final String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -98,9 +98,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -110,39 +110,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testSHA224() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha224";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha224";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -153,9 +153,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -165,39 +165,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testSHA256() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha256";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha256";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -208,9 +208,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -220,39 +220,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testSHA384() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha384";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha384";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -263,9 +263,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -275,39 +275,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testSHA512() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha512";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha512";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -318,9 +318,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -332,39 +332,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#ripemd160";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#ripemd160";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -375,9 +375,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -389,39 +389,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#whirlpool";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#whirlpool";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -432,9 +432,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -446,39 +446,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -489,9 +489,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -503,39 +503,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -546,9 +546,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -560,39 +560,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -603,9 +603,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM
@@ -617,39 +617,39 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
         properties.setSignatureKey(key);
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setSignatureCerts(new X509Certificate[]{cert});
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 digestAlgorithm);
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -660,9 +660,9 @@ public class SignatureDigestCreationTest extends AbstractSignatureCreationTest {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
+        final NodeList nodeList = document.getElementsByTagNameNS(XMLSecurityConstants.TAG_dsig_DigestMethod.getNamespaceURI(), XMLSecurityConstants.TAG_dsig_DigestMethod.getLocalPart());
         assertEquals(1, nodeList.getLength());
-        Element element = (Element)nodeList.item(0);
+        final Element element = (Element)nodeList.item(0);
         assertEquals(digestAlgorithm, element.getAttribute(XMLSecurityConstants.ATT_NULL_Algorithm.getLocalPart()));
 
         // Verify using DOM

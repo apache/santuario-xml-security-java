@@ -42,26 +42,26 @@ public class XMLX509CertificateTest {
 
     @Test
     public void testGetX509Certificate() throws Exception {
-        File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
+        final File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
             "merlin-xmldsig-twenty-three", "signature-x509-crt.xml");
-        Document doc = XMLUtils.read(f, false);
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "X509Certificate");
-        XMLX509Certificate xmlCert = new XMLX509Certificate((Element) nl.item(0), "");
+        final Document doc = XMLUtils.read(f, false);
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "X509Certificate");
+        final XMLX509Certificate xmlCert = new XMLX509Certificate((Element) nl.item(0), "");
         xmlCert.getX509Certificate();
         // System.out.println(cert);
     }
 
     @Test
     public void testEqualsAndHashCode() throws Exception {
-        File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+        final File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;
         try (FileInputStream fis = new FileInputStream(f)) {
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            final CertificateFactory cf = CertificateFactory.getInstance("X.509");
             cert = (X509Certificate) cf.generateCertificate(fis);
         }
 
-        XMLX509Certificate x509Cert1 = new XMLX509Certificate(TestUtils.newDocument(), cert);
-        XMLX509Certificate x509Cert2 = new XMLX509Certificate(TestUtils.newDocument(), cert);
+        final XMLX509Certificate x509Cert1 = new XMLX509Certificate(TestUtils.newDocument(), cert);
+        final XMLX509Certificate x509Cert2 = new XMLX509Certificate(TestUtils.newDocument(), cert);
 
         assertEquals(x509Cert1, x509Cert2);
         assertEquals(x509Cert1.hashCode(), x509Cert2.hashCode());

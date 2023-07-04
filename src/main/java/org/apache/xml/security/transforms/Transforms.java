@@ -133,11 +133,11 @@ public class Transforms extends SignatureElementProxy {
             TransformationException, XMLSecurityException {
         super(element, baseURI);
 
-        int numberOfTransformElems = this.getLength();
+        final int numberOfTransformElems = this.getLength();
 
         if (numberOfTransformElems == 0) {
             // At least one Transform element must be present. Bad.
-            Object[] exArgs = { Constants._TAG_TRANSFORM, Constants._TAG_TRANSFORMS };
+            final Object[] exArgs = { Constants._TAG_TRANSFORM, Constants._TAG_TRANSFORMS };
 
             throw new TransformationException("xml.WrongContent", exArgs);
         }
@@ -162,10 +162,10 @@ public class Transforms extends SignatureElementProxy {
         try {
             LOG.debug("Transforms.addTransform({})", transformURI);
 
-            Transform transform = new Transform(getDocument(), transformURI);
+            final Transform transform = new Transform(getDocument(), transformURI);
 
             this.addTransform(transform);
-        } catch (InvalidTransformException ex) {
+        } catch (final InvalidTransformException ex) {
             throw new TransformationException(ex);
         }
     }
@@ -184,10 +184,10 @@ public class Transforms extends SignatureElementProxy {
         try {
             LOG.debug("Transforms.addTransform({})", transformURI);
 
-            Transform transform = new Transform(getDocument(), transformURI, contextElement);
+            final Transform transform = new Transform(getDocument(), transformURI, contextElement);
 
             this.addTransform(transform);
-        } catch (InvalidTransformException ex) {
+        } catch (final InvalidTransformException ex) {
             throw new TransformationException(ex);
         }
     }
@@ -205,9 +205,9 @@ public class Transforms extends SignatureElementProxy {
        throws TransformationException {
 
         try {
-            Transform transform = new Transform(getDocument(), transformURI, contextNodes);
+            final Transform transform = new Transform(getDocument(), transformURI, contextNodes);
             this.addTransform(transform);
-        } catch (InvalidTransformException ex) {
+        } catch (final InvalidTransformException ex) {
             throw new TransformationException(ex);
         }
     }
@@ -220,7 +220,7 @@ public class Transforms extends SignatureElementProxy {
     private void addTransform(Transform transform) {
         LOG.debug("Transforms.addTransform({})", transform.getURI());
 
-        Element transformElement = transform.getElement();
+        final Element transformElement = transform.getElement();
 
         appendSelf(transformElement);
         addReturnToSelf();
@@ -253,15 +253,15 @@ public class Transforms extends SignatureElementProxy {
         XMLSignatureInput xmlSignatureInput, OutputStream os
     ) throws TransformationException {
         try {
-            int last = this.getLength() - 1;
+            final int last = this.getLength() - 1;
             for (int i = 0; i < last; i++) {
-                Transform t = this.item(i);
+                final Transform t = this.item(i);
                 LOG.debug("Perform the ({})th {} transform", i, t.getURI());
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput, secureValidation);
             }
             if (last >= 0) {
-                Transform t = this.item(last);
+                final Transform t = this.item(last);
                 LOG.debug("Perform the ({})th {} transform", last, t.getURI());
                 checkSecureValidation(t);
                 xmlSignatureInput = t.performTransform(xmlSignatureInput, os, secureValidation);
@@ -274,9 +274,9 @@ public class Transforms extends SignatureElementProxy {
     }
 
     private void checkSecureValidation(Transform transform) throws TransformationException {
-        String uri = transform.getURI();
+        final String uri = transform.getURI();
         if (secureValidation && Transforms.TRANSFORM_XSLT.equals(uri)) {
-            Object[] exArgs = { uri };
+            final Object[] exArgs = { uri };
 
             throw new TransformationException(
                 "signature.Transform.ForbiddenTransform", exArgs
@@ -306,7 +306,7 @@ public class Transforms extends SignatureElementProxy {
         try {
             initTransforms();
             return new Transform(transformsElement[i], this.baseURI);
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new TransformationException(ex);
         }
     }

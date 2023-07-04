@@ -100,12 +100,12 @@ public final class XPath2FilterContainer extends ElementProxy implements Transfo
 
         super(element, baseURI);
 
-        String filterStr = getLocalAttribute(XPath2FilterContainer._ATT_FILTER);
+        final String filterStr = getLocalAttribute(XPath2FilterContainer._ATT_FILTER);
 
         if (!filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT)
             && !filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT)
             && !filterStr.equals(XPath2FilterContainer._ATT_FILTER_VALUE_UNION)) {
-            Object[] exArgs = { XPath2FilterContainer._ATT_FILTER, filterStr,
+            final Object[] exArgs = { XPath2FilterContainer._ATT_FILTER, filterStr,
                                 XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT
                                 + ", "
                                 + XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT
@@ -162,13 +162,13 @@ public final class XPath2FilterContainer extends ElementProxy implements Transfo
      * @return the nodelist with the data
      */
     public static NodeList newInstances(Document doc, String[][] params) {
-        HelperNodeList nl = new HelperNodeList();
+        final HelperNodeList nl = new HelperNodeList();
 
         XMLUtils.addReturnToElement(doc, nl);
 
         for (int i = 0; i < params.length; i++) {
-            String type = params[i][0];
-            String xpath = params[i][1];
+            final String type = params[i][0];
+            final String xpath = params[i][1];
 
             if (!(type.equals(XPath2FilterContainer._ATT_FILTER_VALUE_INTERSECT)
                 || type.equals(XPath2FilterContainer._ATT_FILTER_VALUE_SUBTRACT)
@@ -177,7 +177,7 @@ public final class XPath2FilterContainer extends ElementProxy implements Transfo
                                                    + "\" is illegal");
             }
 
-            XPath2FilterContainer c = new XPath2FilterContainer(doc, xpath, type);
+            final XPath2FilterContainer c = new XPath2FilterContainer(doc, xpath, type);
 
             nl.appendChild(c.getElement());
             XMLUtils.addReturnToElement(doc, nl);

@@ -59,7 +59,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
     public void engineUpdate(byte[] input) throws XMLSecurityException {
         try {
             signature.update(input);
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -68,7 +68,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
     public void engineUpdate(byte input) throws XMLSecurityException {
         try {
             signature.update(input);
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -77,7 +77,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
     public void engineUpdate(byte[] buf, int offset, int len) throws XMLSecurityException {
         try {
             signature.update(buf, offset, len);
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -87,7 +87,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
         initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -97,7 +97,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
         initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey, secureRandom);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -107,14 +107,14 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
         initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }
     }
 
     private void initSignIntLen(Key signingKey) {
         if (signingKey instanceof ECPrivateKey) {
-            ECPrivateKey ecKey = (ECPrivateKey) signingKey;
+            final ECPrivateKey ecKey = (ECPrivateKey) signingKey;
             signIntLen = (ecKey.getParams().getCurve().getField().getFieldSize() + 7) / 8;
             // If not ECPrivateKey, signIntLen remains -1
         }
@@ -123,16 +123,16 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
     @Override
     public byte[] engineSign() throws XMLSecurityException {
         try {
-            byte[] jcebytes = signature.sign();
+            final byte[] jcebytes = signature.sign();
             if (this.jceName.contains("ECDSA")) {
                 return ECDSAUtils.convertASN1toXMLDSIG(jcebytes, signIntLen);
             } else if (this.jceName.contains("DSA")) {
                 return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, 20);
             }
             return jcebytes;
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new XMLSecurityException(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -141,7 +141,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
     public void engineInitVerify(Key verificationKey) throws XMLSecurityException {
         try {
             signature.initVerify((PublicKey) verificationKey);
-        } catch (InvalidKeyException e) {
+        } catch (final InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -156,9 +156,9 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
                 jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(jcebytes, 20);
             }
             return this.signature.verify(jcebytes);
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new XMLSecurityException(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -167,7 +167,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
     public void engineSetParameter(AlgorithmParameterSpec params) throws XMLSecurityException {
         try {
             signature.setParameter(params);
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (final InvalidAlgorithmParameterException e) {
             throw new XMLSecurityException(e);
         }
     }

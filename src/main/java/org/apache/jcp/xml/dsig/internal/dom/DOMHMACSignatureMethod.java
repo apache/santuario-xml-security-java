@@ -93,13 +93,13 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
      * @param smElem a SignatureMethod element
      */
     DOMHMACSignatureMethod(Element smElem) throws MarshalException {
-        Element paramsElem = DOMUtils.getFirstChildElement(smElem);
+        final Element paramsElem = DOMUtils.getFirstChildElement(smElem);
         if (paramsElem != null) {
             params = unmarshalParams(paramsElem);
         }
         try {
             checkParams(params);
-        } catch (InvalidAlgorithmParameterException iape) {
+        } catch (final InvalidAlgorithmParameterException iape) {
             throw new MarshalException(iape);
         }
     }
@@ -130,7 +130,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
     {
         try {
             outputLength = Integer.parseInt(paramsElem.getFirstChild().getNodeValue());
-        } catch (NumberFormatException ex) {
+        } catch (final NumberFormatException ex) {
             throw new MarshalException("Invalid output length supplied: " + paramsElem.getFirstChild().getNodeValue());
         }
         outputLengthSet = true;
@@ -142,8 +142,8 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
     void marshalParams(Element parent, String prefix)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
-        Element hmacElem = DOMUtils.createElement(ownerDoc, "HMACOutputLength",
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Element hmacElem = DOMUtils.createElement(ownerDoc, "HMACOutputLength",
                                                   XMLSignature.XMLNS, prefix);
         hmacElem.appendChild(ownerDoc.createTextNode
            (String.valueOf(outputLength)));
@@ -164,11 +164,11 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         }
         if (hmac == null) {
             try {
-                Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
+                final Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
                 hmac = (p == null)
                     ? Mac.getInstance(getJCAAlgorithm())
                     : Mac.getInstance(getJCAAlgorithm(), p);
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
             }
         }
@@ -178,7 +178,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         }
         hmac.init(key);
         ((DOMSignedInfo)si).canonicalize(context, new MacOutputStream(hmac));
-        byte[] result = hmac.doFinal();
+        final byte[] result = hmac.doFinal();
 
         return MessageDigest.isEqual(sig, result);
     }
@@ -195,11 +195,11 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         }
         if (hmac == null) {
             try {
-                Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
+                final Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
                 hmac = (p == null)
                     ? Mac.getInstance(getJCAAlgorithm())
                     : Mac.getInstance(getJCAAlgorithm(), p);
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
             }
         }
@@ -220,7 +220,7 @@ public abstract class DOMHMACSignatureMethod extends AbstractDOMSignatureMethod 
         if (!(spec instanceof HMACParameterSpec)) {
             return false;
         }
-        HMACParameterSpec ospec = (HMACParameterSpec)spec;
+        final HMACParameterSpec ospec = (HMACParameterSpec)spec;
 
         return outputLength == ospec.getOutputLength();
     }

@@ -83,13 +83,13 @@ public class SymmetricEncryptionVerificationTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -111,20 +111,20 @@ public class SymmetricEncryptionVerificationTest {
     @Test
     public void testAES128() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#aes128-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -136,8 +136,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -146,11 +146,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -163,20 +163,20 @@ public class SymmetricEncryptionVerificationTest {
     @Test
     public void testAES128_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2009/xmlenc11#aes128-gcm";
+        final String algorithm = "http://www.w3.org/2009/xmlenc11#aes128-gcm";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -188,8 +188,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -198,11 +198,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -215,20 +215,20 @@ public class SymmetricEncryptionVerificationTest {
     @Test
     public void testAES192() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#aes192-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#aes192-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -240,8 +240,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -250,11 +250,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -267,20 +267,20 @@ public class SymmetricEncryptionVerificationTest {
     @Test
     public void testAES192_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2009/xmlenc11#aes192-gcm";
+        final String algorithm = "http://www.w3.org/2009/xmlenc11#aes192-gcm";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -292,8 +292,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -302,11 +302,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -319,20 +319,20 @@ public class SymmetricEncryptionVerificationTest {
     @Test
     public void testAES256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#aes256-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -344,8 +344,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -354,11 +354,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -371,20 +371,20 @@ public class SymmetricEncryptionVerificationTest {
     @Test
     public void testAES256_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2009/xmlenc11#aes256-gcm";
+        final String algorithm = "http://www.w3.org/2009/xmlenc11#aes256-gcm";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -396,8 +396,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -406,11 +406,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -423,19 +423,19 @@ public class SymmetricEncryptionVerificationTest {
     @Test
     public void testTRIPLE_DES() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        SecretKey key = keygen.generateKey();
+        final KeyGenerator keygen = KeyGenerator.getInstance("DESede");
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmlenc#tripledes-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -447,8 +447,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -457,11 +457,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -476,20 +476,20 @@ public class SymmetricEncryptionVerificationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("SEED");
+        final KeyGenerator keygen = KeyGenerator.getInstance("SEED");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2007/05/xmldsig-more#seed128-cbc";
+        final String algorithm = "http://www.w3.org/2007/05/xmldsig-more#seed128-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -501,8 +501,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -511,11 +511,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -530,20 +530,20 @@ public class SymmetricEncryptionVerificationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia128-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia128-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -555,8 +555,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -565,11 +565,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -584,20 +584,20 @@ public class SymmetricEncryptionVerificationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia192-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia192-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -609,8 +609,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -619,11 +619,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -638,20 +638,20 @@ public class SymmetricEncryptionVerificationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
         // Encrypt using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia256-cbc";
+        final String algorithm = "http://www.w3.org/2001/04/xmldsig-more#camellia256-cbc";
         encryptUsingDOM(
             algorithm, key, null, null, document, localNames, false
         );
@@ -663,8 +663,8 @@ public class SymmetricEncryptionVerificationTest {
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -673,11 +673,11 @@ public class SymmetricEncryptionVerificationTest {
         }
 
         // Decrypt
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
@@ -713,13 +713,13 @@ public class SymmetricEncryptionVerificationTest {
         List<String> localNames,
         boolean content
     ) throws Exception {
-        XMLCipher cipher = XMLCipher.getInstance(algorithm);
+        final XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
 
         if (wrappingKey != null) {
-            XMLCipher newCipher = XMLCipher.getInstance(keyTransportAlgorithm);
+            final XMLCipher newCipher = XMLCipher.getInstance(keyTransportAlgorithm);
             newCipher.init(XMLCipher.WRAP_MODE, wrappingKey);
-            EncryptedKey encryptedKey = newCipher.encryptKey(document, secretKey);
+            final EncryptedKey encryptedKey = newCipher.encryptKey(document, secretKey);
             if (includeWrappingKeyInfo && wrappingKey instanceof PublicKey) {
                 // Create a KeyInfo for the EncryptedKey
                 KeyInfo encryptedKeyKeyInfo = encryptedKey.getKeyInfo();
@@ -733,7 +733,7 @@ public class SymmetricEncryptionVerificationTest {
                 encryptedKeyKeyInfo.add((PublicKey)wrappingKey);
             }
 
-            EncryptedData builder = cipher.getEncryptedData();
+            final EncryptedData builder = cipher.getEncryptedData();
 
             KeyInfo builderKeyInfo = builder.getKeyInfo();
             if (builderKeyInfo == null) {
@@ -747,20 +747,20 @@ public class SymmetricEncryptionVerificationTest {
             builderKeyInfo.add(encryptedKey);
         }
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        for (String localName : localNames) {
-            String expression = "//*[local-name()='" + localName + "']";
-            Element elementToEncrypt =
+        for (final String localName : localNames) {
+            final String expression = "//*[local-name()='" + localName + "']";
+            final Element elementToEncrypt =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(elementToEncrypt);
 
             document = cipher.doFinal(document, elementToEncrypt, content);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );

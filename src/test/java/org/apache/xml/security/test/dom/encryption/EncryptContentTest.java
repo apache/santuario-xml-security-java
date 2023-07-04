@@ -78,19 +78,19 @@ public class EncryptContentTest {
     public EncryptContentTest() throws Exception {
         org.apache.xml.security.Init.init();
 
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
         secretKey = keyFactory.generateSecret(keySpec);
 
-        TransformerFactory tf = TransformerFactory.newInstance();
+        final TransformerFactory tf = TransformerFactory.newInstance();
         tf.newTransformer();
 
         // Determine if we have ISO 10126 Padding - needed for Bulk AES or
         // 3DES encryption
 
         haveISOPadding = false;
-        String algorithmId =
+        final String algorithmId =
             JCEMapper.translateURItoJCEID(
                 org.apache.xml.security.utils.EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128
             );
@@ -100,9 +100,9 @@ public class EncryptContentTest {
                 if (Cipher.getInstance(algorithmId) != null) {
                     haveISOPadding = true;
                 }
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 //
-            } catch (NoSuchPaddingException nspe) {
+            } catch (final NoSuchPaddingException nspe) {
                 //
             }
         }
@@ -119,9 +119,9 @@ public class EncryptContentTest {
         try (InputStream is = new ByteArrayInputStream(DATA.getBytes(StandardCharsets.UTF_8))) {
             doc = XMLUtils.read(is, false);
         }
-        NodeList dataToEncrypt = doc.getElementsByTagName("user");
+        final NodeList dataToEncrypt = doc.getElementsByTagName("user");
 
-        XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
+        final XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
         dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
 
         for (int i = 0; i < dataToEncrypt.getLength(); i++) {
@@ -129,14 +129,14 @@ public class EncryptContentTest {
         }
 
         // Check that user content has been removed
-        Element user = (Element) dataToEncrypt.item(0);
+        final Element user = (Element) dataToEncrypt.item(0);
         Node child = user.getFirstChild();
         while (child != null && child.getNodeType() != Node.ELEMENT_NODE) {
             child = child.getNextSibling();
         }
 
         // child should be EncryptedData, if not throw exception
-        Element childElem = (Element) child;
+        final Element childElem = (Element) child;
         if (!"EncryptedData".equals(childElem.getLocalName())) {
             // t.transform(new DOMSource(doc), new StreamResult(System.out));
             throw new Exception("Element content not replaced");
@@ -171,22 +171,22 @@ public class EncryptContentTest {
         try (InputStream is = new ByteArrayInputStream(MULTIPLE_USER_DATA.getBytes(StandardCharsets.UTF_8))) {
             doc = XMLUtils.read(is, false);
         }
-        NodeList dataToEncrypt = doc.getElementsByTagName("user");
+        final NodeList dataToEncrypt = doc.getElementsByTagName("user");
 
-        XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
+        final XMLCipher dataCipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
         dataCipher.init(XMLCipher.ENCRYPT_MODE, secretKey);
 
-        KeyInfo keyInfo = new KeyInfo(doc);
+        final KeyInfo keyInfo = new KeyInfo(doc);
         keyInfo.addKeyName("mykey");
 
-        EncryptedData encryptedData = dataCipher.getEncryptedData();
+        final EncryptedData encryptedData = dataCipher.getEncryptedData();
         encryptedData.setKeyInfo(keyInfo);
 
         for (int i = 0; i < dataToEncrypt.getLength(); i++) {
             dataCipher.doFinal(doc,(Element) dataToEncrypt.item(i), true);
         }
 
-        NodeList keyInfoList = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "KeyInfo");
+        final NodeList keyInfoList = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "KeyInfo");
         assertEquals(keyInfoList.getLength(), 2);
     }
 

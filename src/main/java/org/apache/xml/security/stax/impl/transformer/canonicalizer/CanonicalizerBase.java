@@ -108,7 +108,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
         List<XMLSecNamespace> utilizedNamespaces = Collections.emptyList();
 
-        XMLSecNamespace elementNamespace = xmlSecStartElement.getElementNamespace();
+        final XMLSecNamespace elementNamespace = xmlSecStartElement.getElementNamespace();
         final XMLSecNamespace found = (XMLSecNamespace) outputStack.containsOnStack(elementNamespace);
         //found means the prefix matched. so check the ns further
         if (found == null || found.getNamespaceURI() == null
@@ -119,9 +119,9 @@ public abstract class CanonicalizerBase extends TransformIdentity {
             outputStack.peek().add(elementNamespace);
         }
 
-        List<XMLSecNamespace> declaredNamespaces = xmlSecStartElement.getOnElementDeclaredNamespaces();
+        final List<XMLSecNamespace> declaredNamespaces = xmlSecStartElement.getOnElementDeclaredNamespaces();
         for (int i = 0; i < declaredNamespaces.size(); i++) {
-            XMLSecNamespace comparableNamespace = declaredNamespaces.get(i);
+            final XMLSecNamespace comparableNamespace = declaredNamespaces.get(i);
             final XMLSecNamespace resultNamespace = (XMLSecNamespace) outputStack.containsOnStack(comparableNamespace);
             //resultNamespace means the prefix matched. so check the ns further
             if (resultNamespace != null && resultNamespace.getNamespaceURI() != null
@@ -136,10 +136,10 @@ public abstract class CanonicalizerBase extends TransformIdentity {
             outputStack.peek().add(comparableNamespace);
         }
 
-        List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
+        final List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
         for (int i = 0; i < comparableAttributes.size(); i++) {
-            XMLSecAttribute xmlSecAttribute = comparableAttributes.get(i);
-            XMLSecNamespace attributeNamespace = xmlSecAttribute.getAttributeNamespace();
+            final XMLSecAttribute xmlSecAttribute = comparableAttributes.get(i);
+            final XMLSecNamespace attributeNamespace = xmlSecAttribute.getAttributeNamespace();
             if ("xml".equals(attributeNamespace.getPrefix())) {
                 continue;
             }
@@ -164,7 +164,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
     protected List<XMLSecAttribute> getCurrentUtilizedAttributes(final XMLSecStartElement xmlSecStartElement,
                                                                       final C14NStack<XMLSecEvent> outputStack) {
-        List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
+        final List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
         if (comparableAttributes.isEmpty()) {
             return Collections.emptyList();
         }
@@ -176,10 +176,10 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                                                                       final C14NStack<XMLSecEvent> outputStack) {
 
         final List<XMLSecNamespace> utilizedNamespaces = new ArrayList<>();
-        List<XMLSecNamespace> visibleNamespaces = new ArrayList<>();
+        final List<XMLSecNamespace> visibleNamespaces = new ArrayList<>();
         xmlSecStartElement.getNamespacesFromCurrentScope(visibleNamespaces);
         for (int i = 0; i < visibleNamespaces.size(); i++) {
-            XMLSecNamespace comparableNamespace = visibleNamespaces.get(i);
+            final XMLSecNamespace comparableNamespace = visibleNamespaces.get(i);
 
             final XMLSecNamespace found = (XMLSecNamespace) outputStack.containsOnStack(comparableNamespace);
             //found means the prefix matched. so check the ns further
@@ -205,10 +205,10 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
         List<XMLSecAttribute> utilizedAttributes = Collections.emptyList();
 
-        List<XMLSecAttribute> comparableAttributes = new ArrayList<>();
+        final List<XMLSecAttribute> comparableAttributes = new ArrayList<>();
         xmlSecStartElement.getAttributesFromCurrentScope(comparableAttributes);
         for (int i = 0; i < comparableAttributes.size(); i++) {
-            XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
+            final XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
             if (!XML.equals(comparableAttribute.getName().getPrefix())) {
                 continue;
             }
@@ -222,9 +222,9 @@ public abstract class CanonicalizerBase extends TransformIdentity {
             outputStack.peek().add(comparableAttribute);
         }
 
-        List<XMLSecAttribute> elementAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
+        final List<XMLSecAttribute> elementAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
         for (int i = 0; i < elementAttributes.size(); i++) {
-            XMLSecAttribute comparableAttribute = elementAttributes.get(i);
+            final XMLSecAttribute comparableAttribute = elementAttributes.get(i);
             //attributes with xml prefix are already processed in the for loop above
             //xml:id attributes must be handled like other attributes: emit but dont inherit
             final QName attributeName = comparableAttribute.getName();
@@ -254,7 +254,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     @Override
     public void transform(final XMLSecEvent xmlSecEvent) throws XMLStreamException {
         try {
-            OutputStream outputStream = getOutputStream();  //NOPMD
+            final OutputStream outputStream = getOutputStream();  //NOPMD
 
             switch (xmlSecEvent.getEventType()) {
                 case XMLStreamConstants.START_ELEMENT:
@@ -378,14 +378,14 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                 case XMLStreamConstants.ENTITY_DECLARATION:
                     throw new XMLStreamException("illegal event :" + XMLSecurityUtils.getXMLEventAsString(xmlSecEvent));
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }
 
     @Override
     public void transform(InputStream inputStream) throws XMLStreamException {
-        XMLEventReaderInputProcessor xmlEventReaderInputProcessor =
+        final XMLEventReaderInputProcessor xmlEventReaderInputProcessor =
                 new XMLEventReaderInputProcessor(null, getXmlInputFactory().createXMLStreamReader(inputStream));
 
         try {
@@ -394,7 +394,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
                 xmlSecEvent = xmlEventReaderInputProcessor.processEvent(null);
                 this.transform(xmlSecEvent);
             } while (xmlSecEvent.getEventType() != XMLStreamConstants.END_DOCUMENT);
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             throw new XMLStreamException(e);
         }
     }
@@ -402,11 +402,11 @@ public abstract class CanonicalizerBase extends TransformIdentity {
     @Override
     public void doFinal() throws XMLStreamException {
         if (getTransformer() != null) {
-            UnsyncByteArrayOutputStream baos = (UnsyncByteArrayOutputStream)getOutputStream();  //NOPMD
+            final UnsyncByteArrayOutputStream baos = (UnsyncByteArrayOutputStream)getOutputStream();  //NOPMD
             try (InputStream is = new UnsyncByteArrayInputStream(baos.toByteArray())) {
                 getTransformer().transform(is);
                 getTransformer().doFinal();
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 throw new XMLStreamException(ex);
             }
         }
@@ -591,7 +591,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
             writer.write(' ');
 
             for (int i = 0; i < length; ) {
-                int c = data.codePointAt(i);
+                final int c = data.codePointAt(i);
                 i += Character.charCount(c);
                 if (c == 0x0D) {
                     writer.write(__XD_);

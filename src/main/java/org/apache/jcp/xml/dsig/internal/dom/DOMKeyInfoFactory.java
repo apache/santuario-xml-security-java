@@ -74,7 +74,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
 
     @Override
     public KeyValue newKeyValue(PublicKey key)  throws KeyException {
-        String algorithm = key.getAlgorithm();
+        final String algorithm = key.getAlgorithm();
         if ("DSA".equals(algorithm)) {
             return new DOMKeyValue.DSA((DSAPublicKey) key);
         } else if ("RSA".equals(algorithm)) {
@@ -153,7 +153,7 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         if (!(xmlStructure instanceof javax.xml.crypto.dom.DOMStructure)) {
             throw new ClassCastException("xmlStructure must be of type DOMStructure");
         }
-        Node node =
+        final Node node =
             ((javax.xml.crypto.dom.DOMStructure) xmlStructure).getNode();
         node.normalize();
 
@@ -168,8 +168,8 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         }
 
         // check tag
-        String tag = element.getLocalName();
-        String namespace = element.getNamespaceURI();
+        final String tag = element.getLocalName();
+        final String namespace = element.getNamespaceURI();
         if (tag == null || namespace == null) {
             throw new MarshalException("Document implementation must " +
                 "support DOM Level 2 and be namespace aware");
@@ -177,9 +177,9 @@ public final class DOMKeyInfoFactory extends KeyInfoFactory {
         if ("KeyInfo".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
             try {
                 return new DOMKeyInfo(element, new UnmarshalContext(), getProvider());
-            } catch (MarshalException me) {
+            } catch (final MarshalException me) {
                 throw me;
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new MarshalException(e);
             }
         } else {

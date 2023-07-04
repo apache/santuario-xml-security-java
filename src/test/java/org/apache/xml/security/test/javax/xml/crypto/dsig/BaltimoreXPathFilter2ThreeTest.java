@@ -45,13 +45,13 @@ public class BaltimoreXPathFilter2ThreeTest {
     }
 
     public BaltimoreXPathFilter2ThreeTest() {
-        File file = resolveFile("src", "test", "resources", "interop", "xfilter2", "merlin-xpath-filter2-three");
+        final File file = resolveFile("src", "test", "resources", "interop", "xfilter2", "merlin-xpath-filter2-three");
         validator = new SignatureValidator(file);
     }
 
     @Test
     public void testSignSpec() throws Exception {
-        String file = "sign-spec.xml";
+        final String file = "sign-spec.xml";
 
         boolean coreValidity = validator.validate(file,
                     new KeySelectors.KeyValueKeySelector());
@@ -64,7 +64,7 @@ public class BaltimoreXPathFilter2ThreeTest {
 
     @Test
     public void testSignXfdl() throws Exception {
-        String file = "sign-xfdl.xml";
+        final String file = "sign-xfdl.xml";
 
         boolean coreValidity = validator.validate(file,
                     new KeySelectors.KeyValueKeySelector());

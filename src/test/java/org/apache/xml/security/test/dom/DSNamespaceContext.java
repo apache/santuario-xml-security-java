@@ -53,8 +53,8 @@ public class DSNamespaceContext implements NamespaceContext {
 
     @Override
     public String getPrefix(String arg0) {
-        for (String key : namespaceMap.keySet()) {
-            String value = namespaceMap.get(key);
+        for (final String key : namespaceMap.keySet()) {
+            final String value = namespaceMap.get(key);
             if (value.equals(arg0)) {
                 return key;
             }

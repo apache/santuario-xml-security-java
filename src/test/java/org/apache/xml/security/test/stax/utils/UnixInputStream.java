@@ -42,7 +42,7 @@ public class UnixInputStream extends InputStream {
 
     @Override
     public int read() throws IOException {
-        int read = inputStream.read();
+        final int read = inputStream.read();
         if (read == '\r') {
             return inputStream.read();
         }

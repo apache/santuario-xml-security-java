@@ -69,10 +69,10 @@ public class Canonicalizer20010315ExclusiveTest {
     @Test
     public void test221excl() throws Exception {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
         c.setOutputStream(baos);
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                     "org/apache/xml/security/c14n/inExcl/example2_2_1.xml")
         );
@@ -94,10 +94,10 @@ public class Canonicalizer20010315ExclusiveTest {
             xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
         }
 
-        byte[] reference =
+        final byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/example2_2_c14nized_exclusive.xml"));
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
             System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
@@ -111,8 +111,8 @@ public class Canonicalizer20010315ExclusiveTest {
     @Test
     public void test222excl() throws Exception {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
         c.setOutputStream(baos);
 
         canonicalize(c,
@@ -121,10 +121,10 @@ public class Canonicalizer20010315ExclusiveTest {
                 new QName("http://example.net", "elem2")
         );
 
-        byte[] reference =
+        final byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/example2_2_c14nized_exclusive.xml"));
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
             System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
@@ -138,8 +138,8 @@ public class Canonicalizer20010315ExclusiveTest {
     @Test
     public void test24excl() throws Exception {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
         c.setOutputStream(baos);
 
         canonicalize(c,
@@ -148,10 +148,10 @@ public class Canonicalizer20010315ExclusiveTest {
                 new QName("http://example.net", "elem2")
         );
 
-        byte[] reference =
+        final byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
             System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
@@ -165,8 +165,8 @@ public class Canonicalizer20010315ExclusiveTest {
     @Test
     public void testComplexDocexcl() throws Exception {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
         c.setOutputStream(baos);
 
         canonicalize(c,
@@ -175,10 +175,10 @@ public class Canonicalizer20010315ExclusiveTest {
                 new QName("http://schemas.xmlsoap.org/soap/envelope/", "Body", "env")
         );
 
-        byte[] reference =
+        final byte[] reference =
             getBytesFromResource(this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-c14nized.xml"));
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
             System.out.println("Expected:\n" + new String(reference, java.nio.charset.StandardCharsets.UTF_8));
@@ -217,14 +217,14 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<>();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("env");
         inclusiveNamespaces.add("ns0");
         inclusiveNamespaces.add("xsi");
         inclusiveNamespaces.add("wsu");
-        Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<>();
+        final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+        final Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         c.setProperties(transformerProperties);
         c.setOutputStream(baos);
@@ -241,37 +241,37 @@ public class Canonicalizer20010315ExclusiveTest {
      */
     @Test
     public void test24Aexcl() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Element local = doc.createElementNS("foo:bar", "dsig:local");
-        Element test = doc.createElementNS("http://example.net", "etsi:test");
-        Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");
-        Element stuff = doc.createElementNS("foo:bar", "dsig:stuff");
+        final Document doc = TestUtils.newDocument();
+        final Element local = doc.createElementNS("foo:bar", "dsig:local");
+        final Element test = doc.createElementNS("http://example.net", "etsi:test");
+        final Element elem2 = doc.createElementNS("http://example.net", "etsi:elem2");
+        final Element stuff = doc.createElementNS("foo:bar", "dsig:stuff");
         elem2.appendChild(stuff);
         test.appendChild(elem2);
         local.appendChild(test);
         doc.appendChild(local);
 
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer t = tf.newTransformer();
-        StringWriter stringWriter = new StringWriter();
-        StreamResult streamResult = new StreamResult(stringWriter);
+        final TransformerFactory tf = TransformerFactory.newInstance();
+        final Transformer t = tf.newTransformer();
+        final StringWriter stringWriter = new StringWriter();
+        final StreamResult streamResult = new StreamResult(stringWriter);
         t.transform(new DOMSource(doc), streamResult);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<>();
-        Canonicalizer20010315_ExclWithCommentsTransformer c =
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final List<String> inclusiveNamespaces = new ArrayList<>();
+        final Canonicalizer20010315_ExclWithCommentsTransformer c =
                 new Canonicalizer20010315_ExclWithCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<>();
+        final Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         c.setProperties(transformerProperties);
         c.setOutputStream(baos);
 
         canonicalize(c, new StringReader(stringWriter.toString()), new QName("http://example.net", "elem2"));
 
-        byte[] reference =
+        final byte[] reference =
                 getBytesFromResource(this.getClass().getClassLoader().getResource(
                     "org/apache/xml/security/c14n/inExcl/example2_4_c14nized.xml"));
-        boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
+        final boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         assertTrue(equals);
     }
@@ -309,12 +309,12 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</env:Body>";
 
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -325,11 +325,11 @@ public class Canonicalizer20010315ExclusiveTest {
 
         {
             //exactly the same outcome is expected if #default is not set:
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -385,12 +385,12 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</env:Body>";
 
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -399,11 +399,11 @@ public class Canonicalizer20010315ExclusiveTest {
             assertEquals(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), c14nXML1);
         }
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -447,12 +447,12 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</env:Body>";
 
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -462,11 +462,11 @@ public class Canonicalizer20010315ExclusiveTest {
         }
         {
             //exactly the same outcome is expected if #default is not set:
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -510,12 +510,12 @@ public class Canonicalizer20010315ExclusiveTest {
 
 
         {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("#default");
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -525,11 +525,11 @@ public class Canonicalizer20010315ExclusiveTest {
         }
         {
             //exactly the same outcome is expected if #default is not set:
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            List<String> inclusiveNamespaces = new ArrayList<>();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final List<String> inclusiveNamespaces = new ArrayList<>();
             inclusiveNamespaces.add("xsi");
-            Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-            Map<String, Object> transformerProperties = new HashMap<>();
+            final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+            final Map<String, Object> transformerProperties = new HashMap<>();
             transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
             c.setProperties(transformerProperties);
             c.setOutputStream(baos);
@@ -571,11 +571,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<>();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
-        Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<>();
+        final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+        final Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -613,11 +613,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<>();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
-        Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<>();
+        final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+        final Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -655,11 +655,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<>();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
-        Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<>();
+        final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+        final Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -697,11 +697,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "</ns0:Ping>"
                         + "</env:Body>";
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<>();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
-        Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<>();
+        final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+        final Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -734,11 +734,11 @@ public class Canonicalizer20010315ExclusiveTest {
                         + "<ns0:text xsi:type=\"xsd:string\">hello</ns0:text>"
                         + "</ns0:Ping>";
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        List<String> inclusiveNamespaces = new ArrayList<>();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final List<String> inclusiveNamespaces = new ArrayList<>();
         inclusiveNamespaces.add("#default");
-        Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> transformerProperties = new HashMap<>();
+        final Canonicalizer20010315_ExclOmitCommentsTransformer c = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+        final Map<String, Object> transformerProperties = new HashMap<>();
         transformerProperties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
         transformerProperties.put(Canonicalizer20010315_Excl.PROPAGATE_DEFAULT_NAMESPACE, Boolean.TRUE);
         c.setProperties(transformerProperties);
@@ -783,10 +783,10 @@ public class Canonicalizer20010315ExclusiveTest {
 
     public static byte[] getBytesFromResource(URL resource) throws IOException {
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream inputStream = resource.openStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final InputStream inputStream = resource.openStream();
         try {
-            byte[] buf = new byte[1024];
+            final byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);

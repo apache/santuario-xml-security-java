@@ -51,12 +51,12 @@ public class XPathContainer extends SignatureElementProxy implements TransformPa
     public void setXPath(String xpath) {
         Node childNode = getElement().getFirstChild();
         while (childNode != null) {
-            Node nodeToBeRemoved = childNode;
+            final Node nodeToBeRemoved = childNode;
             childNode = childNode.getNextSibling();
             getElement().removeChild(nodeToBeRemoved);
         }
 
-        Text xpathText = createText(xpath);
+        final Text xpathText = createText(xpath);
         appendSelf(xpathText);
     }
 

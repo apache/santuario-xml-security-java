@@ -31,7 +31,7 @@ public class AppB {
 
     public void dsig() throws Exception {
 
-        Provider p = Security.getProvider("ApacheXMLDSig");
+        final Provider p = Security.getProvider("ApacheXMLDSig");
         TransformService.getInstance(Transform.XPATH, "DOM", p);
     }
 }

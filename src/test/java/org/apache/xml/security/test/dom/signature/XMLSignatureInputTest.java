@@ -93,23 +93,23 @@ public class XMLSignatureInputTest {
     @Test
     public void testSetOctetStreamGetOctetStream()
         throws IOException, CanonicalizationException, InvalidCanonicalizerException {
-        InputStream inputStream =
+        final InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-        XMLSignatureInput input = new XMLSignatureInput(inputStream);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream res = input.getOctetStream();
+        final XMLSignatureInput input = new XMLSignatureInput(inputStream);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final InputStream res = input.getOctetStream();
         int off = 0;
 
         while (res.available() > 0) {
-            byte[] array = new byte[1024];
-            int len = res.read(array);
+            final byte[] array = new byte[1024];
+            final int len = res.read(array);
 
             baos.write(array, off, len);
             off += len;
         }
 
-        byte[] resBytes = baos.toByteArray();
-        String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
+        final byte[] resBytes = baos.toByteArray();
+        final String resString = new String(resBytes, java.nio.charset.StandardCharsets.UTF_8);
 
         assertEquals(resString, _octetStreamTextInput);
     }
@@ -118,7 +118,7 @@ public class XMLSignatureInputTest {
     public void testIsInitializedWithOctetStream() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
-            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+            final XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
             assertTrue(input.isInitialized(), "Input is initialized");
         }
@@ -128,7 +128,7 @@ public class XMLSignatureInputTest {
     public void testOctetStreamIsOctetStream() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
-            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+            final XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
             assertTrue(input.isOctetStream(), "Input is octet stream");
         }
@@ -138,7 +138,7 @@ public class XMLSignatureInputTest {
     public void testOctetStreamIsNotNodeSet() throws IOException {
         try (InputStream inputStream =
             new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
-            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+            final XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
             assertFalse(input.isNodeSet(), "Input is not node set");
         }
@@ -148,7 +148,7 @@ public class XMLSignatureInputTest {
     public void testToString() throws IOException {
         try (InputStream inputStream =
                      new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
-            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+            final XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
             assertTrue(input.isInitialized(), "Input is initialized");
             assertTrue(input.toString().startsWith("XMLSignatureInput"));
@@ -159,7 +159,7 @@ public class XMLSignatureInputTest {
     public void testHTMLRepresentation() throws IOException, XMLSignatureException {
         try (InputStream inputStream =
                      new ByteArrayInputStream(_octetStreamTextInput.getBytes())) {
-            XMLSignatureInput input = new XMLSignatureInput(inputStream);
+            final XMLSignatureInput input = new XMLSignatureInput(inputStream);
 
             assertTrue(input.isInitialized(), "Input is initialized");
             assertNotNull(input.getHTMLRepresentation());
@@ -168,9 +168,9 @@ public class XMLSignatureInputTest {
 
     @Test
     public void test() throws Exception {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] digest = md.digest("Hello world!".getBytes());
-        XMLSignatureInput input = new XMLSignatureInput(Base64.getEncoder().encodeToString(digest));
+        final MessageDigest md = MessageDigest.getInstance("SHA-256");
+        final byte[] digest = md.digest("Hello world!".getBytes());
+        final XMLSignatureInput input = new XMLSignatureInput(Base64.getEncoder().encodeToString(digest));
         assertNull(input.getBytes());
     }
 }

@@ -181,7 +181,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
             return 0;
         }
 
-        int copylen = this.count - pos < length ? this.count - pos : length;
+        final int copylen = this.count - pos < length ? this.count - pos : length;
         System.arraycopy(buf, pos, b, offset, copylen);
         pos += copylen;
         return copylen;
@@ -214,7 +214,7 @@ public class UnsyncByteArrayInputStream extends InputStream {
         if (n <= 0) {
             return 0;
         }
-        int temp = pos;
+        final int temp = pos;
         pos = this.count - pos < n ? this.count : (int) (pos + n);
         return pos - temp;
     }

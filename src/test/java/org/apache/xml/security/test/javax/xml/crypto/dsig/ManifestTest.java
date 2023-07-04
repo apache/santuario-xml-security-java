@@ -60,8 +60,8 @@ public class ManifestTest {
     @Test
     public void testConstructor() throws Exception {
         Manifest man = null;
-        String id = "manifest_id";
-        List<Reference> refs = new ArrayList<>();
+        final String id = "manifest_id";
+        final List<Reference> refs = new ArrayList<>();
         // test XMLSignatureFactory.newManifest(List references)
         // and XMLSignatureFactory.newManifest(List references,
         //                                       String id)
@@ -90,8 +90,8 @@ public class ManifestTest {
         try {
             man = fac.newManifest(null);
             fail("Should throw a NPE for null references");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should throw a NPE instead of " + ex +
                  " for null references");
         }
@@ -99,8 +99,8 @@ public class ManifestTest {
         try {
             man = fac.newManifest(null, id);
             fail("Should throw a NPE for null references");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should throw a NPE instead of " + ex +
                  " for null references");
         }
@@ -110,8 +110,8 @@ public class ManifestTest {
         try {
             man = fac.newManifest(refs);
             fail("Should throw a IAE for empty references");
-        } catch (IllegalArgumentException iae) {
-        } catch (Exception ex) {
+        } catch (final IllegalArgumentException iae) {
+        } catch (final Exception ex) {
             fail("Should throw a IAE instead of " + ex +
                  " for empty references");
         }
@@ -119,21 +119,21 @@ public class ManifestTest {
         try {
             man = fac.newManifest(refs, id);
             fail("Should throw a IAE for empty references");
-        } catch (IllegalArgumentException iae) {
-        } catch (Exception ex) {
+        } catch (final IllegalArgumentException iae) {
+        } catch (final Exception ex) {
             fail("Should throw a IAE instead of " + ex +
                  " for empty references");
         }
 
         // use raw List type to test for invalid Reference entries
-        List invalidRefs = new ArrayList();
+        final List invalidRefs = new ArrayList();
         addEntryToRawList(invalidRefs, "references");
         try {
             fac.newManifest(invalidRefs);
             fail("Should throw a CCE for references containing " +
                  "non-Reference objects");
-        } catch (ClassCastException cce) {
-        } catch (Exception ex) {
+        } catch (final ClassCastException cce) {
+        } catch (final Exception ex) {
             fail("Should throw a CCE instead of " + ex +
                  " for references containing non-Reference objects");
         }
@@ -142,8 +142,8 @@ public class ManifestTest {
             fac.newManifest(invalidRefs, id);
             fail("Should throw a CCE for references containing " +
                  "non-Reference objects");
-        } catch (ClassCastException cce) {
-        } catch (Exception ex) {
+        } catch (final ClassCastException cce) {
+        } catch (final Exception ex) {
             fail("Should throw a CCE instead of " + ex +
                  " for references containing non-Reference objects");
         }
@@ -151,36 +151,37 @@ public class ManifestTest {
 
     @Test
     public void testisFeatureSupported() throws Exception {
-        List<Reference> refs = new ArrayList<>();
+        final List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);
 
-        Manifest man = fac.newManifest(refs);
+        final Manifest man = fac.newManifest(refs);
 
         try {
             man.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(man.isFeatureSupported("not supported"));
     }
 
     @Test
     public void testgetReferences() throws Exception {
-        List<Reference> refs = new ArrayList<>();
+        final List<Reference> refs = new ArrayList<>();
         refs.add(VALID_REF);
-        Manifest man = fac.newManifest(refs);
+        final Manifest man = fac.newManifest(refs);
         @SuppressWarnings("unchecked")
+        final
         List<Reference> stored = man.getReferences();
         try {
             stored.add(INVALID_REF);
             fail("Should not be able to modify the references directly");
-        } catch (UnsupportedOperationException ex) {
+        } catch (final UnsupportedOperationException ex) {
         }
         try {
-            ListIterator<Reference> li = stored.listIterator();
+            final ListIterator<Reference> li = stored.listIterator();
             li.add(INVALID_REF);
             fail("Should not be able to modify the references indirectly");
-        } catch (UnsupportedOperationException ex) {
+        } catch (final UnsupportedOperationException ex) {
         }
     }
 

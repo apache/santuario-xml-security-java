@@ -58,8 +58,8 @@ public class XMLX509DigestTest {
 
     @Test
     public void testSchema() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), digestControl, ALG_URI_CONTROL);
-        Element element = x509Digest.getElement();
+        final XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), digestControl, ALG_URI_CONTROL);
+        final Element element = x509Digest.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
         assertEquals("X509Digest", element.getLocalName());
@@ -67,25 +67,25 @@ public class XMLX509DigestTest {
 
     @Test
     public void testDigestFromElement() throws Exception {
-        Document doc = loadXML("X509Digest.xml");
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_X509DIGEST);
-        Element element = (Element) nl.item(0);
+        final Document doc = loadXML("X509Digest.xml");
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_X509DIGEST);
+        final Element element = (Element) nl.item(0);
 
-        XMLX509Digest x509Digest = new XMLX509Digest(element, "");
+        final XMLX509Digest x509Digest = new XMLX509Digest(element, "");
         assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
     @Test
     public void testDigestOnConstructionWithCert() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), certControl, ALG_URI_CONTROL);
+        final XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), certControl, ALG_URI_CONTROL);
         assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
 
     @Test
     public void testDigestOnConstructionWithBytes() throws Exception {
-        XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), digestControl, ALG_URI_CONTROL);
+        final XMLX509Digest x509Digest = new XMLX509Digest(TestUtils.newDocument(), digestControl, ALG_URI_CONTROL);
         assertEquals(ALG_URI_CONTROL, x509Digest.getAlgorithm());
         assertArrayEquals(digestControl, x509Digest.getDigestBytes());
     }
@@ -109,7 +109,7 @@ public class XMLX509DigestTest {
 
     private X509Certificate loadCertificate(String fileName) throws Exception {
         try (FileInputStream fis = new FileInputStream(getControlFilePath(fileName))) {
-            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            final CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) certFactory.generateCertificate(fis);
         }
     }

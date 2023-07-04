@@ -94,24 +94,24 @@ public class CreateInteropXFilter2Test {
     })
     @Test
     public void test_create_sign_spec() throws Exception {
-        List<Reference> refs = new ArrayList<>(2);
+        final List<Reference> refs = new ArrayList<>(2);
 
         // create reference 1
-        List<XPathType> types = new ArrayList<>(3);
+        final List<XPathType> types = new ArrayList<>(3);
         types.add(new XPathType(" //ToBeSigned ", XPathType.Filter.INTERSECT));
         types.add(new XPathType(" //NotToBeSigned ", XPathType.Filter.SUBTRACT));
         types.add(new XPathType(" //ReallyToBeSigned ", XPathType.Filter.UNION));
-        XPathFilter2ParameterSpec xp1 = new XPathFilter2ParameterSpec(types);
+        final XPathFilter2ParameterSpec xp1 = new XPathFilter2ParameterSpec(types);
         refs.add(fac.newReference
             ("", fac.newDigestMethod(DigestMethod.SHA1, null),
              Collections.singletonList(fac.newTransform(Transform.XPATH2, xp1)),
              null, null));
 
         // create reference 2
-        List<Transform> trans2 = new ArrayList<>(2);
+        final List<Transform> trans2 = new ArrayList<>(2);
         trans2.add(fac.newTransform(Transform.ENVELOPED,
             (TransformParameterSpec) null));
-        XPathFilter2ParameterSpec xp2 = new XPathFilter2ParameterSpec
+        final XPathFilter2ParameterSpec xp2 = new XPathFilter2ParameterSpec
             (Collections.singletonList
                 (new XPathType(" / ", XPathType.Filter.UNION)));
         trans2.add(fac.newTransform(Transform.XPATH2, xp2));
@@ -119,33 +119,33 @@ public class CreateInteropXFilter2Test {
             fac.newDigestMethod(DigestMethod.SHA1, null), trans2, null, null));
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(
+        final SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
                 (CanonicalizationMethod.INCLUSIVE,
                  (C14NMethodParameterSpec) null),
             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null), refs);
 
         // create KeyInfo
-        List<XMLStructure> kits = new ArrayList<>(2);
+        final List<XMLStructure> kits = new ArrayList<>(2);
         kits.add(kifac.newKeyValue(validatingKey));
-        List xds = new ArrayList(2);
+        final List xds = new ArrayList(2);
         xds.add("CN=Sean Mullan, DC=sun, DC=com");
         xds.add(signingCert);
         kits.add(kifac.newX509Data(xds));
-        KeyInfo ki = kifac.newKeyInfo(kits);
+        final KeyInfo ki = kifac.newKeyInfo(kits);
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature
+        final XMLSignature sig = fac.newXMLSignature
             (si, ki, null, null, "signature-value");
 
-        Document doc = TestUtils.newDocument();
-        Element tbs1 = doc.createElementNS(null, "ToBeSigned");
-        Comment tbs1Com = doc.createComment(" comment ");
-        Element tbs1Data = doc.createElementNS(null, "Data");
-        Element tbs1ntbs = doc.createElementNS(null, "NotToBeSigned");
-        Element tbs1rtbs = doc.createElementNS(null, "ReallyToBeSigned");
-        Comment tbs1rtbsCom = doc.createComment(" comment ");
-        Element tbs1rtbsData = doc.createElementNS(null, "Data");
+        final Document doc = TestUtils.newDocument();
+        final Element tbs1 = doc.createElementNS(null, "ToBeSigned");
+        final Comment tbs1Com = doc.createComment(" comment ");
+        final Element tbs1Data = doc.createElementNS(null, "Data");
+        final Element tbs1ntbs = doc.createElementNS(null, "NotToBeSigned");
+        final Element tbs1rtbs = doc.createElementNS(null, "ReallyToBeSigned");
+        final Comment tbs1rtbsCom = doc.createComment(" comment ");
+        final Element tbs1rtbsData = doc.createElementNS(null, "Data");
         tbs1rtbs.appendChild(tbs1rtbsCom);
         tbs1rtbs.appendChild(tbs1rtbsData);
         tbs1ntbs.appendChild(tbs1rtbs);
@@ -153,26 +153,26 @@ public class CreateInteropXFilter2Test {
         tbs1.appendChild(tbs1Data);
         tbs1.appendChild(tbs1ntbs);
 
-        Element tbs2 = doc.createElementNS(null, "ToBeSigned");
-        Element tbs2Data = doc.createElementNS(null, "Data");
-        Element tbs2ntbs = doc.createElementNS(null, "NotToBeSigned");
-        Element tbs2ntbsData = doc.createElementNS(null, "Data");
+        final Element tbs2 = doc.createElementNS(null, "ToBeSigned");
+        final Element tbs2Data = doc.createElementNS(null, "Data");
+        final Element tbs2ntbs = doc.createElementNS(null, "NotToBeSigned");
+        final Element tbs2ntbsData = doc.createElementNS(null, "Data");
         tbs2ntbs.appendChild(tbs2ntbsData);
         tbs2.appendChild(tbs2Data);
         tbs2.appendChild(tbs2ntbs);
 
-        Element document = doc.createElementNS(null, "Document");
+        final Element document = doc.createElementNS(null, "Document");
         document.appendChild(tbs1);
         document.appendChild(tbs2);
         doc.appendChild(document);
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, document);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, document);
 
         sig.sign(dsc);
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.KeyValueKeySelector(), document.getLastChild());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
 

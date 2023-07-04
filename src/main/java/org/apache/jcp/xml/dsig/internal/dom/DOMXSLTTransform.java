@@ -68,9 +68,9 @@ public final class DOMXSLTTransform extends ApacheTransform {
     public void marshalParams(XMLStructure parent, XMLCryptoContext context)
         throws MarshalException {
         super.marshalParams(parent, context);
-        XSLTTransformParameterSpec xp =
+        final XSLTTransformParameterSpec xp =
             (XSLTTransformParameterSpec) getParameterSpec();
-        Node xsltElem =
+        final Node xsltElem =
             ((javax.xml.crypto.dom.DOMStructure) xp.getStylesheet()).getNode();
         DOMUtils.appendChild(transformElem, xsltElem);
     }

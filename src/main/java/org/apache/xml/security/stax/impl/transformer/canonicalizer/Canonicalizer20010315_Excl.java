@@ -48,7 +48,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
     @SuppressWarnings("unchecked")
     public void setProperties(Map<String, Object> properties) throws XMLSecurityException {
         this.inclusiveNamespaces = getPrefixList((List<String>)properties.get(INCLUSIVE_NAMESPACES_PREFIX_LIST));
-        Boolean propagateDfltNs = (Boolean)properties.get(PROPAGATE_DEFAULT_NAMESPACE);
+        final Boolean propagateDfltNs = (Boolean)properties.get(PROPAGATE_DEFAULT_NAMESPACE);
         if (propagateDfltNs != null) {
             propagateDefaultNamespace = propagateDfltNs;
         }
@@ -78,7 +78,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
                                                                       final C14NStack<XMLSecEvent> outputStack) {
         List<XMLSecNamespace> utilizedNamespaces = Collections.emptyList();
 
-        XMLSecNamespace elementNamespace = xmlSecStartElement.getElementNamespace();
+        final XMLSecNamespace elementNamespace = xmlSecStartElement.getElementNamespace();
         final XMLSecNamespace found = (XMLSecNamespace) outputStack.containsOnStack(elementNamespace);
         //found means the prefix matched. so check the ns further
         if (found == null || found.getNamespaceURI() == null || !found.getNamespaceURI().equals(elementNamespace.getNamespaceURI())) {
@@ -87,10 +87,10 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
             outputStack.peek().add(elementNamespace);
         }
 
-        List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
+        final List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
         for (int i = 0; i < comparableAttributes.size(); i++) {
-            XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
-            XMLSecNamespace attributeNamespace = comparableAttribute.getAttributeNamespace();
+            final XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
+            final XMLSecNamespace attributeNamespace = comparableAttribute.getAttributeNamespace();
             if ("xml".equals(attributeNamespace.getPrefix())) {
                 continue;
             }
@@ -122,7 +122,7 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
 
                 final XMLSecNamespace comparableNamespace = XMLSecEventFactory.createXMLSecNamespace(prefix, ns);
 
-                XMLSecNamespace resultNamespace = (XMLSecNamespace)outputStack.containsOnStack(comparableNamespace);
+                final XMLSecNamespace resultNamespace = (XMLSecNamespace)outputStack.containsOnStack(comparableNamespace);
                 //resultNamespace means the prefix matched. so check the ns further
                 if (resultNamespace == null || resultNamespace.getNamespaceURI() == null
                         || !resultNamespace.getNamespaceURI().equals(comparableNamespace.getNamespaceURI())
@@ -150,9 +150,9 @@ public abstract class Canonicalizer20010315_Excl extends CanonicalizerBase {
     protected List<XMLSecAttribute> getInitialUtilizedAttributes(final XMLSecStartElement xmlSecStartElement,
                                                                       final C14NStack<XMLSecEvent> outputStack) {
         List<XMLSecAttribute> utilizedAttributes = Collections.emptyList();
-        List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
+        final List<XMLSecAttribute> comparableAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
         for (int i = 0; i < comparableAttributes.size(); i++) {
-            XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
+            final XMLSecAttribute comparableAttribute = comparableAttributes.get(i);
             if (utilizedAttributes == Collections.<XMLSecAttribute>emptyList()) {
                 utilizedAttributes = new ArrayList<>(2);
             }

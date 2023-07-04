@@ -90,11 +90,11 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
     private static Curve initializeCurve(String name, String oid,
             String sfield, String a, String b,
             String x, String y, String n, int h) {
-        BigInteger p = bigInt(sfield);
-        ECField field = new ECFieldFp(p);
-        EllipticCurve curve = new EllipticCurve(field, bigInt(a),
+        final BigInteger p = bigInt(sfield);
+        final ECField field = new ECFieldFp(p);
+        final EllipticCurve curve = new EllipticCurve(field, bigInt(a),
                                                 bigInt(b));
-        ECPoint g = new ECPoint(bigInt(x), bigInt(y));
+        final ECPoint g = new ECPoint(bigInt(x), bigInt(y));
         return new Curve(name, oid, curve, g, bigInt(n), h);
     }
 
@@ -123,25 +123,25 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
         addReturnToSelf();
 
         if (key instanceof ECPublicKey) {
-            ECParameterSpec ecParams = ((ECPublicKey)key).getParams();
+            final ECParameterSpec ecParams = ((ECPublicKey)key).getParams();
 
             // NamedCurve
-            String oid = getCurveOid(ecParams);
+            final String oid = getCurveOid(ecParams);
             if (oid == null) {
                 throw new IllegalArgumentException("Invalid ECParameterSpec");
             }
 
-            Element namedCurveElement = XMLUtils.createElementInSignature11Space(getDocument(), "NamedCurve");
+            final Element namedCurveElement = XMLUtils.createElementInSignature11Space(getDocument(), "NamedCurve");
             namedCurveElement.setAttributeNS(null, "URI", "urn:oid:" + oid);
             appendSelf(namedCurveElement);
             addReturnToSelf();
 
             // PublicKey
-            ECPoint ecPoint = ((ECPublicKey)key).getW();
-            byte[] secPublicKey = encodePoint(ecPoint, ecParams.getCurve());
-            String encoded = XMLUtils.encodeToString(secPublicKey);
-            Element publicKeyElement = XMLUtils.createElementInSignature11Space(getDocument(), "PublicKey");
-            Text text = getDocument().createTextNode(encoded);
+            final ECPoint ecPoint = ((ECPublicKey)key).getW();
+            final byte[] secPublicKey = encodePoint(ecPoint, ecParams.getCurve());
+            final String encoded = XMLUtils.encodeToString(secPublicKey);
+            final Element publicKeyElement = XMLUtils.createElementInSignature11Space(getDocument(), "PublicKey");
+            final Text text = getDocument().createTextNode(encoded);
 
             publicKeyElement.appendChild(text);
 
@@ -149,7 +149,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
             addReturnToSelf();
 
         } else {
-            Object[] exArgs = { Constants._TAG_ECKEYVALUE, key.getClass().getName() };
+            final Object[] exArgs = { Constants._TAG_ECKEYVALUE, key.getClass().getName() };
 
             throw new IllegalArgumentException(I18n.translate("KeyValue.IllegalArgument", exArgs));
         }
@@ -177,7 +177,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
                 }
                 // strip off "urn:oid"
                 if (uri != null && uri.startsWith("urn:oid:")) {
-                    String oid = uri.substring("urn:oid:".length());
+                    final String oid = uri.substring("urn:oid:".length());
                     ecParams = getECParameterSpec(oid);
                     if (ecParams == null) {
                         throw new MarshalException("Invalid curve OID");
@@ -192,13 +192,13 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
             ECPoint ecPoint = null;
 
             try {
-                String content = XMLUtils.getFullTextChildrenFromNode(curElem);
+                final String content = XMLUtils.getFullTextChildrenFromNode(curElem);
                 ecPoint = decodePoint(XMLUtils.decode(content), ecParams.getCurve());
-            } catch (IOException ioe) {
+            } catch (final IOException ioe) {
                 throw new MarshalException("Invalid EC Point", ioe);
             }
 
-            ECPublicKeySpec spec = new ECPublicKeySpec(ecPoint, ecParams);
+            final ECPublicKeySpec spec = new ECPublicKeySpec(ecPoint, ecParams);
             return KeyFactory.getInstance("EC").generatePublic(spec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | MarshalException ex) {
             throw new XMLSecurityException(ex);
@@ -239,8 +239,8 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
         if (elem == null) {
             throw new MarshalException("Missing " + localName + " element");
         }
-        String name = elem.getLocalName();
-        String namespace = elem.getNamespaceURI();
+        final String name = elem.getLocalName();
+        final String namespace = elem.getNamespaceURI();
         if (!name.equals(localName) || namespace == null && namespaceURI != null
             || namespace != null && !namespace.equals(namespaceURI)) {
             throw new MarshalException("Invalid element name: " +
@@ -267,7 +267,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
     }
 
     private static boolean matchCurve(ECParameterSpec params, Curve curve) {
-        int fieldSize = params.getCurve().getField().getFieldSize();
+        final int fieldSize = params.getCurve().getField().getFieldSize();
         return curve.getCurve().getField().getFieldSize() == fieldSize
             && curve.getCurve().equals(params.getCurve())
             && curve.getGenerator().equals(params.getGenerator())
@@ -283,27 +283,27 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
         }
         // Per ANSI X9.62, an encoded point is a 1 byte type followed by
         // ceiling(LOG base 2 field-size / 8) bytes of x and the same of y.
-        int n = (data.length - 1) / 2;
+        final int n = (data.length - 1) / 2;
         if (n != (curve.getField().getFieldSize() + 7) >> 3) {
             throw new IOException("Point does not match field size");
         }
 
-        byte[] xb = Arrays.copyOfRange(data, 1, 1 + n);
-        byte[] yb = Arrays.copyOfRange(data, n + 1, n + 1 + n);
+        final byte[] xb = Arrays.copyOfRange(data, 1, 1 + n);
+        final byte[] yb = Arrays.copyOfRange(data, n + 1, n + 1 + n);
 
         return new ECPoint(new BigInteger(1, xb), new BigInteger(1, yb));
     }
 
     private static byte[] encodePoint(ECPoint point, EllipticCurve curve) {
         // get field size in bytes (rounding up)
-        int n = (curve.getField().getFieldSize() + 7) >> 3;
-        byte[] xb = trimZeroes(point.getAffineX().toByteArray());
-        byte[] yb = trimZeroes(point.getAffineY().toByteArray());
+        final int n = (curve.getField().getFieldSize() + 7) >> 3;
+        final byte[] xb = trimZeroes(point.getAffineX().toByteArray());
+        final byte[] yb = trimZeroes(point.getAffineY().toByteArray());
         if (xb.length > n || yb.length > n) {
             throw new RuntimeException("Point coordinates do not " +
                                        "match field size");
         }
-        byte[] b = new byte[1 + (n << 1)];
+        final byte[] b = new byte[1 + (n << 1)];
         b[0] = 4; // uncompressed
         System.arraycopy(xb, 0, b, n - xb.length + 1, xb.length);
         System.arraycopy(yb, 0, b, b.length - yb.length, yb.length);

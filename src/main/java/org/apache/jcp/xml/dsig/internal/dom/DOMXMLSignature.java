@@ -144,13 +144,13 @@ public final class DOMXMLSignature extends DOMStructure
         // get Id attribute, if specified
         id = DOMUtils.getAttributeValue(localSigElem, "Id");
         // unmarshal SignedInfo
-        Element siElem = DOMUtils.getFirstChildElement(localSigElem,
+        final Element siElem = DOMUtils.getFirstChildElement(localSigElem,
                                                        "SignedInfo",
                                                        XMLSignature.XMLNS);
         si = new DOMSignedInfo(siElem, context, provider);
 
         // unmarshal SignatureValue
-        Element sigValElem = DOMUtils.getNextSiblingElement(siElem,
+        final Element sigValElem = DOMUtils.getNextSiblingElement(siElem,
                                                             "SignatureValue",
                                                             XMLSignature.XMLNS);
         sv = new DOMSignatureValue(sigValElem);
@@ -167,10 +167,10 @@ public final class DOMXMLSignature extends DOMStructure
         if (nextSibling == null) {
             objects = Collections.emptyList();
         } else {
-            List<XMLObject> tempObjects = new ArrayList<>();
+            final List<XMLObject> tempObjects = new ArrayList<>();
             while (nextSibling != null) {
-                String name = nextSibling.getLocalName();
-                String namespace = nextSibling.getNamespaceURI();
+                final String name = nextSibling.getLocalName();
+                final String namespace = nextSibling.getNamespaceURI();
                 if (!"Object".equals(name) || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException("Invalid element name: " + namespace + ":" + name +
                                                ", expected KeyInfo or Object");
@@ -249,7 +249,7 @@ public final class DOMXMLSignature extends DOMStructure
         }
 
         // create and append Object elements if necessary
-        for (XMLObject object : objects) {
+        for (final XMLObject object : objects) {
             ((DOMXMLObject)object).marshal(sigElem, dsPrefix, context);
         }
 
@@ -277,7 +277,7 @@ public final class DOMXMLSignature extends DOMStructure
         }
 
         // validate the signature
-        boolean sigValidity = sv.validate(vc);
+        final boolean sigValidity = sv.validate(vc);
         if (!sigValidity) {
             validationStatus = false;
             validated = true;
@@ -286,11 +286,12 @@ public final class DOMXMLSignature extends DOMStructure
 
         // validate all References
         @SuppressWarnings("unchecked")
+        final
         List<Reference> refs = this.si.getReferences();
         boolean validateRefs = true;
         for (int i = 0, size = refs.size(); validateRefs && i < size; i++) {
-            Reference ref = refs.get(i);
-            boolean refValid = ref.validate(vc);
+            final Reference ref = refs.get(i);
+            final boolean refValid = ref.validate(vc);
             LOG.debug("Reference [{}] is valid: {}", ref.getURI(), refValid);
             validateRefs &= refValid;
         }
@@ -307,21 +308,23 @@ public final class DOMXMLSignature extends DOMStructure
                                 ("org.jcp.xml.dsig.validateManifests")))
         {
             for (int i=0, size=objects.size(); validateMans && i < size; i++) {
-                XMLObject xo = objects.get(i);
+                final XMLObject xo = objects.get(i);
                 @SuppressWarnings("unchecked")
+                final
                 List<XMLStructure> content = xo.getContent();
-                int csize = content.size();
+                final int csize = content.size();
                 for (int j = 0; validateMans && j < csize; j++) {
-                    XMLStructure xs = content.get(j);
+                    final XMLStructure xs = content.get(j);
                     if (xs instanceof Manifest) {
                         LOG.debug("validating manifest");
-                        Manifest man = (Manifest)xs;
+                        final Manifest man = (Manifest)xs;
                         @SuppressWarnings("unchecked")
+                        final
                         List<Reference> manRefs = man.getReferences();
-                        int rsize = manRefs.size();
+                        final int rsize = manRefs.size();
                         for (int k = 0; validateMans && k < rsize; k++) {
-                            Reference ref = manRefs.get(k);
-                            boolean refValid = ref.validate(vc);
+                            final Reference ref = manRefs.get(k);
+                            final boolean refValid = ref.validate(vc);
                             LOG.debug(
                                 "Manifest ref [{}] is valid: {}", ref.getURI(),  refValid
                             );
@@ -344,12 +347,12 @@ public final class DOMXMLSignature extends DOMStructure
         if (signContext == null) {
             throw new NullPointerException("signContext cannot be null");
         }
-        DOMSignContext context = (DOMSignContext)signContext;
+        final DOMSignContext context = (DOMSignContext)signContext;
         marshal(context.getParent(), context.getNextSibling(),
                 DOMUtils.getSignaturePrefix(context), context);
 
         // generate references and signature value
-        List<Reference> allReferences = new ArrayList<>();
+        final List<Reference> allReferences = new ArrayList<>();
 
         // traverse the Signature and register all objects with IDs that
         // may contain References
@@ -357,21 +360,24 @@ public final class DOMXMLSignature extends DOMStructure
         signatureIdMap.put(id, this);
         signatureIdMap.put(si.getId(), si);
         @SuppressWarnings("unchecked")
+        final
         List<Reference> refs = si.getReferences();
-        for (Reference ref : refs) {
+        for (final Reference ref : refs) {
             signatureIdMap.put(ref.getId(), ref);
         }
-        for (XMLObject obj : objects) {
+        for (final XMLObject obj : objects) {
             signatureIdMap.put(obj.getId(), obj);
             @SuppressWarnings("unchecked")
+            final
             List<XMLStructure> content = obj.getContent();
-            for (XMLStructure xs : content) {
+            for (final XMLStructure xs : content) {
                 if (xs instanceof Manifest) {
-                    Manifest man = (Manifest)xs;
+                    final Manifest man = (Manifest)xs;
                     signatureIdMap.put(man.getId(), man);
                     @SuppressWarnings("unchecked")
+                    final
                     List<Reference> manRefs = man.getReferences();
-                    for (Reference ref : manRefs) {
+                    for (final Reference ref : manRefs) {
                         allReferences.add(ref);
                         signatureIdMap.put(ref.getId(), ref);
                     }
@@ -383,12 +389,12 @@ public final class DOMXMLSignature extends DOMStructure
         allReferences.addAll(refs);
 
         // generate/digest each reference
-        for (Reference ref : allReferences) {
+        for (final Reference ref : allReferences) {
             digestReference((DOMReference)ref, signContext);
         }
 
         // do final sweep to digest any references that were skipped or missed
-        for (Reference ref : allReferences) {
+        for (final Reference ref : allReferences) {
             if (((DOMReference)ref).isDigested()) {
                 continue;
             }
@@ -397,7 +403,7 @@ public final class DOMXMLSignature extends DOMStructure
 
         Key signingKey = null;
         try {
-            KeySelectorResult keySelectorResult = signContext.getKeySelector().select(ki,
+            final KeySelectorResult keySelectorResult = signContext.getKeySelector().select(ki,
                                                       KeySelector.Purpose.SIGN,
                                                       si.getSignatureMethod(),
                                                       signContext);
@@ -407,16 +413,16 @@ public final class DOMXMLSignature extends DOMStructure
                                                 "find a signing key");
             }
             ksr = keySelectorResult;
-        } catch (KeySelectorException kse) {
+        } catch (final KeySelectorException kse) {
             throw new XMLSignatureException("cannot find signing key", kse);
         }
 
         // calculate signature value
         try {
-            byte[] val = ((AbstractDOMSignatureMethod)
+            final byte[] val = ((AbstractDOMSignatureMethod)
                 si.getSignatureMethod()).sign(signingKey, si, signContext);
             ((DOMSignatureValue)sv).setValue(val);
-        } catch (InvalidKeyException ike) {
+        } catch (final InvalidKeyException ike) {
             throw new XMLSignatureException(ike);
         }
 
@@ -432,11 +438,11 @@ public final class DOMXMLSignature extends DOMStructure
         if (!(o instanceof XMLSignature)) {
             return false;
         }
-        XMLSignature osig = (XMLSignature)o;
+        final XMLSignature osig = (XMLSignature)o;
 
-        boolean idEqual =
+        final boolean idEqual =
             id == null ? osig.getId() == null : id.equals(osig.getId());
-        boolean keyInfoEqual =
+        final boolean keyInfoEqual =
             ki == null ? osig.getKeyInfo() == null
                         : ki.equals(osig.getKeyInfo());
 
@@ -469,17 +475,17 @@ public final class DOMXMLSignature extends DOMStructure
             return;
         }
         // check dependencies
-        String uri = ref.getURI();
+        final String uri = ref.getURI();
         if (Utils.sameDocumentURI(uri)) {
-            String parsedId = Utils.parseIdFromSameDocumentURI(uri);
+            final String parsedId = Utils.parseIdFromSameDocumentURI(uri);
             if (parsedId != null && signatureIdMap.containsKey(parsedId)) {
-                XMLStructure xs = signatureIdMap.get(parsedId);
+                final XMLStructure xs = signatureIdMap.get(parsedId);
                 if (xs instanceof DOMReference) {
                     digestReference((DOMReference) xs, signContext);
                 } else if (xs instanceof Manifest) {
-                    Manifest man = (Manifest) xs;
-                    List<Reference> manRefs = DOMManifest.getManifestReferences(man);
-                    for (Reference manRef : manRefs) {
+                    final Manifest man = (Manifest) xs;
+                    final List<Reference> manRefs = DOMManifest.getManifestReferences(man);
+                    for (final Reference manRef : manRefs) {
                         digestReference((DOMReference) manRef, signContext);
                     }
                 }
@@ -488,9 +494,9 @@ public final class DOMXMLSignature extends DOMStructure
             // reference dependencies in the XPath Transform - so be on
             // the safe side, and skip and do at end in the final sweep
             if (uri.length() == 0) {
-                List<Transform> transforms = ref.getTransforms();
-                for (Transform transform : transforms) {
-                    String transformAlg = transform.getAlgorithm();
+                final List<Transform> transforms = ref.getTransforms();
+                for (final Transform transform : transforms) {
+                    final String transformAlg = transform.getAlgorithm();
                     if (transformAlg.equals(Transform.XPATH) ||
                         transformAlg.equals(Transform.XPATH2)) {
                         return;
@@ -519,10 +525,10 @@ public final class DOMXMLSignature extends DOMStructure
             throws MarshalException
         {
             // base64 decode signatureValue
-            String content = XMLUtils.getFullTextChildrenFromNode(sigValueElem);
+            final String content = XMLUtils.getFullTextChildrenFromNode(sigValueElem);
             value = XMLUtils.decode(content);
 
-            Attr attr = sigValueElem.getAttributeNodeNS(null, "Id");
+            final Attr attr = sigValueElem.getAttributeNodeNS(null, "Id");
             if (attr != null) {
                 id = attr.getValue();
                 sigValueElem.setIdAttributeNode(attr, true);
@@ -559,11 +565,11 @@ public final class DOMXMLSignature extends DOMStructure
             }
 
             // get validating key
-            SignatureMethod sm = si.getSignatureMethod();
+            final SignatureMethod sm = si.getSignatureMethod();
             Key validationKey = null;
             KeySelectorResult ksResult = null;
             try {
-                KeySelector keySelector = validateContext.getKeySelector();
+                final KeySelector keySelector = validateContext.getKeySelector();
                 if (keySelector != null) {
                     ksResult = keySelector.select
                         (ki, KeySelector.Purpose.VERIFY, sm, validateContext);
@@ -575,7 +581,7 @@ public final class DOMXMLSignature extends DOMStructure
                     throw new XMLSignatureException("the keyselector did not " +
                                                     "find a validation key");
                 }
-            } catch (KeySelectorException kse) {
+            } catch (final KeySelectorException kse) {
                 throw new XMLSignatureException("cannot find validation " +
                                                 "key", kse);
             }
@@ -584,7 +590,7 @@ public final class DOMXMLSignature extends DOMStructure
             try {
                 validationStatus = ((AbstractDOMSignatureMethod)sm).verify
                     (validationKey, si, value, validateContext);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new XMLSignatureException(e);
             }
 
@@ -602,9 +608,9 @@ public final class DOMXMLSignature extends DOMStructure
             if (!(o instanceof SignatureValue)) {
                 return false;
             }
-            SignatureValue osv = (SignatureValue)o;
+            final SignatureValue osv = (SignatureValue)o;
 
-            boolean idEqual =
+            final boolean idEqual =
                 id == null ? osv.getId() == null : id.equals(osv.getId());
 
             //XXX compare signature values?

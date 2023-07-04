@@ -55,7 +55,7 @@ public class DigesterOutputStream extends ByteArrayOutputStream {
     public void write(byte[] arg0, int arg1, int arg2) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Pre-digested input:");
-            StringBuilder sb = new StringBuilder(arg2);
+            final StringBuilder sb = new StringBuilder(arg2);
             for (int i = arg1; i < (arg1 + arg2); i++) {
                 sb.append((char)arg0[i]);
             }

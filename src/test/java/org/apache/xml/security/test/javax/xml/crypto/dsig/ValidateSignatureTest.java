@@ -71,22 +71,22 @@ public class ValidateSignatureTest {
      */
     @Test
     public void test_signature_with_ID() throws Exception {
-        String file = "envelopingSignature.xml";
+        final String file = "envelopingSignature.xml";
 
-        DOMValidateContext vc = validator.getValidateContext
+        final DOMValidateContext vc = validator.getValidateContext
             (file, new KeySelectors.KeyValueKeySelector());
-        Document doc = vc.getNode().getOwnerDocument();
-        NodeList nl = doc.getElementsByTagName("Assertion");
+        final Document doc = vc.getNode().getOwnerDocument();
+        final NodeList nl = doc.getElementsByTagName("Assertion");
         vc.setIdAttributeNS((Element) nl.item(0), null, "AssertionID");
-        boolean coreValidity = validator.validate(vc);
+        final boolean coreValidity = validator.validate(vc);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_external_c14n_xmlattrs() throws Exception {
-        String file = "signature-external-c14n-xmlatrs.xml";
+        final String file = "signature-external-c14n-xmlatrs.xml";
 
-        boolean coreValidity = validator.validate(file,
+        final boolean coreValidity = validator.validate(file,
             new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
         assertTrue(coreValidity, "Signature failed core validation");
     }
@@ -96,9 +96,9 @@ public class ValidateSignatureTest {
      */
     @Test
     public void test_invalid_signature() throws Exception {
-        InvalidURIDereferencer ud = new InvalidURIDereferencer();
+        final InvalidURIDereferencer ud = new InvalidURIDereferencer();
 
-        boolean coreValidity = validator.validate("invalid-signature.xml",
+        final boolean coreValidity = validator.validate("invalid-signature.xml",
             new KeySelectors.KeyValueKeySelector(), ud);
         assertFalse(coreValidity, "Invalid signature should fail!");
         assertTrue(ud.dereferenced, "References validated before signature");
@@ -111,7 +111,7 @@ public class ValidateSignatureTest {
                 ("signature-enveloping-hmac-sha1-trunclen-0-attack.xml",
                 new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
             fail("Expected HMACOutputLength exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
             // pass
         }
@@ -125,7 +125,7 @@ public class ValidateSignatureTest {
                 ("signature-enveloping-hmac-sha1-trunclen-8-attack.xml",
                 new KeySelectors.SecretKeySelector("secret".getBytes(StandardCharsets.US_ASCII)));
             fail("Expected HMACOutputLength exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             // System.out.println(xse.getMessage());
             // pass
         }
@@ -135,8 +135,8 @@ public class ValidateSignatureTest {
     // xmlns:xml attributes. C14n should not emit these attributes.
     @Test
     public void test_signature_exclc14n_xmlnamespace() throws Exception {
-        String file = "demo.signed.xml";
-        boolean coreValidity = validator.validate(file,
+        final String file = "demo.signed.xml";
+        final boolean coreValidity = validator.validate(file,
             new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
@@ -146,8 +146,8 @@ public class ValidateSignatureTest {
     // filter that produces an empty node-set.
     @Test
     public void test_signature_xpathfilter2() throws Exception {
-        String file = "xmldsig-xfilter2.xml";
-        boolean coreValidity = validator.validate
+        final String file = "xmldsig-xfilter2.xml";
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }

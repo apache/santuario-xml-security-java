@@ -88,7 +88,7 @@ public final class DOMSignatureProperties extends DOMStructure
         throws MarshalException
     {
         // unmarshal attributes
-        Attr attr = propsElem.getAttributeNodeNS(null, "Id");
+        final Attr attr = propsElem.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             id = attr.getValue();
             propsElem.setIdAttributeNode(attr, true);
@@ -96,12 +96,12 @@ public final class DOMSignatureProperties extends DOMStructure
             id = null;
         }
 
-        List<SignatureProperty> newProperties = new ArrayList<>();
+        final List<SignatureProperty> newProperties = new ArrayList<>();
         Node firstChild = propsElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
-                String name = firstChild.getLocalName();
-                String namespace = firstChild.getNamespaceURI();
+                final String name = firstChild.getLocalName();
+                final String namespace = firstChild.getNamespaceURI();
                 if (!"SignatureProperty".equals(name) || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException("Invalid element name: " + namespace + ":" + name +
                                                ", expected SignatureProperty");
@@ -131,8 +131,8 @@ public final class DOMSignatureProperties extends DOMStructure
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
-        Element propsElem = DOMUtils.createElement(ownerDoc,
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Element propsElem = DOMUtils.createElement(ownerDoc,
                                                    "SignatureProperties",
                                                    XMLSignature.XMLNS,
                                                    dsPrefix);
@@ -141,7 +141,7 @@ public final class DOMSignatureProperties extends DOMStructure
         DOMUtils.setAttributeID(propsElem, "Id", id);
 
         // create and append any properties
-        for (SignatureProperty property : properties) {
+        for (final SignatureProperty property : properties) {
             ((DOMSignatureProperty)property).marshal(propsElem, dsPrefix,
                                                      context);
         }
@@ -158,9 +158,9 @@ public final class DOMSignatureProperties extends DOMStructure
         if (!(o instanceof SignatureProperties)) {
             return false;
         }
-        SignatureProperties osp = (SignatureProperties)o;
+        final SignatureProperties osp = (SignatureProperties)o;
 
-        boolean idsEqual = id == null ? osp.getId() == null
+        final boolean idsEqual = id == null ? osp.getId() == null
                                        : id.equals(osp.getId());
 
         return properties.equals(osp.getProperties()) && idsEqual;

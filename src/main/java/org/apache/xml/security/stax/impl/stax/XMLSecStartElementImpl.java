@@ -126,7 +126,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
     @Override
     public XMLSecStartElement getStartElementAtLevel(int level) {
-        int thisLevel = getDocumentLevel();
+        final int thisLevel = getDocumentLevel();
         if (thisLevel < level) {
             return null;
         } else if (thisLevel == level) {
@@ -169,7 +169,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
     @Override
     public Attribute getAttributeByName(QName name) {
-        for (XMLSecAttribute comparableAttribute : attributes) {
+        for (final XMLSecAttribute comparableAttribute : attributes) {
             if (name.equals(comparableAttribute.getName())) {
                 return comparableAttribute;
             }
@@ -182,7 +182,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
         return new NamespaceContext() {
             @Override
             public String getNamespaceURI(String prefix) {
-                for (XMLSecNamespace comparableNamespace : namespaces) {
+                for (final XMLSecNamespace comparableNamespace : namespaces) {
                     if (prefix.equals(comparableNamespace.getPrefix())) {
                         return comparableNamespace.getNamespaceURI();
                     }
@@ -195,7 +195,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
             @Override
             public String getPrefix(String namespaceURI) {
-                for (XMLSecNamespace comparableNamespace : namespaces) {
+                for (final XMLSecNamespace comparableNamespace : namespaces) {
                     if (namespaceURI.equals(comparableNamespace.getNamespaceURI())) {
                         return comparableNamespace.getPrefix();
                     }
@@ -210,12 +210,12 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
             @Override
             public Iterator getPrefixes(String namespaceURI) {
 
-                Set<String> prefixes = new HashSet<>();
+                final Set<String> prefixes = new HashSet<>();
 
-                List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<>();
+                final List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<>();
                 getNamespacesFromCurrentScope(xmlSecNamespaces);
 
-                for (XMLSecNamespace xmlSecNamespace : xmlSecNamespaces) {
+                for (final XMLSecNamespace xmlSecNamespace : xmlSecNamespaces) {
                     if (namespaceURI.equals(xmlSecNamespace.getNamespaceURI())) {
                         prefixes.add(xmlSecNamespace.getPrefix());
                     }
@@ -227,7 +227,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
 
     @Override
     public String getNamespaceURI(String prefix) {
-        for (XMLSecNamespace comparableNamespace : namespaces) {
+        for (final XMLSecNamespace comparableNamespace : namespaces) {
             if (prefix.equals(comparableNamespace.getPrefix())) {
                 return comparableNamespace.getNamespaceURI();
             }
@@ -264,7 +264,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
             }
             writer.write(getName().getLocalPart());
 
-            for (Namespace xmlSecNamespace : namespaces) {
+            for (final Namespace xmlSecNamespace : namespaces) {
                 writer.write(" xmlns");
 
                 final String nsPrefix = xmlSecNamespace.getPrefix();
@@ -277,7 +277,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
                 writer.write('"');
             }
 
-            for (Attribute xmlSecAttribute : attributes) {
+            for (final Attribute xmlSecAttribute : attributes) {
                 writer.write(' ');
                 final String attrPrefix = xmlSecAttribute.getName().getPrefix();
                 if (attrPrefix != null && !attrPrefix.isEmpty()) {
@@ -291,7 +291,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
             }
 
             writer.write('>');
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

@@ -89,7 +89,7 @@ public class DOMNamespaceContext implements NamespaceContext {
             prefix = null;
         }
         if (context != null) {
-            String namespaceURI = context.lookupNamespaceURI(prefix);
+            final String namespaceURI = context.lookupNamespaceURI(prefix);
             if (namespaceURI != null) {
                 return namespaceURI;
             }
@@ -113,7 +113,7 @@ public class DOMNamespaceContext implements NamespaceContext {
             namespaceURI = null;
         }
         if (context != null) {
-            String prefix = context.lookupPrefix(namespaceURI);
+            final String prefix = context.lookupPrefix(namespaceURI);
             if (prefix != null) {
                 return prefix;
             } else if (Objects.equals(context.lookupNamespaceURI(null), namespaceURI)) {

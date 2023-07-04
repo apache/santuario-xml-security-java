@@ -44,7 +44,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
         if (!XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             return false;
         }
-        Element[] x509childNodes =
+        final Element[] x509childNodes =
             XMLUtils.selectDsNodes(element.getFirstChild(), Constants._TAG_X509SUBJECTNAME);
 
         return x509childNodes != null && x509childNodes.length > 0;
@@ -56,7 +56,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
 
-        X509Certificate cert =
+        final X509Certificate cert =
             this.engineResolveX509Certificate(element, baseURI, storage, secureValidation);
 
         if (cert != null) {
@@ -71,7 +71,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
     protected X509Certificate engineResolveX509Certificate(
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
-        Element[] x509childNodes =
+        final Element[] x509childNodes =
             XMLUtils.selectDsNodes(element.getFirstChild(), Constants._TAG_X509SUBJECTNAME);
         if (!(x509childNodes != null && x509childNodes.length > 0)) {
             return null;
@@ -79,8 +79,8 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
 
         try {
             if (storage == null) {
-                Object[] exArgs = { Constants._TAG_X509SUBJECTNAME };
-                KeyResolverException ex =
+                final Object[] exArgs = { Constants._TAG_X509SUBJECTNAME };
+                final KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
                 LOG.debug("", ex);
@@ -88,19 +88,19 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                 throw ex;
             }
 
-            XMLX509SubjectName[] x509childObject = new XMLX509SubjectName[x509childNodes.length];
+            final XMLX509SubjectName[] x509childObject = new XMLX509SubjectName[x509childNodes.length];
 
             for (int i = 0; i < x509childNodes.length; i++) {
                 x509childObject[i] = new XMLX509SubjectName(x509childNodes[i], baseURI);
             }
 
-            Iterator<Certificate> storageIterator = storage.getIterator();
+            final Iterator<Certificate> storageIterator = storage.getIterator();
             while (storageIterator.hasNext()) {
-                X509Certificate cert = (X509Certificate) storageIterator.next();
-                XMLX509SubjectName certSN = new XMLX509SubjectName(element.getOwnerDocument(), cert);
+                final X509Certificate cert = (X509Certificate) storageIterator.next();
+                final XMLX509SubjectName certSN = new XMLX509SubjectName(element.getOwnerDocument(), cert);
                 LOG.debug("Found Certificate SN: {}", certSN.getSubjectName());
 
-                for (XMLX509SubjectName childSubject : x509childObject) {
+                for (final XMLX509SubjectName childSubject : x509childObject) {
                     LOG.debug("Found Element SN:     {}", childSubject.getSubjectName());
 
                     if (certSN.equals(childSubject)) {
@@ -112,7 +112,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
             }
 
             return null;
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.debug("XMLSecurityException", ex);
             throw new KeyResolverException(ex);
         }

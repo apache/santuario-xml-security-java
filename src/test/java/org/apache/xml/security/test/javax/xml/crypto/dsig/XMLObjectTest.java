@@ -63,20 +63,20 @@ public class XMLObjectTest {
         obj = factory.newXMLObject(null, null, null, null);
         assertNotNull(obj);
 
-        List<XMLStructure> list = new ArrayList<>();
+        final List<XMLStructure> list = new ArrayList<>();
         obj = factory.newXMLObject(list, null, null, null);
         assertNotNull(obj);
 
-        String strEntry = "wrong type";
+        final String strEntry = "wrong type";
         // use raw List type to test for invalid XMLStructure entries
-        List invalidList = new ArrayList();
+        final List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
             factory.newXMLObject(invalidList, null, null, null);
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-XMLStructure, entries");
-        } catch (ClassCastException cce) {
-        } catch (Exception ex) {
+        } catch (final ClassCastException cce) {
+        } catch (final Exception ex) {
             fail("Should raise a CCE for content with invalid entries " +
                  "instead of " + ex);
         }
@@ -90,23 +90,24 @@ public class XMLObjectTest {
         assertEquals(obj.getEncoding(), encoding);
 
         @SuppressWarnings("unchecked")
+        final
         List<XMLStructure> unmodifiable = obj.getContent();
         try {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
             fail("Should return an unmodifiable List object");
-        } catch (UnsupportedOperationException uoe) {}
+        } catch (final UnsupportedOperationException uoe) {}
         assertArrayEquals(unmodifiable.toArray(), list.toArray());
     }
 
     @Test
     public void testisFeatureSupported() {
-        List<XMLStructure> list = new ArrayList<>();
+        final List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());
-        XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);
+        final XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);
         try {
             obj.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(obj.isFeatureSupported("not supported"));
     }

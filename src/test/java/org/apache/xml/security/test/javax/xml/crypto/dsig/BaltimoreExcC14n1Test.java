@@ -45,15 +45,15 @@ public class BaltimoreExcC14n1Test {
     }
 
     public BaltimoreExcC14n1Test() {
-        File base = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
+        final File base = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
             "merlin-exc-c14n-one");
         validator = new SignatureValidator(base);
     }
 
     @Test
     public void testExcSignature() throws Exception {
-        String file = "exc-signature.xml";
-        boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
+        final String file = "exc-signature.xml";
+        final boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 

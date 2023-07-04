@@ -74,7 +74,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
 
         try {
             this.addBase64Text(x509certificate.getEncoded());
-        } catch (java.security.cert.CertificateEncodingException ex) {
+        } catch (final java.security.cert.CertificateEncodingException ex) {
             throw new XMLSecurityException(ex);
         }
     }
@@ -96,9 +96,9 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * @throws XMLSecurityException
      */
     public X509Certificate getX509Certificate() throws XMLSecurityException {
-        byte[] certbytes = this.getCertificateBytes();
+        final byte[] certbytes = this.getCertificateBytes();
         try (InputStream is = new ByteArrayInputStream(certbytes)) {
-            CertificateFactory certFact =
+            final CertificateFactory certFact =
                 CertificateFactory.getInstance(XMLX509Certificate.JCA_CERT_ID);
             return (X509Certificate) certFact.generateCertificate(is);
         } catch (CertificateException | IOException ex) {
@@ -113,7 +113,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
      * @throws XMLSecurityException
      */
     public PublicKey getPublicKey() throws XMLSecurityException, IOException {
-        X509Certificate cert = this.getX509Certificate();
+        final X509Certificate cert = this.getX509Certificate();
 
         if (cert != null) {
             return cert.getPublicKey();
@@ -128,10 +128,10 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
         if (!(obj instanceof XMLX509Certificate)) {
             return false;
         }
-        XMLX509Certificate other = (XMLX509Certificate) obj;
+        final XMLX509Certificate other = (XMLX509Certificate) obj;
         try {
             return Arrays.equals(other.getCertificateBytes(), this.getCertificateBytes());
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             return false;
         }
     }
@@ -140,11 +140,11 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
     public int hashCode() {
         int result = 17;
         try {
-            byte[] bytes = getCertificateBytes();
-            for (byte element : bytes) {
+            final byte[] bytes = getCertificateBytes();
+            for (final byte element : bytes) {
                 result = 31 * result + element;
             }
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             LOG.debug(e.getMessage(), e);
         }
         return result;

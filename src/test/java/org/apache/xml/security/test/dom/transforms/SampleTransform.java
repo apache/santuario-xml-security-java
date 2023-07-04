@@ -42,7 +42,7 @@ public class SampleTransform extends TransformSpi {
         try {
             Transform.register
                (uri, "org.apache.xml.security.test.transforms.SampleTransform");
-        } catch (AlgorithmAlreadyRegisteredException e) { }
+        } catch (final AlgorithmAlreadyRegisteredException e) { }
     }
 
     /**

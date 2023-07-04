@@ -67,11 +67,11 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
     }
 
     private XMLSecEvent processEventInternal() throws XMLStreamException {
-        XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
+        final XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
         if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
             currentXMLStructureDepth++;
             if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
-                XMLSecurityException xmlSecurityException = new XMLSecurityException(
+                final XMLSecurityException xmlSecurityException = new XMLSecurityException(
                                                                                      "secureProcessing.MaximumAllowedXMLStructureDepth",
                                                                                      new Object[] {maximumAllowedXMLStructureDepth}
                     );

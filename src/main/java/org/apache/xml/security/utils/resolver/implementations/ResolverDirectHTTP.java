@@ -107,25 +107,25 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
         try {
             // calculate new URI
-            URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
-            URL url = uriNew.toURL();
+            final URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
+            final URL url = uriNew.toURL();
             URLConnection urlConnection = openConnection(url, context);
 
             // check if Basic authentication is required
-            String auth = urlConnection.getHeaderField("WWW-Authenticate");
+            final String auth = urlConnection.getHeaderField("WWW-Authenticate");
 
             if (auth != null && auth.startsWith("Basic")) {
                 // do http basic authentication
-                String user =
+                final String user =
                     getProperty(context, ResolverDirectHTTP.properties[ResolverDirectHTTP.HttpBasicUser]);
-                String pass =
+                final String pass =
                     getProperty(context, ResolverDirectHTTP.properties[ResolverDirectHTTP.HttpBasicPass]);
 
                 if (user != null && pass != null) {
                     urlConnection = openConnection(url, context);
 
-                    String password = user + ":" + pass;
-                    String encodedPassword = XMLUtils.encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
+                    final String password = user + ":" + pass;
+                    final String encodedPassword = XMLUtils.encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
 
                     // set authentication property in the http header
                     urlConnection.setRequestProperty("Authorization",
@@ -133,10 +133,10 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
                 }
             }
 
-            String mimeType = urlConnection.getHeaderField("Content-Type");
+            final String mimeType = urlConnection.getHeaderField("Content-Type");
             try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 InputStream inputStream = urlConnection.getInputStream()) {
-                byte[] buf = new byte[4096];
+                final byte[] buf = new byte[4096];
                 int read = 0;
                 int summarized = 0;
 
@@ -147,7 +147,7 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
                 LOG.debug("Fetched {} bytes from URI {}", summarized, uriNew.toString());
 
-                XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
+                final XMLSignatureInput result = new XMLSignatureInput(baos.toByteArray());
                 result.setSecureValidation(context.secureValidation);
 
                 result.setSourceURI(uriNew.toString());
@@ -163,18 +163,18 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
     private URLConnection openConnection(URL url, ResourceResolverContext context) throws IOException {
 
-        String proxyHostProp =
+        final String proxyHostProp =
             getProperty(context, ResolverDirectHTTP.properties[ResolverDirectHTTP.HttpProxyHost]);
-        String proxyPortProp =
+        final String proxyPortProp =
             getProperty(context, ResolverDirectHTTP.properties[ResolverDirectHTTP.HttpProxyPort]);
-        String proxyUser =
+        final String proxyUser =
             getProperty(context, ResolverDirectHTTP.properties[ResolverDirectHTTP.HttpProxyUser]);
-        String proxyPass =
+        final String proxyPass =
             getProperty(context, ResolverDirectHTTP.properties[ResolverDirectHTTP.HttpProxyPass]);
 
         Proxy proxy = null;
         if (proxyHostProp != null && proxyPortProp != null) {
-            int port = Integer.parseInt(proxyPortProp);
+            final int port = Integer.parseInt(proxyPortProp);
             proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHostProp, port));
         }
 
@@ -183,8 +183,8 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             urlConnection = url.openConnection(proxy);
 
             if (proxyUser != null && proxyPass != null) {
-                String password = proxyUser + ":" + proxyPass;
-                String authString = "Basic " + XMLUtils.encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
+                final String password = proxyUser + ":" + proxyPass;
+                final String authString = "Basic " + XMLUtils.encodeToString(password.getBytes(StandardCharsets.ISO_8859_1));
 
                 urlConnection.setRequestProperty("Proxy-Authorization", authString);
             }

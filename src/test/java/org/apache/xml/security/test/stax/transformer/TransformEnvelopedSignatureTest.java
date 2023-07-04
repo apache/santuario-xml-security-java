@@ -60,11 +60,11 @@ public class TransformEnvelopedSignatureTest {
 
     @Test
     public void testXMLSecEventToXMLSecEventAPI() throws Exception {
-        TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
+        final TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
 
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -98,13 +98,13 @@ public class TransformEnvelopedSignatureTest {
         };
         transformEnvelopedSignature.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml")
         );
 
         while (xmlSecEventReader.hasNext()) {
-            XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+            final XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             transformEnvelopedSignature.transform(xmlSecEvent);
         }
 
@@ -115,11 +115,11 @@ public class TransformEnvelopedSignatureTest {
 
     @Test
     public void testXMLSecEventToInputStreamAPI() throws Exception {
-        TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
+        final TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -146,7 +146,7 @@ public class TransformEnvelopedSignatureTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -157,13 +157,13 @@ public class TransformEnvelopedSignatureTest {
         };
         transformEnvelopedSignature.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml")
         );
 
         while (xmlSecEventReader.hasNext()) {
-            XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+            final XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             transformEnvelopedSignature.transform(xmlSecEvent);
         }
 
@@ -174,17 +174,17 @@ public class TransformEnvelopedSignatureTest {
 
     @Test
     public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
-        TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
+        final TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformEnvelopedSignature.setOutputStream(byteArrayOutputStream);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "com/phaos/phaos-xmldsig-three/signature-rsa-enveloped.xml")
         );
 
         while (xmlSecEventReader.hasNext()) {
-            XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+            final XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             transformEnvelopedSignature.transform(xmlSecEvent);
         }
 

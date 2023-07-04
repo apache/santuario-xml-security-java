@@ -49,13 +49,13 @@ public class KeyStoreResolverTest {
             return;
         }
 
-        KeyStore ks = KeyStore.getInstance("JCEKS");
+        final KeyStore ks = KeyStore.getInstance("JCEKS");
         try (FileInputStream f = new FileInputStream(resolveFile("src", "test", "resources", "org", "apache", "xml",
             "security", "samples", "input", "keystore2.jks"))) {
             ks.load(f, "xmlsecurity".toCharArray());
         }
 
-        KeyStoreResolver ksResolver = new KeyStoreResolver(ks);
+        final KeyStoreResolver ksResolver = new KeyStoreResolver(ks);
         Iterator<?> iter = ksResolver.getIterator();
         checkIterator(iter);
 
@@ -69,8 +69,8 @@ public class KeyStoreResolverTest {
         iter2 = ksResolver.getIterator();
 
         while (iter.hasNext()) {
-            X509Certificate cert = (X509Certificate) iter.next();
-            X509Certificate cert2 = (X509Certificate) iter2.next();
+            final X509Certificate cert = (X509Certificate) iter.next();
+            final X509Certificate cert2 = (X509Certificate) iter2.next();
             if (!cert.equals(cert2)) {
                 fail("KeyStoreResolver iterators are not independent");
             }
@@ -83,7 +83,7 @@ public class KeyStoreResolverTest {
         iter.hasNext(); // hasNext() is idempotent
 
         while (iter.hasNext()) {
-            X509Certificate cert = (X509Certificate) iter.next();
+            final X509Certificate cert = (X509Certificate) iter.next();
             cert.getSubjectX500Principal().getName();
             count++;
         }
@@ -95,7 +95,7 @@ public class KeyStoreResolverTest {
         try {
             iter.next();
             fail("Expecting NoSuchElementException");
-        } catch (NoSuchElementException e) {
+        } catch (final NoSuchElementException e) {
             //
         }
     }

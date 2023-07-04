@@ -94,7 +94,7 @@ public class XIncludeHandler extends DefaultHandler {
             if (locator.getSystemId() != null) {
                 this.systemId = new URL(locator.getSystemId());
             }
-        } catch (MalformedURLException e) {
+        } catch (final MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }
         this.contentHandler.setDocumentLocator(locator);
@@ -131,47 +131,47 @@ public class XIncludeHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
         if (xIncludeNS.equals(uri) && xIncludeLN.equals(localName)) {
-            String href = atts.getValue("href");
+            final String href = atts.getValue("href");
             if (href == null) {
                 throw new SAXException("XInclude href attribute is missing");
             }
-            String parse = atts.getValue("parse");
+            final String parse = atts.getValue("parse");
             if (parse != null && !"xml".equals(parse)) {
                 throw new UnsupportedOperationException("Only parse=\"xml\" is currently supported");
             }
-            String xpointer = atts.getValue("xpointer");
+            final String xpointer = atts.getValue("xpointer");
 
-            URL url = ClassLoaderUtils.getResource(href, XIncludeHandler.class);
+            final URL url = ClassLoaderUtils.getResource(href, XIncludeHandler.class);
             if (url == null) {
                 throw new SAXException("XML file not found: " + href);
             }
             Document document = null;
             try {
                 document = uriDocMap.get(url.toURI());
-            } catch (URISyntaxException ex) {
+            } catch (final URISyntaxException ex) {
                 throw new SAXException(ex);
             }
 
             if (document == null) {
-                DOMResult domResult = new DOMResult();
+                final DOMResult domResult = new DOMResult();
                 try {
-                    XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-                    SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+                    final XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+                    final SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
                     saxTransformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
                     try {
                         saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
                         saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-                    } catch (IllegalArgumentException ex) {
+                    } catch (final IllegalArgumentException ex) {
                         // ignore
                     }
 
-                    TransformerHandler transformerHandler = saxTransformerFactory.newTransformerHandler();
+                    final TransformerHandler transformerHandler = saxTransformerFactory.newTransformerHandler();
                     transformerHandler.setResult(domResult);
                     xmlReader.setContentHandler(new XIncludeHandler(transformerHandler, uriDocMap));
                     xmlReader.parse(url.toExternalForm());
-                } catch (TransformerConfigurationException e) {
+                } catch (final TransformerConfigurationException e) {
                     throw new SAXException(e);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new SAXException(e);
                 }
 
@@ -179,37 +179,37 @@ public class XIncludeHandler extends DefaultHandler {
                 document.setDocumentURI(url.toExternalForm());
                 try {
                     uriDocMap.put(url.toURI(), document);
-                } catch (URISyntaxException e) {
+                } catch (final URISyntaxException e) {
                     throw new SAXException(e);
                 }
             }
 
-            SAXResult saxResult = new SAXResult(this);
+            final SAXResult saxResult = new SAXResult(this);
             skipEvents = true;
             try {
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                final TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 transformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
                 try {
                     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
                     transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-                } catch (IllegalArgumentException ex) {
+                } catch (final IllegalArgumentException ex) {
                     // ignore
                 }
 
-                Transformer transformer = transformerFactory.newTransformer();
+                final Transformer transformer = transformerFactory.newTransformer();
                 if (xpointer == null) {
                     transformer.transform(new DOMSource(document, document.getDocumentURI()), saxResult);
                 } else {
-                    NodeList nodeList = evaluateXPointer(xpointer, document);
-                    int length = nodeList.getLength();
+                    final NodeList nodeList = evaluateXPointer(xpointer, document);
+                    final int length = nodeList.getLength();
                     for (int i = 0; i < length; i++) {
-                        Node node = nodeList.item(i);
+                        final Node node = nodeList.item(i);
                         transformer.transform(new DOMSource(node, document.getDocumentURI()), saxResult);
                     }
                 }
-            } catch (TransformerConfigurationException e) {
+            } catch (final TransformerConfigurationException e) {
                 throw new SAXException(e);
-            } catch (TransformerException e) {
+            } catch (final TransformerException e) {
                 throw new SAXException(e);
             } finally {
                 skipEvents = false;
@@ -270,20 +270,20 @@ public class XIncludeHandler extends DefaultHandler {
             throw new SAXException("Only xpointer scheme is supported ATM");
         }
         xPointerSchemeIndex += xPointerSchemeString.length();
-        int xPointerSchemeEndIndex = this.findBalancedEndIndex(xpointer, xPointerSchemeIndex, '(', ')');
-        XPathFactory xPathFactory = XPathFactory.newInstance();
+        final int xPointerSchemeEndIndex = this.findBalancedEndIndex(xpointer, xPointerSchemeIndex, '(', ')');
+        final XPathFactory xPathFactory = XPathFactory.newInstance();
         try {
             xPathFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
-        } catch (XPathFactoryConfigurationException ex) {
+        } catch (final XPathFactoryConfigurationException ex) {
             throw new SAXException(ex);
         }
-        XPath xPath = xPathFactory.newXPath();
+        final XPath xPath = xPathFactory.newXPath();
 
         int xmlnsSchemeIndex = xpointer.indexOf(xmlnsSchemeString);
         if (xmlnsSchemeIndex >= 0) {
             xmlnsSchemeIndex += xmlnsSchemeString.length();
-            int xmlnsSchemeEndIndex = this.findBalancedEndIndex(xpointer, xmlnsSchemeIndex, '(', ')');
-            String namespaceScheme = xpointer.substring(xmlnsSchemeIndex, xmlnsSchemeEndIndex);
+            final int xmlnsSchemeEndIndex = this.findBalancedEndIndex(xpointer, xmlnsSchemeIndex, '(', ')');
+            final String namespaceScheme = xpointer.substring(xmlnsSchemeIndex, xmlnsSchemeEndIndex);
             final String[] namespaceSplit = namespaceScheme.split("=");
             xPath.setNamespaceContext(new NamespaceContext() {
                 @Override
@@ -310,7 +310,7 @@ public class XIncludeHandler extends DefaultHandler {
         }
         try {
             return (NodeList) xPath.evaluate(xpointer.substring(xPointerSchemeIndex, xPointerSchemeEndIndex), node, XPathConstants.NODESET);
-        } catch (XPathExpressionException e) {
+        } catch (final XPathExpressionException e) {
             throw new SAXException(e);
         }
     }
@@ -318,9 +318,9 @@ public class XIncludeHandler extends DefaultHandler {
     private int findBalancedEndIndex(String string, int startIndex, char opening, char ending) {
         int endIndex = -1;
         int openPar = 1;
-        int length = string.length();
+        final int length = string.length();
         for (int i = startIndex; i < length; i++) {
-            char curChar = string.charAt(i);
+            final char curChar = string.charAt(i);
             if (curChar == opening) {
                 openPar++;
             } else if (curChar == ending) {

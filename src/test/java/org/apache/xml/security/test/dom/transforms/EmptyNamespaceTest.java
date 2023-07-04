@@ -71,9 +71,9 @@ public class EmptyNamespaceTest {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);
 
-        List<String> inclusiveNamespaces = Arrays.asList("SOAP-ENV ec ec1 ns0 ns1 ns11 ns2 ns4 ns9".split(" "));
-        Canonicalizer20010315_Excl transformer = new Canonicalizer20010315_ExclOmitCommentsTransformer();
-        Map<String, Object> properties = new HashMap<>();
+        final List<String> inclusiveNamespaces = Arrays.asList("SOAP-ENV ec ec1 ns0 ns1 ns11 ns2 ns4 ns9".split(" "));
+        final Canonicalizer20010315_Excl transformer = new Canonicalizer20010315_ExclOmitCommentsTransformer();
+        final Map<String, Object> properties = new HashMap<>();
         properties.put(Canonicalizer20010315_Excl.INCLUSIVE_NAMESPACES_PREFIX_LIST, inclusiveNamespaces);
 
         transformer.setProperties(properties);
@@ -85,7 +85,7 @@ public class EmptyNamespaceTest {
             transformer.transform(stream);
             transformer.doFinal();
 
-            String result = outputStream.toString();
+            final String result = outputStream.toString();
             assertEquals(message, result);
         }
     }
@@ -95,18 +95,18 @@ public class EmptyNamespaceTest {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);
 
-        Canonicalizer20010315Excl transformer = new Canonicalizer20010315ExclOmitComments();
+        final Canonicalizer20010315Excl transformer = new Canonicalizer20010315ExclOmitComments();
 
         Document document = null;
         try (InputStream is = new ByteArrayInputStream(message.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
             document = XMLUtils.read(is, false);
         }
 
-        String inclusiveNamespaces = "SOAP-ENV ec ec1 ns0 ns1 ns11 ns2 ns4 ns9";
+        final String inclusiveNamespaces = "SOAP-ENV ec ec1 ns0 ns1 ns11 ns2 ns4 ns9";
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             transformer.engineCanonicalizeSubTree(document, inclusiveNamespaces, output);
 
-            String result = new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8);
+            final String result = new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8);
             assertEquals(message, result);
         }
     }

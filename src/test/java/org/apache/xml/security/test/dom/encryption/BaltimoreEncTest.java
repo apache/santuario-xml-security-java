@@ -90,10 +90,10 @@ public class BaltimoreEncTest {
      */
     public BaltimoreEncTest() throws Exception {
         // Create the comparison strings
-        File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmlenc-five",
+        final File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmlenc-five",
             "plaintext.xml");
 
-        Document doc = XMLUtils.read(f, false);
+        final Document doc = XMLUtils.read(f, false);
 
         cardNumber = retrieveCCNumber(doc);
 
@@ -112,13 +112,13 @@ public class BaltimoreEncTest {
         rsaCertSerialNumber = "1014918766910";
 
         // rsaKey
-        Path filename = resolvePath("src", "test", "resources", "ie", "baltimore", "merlin-examples",
+        final Path filename = resolvePath("src", "test", "resources", "ie", "baltimore", "merlin-examples",
             "merlin-xmlenc-five", "rsa.p8");
-        byte[] pkcs8Bytes = Files.readAllBytes(filename);
-        PKCS8EncodedKeySpec pkcs8Spec = new PKCS8EncodedKeySpec(pkcs8Bytes);
+        final byte[] pkcs8Bytes = Files.readAllBytes(filename);
+        final PKCS8EncodedKeySpec pkcs8Spec = new PKCS8EncodedKeySpec(pkcs8Bytes);
 
         // Create a key factory
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         rsaKey = keyFactory.generatePrivate(pkcs8Spec);
 
         // Initialise the library
@@ -130,7 +130,7 @@ public class BaltimoreEncTest {
         // Check what algorithms are available
 
         haveISOPadding = false;
-        String algorithmId =
+        final String algorithmId =
             JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
 
         if (algorithmId != null) {
@@ -138,9 +138,9 @@ public class BaltimoreEncTest {
                 if (Cipher.getInstance(algorithmId) != null) {
                     haveISOPadding = true;
                 }
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 //
-            } catch (NoSuchPaddingException nspe) {
+            } catch (final NoSuchPaddingException nspe) {
                 //
             }
         }
@@ -158,10 +158,10 @@ public class BaltimoreEncTest {
     public void test_five_content_3des_cbc() throws Exception {
 
         if (haveISOPadding) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-tripledes-cbc.xml");
 
-            Document dd = decryptElement(file);
+            final Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
             LOG.warn(
@@ -180,10 +180,10 @@ public class BaltimoreEncTest {
     public void test_five_content_aes256_cbc() throws Exception {
 
         if (haveISOPadding) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes256-cbc-prop.xml");
 
-            Document dd = decryptElement(file);
+            final Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
             LOG.warn(
@@ -202,10 +202,10 @@ public class BaltimoreEncTest {
     @Test
     public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml");
 
-            Document dd = decryptElement(file);
+            final Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
             LOG.warn(
@@ -225,10 +225,10 @@ public class BaltimoreEncTest {
     public void test_five_content_3des_cbc_kw_aes128() throws Exception {
 
         if (haveISOPadding && haveKeyWraps) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.xml");
 
-            Document dd = decryptElement(file);
+            final Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
             LOG.warn(
@@ -247,10 +247,10 @@ public class BaltimoreEncTest {
     @Test
     public void test_five_content_aes128_cbc_rsa_15() throws Exception {
         if (haveISOPadding) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml");
 
-            Document dd = decryptElement(file);
+            final Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
             LOG.warn(
@@ -269,10 +269,10 @@ public class BaltimoreEncTest {
     @Test
     public void test_five_element_aes192_cbc_ref() throws Exception {
         if (haveISOPadding) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes192-cbc-ref.xml");
 
-            Document dd = decryptElement(file);
+            final Document dd = decryptElement(file);
             // Note - we don't check the node count, as it will be different
             // due to the encrypted text remainin in the reference nodes
             checkDecryptedDoc(dd, false);
@@ -293,8 +293,8 @@ public class BaltimoreEncTest {
     @Test
     public void test_five_data_aes128_cbc() throws Exception {
         if (haveISOPadding) {
-            File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml");
-            byte[] decrypt = decryptData(file);
+            final File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml");
+            final byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
             LOG.warn(
@@ -315,9 +315,9 @@ public class BaltimoreEncTest {
         assumeFalse(isIBMJdK);
 
         if (haveISOPadding && haveKeyWraps) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.xml");
-            byte[] decrypt = decryptData(file);
+            final byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
             LOG.warn(
@@ -336,9 +336,9 @@ public class BaltimoreEncTest {
     @Test
     public void test_five_data_aes192_cbc_aes256() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml");
-            byte[] decrypt = decryptData(file);
+            final byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
             LOG.warn(
@@ -357,9 +357,9 @@ public class BaltimoreEncTest {
     @Test
     public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         if (haveISOPadding) {
-            File file = resolveFile(
+            final File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml");
-            byte[] decrypt = decryptData(file);
+            final byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
             LOG.warn(
@@ -380,22 +380,22 @@ public class BaltimoreEncTest {
     private Document decryptElement(File file) throws Exception {
 
         // Parse the document in question
-        Document doc = XMLUtils.read(file, false);
+        final Document doc = XMLUtils.read(file, false);
 
         // Now we have the document, lets build the XMLCipher element
         Element ee = null;
 
         // Create the XMLCipher element
-        XMLCipher cipher = XMLCipher.getInstance();
+        final XMLCipher cipher = XMLCipher.getInstance();
 
         // Need to pre-load the Encrypted Data so we can get the key info
         ee = (Element) doc.getElementsByTagName("EncryptedData").item(0);
         cipher.init(XMLCipher.DECRYPT_MODE, null);
-        EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
+        final EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
 
-        Key key = findKey(encryptedData);
+        final Key key = findKey(encryptedData);
         cipher.init(XMLCipher.DECRYPT_MODE, key);
-        Document dd = cipher.doFinal(doc, ee);
+        final Document dd = cipher.doFinal(doc, ee);
 
         return dd;
     }
@@ -413,7 +413,7 @@ public class BaltimoreEncTest {
         XMLCipher cipher;
 
         // Parse the document in question
-        Document doc = XMLUtils.read(new java.io.FileInputStream(file), false);
+        final Document doc = XMLUtils.read(new java.io.FileInputStream(file), false);
 
         // Now we have the document, lets build the XMLCipher element
         Element ee = null;
@@ -424,9 +424,9 @@ public class BaltimoreEncTest {
         // Need to pre-load the Encrypted Data so we can get the key info
         ee = (Element) doc.getElementsByTagName("EncryptedData").item(0);
         cipher.init(XMLCipher.DECRYPT_MODE, null);
-        EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
+        final EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
 
-        Key key = findKey(encryptedData);
+        final Key key = findKey(encryptedData);
         cipher.init(XMLCipher.DECRYPT_MODE, key);
 
         return cipher.decryptToByteArray(ee);
@@ -442,17 +442,17 @@ public class BaltimoreEncTest {
     private SecretKey mapKeyName(String name) throws Exception {
         if ("job".equals(name)) {
             // Job is a AES-128 key
-            SecretKey key = new SecretKeySpec(jobBytes, "AES");
+            final SecretKey key = new SecretKeySpec(jobBytes, "AES");
             return key;
         }
         if ("jeb".equals(name)) {
             // Jeb is a AES-192 key
-            SecretKey key = new SecretKeySpec(jebBytes, "AES");
+            final SecretKey key = new SecretKeySpec(jebBytes, "AES");
             return key;
         }
         if ("jed".equals(name)) {
             // Jed is a AES-256 key
-            SecretKey key = new SecretKeySpec(jedBytes, "AES");
+            final SecretKey key = new SecretKeySpec(jedBytes, "AES");
             return key;
         }
 
@@ -468,7 +468,7 @@ public class BaltimoreEncTest {
      * @param encryptedData EncryptedData to get key for
      */
     private Key findKey(EncryptedData encryptedData) throws Exception {
-        KeyInfo ki = encryptedData.getKeyInfo();
+        final KeyInfo ki = encryptedData.getKeyInfo();
 
         Key key = null;
         Key kek = null;
@@ -478,36 +478,36 @@ public class BaltimoreEncTest {
         }
 
         // First check for a known key name
-        KeyName keyName = ki.itemKeyName(0);
+        final KeyName keyName = ki.itemKeyName(0);
         if (keyName != null) {
             return mapKeyName(keyName.getKeyName());
         }
 
         // Decrypt any encryptedKey structures
-        EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
+        final EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
         if (encryptedKey == null) {
             return null;
         }
 
-        KeyInfo kiek = encryptedKey.getKeyInfo();
+        final KeyInfo kiek = encryptedKey.getKeyInfo();
         if (kiek == null) {
             return null;
         }
 
-        KeyName kekKeyName = kiek.itemKeyName(0);
+        final KeyName kekKeyName = kiek.itemKeyName(0);
         if (kekKeyName != null) {
             kek = mapKeyName(kekKeyName.getKeyName());
         } else {
-            X509Data certData = kiek.itemX509Data(0);
-            XMLX509Certificate xcert = certData.itemCertificate(0);
-            X509Certificate cert = xcert.getX509Certificate();
+            final X509Data certData = kiek.itemX509Data(0);
+            final XMLX509Certificate xcert = certData.itemCertificate(0);
+            final X509Certificate cert = xcert.getX509Certificate();
 
             if (cert != null && cert.getSerialNumber().toString().equals(rsaCertSerialNumber)) {
                 kek = rsaKey;
             }
         }
         if (kek != null) {
-            XMLCipher cipher = XMLCipher.getInstance();
+            final XMLCipher cipher = XMLCipher.getInstance();
             cipher.init(XMLCipher.UNWRAP_MODE, kek);
             key =
                 cipher.decryptKey(
@@ -555,15 +555,15 @@ public class BaltimoreEncTest {
         throws javax.xml.transform.TransformerException,
         XPathExpressionException {
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
-        Map<String, String> namespace = new HashMap<>();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
+        final Map<String, String> namespace = new HashMap<>();
         namespace.put("x", "urn:example:po");
-        DSNamespaceContext context = new DSNamespaceContext(namespace);
+        final DSNamespaceContext context = new DSNamespaceContext(namespace);
         xpath.setNamespaceContext(context);
 
-        String expression = "//x:Number/text()";
-        Node ccnumElt =
+        final String expression = "//x:Number/text()";
+        final Node ccnumElt =
             (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
         if (ccnumElt != null) {
@@ -579,13 +579,13 @@ public class BaltimoreEncTest {
      */
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
-        String cc = retrieveCCNumber(d);
+        final String cc = retrieveCCNumber(d);
         LOG.debug("Retrieved Credit Card : " + cc);
         assertEquals(cardNumber, cc);
 
         // Test cc numbers
         if (doNodeCheck) {
-            int myNodeCount = countNodes(d);
+            final int myNodeCount = countNodes(d);
 
             assertTrue(
                 myNodeCount > 0 && myNodeCount == nodeCount, "Node count mismatches"
@@ -597,7 +597,7 @@ public class BaltimoreEncTest {
      * Check a decrypt of data was OK
      */
     private void checkDecryptedData(byte[] data) throws Exception {
-        String input = new String(data, StandardCharsets.US_ASCII);
+        final String input = new String(data, StandardCharsets.US_ASCII);
         assertEquals(testDecryptString, input);
     }
 }

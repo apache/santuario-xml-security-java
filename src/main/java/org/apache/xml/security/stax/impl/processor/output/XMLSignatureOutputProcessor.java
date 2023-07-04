@@ -51,7 +51,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
     @Override
     public void init(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
         super.init(outputProcessorChain);
-        XMLSignatureEndingOutputProcessor signatureEndingOutputProcessor = new XMLSignatureEndingOutputProcessor(this);
+        final XMLSignatureEndingOutputProcessor signatureEndingOutputProcessor = new XMLSignatureEndingOutputProcessor(this);
         signatureEndingOutputProcessor.setXMLSecurityProperties(getSecurityProperties());
         signatureEndingOutputProcessor.setAction(getAction(), getActionOrder());
         signatureEndingOutputProcessor.init(outputProcessorChain);
@@ -60,17 +60,17 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
     @Override
     public void processEvent(XMLSecEvent xmlSecEvent, OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
         if (xmlSecEvent.getEventType() == XMLStreamConstants.START_ELEMENT) {
-            XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
+            final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
 
             //avoid double signature when child elements matches too
             if (getActiveInternalSignatureOutputProcessor() == null) {
-                SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.SIGNATURE_PARTS);
+                final SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.SIGNATURE_PARTS);
                 if (securePart != null) {
                     LOG.debug("Matched securePart for signature");
 
                     InternalSignatureOutputProcessor internalSignatureOutputProcessor = null;
 
-                    SignaturePartDef signaturePartDef = new SignaturePartDef();
+                    final SignaturePartDef signaturePartDef = new SignaturePartDef();
                     signaturePartDef.setSecurePart(securePart);
                     signaturePartDef.setTransforms(securePart.getTransforms());
                     if (signaturePartDef.getTransforms() == null) {
@@ -87,11 +87,11 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
                             signaturePartDef.setGenerateXPointer(securePart.isGenerateXPointer());
                             signaturePartDef.setSigRefId(IDGenerator.generateID(null));
 
-                            Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
+                            final Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
                             if (attribute != null) {
                                 signaturePartDef.setSigRefId(attribute.getValue());
                             } else {
-                                List<XMLSecAttribute> attributeList = new ArrayList<>(1);
+                                final List<XMLSecAttribute> attributeList = new ArrayList<>(1);
                                 attributeList.add(createAttribute(securityProperties.getIdAttributeNS(), signaturePartDef.getSigRefId()));
                                 xmlSecEvent = addAttributes(xmlSecStartElement, attributeList);
                             }

@@ -56,31 +56,31 @@ public class JSRWrappingAttackTest {
 
     @Test
     public void testWrappingAttack() throws Exception {
-        String file = "manifestSignatureWrapping.xml";
-        Document doc = XMLUtils.read(new File(dir, file), false);
-        Element sigElement = SignatureValidator.getSignatureElement(doc);
+        final String file = "manifestSignatureWrapping.xml";
+        final Document doc = XMLUtils.read(new File(dir, file), false);
+        final Element sigElement = SignatureValidator.getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");
         }
-        DOMValidateContext vc =
+        final DOMValidateContext vc =
             new DOMValidateContext(new KeySelectors.KeyValueKeySelector(), sigElement);
         vc.setBaseURI(dir.toURI().toString());
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.FALSE);
-        boolean coreValidity = validator.validate(vc);
+        final boolean coreValidity = validator.validate(vc);
         assertTrue(coreValidity, "Signature failed core validation");
 
         vc.setProperty("org.apache.jcp.xml.dsig.secureValidation", Boolean.TRUE);
 
-        Element manifestElement =
+        final Element manifestElement =
             (Element) doc.getElementsByTagName("Manifest").item(0);
         vc.setIdAttributeNS(manifestElement, null, "Id");
 
         try {
-            boolean valid = validator.validate(vc);
+            final boolean valid = validator.validate(vc);
             System.out.println("Valid: " + valid);
             fail("Failure expected when secure validation is enabled");
-        } catch (XMLSignatureException ex) {
+        } catch (final XMLSignatureException ex) {
             assertTrue(ex.getMessage().contains("URIReferenceException"));
         }
     }

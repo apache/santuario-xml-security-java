@@ -106,14 +106,14 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
      * @throws XMLSecurityException
      */
     public PublicKey getPublicKey() throws XMLSecurityException {
-        byte[] encodedKey = getBytesFromTextChild();
+        final byte[] encodedKey = getBytesFromTextChild();
 
         // Iterate over the supported key types until one produces a public key.
-        for (String keyType : supportedKeyTypes) {
+        for (final String keyType : supportedKeyTypes) {
             try {
-                KeyFactory keyFactory = KeyFactory.getInstance(keyType);
-                X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
-                PublicKey publicKey = keyFactory.generatePublic(keySpec);
+                final KeyFactory keyFactory = KeyFactory.getInstance(keyType);
+                final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
+                final PublicKey publicKey = keyFactory.generatePublic(keySpec);
                 if (publicKey != null) {
                     return publicKey;
                 }
@@ -132,11 +132,11 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
      */
     protected byte[] getEncodedDER(PublicKey publicKey) throws XMLSecurityException {
         try {
-            KeyFactory keyFactory = KeyFactory.getInstance(publicKey.getAlgorithm());
-            X509EncodedKeySpec keySpec = keyFactory.getKeySpec(publicKey, X509EncodedKeySpec.class);
+            final KeyFactory keyFactory = KeyFactory.getInstance(publicKey.getAlgorithm());
+            final X509EncodedKeySpec keySpec = keyFactory.getKeySpec(publicKey, X509EncodedKeySpec.class);
             return keySpec.getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            Object[] exArgs = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
+            final Object[] exArgs = { publicKey.getAlgorithm(), publicKey.getFormat(), publicKey.getClass().getName() };
             throw new XMLSecurityException(e, "DEREncodedKeyValue.UnsupportedPublicKey", exArgs);
         }
     }

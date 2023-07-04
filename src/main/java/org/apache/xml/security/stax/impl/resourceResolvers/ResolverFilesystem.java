@@ -84,7 +84,7 @@ public class ResolverFilesystem implements ResourceResolver, ResourceResolverLoo
                 tmp = new URI(tmp.getScheme(), tmp.getSchemeSpecificPart(), null);
             }
             return tmp.toURL().openStream();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new XMLSecurityException(e);
         }
     }

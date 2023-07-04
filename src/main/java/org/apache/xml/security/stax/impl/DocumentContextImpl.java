@@ -65,7 +65,7 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
 
     @Override
     public synchronized void unsetIsInEncryptedContent(Object key) {
-        Integer index = processorToIndexMap.remove(key);
+        final Integer index = processorToIndexMap.remove(key);
         contentTypeMap.remove(index);
     }
 
@@ -82,7 +82,7 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
 
     @Override
     public synchronized void unsetIsInSignedContent(Object key) {
-        Integer index = processorToIndexMap.remove(key);
+        final Integer index = processorToIndexMap.remove(key);
         contentTypeMap.remove(index);
     }
 
@@ -107,7 +107,7 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
 
     @Override
     public DocumentContextImpl clone() throws CloneNotSupportedException {
-        DocumentContextImpl documentContext = (DocumentContextImpl)super.clone();
+        final DocumentContextImpl documentContext = (DocumentContextImpl)super.clone();
         documentContext.setEncoding(this.encoding);
         documentContext.setBaseURI(this.baseURI);
         documentContext.setContentTypeMap(getContentTypeMap());

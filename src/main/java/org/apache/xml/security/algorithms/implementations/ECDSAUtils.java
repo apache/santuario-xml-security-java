@@ -64,17 +64,17 @@ public final class ECDSAUtils {
             throw new IOException("Invalid ASN.1 format of ECDSA signature");
         }
 
-        byte rLength = asn1Bytes[offset + 1];
+        final byte rLength = asn1Bytes[offset + 1];
         int i;
 
         for (i = rLength; i > 0 && asn1Bytes[offset + 2 + rLength - i] == 0; i--); //NOPMD
 
-        byte sLength = asn1Bytes[offset + 2 + rLength + 1];
+        final byte sLength = asn1Bytes[offset + 2 + rLength + 1];
         int j;
 
         for (j = sLength; j > 0 && asn1Bytes[offset + 2 + rLength + 2 + sLength - j] == 0; j--); //NOPMD
 
-        int maxLen = Math.max(i, j);
+        final int maxLen = Math.max(i, j);
 
         if (rawLen < 0) {
             rawLen = maxLen;
@@ -88,7 +88,7 @@ public final class ECDSAUtils {
                 || asn1Bytes[offset + 2 + rLength] != 2) {
             throw new IOException("Invalid ASN.1 format of ECDSA signature");
         }
-        byte[] xmldsigBytes = new byte[2 * rawLen];
+        final byte[] xmldsigBytes = new byte[2 * rawLen];
 
         System.arraycopy(asn1Bytes, offset + 2 + rLength - i, xmldsigBytes, rawLen - i, i);
         System.arraycopy(asn1Bytes, offset + 2 + rLength + 2 + sLength - j, xmldsigBytes,
@@ -111,7 +111,7 @@ public final class ECDSAUtils {
      */
     public static byte[] convertXMLDSIGtoASN1(byte[] xmldsigBytes) throws IOException {
 
-        int rawLen = xmldsigBytes.length / 2;
+        final int rawLen = xmldsigBytes.length / 2;
 
         int i;
 
@@ -133,7 +133,7 @@ public final class ECDSAUtils {
             l += 1;
         }
 
-        int len = 2 + j + 2 + l;
+        final int len = 2 + j + 2 + l;
         if (len > 255) {
             throw new IOException("Invalid XMLDSIG format of ECDSA signature");
         }
@@ -767,25 +767,25 @@ public final class ECDSAUtils {
     }
 
     public static String getOIDFromPublicKey(ECPublicKey ecPublicKey) {
-        ECParameterSpec ecParameterSpec = ecPublicKey.getParams();
-        BigInteger order = ecParameterSpec.getOrder();
-        BigInteger affineX = ecParameterSpec.getGenerator().getAffineX();
-        BigInteger affineY = ecParameterSpec.getGenerator().getAffineY();
-        BigInteger a = ecParameterSpec.getCurve().getA();
-        BigInteger b = ecParameterSpec.getCurve().getB();
-        int h = ecParameterSpec.getCofactor();
-        ECField ecField = ecParameterSpec.getCurve().getField();
+        final ECParameterSpec ecParameterSpec = ecPublicKey.getParams();
+        final BigInteger order = ecParameterSpec.getOrder();
+        final BigInteger affineX = ecParameterSpec.getGenerator().getAffineX();
+        final BigInteger affineY = ecParameterSpec.getGenerator().getAffineY();
+        final BigInteger a = ecParameterSpec.getCurve().getA();
+        final BigInteger b = ecParameterSpec.getCurve().getB();
+        final int h = ecParameterSpec.getCofactor();
+        final ECField ecField = ecParameterSpec.getCurve().getField();
         BigInteger field;
         if (ecField instanceof ECFieldFp) {
-            ECFieldFp ecFieldFp = (ECFieldFp) ecField;
+            final ECFieldFp ecFieldFp = (ECFieldFp) ecField;
             field = ecFieldFp.getP();
         } else {
-            ECFieldF2m ecFieldF2m = (ECFieldF2m) ecField;
+            final ECFieldF2m ecFieldF2m = (ECFieldF2m) ecField;
             field = ecFieldF2m.getReductionPolynomial();
         }
 
-        for (ECCurveDefinition ecCurveDefinition : ecCurveDefinitions) {
-            String oid = ecCurveDefinition.equals(field, a, b, affineX, affineY, order, h);
+        for (final ECCurveDefinition ecCurveDefinition : ecCurveDefinitions) {
+            final String oid = ecCurveDefinition.equals(field, a, b, affineX, affineY, order, h);
             if (oid != null) {
                 return oid;
             }
@@ -794,7 +794,7 @@ public final class ECDSAUtils {
     }
 
     public static ECCurveDefinition getECCurveDefinition(String oid) {
-        for (ECCurveDefinition ecCurveDefinition : ecCurveDefinitions) {
+        for (final ECCurveDefinition ecCurveDefinition : ecCurveDefinitions) {
             if (ecCurveDefinition.getOid().equals(oid)) {
                 return ecCurveDefinition;
             }
@@ -880,10 +880,10 @@ public final class ECDSAUtils {
     }
 
     public static byte[] encodePoint(ECPoint ecPoint, EllipticCurve ellipticCurve) {
-        int size = (ellipticCurve.getField().getFieldSize() + 7) / 8;
-        byte[] affineXBytes = stripLeadingZeros(ecPoint.getAffineX().toByteArray());
-        byte[] affineYBytes = stripLeadingZeros(ecPoint.getAffineY().toByteArray());
-        byte[] encodedBytes = new byte[size * 2 + 1];
+        final int size = (ellipticCurve.getField().getFieldSize() + 7) / 8;
+        final byte[] affineXBytes = stripLeadingZeros(ecPoint.getAffineX().toByteArray());
+        final byte[] affineYBytes = stripLeadingZeros(ecPoint.getAffineY().toByteArray());
+        final byte[] encodedBytes = new byte[size * 2 + 1];
         encodedBytes[0] = 0x04; //uncompressed
         System.arraycopy(affineXBytes, 0, encodedBytes, size - affineXBytes.length + 1, affineXBytes.length);
         System.arraycopy(affineYBytes, 0, encodedBytes, encodedBytes.length - affineYBytes.length, affineYBytes.length);
@@ -895,9 +895,9 @@ public final class ECDSAUtils {
             throw new IllegalArgumentException("Only uncompressed format is supported");
         }
 
-        int size = (elliptiCcurve.getField().getFieldSize() + 7) / 8;
-        byte[] affineXBytes = new byte[size];
-        byte[] affineYBytes = new byte[size];
+        final int size = (elliptiCcurve.getField().getFieldSize() + 7) / 8;
+        final byte[] affineXBytes = new byte[size];
+        final byte[] affineYBytes = new byte[size];
         System.arraycopy(encodedBytes, 1, affineXBytes, 0, size);
         System.arraycopy(encodedBytes, size + 1, affineYBytes, 0, size);
         return new ECPoint(new BigInteger(1, affineXBytes), new BigInteger(1, affineYBytes));
@@ -914,7 +914,7 @@ public final class ECDSAUtils {
         if (i == 0) {
             return bytes;
         } else {
-            byte[] stripped = new byte[bytes.length - i];
+            final byte[] stripped = new byte[bytes.length - i];
             System.arraycopy(bytes, i, stripped, 0, stripped.length);
             return stripped;
         }

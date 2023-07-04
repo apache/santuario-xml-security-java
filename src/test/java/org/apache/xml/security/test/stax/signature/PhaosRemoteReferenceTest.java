@@ -75,22 +75,22 @@ public class PhaosRemoteReferenceTest {
     @Test
     public void test_signature_dsa_detached() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-dsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -99,10 +99,10 @@ public class PhaosRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -115,26 +115,26 @@ public class PhaosRemoteReferenceTest {
     @Test
     public void test_signature_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-comments-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the key
-            byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
-            SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+            final byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
+            final SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -143,11 +143,11 @@ public class PhaosRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(key);
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -160,22 +160,22 @@ public class PhaosRemoteReferenceTest {
     @Test
     public void test_signature_rsa_detached() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "com/phaos/phaos-xmldsig-three/signature-rsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -184,10 +184,10 @@ public class PhaosRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);

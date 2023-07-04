@@ -116,29 +116,29 @@ public class DetachedTest {
 
             // Create a factory that will be used to generate the signature
             // structures
-            XMLSignatureFactory fac = XMLSignatureFactory.getInstance
+            final XMLSignatureFactory fac = XMLSignatureFactory.getInstance
                 ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
 
             // Create a Reference to an external URI that will be digested
-            Reference ref = fac.newReference
+            final Reference ref = fac.newReference
                 ("http://www.w3.org/TR/xml-stylesheet",
                 fac.newDigestMethod(DigestMethod.SHA1, null));
 
             // Create a DSA KeyPair
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
+            final KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
             kpg.initialize(1024,
                 new SecureRandom("not so random bytes".getBytes()));
-            KeyPair kp = kpg.generateKeyPair();
+            final KeyPair kp = kpg.generateKeyPair();
 
             // Create a KeyValue containing the generated DSA PublicKey
-            KeyInfoFactory kif = fac.getKeyInfoFactory();
-            KeyValue kv = kif.newKeyValue(kp.getPublic());
+            final KeyInfoFactory kif = fac.getKeyInfoFactory();
+            final KeyValue kv = kif.newKeyValue(kp.getPublic());
 
             // Create a KeyInfo and add the KeyValue to it
-            KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
+            final KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
 
             // Create SignedInfo
-            SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(
+            final SignedInfo si = fac.newSignedInfo(fac.newCanonicalizationMethod(
                 CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
                 (C14NMethodParameterSpec) null),
                 fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
@@ -149,11 +149,11 @@ public class DetachedTest {
 
             // Create an XMLSignContext and set the
             // DSA PrivateKey for signing
-            Document doc = TestUtils.newDocument();
-            DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
+            final Document doc = TestUtils.newDocument();
+            final DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
             signContext.putNamespacePrefix(XMLSignature.XMLNS, "ds");
 
-            URIDereferencer ud = new LocalHttpCacheURIDereferencer();
+            final URIDereferencer ud = new LocalHttpCacheURIDereferencer();
             signContext.setURIDereferencer(ud);
 
             // Generate (and sign) the XMLSignature
@@ -164,7 +164,7 @@ public class DetachedTest {
             //
 
             // Create a XMLValidateContext & set the DSAPublicKey for validating
-            XMLValidateContext vc = new DOMValidateContext(kp.getPublic(),
+            final XMLValidateContext vc = new DOMValidateContext(kp.getPublic(),
                 doc.getDocumentElement());
             vc.setURIDereferencer(ud);
 
@@ -175,9 +175,10 @@ public class DetachedTest {
             if (!coreValidity) {
                 // check the validation status of each Reference
                 @SuppressWarnings("unchecked")
+                final
                 Iterator<Reference> i = signature.getSignedInfo().getReferences().iterator();
                 while (i.hasNext()) {
-                    Reference reference = i.next();
+                    final Reference reference = i.next();
                     reference.validate(vc);
                 }
                 fail("Signature failed core validation");
@@ -188,7 +189,7 @@ public class DetachedTest {
             signature = fac.unmarshalXMLSignature(vc);
             coreValidity = signature.validate(vc);
             assertTrue(coreValidity, "Core validity of unmarshalled XMLSignature is false");
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             fail("Exception: " + ex);
         }
     }

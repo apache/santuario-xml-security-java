@@ -54,7 +54,7 @@ public class XMLSecCommentImpl extends XMLSecEventBaseImpl implements XMLSecComm
             writer.write("<!--");
             writer.write(getText());
             writer.write("-->");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

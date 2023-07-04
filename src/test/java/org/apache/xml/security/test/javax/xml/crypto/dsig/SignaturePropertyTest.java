@@ -62,28 +62,28 @@ public class SignaturePropertyTest {
         try {
             prop = factory.newSignatureProperty(null, target, id);
             fail("Should raise a NPE for null content");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should raise a NPE for null content instead of " + ex);
         }
-        List<XMLStructure> list = new ArrayList<>();
+        final List<XMLStructure> list = new ArrayList<>();
         try {
             prop = factory.newSignatureProperty(list, target, id);
             fail("Should raise an IAE for empty content");
-        } catch (IllegalArgumentException iae) {
-        } catch (Exception ex) {
+        } catch (final IllegalArgumentException iae) {
+        } catch (final Exception ex) {
             fail("Should raise an IAE for empty content instead of " + ex);
         }
-        String strEntry = "wrong type";
+        final String strEntry = "wrong type";
         // use raw List type to test for invalid XMLStructure entries
-        List invalidList = new ArrayList();
+        final List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
             factory.newSignatureProperty(invalidList, target, id);
             fail("Should raise a CCE for content containing " +
                  "invalid, i.e. non-XMLStructure, entries");
-        } catch (ClassCastException cce) {
-        } catch (Exception ex) {
+        } catch (final ClassCastException cce) {
+        } catch (final Exception ex) {
             fail("Should raise a CCE for content with invalid entries " +
                  "instead of " + ex);
         }
@@ -91,20 +91,21 @@ public class SignaturePropertyTest {
         try {
             prop = factory.newSignatureProperty(list, null, id);
             fail("Should raise a NPE for null target");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should raise a NPE for null target instead of " + ex);
         }
 
         prop = factory.newSignatureProperty(list, target, id);
         assertNotNull(prop);
         @SuppressWarnings("unchecked")
+        final
         List<XMLStructure> unmodifiable = prop.getContent();
         assertNotNull(unmodifiable);
         try {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
             fail("Should return an unmodifiable List object");
-        } catch (UnsupportedOperationException uoe) {}
+        } catch (final UnsupportedOperationException uoe) {}
         assertArrayEquals(unmodifiable.toArray(), list.toArray());
         assertEquals(prop.getTarget(), target);
         assertEquals(prop.getId(), id);
@@ -113,14 +114,14 @@ public class SignaturePropertyTest {
 
     @Test
     public void testisFeatureSupported() {
-        List<XMLStructure> list = new ArrayList<>();
+        final List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());
-        SignatureProperty prop = factory.newSignatureProperty
+        final SignatureProperty prop = factory.newSignatureProperty
             (list, target, id);
         try {
             prop.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(prop.isFeatureSupported("not supported"));
     }

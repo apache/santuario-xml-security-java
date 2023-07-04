@@ -50,24 +50,24 @@ public class ForbiddenReferenceTest extends InteropTestBase {
         try {
             readAndVerifyManifest("signature.xml");
             fail("Failure expected when secure validation is enabled");
-        } catch (MissingResourceFailureException ex) {
+        } catch (final MissingResourceFailureException ex) {
             assertTrue(ex.getMessage().contains("The Reference for URI"));
         }
 
         // Now it should work as we have added the local file resolver
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
-        boolean success = readAndVerifyManifest("signature.xml");
+        final boolean success = readAndVerifyManifest("signature.xml");
         assertTrue(success);
     }
 
 
     private boolean readAndVerifyManifest(String file) throws Exception {
-        File f = resolveFile("src", "test", "resources", "interop", "c14n", "Y3", file);
-        org.w3c.dom.Document doc = XMLUtils.read(f, false);
+        final File f = resolveFile("src", "test", "resources", "interop", "c14n", "Y3", file);
+        final org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        Element manifestElement = (Element) doc
+        final Element manifestElement = (Element) doc
             .getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNEDINFO).item(0);
-        Manifest manifest = new Manifest(manifestElement, f.toURI().toURL().toString(), true);
+        final Manifest manifest = new Manifest(manifestElement, f.toURI().toURL().toString(), true);
         return manifest.verifyReferences();
     }
 

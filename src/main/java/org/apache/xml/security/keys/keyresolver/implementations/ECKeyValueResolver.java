@@ -51,7 +51,7 @@ public class ECKeyValueResolver extends KeyResolverSpi {
             return null;
         }
         Element ecKeyElement = null;
-        boolean isKeyValue =
+        final boolean isKeyValue =
             XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYVALUE);
         if (isKeyValue) {
             ecKeyElement =
@@ -67,9 +67,9 @@ public class ECKeyValueResolver extends KeyResolverSpi {
         }
 
         try {
-            ECKeyValue ecKeyValue = new ECKeyValue(ecKeyElement, baseURI);
+            final ECKeyValue ecKeyValue = new ECKeyValue(ecKeyElement, baseURI);
             return ecKeyValue.getPublicKey();
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.debug(ex.getMessage(), ex);
             //do nothing
         }

@@ -120,8 +120,8 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         // For that reason, we start at the tail of the list.
         boolean pointOfNoReturn = false;
         for (int idx = outputProcessors.size(); --idx >= 0;) {
-            OutputProcessor outputProcessor = outputProcessors.get(idx);
-            int d = compare(newOutputProcessor, outputProcessor);
+            final OutputProcessor outputProcessor = outputProcessors.get(idx);
+            final int d = compare(newOutputProcessor, outputProcessor);
             if (d < 0) {
                 if (pointOfNoReturn) {
                     throw new IllegalArgumentException(String.format("Conflicting order of processors %s and %s",
@@ -146,7 +146,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added {} to output chain: ", newOutputProcessor.getClass().getName());
-            for (OutputProcessor outputProcessor : outputProcessors) {
+            for (final OutputProcessor outputProcessor : outputProcessors) {
                 LOG.debug("Name: {} phase: {}", outputProcessor.getClass().getName(), outputProcessor.getPhase());
             }
         }
@@ -214,7 +214,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         try {
             outputProcessorChain = new OutputProcessorChainImpl(outboundSecurityContext, documentContext.clone(),
                     outputProcessors.indexOf(outputProcessor) + 1, this.outputProcessors);
-        } catch (CloneNotSupportedException e) {
+        } catch (final CloneNotSupportedException e) {
             throw new XMLSecurityException(e);
         }
         if (parentXMLSecStartElement != null) {

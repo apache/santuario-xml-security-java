@@ -60,8 +60,8 @@ public class DEREncodedKeyValueTest {
 
     @Test
     public void testSchema() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
-        Element element = derEncodedKeyValue.getElement();
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
+        final Element element = derEncodedKeyValue.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
         assertEquals("DEREncodedKeyValue", element.getLocalName());
@@ -69,11 +69,11 @@ public class DEREncodedKeyValueTest {
 
     @Test
     public void testRSAPublicKeyFromElement() throws Exception {
-        Document doc = loadXML("DEREncodedKeyValue-RSA.xml");
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
-        Element element = (Element) nl.item(0);
+        final Document doc = loadXML("DEREncodedKeyValue-RSA.xml");
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        final Element element = (Element) nl.item(0);
 
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(rsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
         assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
@@ -81,11 +81,11 @@ public class DEREncodedKeyValueTest {
 
     @Test
     public void testDSAPublicKeyFromElement() throws Exception {
-        Document doc = loadXML("DEREncodedKeyValue-DSA.xml");
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
-        Element element = (Element) nl.item(0);
+        final Document doc = loadXML("DEREncodedKeyValue-DSA.xml");
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        final Element element = (Element) nl.item(0);
 
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
         assertEquals(dsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(dsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
         assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
@@ -93,11 +93,11 @@ public class DEREncodedKeyValueTest {
 
     @Test
     public void testECPublicKeyFromElement() throws Exception {
-        Document doc = loadXML("DEREncodedKeyValue-EC.xml");
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
-        Element element = (Element) nl.item(0);
+        final Document doc = loadXML("DEREncodedKeyValue-EC.xml");
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        final Element element = (Element) nl.item(0);
 
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
         assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
@@ -105,28 +105,28 @@ public class DEREncodedKeyValueTest {
 
     @Test
     public void testRSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(rsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @Test
     public void testDSAPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), dsaKeyControl);
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), dsaKeyControl);
         assertEquals(dsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(dsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @Test
     public void testECPublicKeyFromKey() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), ecKeyControl);
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), ecKeyControl);
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @Test
     public void testId() throws Exception {
-        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
+        final DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals("", derEncodedKeyValue.getId());
         assertNull(derEncodedKeyValue.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 
@@ -151,10 +151,10 @@ public class DEREncodedKeyValueTest {
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
-        byte[] keyBytes = XMLUtils.decode(fileData);
-        KeyFactory kf = KeyFactory.getInstance(algorithm);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        final String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
+        final byte[] keyBytes = XMLUtils.decode(fileData);
+        final KeyFactory kf = KeyFactory.getInstance(algorithm);
+        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);
     }
 

@@ -53,7 +53,7 @@ public class BobKeyResolver extends KeyResolverSpi {
         }
         LOG.debug("Can I resolve " + element.getTagName());
 
-        boolean isKeyName = XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME);
+        final boolean isKeyName = XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME);
         try {
             if (isKeyName) {
                 _kn = new KeyName(element, "");
@@ -61,7 +61,7 @@ public class BobKeyResolver extends KeyResolverSpi {
                     return true;
                 }
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // Do nothing
         }
 
@@ -87,15 +87,15 @@ public class BobKeyResolver extends KeyResolverSpi {
         Element element, String BaseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
         try {
-            DESedeKeySpec keySpec =
+            final DESedeKeySpec keySpec =
                 new DESedeKeySpec("abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII));
-            SecretKeyFactory keyFactory =
+            final SecretKeyFactory keyFactory =
                 SecretKeyFactory.getInstance("DESede");
-            SecretKey key = keyFactory.generateSecret(keySpec);
+            final SecretKey key = keyFactory.generateSecret(keySpec);
 
             return key;
         }
-        catch (Exception e) {
+        catch (final Exception e) {
             throw new KeyResolverException("Something badly wrong in creation of bob's key");
         }
     }

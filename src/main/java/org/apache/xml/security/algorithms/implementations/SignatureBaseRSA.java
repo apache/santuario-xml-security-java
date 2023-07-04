@@ -58,12 +58,12 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     }
 
     public SignatureBaseRSA(Provider provider) throws XMLSignatureException {
-        String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
+        final String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
         LOG.debug("Created SignatureRSA using {}", algorithmID);
 
         try {
             if (provider == null) {
-                String providerId = JCEMapper.getProviderId();
+                final String providerId = JCEMapper.getProviderId();
                 if (providerId == null) {
                     this.signatureAlgorithm = Signature.getInstance(algorithmID);
 
@@ -76,7 +76,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             }
 
         } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
-            Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
+            final Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -87,7 +87,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         throws XMLSignatureException {
         try {
             this.signatureAlgorithm.setParameter(params);
-        } catch (InvalidAlgorithmParameterException ex) {
+        } catch (final InvalidAlgorithmParameterException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -97,7 +97,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     protected boolean engineVerify(byte[] signature) throws XMLSignatureException {
         try {
             return this.signatureAlgorithm.verify(signature);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -113,7 +113,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     protected byte[] engineSign() throws XMLSignatureException {
         try {
             return this.signatureAlgorithm.sign();
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -136,7 +136,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -146,7 +146,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -156,7 +156,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -619,7 +619,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             }
 
             public static DigestAlgorithm fromXmlDigestAlgorithm(String xmlDigestAlgorithm) throws XMLSignatureException {
-                for (DigestAlgorithm value : DigestAlgorithm.values()) {
+                for (final DigestAlgorithm value : DigestAlgorithm.values()) {
                     if(value.getXmlDigestAlgorithm().equals(xmlDigestAlgorithm)) {
                         return value;
                     }
@@ -628,7 +628,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
             }
 
             public static DigestAlgorithm fromDigestAlgorithm(String digestAlgorithm) throws XMLSignatureException {
-                for (DigestAlgorithm value : DigestAlgorithm.values()) {
+                for (final DigestAlgorithm value : DigestAlgorithm.values()) {
                     if(value.getDigestAlgorithm().equals(digestAlgorithm)) {
                         return value;
                     }
@@ -658,25 +658,25 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
                 throw new IllegalArgumentException("null element");
             }
 
-            Document doc = element.getOwnerDocument();
-            Element rsaPssParamsElement = doc.createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_RSAPSSPARAMS);
+            final Document doc = element.getOwnerDocument();
+            final Element rsaPssParamsElement = doc.createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_RSAPSSPARAMS);
             rsaPssParamsElement.setAttributeNS(Constants.NamespaceSpecNS, "xmlns:" + "pss", Constants.XML_DSIG_NS_MORE_07_05);
 
-            Element digestMethodElement = XMLUtils.createElementInSignatureSpace(rsaPssParamsElement.getOwnerDocument(), Constants._TAG_DIGESTMETHOD);
+            final Element digestMethodElement = XMLUtils.createElementInSignatureSpace(rsaPssParamsElement.getOwnerDocument(), Constants._TAG_DIGESTMETHOD);
             digestMethodElement.setAttributeNS(null, Constants._ATT_ALGORITHM, DigestAlgorithm.fromDigestAlgorithm(pssParameterSpec.getDigestAlgorithm()).getXmlDigestAlgorithm());
             XMLUtils.addReturnToElement(rsaPssParamsElement);
             rsaPssParamsElement.appendChild(digestMethodElement);
             XMLUtils.addReturnToElement(rsaPssParamsElement);
 
-            Element saltLengthElement = rsaPssParamsElement.getOwnerDocument().createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_SALTLENGTH);
-            Text saltLengthText = rsaPssParamsElement.getOwnerDocument().createTextNode(String.valueOf(pssParameterSpec.getSaltLength()));
+            final Element saltLengthElement = rsaPssParamsElement.getOwnerDocument().createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_SALTLENGTH);
+            final Text saltLengthText = rsaPssParamsElement.getOwnerDocument().createTextNode(String.valueOf(pssParameterSpec.getSaltLength()));
             saltLengthElement.appendChild(saltLengthText);
 
             rsaPssParamsElement.appendChild(saltLengthElement);
             XMLUtils.addReturnToElement(rsaPssParamsElement);
 
-            Element trailerFieldElement = rsaPssParamsElement.getOwnerDocument().createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_TRAILERFIELD);
-            Text trailerFieldText = rsaPssParamsElement.getOwnerDocument().createTextNode(String.valueOf(pssParameterSpec.getTrailerField()));
+            final Element trailerFieldElement = rsaPssParamsElement.getOwnerDocument().createElementNS(Constants.XML_DSIG_NS_MORE_07_05, "pss" + ":" + Constants._TAG_TRAILERFIELD);
+            final Text trailerFieldText = rsaPssParamsElement.getOwnerDocument().createTextNode(String.valueOf(pssParameterSpec.getTrailerField()));
             trailerFieldElement.appendChild(trailerFieldText);
 
             rsaPssParamsElement.appendChild(trailerFieldElement);
@@ -691,29 +691,29 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         protected void engineGetContextFromElement(Element element) throws XMLSignatureException {
             if (pssParameterSpec == null) {
                 super.engineGetContextFromElement(element);
-                Element rsaPssParams = XMLUtils.selectNode(element.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_RSAPSSPARAMS, 0);
+                final Element rsaPssParams = XMLUtils.selectNode(element.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_RSAPSSPARAMS, 0);
                 if (rsaPssParams == null) {
                     throw new XMLSignatureException("algorithms.MissingRSAPSSParams");
                 }
 
-                Element saltLengthNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_SALTLENGTH, 0);
-                Element trailerFieldNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_TRAILERFIELD, 0);
+                final Element saltLengthNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_SALTLENGTH, 0);
+                final Element trailerFieldNode = XMLUtils.selectNode(rsaPssParams.getFirstChild(), Constants.XML_DSIG_NS_MORE_07_05, Constants._TAG_TRAILERFIELD, 0);
                 int trailerField = 1;
                 if (trailerFieldNode != null) {
                     try {
                         trailerField = Integer.parseInt(trailerFieldNode.getTextContent());
-                    } catch (NumberFormatException ex) {
+                    } catch (final NumberFormatException ex) {
                         throw new XMLSignatureException("empty", new Object[] {"Invalid trailer field value supplied"});
                     }
                 }
-                String xmlAlgorithm = XMLUtils.selectDsNode(rsaPssParams.getFirstChild(), Constants._TAG_DIGESTMETHOD, 0).getAttribute(Constants._ATT_ALGORITHM);
-                DigestAlgorithm digestAlgorithm = DigestAlgorithm.fromXmlDigestAlgorithm(xmlAlgorithm);
-                String digestAlgorithmName = digestAlgorithm.getDigestAlgorithm();
+                final String xmlAlgorithm = XMLUtils.selectDsNode(rsaPssParams.getFirstChild(), Constants._TAG_DIGESTMETHOD, 0).getAttribute(Constants._ATT_ALGORITHM);
+                final DigestAlgorithm digestAlgorithm = DigestAlgorithm.fromXmlDigestAlgorithm(xmlAlgorithm);
+                final String digestAlgorithmName = digestAlgorithm.getDigestAlgorithm();
                 int saltLength = digestAlgorithm.getSaltLength();
                 if (saltLengthNode != null) {
                     try {
                         saltLength = Integer.parseInt(saltLengthNode.getTextContent());
-                    } catch (NumberFormatException ex) {
+                    } catch (final NumberFormatException ex) {
                         throw new XMLSignatureException("empty", new Object[] {"Invalid salt length value supplied"});
                     }
                 }

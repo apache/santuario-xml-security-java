@@ -98,7 +98,7 @@ public final class DOMKeyInfo extends DOMStructure implements KeyInfo {
         throws MarshalException
     {
         // get Id attribute, if specified
-        Attr attr = kiElem.getAttributeNodeNS(null, "Id");
+        final Attr attr = kiElem.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             id = attr.getValue();
             kiElem.setIdAttributeNode(attr, true);
@@ -107,16 +107,16 @@ public final class DOMKeyInfo extends DOMStructure implements KeyInfo {
         }
 
         // get all children nodes
-        List<XMLStructure> content = new ArrayList<>();
+        final List<XMLStructure> content = new ArrayList<>();
         Node firstChild = kiElem.getFirstChild();
         if (firstChild == null) {
             throw new MarshalException("KeyInfo must contain at least one type");
         }
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElem = (Element)firstChild;
-                String localName = childElem.getLocalName();
-                String namespace = childElem.getNamespaceURI();
+                final Element childElem = (Element)firstChild;
+                final String localName = childElem.getLocalName();
+                final String namespace = childElem.getNamespaceURI();
                 if ("X509Data".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     content.add(new DOMX509Data(childElem));
                 } else if ("KeyName".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
@@ -158,9 +158,9 @@ public final class DOMKeyInfo extends DOMStructure implements KeyInfo {
             throw new ClassCastException("parent must be of type DOMStructure");
         }
 
-        Node pNode = ((javax.xml.crypto.dom.DOMStructure)parent).getNode();
-        String dsPrefix = DOMUtils.getSignaturePrefix(context);
-        Element kiElem = DOMUtils.createElement
+        final Node pNode = ((javax.xml.crypto.dom.DOMStructure)parent).getNode();
+        final String dsPrefix = DOMUtils.getSignaturePrefix(context);
+        final Element kiElem = DOMUtils.createElement
             (DOMUtils.getOwnerDocument(pNode), "KeyInfo",
              XMLSignature.XMLNS, dsPrefix);
         if (dsPrefix == null || dsPrefix.length() == 0) {
@@ -190,8 +190,8 @@ public final class DOMKeyInfo extends DOMStructure implements KeyInfo {
                         DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
-        Element kiElem = DOMUtils.createElement(ownerDoc, "KeyInfo",
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Element kiElem = DOMUtils.createElement(ownerDoc, "KeyInfo",
                                                 XMLSignature.XMLNS, dsPrefix);
         marshal(parent, kiElem, nextSibling, dsPrefix, context);
     }
@@ -201,7 +201,7 @@ public final class DOMKeyInfo extends DOMStructure implements KeyInfo {
         throws MarshalException
     {
         // create and append KeyInfoType elements
-        for (XMLStructure kiType : keyInfoTypes) {
+        for (final XMLStructure kiType : keyInfoTypes) {
             if (kiType instanceof DOMStructure) {
                 ((DOMStructure)kiType).marshal(kiElem, dsPrefix, context);
             } else {
@@ -225,9 +225,9 @@ public final class DOMKeyInfo extends DOMStructure implements KeyInfo {
         if (!(o instanceof KeyInfo)) {
             return false;
         }
-        KeyInfo oki = (KeyInfo)o;
+        final KeyInfo oki = (KeyInfo)o;
 
-        boolean idsEqual = id == null ? oki.getId() == null
+        final boolean idsEqual = id == null ? oki.getId() == null
                                        : id.equals(oki.getId());
 
         return keyInfoTypes.equals(oki.getContent()) && idsEqual;

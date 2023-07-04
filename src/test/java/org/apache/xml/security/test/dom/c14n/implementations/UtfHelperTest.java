@@ -31,9 +31,9 @@ public class UtfHelperTest {
 
     @Test
     public void testBug40156() {
-        String s = "\u00e4\u00f6\u00fc";
-        byte[] a = UtfHelpper.getStringInUtf8(s);
-        byte[] correct = s.getBytes(StandardCharsets.UTF_8);
+        final String s = "\u00e4\u00f6\u00fc";
+        final byte[] a = UtfHelpper.getStringInUtf8(s);
+        final byte[] correct = s.getBytes(StandardCharsets.UTF_8);
         assertArrayEquals(correct, a);
     }
 
@@ -49,16 +49,16 @@ public class UtfHelperTest {
 
         // if system property org.apache.xml.security.c14n.oldUtf8=true, can only validate
         // 16bit chars against String.getBytes(StandardCharsets.UTF_8);
-        int chunk = Boolean.getBoolean("org.apache.xml.security.c14n.oldUtf8") ? 1 << 16
+        final int chunk = Boolean.getBoolean("org.apache.xml.security.c14n.oldUtf8") ? 1 << 16
             : Character.MAX_CODE_POINT + 1;
-        int j = 0;
-        ByteArrayOutputStream charByCharOs = new ByteArrayOutputStream();
-        ByteArrayOutputStream strOs = new ByteArrayOutputStream();
+        final int j = 0;
+        final ByteArrayOutputStream charByCharOs = new ByteArrayOutputStream();
+        final ByteArrayOutputStream strOs = new ByteArrayOutputStream();
 
-        char[] chs = new char[chunk * 2];
+        final char[] chs = new char[chunk * 2];
         int pos = 0;
         for (int i = 0; i < chunk; i++) {
-            int ch = chunk * j + i;
+            final int ch = chunk * j + i;
             int offset = Character.toChars(ch, chs, pos);
             pos += offset;
             if (ch == 0xDBFF) {
@@ -67,19 +67,19 @@ public class UtfHelperTest {
                 pos += offset;
             }
         }
-        char[] newResult = new char[pos];
+        final char[] newResult = new char[pos];
         System.arraycopy(chs, 0, newResult, 0, pos);
         for (int i = 0; i < pos; ) {
-            int ch = Character.codePointAt(newResult, i);
+            final int ch = Character.codePointAt(newResult, i);
             i += Character.charCount(ch);
             UtfHelpper.writeCodePointToUtf8(ch, charByCharOs);
         }
 
-        String str = new String(newResult);
-        byte[] a = UtfHelpper.getStringInUtf8(str);
+        final String str = new String(newResult);
+        final byte[] a = UtfHelpper.getStringInUtf8(str);
 
         // System.out.println("chunk:"+j);
-        byte[] correct = str.getBytes(StandardCharsets.UTF_8);
+        final byte[] correct = str.getBytes(StandardCharsets.UTF_8);
         assertArrayEquals(correct, a, "UtfHelper.getStringInUtf8 false");
         assertArrayEquals(
                    correct, charByCharOs.toByteArray(),

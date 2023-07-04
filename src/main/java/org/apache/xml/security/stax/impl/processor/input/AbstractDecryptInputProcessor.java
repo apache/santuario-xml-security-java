@@ -129,8 +129,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         references = new HashMap<>((int) Math.ceil(dataReferenceOrKeyReferenceSize / 0.75));
         processedReferences = new ArrayList<>(dataReferenceOrKeyReferenceSize);
 
-        for (JAXBElement<ReferenceType> referenceTypeJAXBElement : dataReferenceOrKeyReference) {
-            ReferenceType referenceType = referenceTypeJAXBElement.getValue();
+        for (final JAXBElement<ReferenceType> referenceTypeJAXBElement : dataReferenceOrKeyReference) {
+            final ReferenceType referenceType = referenceTypeJAXBElement.getValue();
             if (referenceType.getURI() == null) {
                 throw new XMLSecurityException("stax.emptyReferenceURI");
             }
@@ -221,21 +221,21 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
                 //the following LOGic reads the encryptedData structure and doesn't pass them further
                 //through the chain
-                InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
+                final InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
 
-                EncryptedDataType encryptedDataType =
+                final EncryptedDataType encryptedDataType =
                         parseEncryptedDataStructure(isSecurityHeaderEvent, xmlSecEvent, subInputProcessorChain);
                 if (encryptedDataType.getId() == null) {
                     encryptedDataType.setId(IDGenerator.generateID(null));
                 }
 
-                InboundSecurityToken inboundSecurityToken =
+                final InboundSecurityToken inboundSecurityToken =
                         getSecurityToken(inputProcessorChain, xmlSecStartElement, encryptedDataType);
                 handleSecurityToken(inboundSecurityToken, inputProcessorChain.getSecurityContext(), encryptedDataType);
 
                 final String algorithmURI = encryptedDataType.getEncryptionMethod().getAlgorithm();
                 final int ivLength = JCEAlgorithmMapper.getIVLengthFromURI(algorithmURI) / 8;
-                Cipher symCipher = getCipher(algorithmURI);
+                final Cipher symCipher = getCipher(algorithmURI);
 
                 if (encryptedDataType.getCipherData().getCipherReference() != null) {
                     handleCipherReference(inputProcessorChain, encryptedDataType, symCipher, inboundSecurityToken);
@@ -249,7 +249,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 if (encryptedHeader) {
                     parentXMLSecStartElement = parentXMLSecStartElement.getParentXMLSecStartElement();
                 }
-                AbstractDecryptedEventReaderInputProcessor decryptedEventReaderInputProcessor =
+                final AbstractDecryptedEventReaderInputProcessor decryptedEventReaderInputProcessor =
                         newDecryptedEventReaderInputProcessor(
                                 encryptedHeader, parentXMLSecStartElement, encryptedDataType, inboundSecurityToken,
                                 inputProcessorChain.getSecurityContext()
@@ -285,26 +285,27 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 if (nextEvent.isStartElement() && nextEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_XOP_INCLUDE)) {
                     try {
                         // Unmarshal the XOP Include Element
-                        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
+                        final Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
                         xmlSecEvents.push(nextEvent);
                         xmlSecEvents.push(XMLSecEventFactory.createXmlSecEndElement(XMLSecurityConstants.TAG_XOP_INCLUDE));
 
-                        Unmarshaller unmarshaller =
+                        final Unmarshaller unmarshaller =
                                 XMLSecurityConstants.getJaxbUnmarshaller(getSecurityProperties().isDisableSchemaValidation());
                         @SuppressWarnings("unchecked")
+                        final
                         JAXBElement<Include> includeJAXBElement =
                                 (JAXBElement<Include>) unmarshaller.unmarshal(new XMLSecurityEventReader(xmlSecEvents, 0));
-                        Include include = includeJAXBElement.getValue();
-                        String href = include.getHref();
+                        final Include include = includeJAXBElement.getValue();
+                        final String href = include.getHref();
 
                         decryptInputStream =
                             handleXOPInclude(inputProcessorChain, encryptedDataType, href, symCipher, inboundSecurityToken);
-                    } catch (JAXBException e) {
+                    } catch (final JAXBException e) {
                         throw new XMLSecurityException(e);
                     }
                 } else {
                     //create a new Thread for streaming decryption
-                    DecryptionThread decryptionThread = new DecryptionThread(subInputProcessorChain, isSecurityHeaderEvent, nextEvent);
+                    final DecryptionThread decryptionThread = new DecryptionThread(subInputProcessorChain, isSecurityHeaderEvent, nextEvent);
                     Key decryptionKey =
                         inboundSecurityToken.getSecretKey(algorithmURI, XMLSecurityConstants.Enc, encryptedDataType.getId());
                     decryptionKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, decryptionKey.getEncoded());
@@ -312,7 +313,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     decryptionThread.setSymmetricCipher(symCipher);
                     decryptionThread.setIvLength(ivLength);
 
-                    Thread thread = new Thread(decryptionThread);
+                    final Thread thread = new Thread(decryptionThread);
                     thread.setPriority(Thread.NORM_PRIORITY + 1);
                     thread.setName("decryption thread");
                     //when an exception in the decryption thread occurs, we want to forward them:
@@ -334,7 +335,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 try {
                     prologInputStream = writeWrapperStartElement(xmlSecStartElement);
                     epilogInputStream = writeWrapperEndElement();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new XMLSecurityException(e);
                 }
 
@@ -342,7 +343,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
                 //spec says (4.2): "The cleartext octet sequence obtained in step 3 is
                 //interpreted as UTF-8 encoded character data."
-                XMLStreamReader xmlStreamReader =
+                final XMLStreamReader xmlStreamReader =
                         inputProcessorChain.getSecurityContext().<XMLInputFactory>get(
                                 XMLSecurityConstants.XMLINPUTFACTORY).createXMLStreamReader(
                                 new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream), StandardCharsets.UTF_8.name());
@@ -370,7 +371,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
         //temporary writer to write the dummy wrapper element with all namespaces in the current scope
         //spec says (4.2): "The cleartext octet sequence obtained in step 3 is interpreted as UTF-8 encoded character data."
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append('<');
         stringBuilder.append(wrapperElementName.getPrefix());
         stringBuilder.append(':');
@@ -382,18 +383,18 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         stringBuilder.append('\"');
 
         //apply all namespaces from current scope to get a valid documentfragment:
-        List<XMLSecNamespace> comparableNamespacesToApply = new ArrayList<>();
-        List<XMLSecNamespace> comparableNamespaceList = new ArrayList<>();
+        final List<XMLSecNamespace> comparableNamespacesToApply = new ArrayList<>();
+        final List<XMLSecNamespace> comparableNamespaceList = new ArrayList<>();
         xmlSecStartElement.getNamespacesFromCurrentScope(comparableNamespaceList);
         //reverse iteration -> From current element namespaces to parent namespaces
         for (int i = comparableNamespaceList.size() - 1; i >= 0; i--) {
-            XMLSecNamespace comparableNamespace = comparableNamespaceList.get(i);
+            final XMLSecNamespace comparableNamespace = comparableNamespaceList.get(i);
             if (!comparableNamespacesToApply.contains(comparableNamespace)) {
                 comparableNamespacesToApply.add(comparableNamespace);
                 stringBuilder.append(' ');
 
-                String prefix = comparableNamespace.getPrefix();
-                String uri = comparableNamespace.getNamespaceURI();
+                final String prefix = comparableNamespace.getPrefix();
+                final String uri = comparableNamespace.getNamespaceURI();
                 if (prefix == null || prefix.isEmpty()) {
                     stringBuilder.append("xmlns=\"");
                     stringBuilder.append(uri);
@@ -413,7 +414,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     }
 
     private InputStream writeWrapperEndElement() throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         //close the dummy wrapper element:
         stringBuilder.append("</");
         stringBuilder.append(wrapperElementName.getPrefix());
@@ -437,8 +438,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     private Cipher getCipher(String algorithmURI) throws XMLSecurityException {
         Cipher symCipher;
         try {
-            String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
-            String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
+            final String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
+            final String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
             if (jceName == null) {
                 throw new XMLSecurityException("algorithms.NoSuchMap",
                                                new Object[] {algorithmURI});
@@ -468,10 +469,10 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             final EncryptedKeyType encryptedKeyType =
                     XMLSecurityUtils.getQNameType(keyInfoType.getContent(), XMLSecurityConstants.TAG_xenc_EncryptedKey);
             if (encryptedKeyType != null) {
-                XMLEncryptedKeyInputHandler handler = new XMLEncryptedKeyInputHandler();
+                final XMLEncryptedKeyInputHandler handler = new XMLEncryptedKeyInputHandler();
                 handler.handle(inputProcessorChain, encryptedKeyType, xmlSecStartElement, getSecurityProperties());
 
-                SecurityTokenProvider<? extends InboundSecurityToken> securityTokenProvider =
+                final SecurityTokenProvider<? extends InboundSecurityToken> securityTokenProvider =
                         inputProcessorChain.getSecurityContext().getSecurityTokenProvider(encryptedKeyType.getId());
                 return securityTokenProvider.getSecurityToken();
             }
@@ -488,7 +489,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             boolean isSecurityHeaderEvent, XMLSecEvent xmlSecEvent, InputProcessorChain subInputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
 
-        Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
+        final Deque<XMLSecEvent> xmlSecEvents = new ArrayDeque<>();
         xmlSecEvents.push(xmlSecEvent);
         XMLSecEvent encryptedDataXMLSecEvent;
         int count = 0;
@@ -531,14 +532,15 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         EncryptedDataType encryptedDataType;
 
         try {
-            Unmarshaller unmarshaller =
+            final Unmarshaller unmarshaller =
                     XMLSecurityConstants.getJaxbUnmarshaller(getSecurityProperties().isDisableSchemaValidation());
             @SuppressWarnings("unchecked")
+            final
             JAXBElement<EncryptedDataType> encryptedDataTypeJAXBElement =
                     (JAXBElement<EncryptedDataType>) unmarshaller.unmarshal(new XMLSecurityEventReader(xmlSecEvents, 0));
             encryptedDataType = encryptedDataTypeJAXBElement.getValue();
 
-        } catch (JAXBException e) {
+        } catch (final JAXBException e) {
             throw new XMLSecurityException(e);
         }
         return encryptedDataType;
@@ -546,7 +548,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
     private XMLSecEvent readAndBufferEncryptedHeader(InputProcessorChain inputProcessorChain, boolean isSecurityHeaderEvent,
                                                      XMLSecEvent xmlSecEvent) throws XMLStreamException, XMLSecurityException {
-        InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
+        final InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
         do {
             tmpXmlEventList.push(xmlSecEvent);
 
@@ -585,7 +587,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                                                   InboundSecurityToken inboundSecurityToken) throws XMLSecurityException;
 
     protected ReferenceType matchesReferenceId(XMLSecStartElement xmlSecStartElement) {
-        Attribute refId = getReferenceIDAttribute(xmlSecStartElement);
+        final Attribute refId = getReferenceIDAttribute(xmlSecStartElement);
         if (refId != null) {
             //does the id exist in the referenceList?
             return this.references.get(refId.getValue());
@@ -599,7 +601,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
         //here we check if all references where processed.
         if (references != null) {
-            for (Map.Entry<String, ReferenceType> referenceTypeEntry : this.references.entrySet()) {
+            for (final Map.Entry<String, ReferenceType> referenceTypeEntry : this.references.entrySet()) {
                 if (!processedReferences.contains(referenceTypeEntry.getValue())) {
                     throw new XMLSecurityException("stax.encryption.unprocessedReferences");
                 }
@@ -693,7 +695,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 }
 
                 if (xmlSecEvent.asEndElement().getName().equals(wrapperElementName)) {
-                    InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
+                    final InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
 
                     //skip EncryptedHeader Element when we processed it.
                     QName endElement;
@@ -729,7 +731,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                         //wait until the decryption thread dies...
                         try {
                             decryptionThread.join();
-                        } catch (InterruptedException e) {
+                        } catch (final InterruptedException e) {
                             throw new XMLStreamException(e);
                         }
                         //...and test again for an exception in the decryption thread.
@@ -756,7 +758,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         private void testAndThrowUncaughtException() throws XMLStreamException {
             if (this.thrownException != null) {
                 if (this.thrownException instanceof UncheckedXMLSecurityException) {
-                    UncheckedXMLSecurityException uxse = (UncheckedXMLSecurityException) this.thrownException;
+                    final UncheckedXMLSecurityException uxse = (UncheckedXMLSecurityException) this.thrownException;
                     throw new XMLStreamException(uxse.getCause());
                 } else {
                     throw new XMLStreamException(this.thrownException.getCause());
@@ -791,7 +793,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             this.pipedInputStream = new PipedInputStream(8192 * 5);
             try {
                 this.pipedOutputStream = new PipedOutputStream(pipedInputStream);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new XMLStreamException(e);
             }
         }
@@ -831,7 +833,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     public void close() throws IOException {
                         super.flush();
                         try {
-                            byte[] bytes = cipher.doFinal();
+                            final byte[] bytes = cipher.doFinal();
                             outputStream.write(bytes);
                             outputStream.close();
                         } catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -839,15 +841,15 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                         }
                     }
                 };
-                IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(  //NOPMD
+                final IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(  //NOPMD
                         cipherOutputStream,
                         cipher, getSecretKey(), getIvLength());
                 //buffering seems not to help
                 //bufferedOutputStream = new BufferedOutputStream(new Base64OutputStream(ivSplittingOutputStream, false), 8192 * 5);
-                ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);    //NOPMD
-                OutputStream base64OutputStream = new Base64OutputStream(replaceableOuputStream, false); //NOPMD
+                final ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);    //NOPMD
+                final OutputStream base64OutputStream = new Base64OutputStream(replaceableOuputStream, false); //NOPMD
                 ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
-                OutputStreamWriter outputStreamWriter = //NOPMD
+                final OutputStreamWriter outputStreamWriter = //NOPMD
                         new OutputStreamWriter(base64OutputStream,
                                                Charset.forName(inputProcessorChain.getDocumentContext().getEncoding()));
 
@@ -875,19 +877,19 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 if (secretKey instanceof Destroyable) {
                     try {
                         ((Destroyable)secretKey).destroy();
-                    } catch (DestroyFailedException e) {
+                    } catch (final DestroyFailedException e) {
                         LOG.debug("Error destroying key: {}", e.getMessage());
                     }
                 }
 
                 LOG.debug("Decryption thread finished");
 
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 try {
                     //we have to close the pipe when an exception occurs. Otherwise we can run into a deadlock when an exception occurs
                     //before we have written any byte to the pipe.
                     this.pipedOutputStream.close();
-                } catch (IOException e1) { //NOPMD
+                } catch (final IOException e1) { //NOPMD
                     //ignore since we will throw the original exception below
                 }
                 throw new UncheckedXMLSecurityException(e);

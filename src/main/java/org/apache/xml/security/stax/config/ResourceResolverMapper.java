@@ -40,18 +40,18 @@ public final class ResourceResolverMapper {
 
     protected static synchronized void init(ResourceResolversType resourceResolversType,
             Class<?> callingClass) throws Exception {
-        List<ResolverType> handlerList = resourceResolversType.getResolver();
+        final List<ResolverType> handlerList = resourceResolversType.getResolver();
         resourceResolvers = new ArrayList<>(handlerList.size() + 1);
         for (int i = 0; i < handlerList.size(); i++) {
-            ResolverType uriResolverType = handlerList.get(i);
+            final ResolverType uriResolverType = handlerList.get(i);
             resourceResolvers.add((ResourceResolverLookup)
                     JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(uriResolverType.getJAVACLASS(), callingClass)));
         }
     }
 
     public static ResourceResolver getResourceResolver(String uri, String baseURI) throws XMLSecurityException {
-        for (ResourceResolverLookup resourceResolver : resourceResolvers) {
-            ResourceResolverLookup rr = resourceResolver.canResolve(uri, baseURI);
+        for (final ResourceResolverLookup resourceResolver : resourceResolvers) {
+            final ResourceResolverLookup rr = resourceResolver.canResolve(uri, baseURI);
             if (rr != null) {
                 return rr.newInstance(uri, baseURI);
             }

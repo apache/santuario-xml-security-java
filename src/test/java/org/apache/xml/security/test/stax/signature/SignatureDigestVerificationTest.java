@@ -52,27 +52,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     @Test
     public void testSHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
+        final String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -81,8 +81,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -91,10 +91,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -103,27 +103,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     @Test
     public void testSHA224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha224";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha224";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -132,8 +132,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -142,10 +142,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -154,27 +154,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     @Test
     public void testSHA256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha256";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha256";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -183,8 +183,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -193,10 +193,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -205,27 +205,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     @Test
     public void testSHA384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha384";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#sha384";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -234,8 +234,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -244,10 +244,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -256,27 +256,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     @Test
     public void testSHA512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha512";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#sha512";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -285,8 +285,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -295,10 +295,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -309,27 +309,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#ripemd160";
+        final String digestAlgorithm = "http://www.w3.org/2001/04/xmlenc#ripemd160";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -338,8 +338,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -348,10 +348,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -362,27 +362,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#whirlpool";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#whirlpool";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -391,8 +391,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -401,10 +401,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -415,27 +415,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-224";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -444,8 +444,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -454,10 +454,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -468,27 +468,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-256";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -497,8 +497,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -507,10 +507,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -521,27 +521,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-384";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -550,8 +550,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -560,10 +560,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -574,27 +574,27 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
+        final String digestAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha3-512";
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key,
                 "http://www.w3.org/2001/10/xml-exc-c14n#", digestAlgorithm
         );
@@ -603,8 +603,8 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -613,10 +613,10 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);

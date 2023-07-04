@@ -60,23 +60,23 @@ public class InteropTestBase {
      */
     public boolean verifyHMAC(File file, ResourceResolverSpi resolver, boolean followManifests, byte[] hmacKey)
         throws Exception {
-        org.w3c.dom.Document doc = XMLUtils.read(file, false);
+        final org.w3c.dom.Document doc = XMLUtils.read(file, false);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = new XMLSignature(sigElement, file.toURI().toURL().toString());
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
+        final XMLSignature signature = new XMLSignature(sigElement, file.toURI().toURL().toString());
 
         if (resolver != null) {
             signature.addResourceResolver(resolver);
         }
         signature.setFollowNestedManifests(followManifests);
 
-        byte[] keybytes = hmacKey;
-        javax.crypto.SecretKey sk = signature.createSecretKey(keybytes);
+        final byte[] keybytes = hmacKey;
+        final javax.crypto.SecretKey sk = signature.createSecretKey(keybytes);
 
         return signature.checkSignatureValue(sk);
     }
@@ -89,16 +89,16 @@ public class InteropTestBase {
 
     public boolean verify(File file, ResourceResolverSpi resolver, boolean followManifests, boolean secureValidation)
         throws Exception {
-        org.w3c.dom.Document doc = XMLUtils.read(file, false);
+        final org.w3c.dom.Document doc = XMLUtils.read(file, false);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = new XMLSignature(sigElement, file.toURI().toURL().toString(), secureValidation);
+        final XMLSignature signature = new XMLSignature(sigElement, file.toURI().toURL().toString(), secureValidation);
 
         if (resolver != null) {
             signature.addResourceResolver(resolver);
@@ -106,15 +106,15 @@ public class InteropTestBase {
         signature.setFollowNestedManifests(followManifests);
 
 
-        KeyInfo ki = signature.getKeyInfo();
+        final KeyInfo ki = signature.getKeyInfo();
         if (ki == null) {
             throw new RuntimeException("Did not find a KeyInfo");
         }
-        X509Certificate cert = ki.getX509Certificate();
+        final X509Certificate cert = ki.getX509Certificate();
 
         final boolean result;
         if (cert == null) {
-            PublicKey pk = ki.getPublicKey();
+            final PublicKey pk = ki.getPublicKey();
             if (pk == null) {
                 throw new RuntimeException("Did not find a public key, so I can't check the signature");
             }
@@ -125,7 +125,7 @@ public class InteropTestBase {
         checkReferences(signature);
         if (!result) {
             for (int i = 0; i < signature.getSignedInfo().getLength(); i++) {
-                boolean refVerify = signature.getSignedInfo().getVerificationResult(i);
+                final boolean refVerify = signature.getSignedInfo().getVerificationResult(i);
                 if (refVerify) {
                     LOG.debug("Reference " + i + " was OK");
                 } else {
@@ -141,20 +141,20 @@ public class InteropTestBase {
     }
 
     private void checkReferences(XMLSignature xmlSignature) throws Exception {
-        SignedInfo signedInfo = xmlSignature.getSignedInfo();
+        final SignedInfo signedInfo = xmlSignature.getSignedInfo();
         assertTrue(signedInfo.getLength() > 0);
         for (int i = 0; i < signedInfo.getLength(); i++) {
-            Reference reference = signedInfo.item(i);
+            final Reference reference = signedInfo.item(i);
             assertNotNull(reference);
-            ReferenceData referenceData = reference.getReferenceData();
+            final ReferenceData referenceData = reference.getReferenceData();
             assertNotNull(referenceData);
 
             if (referenceData instanceof ReferenceNodeSetData) {
-                Iterator<Node> iter = ((ReferenceNodeSetData)referenceData).iterator();
+                final Iterator<Node> iter = ((ReferenceNodeSetData)referenceData).iterator();
                 assertTrue(iter.hasNext());
                 boolean found = false;
                 while (iter.hasNext()) {
-                    Node n = iter.next();
+                    final Node n = iter.next();
                     if (n instanceof Element) {
                         found = true;
                         break;

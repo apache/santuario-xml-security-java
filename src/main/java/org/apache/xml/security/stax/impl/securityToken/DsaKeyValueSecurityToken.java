@@ -43,12 +43,12 @@ public class DsaKeyValueSecurityToken extends AbstractInboundSecurityToken {
     }
 
     private PublicKey buildPublicKey(DSAKeyValueType dsaKeyValueType) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        DSAPublicKeySpec dsaPublicKeySpec = new DSAPublicKeySpec(
+        final DSAPublicKeySpec dsaPublicKeySpec = new DSAPublicKeySpec(
                 new BigInteger(1, dsaKeyValueType.getY()),
                 new BigInteger(1, dsaKeyValueType.getP()),
                 new BigInteger(1, dsaKeyValueType.getQ()),
                 new BigInteger(1, dsaKeyValueType.getG()));
-        KeyFactory keyFactory = KeyFactory.getInstance("DSA");
+        final KeyFactory keyFactory = KeyFactory.getInstance("DSA");
         return keyFactory.generatePublic(dsaPublicKeySpec);
     }
 
@@ -57,9 +57,9 @@ public class DsaKeyValueSecurityToken extends AbstractInboundSecurityToken {
         if (super.getPublicKey() == null) {
             try {
                 setPublicKey(buildPublicKey(this.dsaKeyValueType));
-            } catch (InvalidKeySpecException e) {
+            } catch (final InvalidKeySpecException e) {
                 throw new XMLSecurityException(e);
-            } catch (NoSuchAlgorithmException e) {
+            } catch (final NoSuchAlgorithmException e) {
                 throw new XMLSecurityException(e);
             }
         }

@@ -145,7 +145,7 @@ public class CreateBaltimore23Test {
     @Test
     public void test_create_signature_enveloped_dsa() throws Exception {
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo
+        final SignedInfo si = fac.newSignedInfo
             (withoutComments, dsaSha1, Collections.singletonList
                 (fac.newReference
                     ("", sha1, Collections.singletonList
@@ -154,22 +154,22 @@ public class CreateBaltimore23Test {
                  null, null)));
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature(si, dsa);
+        final XMLSignature sig = fac.newXMLSignature(si, dsa);
 
-        Document doc = TestUtils.newDocument();
-        Element envelope = doc.createElementNS
+        final Document doc = TestUtils.newDocument();
+        final Element envelope = doc.createElementNS
             ("http://example.org/envelope", "Envelope");
         envelope.setAttributeNS
             (Constants.NamespaceSpecNS, "xmlns", "http://example.org/envelope");
         doc.appendChild(envelope);
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, envelope);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, envelope);
 
         sig.sign(dsc);
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (kvks, envelope.getFirstChild());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
 
@@ -189,13 +189,13 @@ public class CreateBaltimore23Test {
     @Test
     public void test_create_signature_enveloping_hmac_sha1_40()
         throws Exception {
-        SignatureMethod hmacSha1 = fac.newSignatureMethod
+        final SignatureMethod hmacSha1 = fac.newSignatureMethod
             (SignatureMethod.HMAC_SHA1, new HMACParameterSpec(40));
         try {
             test_create_signature_enveloping(hmacSha1, null,
                 TestUtils.getSecretKey("secret".getBytes(StandardCharsets.US_ASCII)), sks, false);
             fail("Expected HMACOutputLength Exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             System.out.println(xse.getMessage());
             // pass
         }
@@ -204,7 +204,7 @@ public class CreateBaltimore23Test {
     @Test
     public void test_create_signature_enveloping_hmac_sha1()
         throws Exception {
-        SignatureMethod hmacSha1 = fac.newSignatureMethod
+        final SignatureMethod hmacSha1 = fac.newSignatureMethod
             (SignatureMethod.HMAC_SHA1, null);
         test_create_signature_enveloping(hmacSha1, null,
             TestUtils.getSecretKey("secret".getBytes(StandardCharsets.US_ASCII)), sks, false);
@@ -228,7 +228,7 @@ public class CreateBaltimore23Test {
 
     @Test
     public void test_create_signature_keyname() throws Exception {
-        KeyInfo kn = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo kn = kifac.newKeyInfo(Collections.singletonList
             (kifac.newKeyName("mullan")));
         test_create_signature_external(dsaSha1, kn, signingKey,
             new X509KeySelector(ks), false);
@@ -237,7 +237,7 @@ public class CreateBaltimore23Test {
     @Test
     public void test_create_signature_retrievalmethod_rawx509crt()
         throws Exception {
-        KeyInfo rm = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo rm = kifac.newKeyInfo(Collections.singletonList
             (kifac.newRetrievalMethod
             ("certs/mullan.crt", X509Data.RAW_X509_CERTIFICATE_TYPE, null)));
         test_create_signature_external(dsaSha1, rm, signingKey,
@@ -254,8 +254,8 @@ public class CreateBaltimore23Test {
             return;
         }
 
-        List<Object> xds = new ArrayList<>();
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        final List<Object> xds = new ArrayList<>();
+        final CertificateFactory cf = CertificateFactory.getInstance("X.509");
         xds.add(signingCert);
         X509CRL crl;
         try (FileInputStream fis = new FileInputStream(resolveFile("src", "test", "resources", "ie", "baltimore",
@@ -263,7 +263,7 @@ public class CreateBaltimore23Test {
             crl = (X509CRL) cf.generateCRL(fis);
         }
         xds.add(crl);
-        KeyInfo crt_crl = kifac.newKeyInfo(Collections.singletonList(kifac.newX509Data(xds)));
+        final KeyInfo crt_crl = kifac.newKeyInfo(Collections.singletonList(kifac.newX509Data(xds)));
 
         test_create_signature_external(dsaSha1, crt_crl, signingKey, new X509KeySelector(ks), false);
     }
@@ -277,7 +277,7 @@ public class CreateBaltimore23Test {
             return;
         }
 
-        KeyInfo crt = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo crt = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList(signingCert))));
 
         test_create_signature_external(dsaSha1, crt, signingKey,
@@ -293,7 +293,7 @@ public class CreateBaltimore23Test {
             return;
         }
 
-        KeyInfo is = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo is = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
             (kifac.newX509IssuerSerial
             ("CN=Sean Mullan,DC=sun,DC=com",
@@ -304,7 +304,7 @@ public class CreateBaltimore23Test {
 
     @Test
     public void test_create_signature_x509_ski() throws Exception {
-        KeyInfo ski = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo ski = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
             ("keyid".getBytes(StandardCharsets.US_ASCII)))));
 
@@ -321,7 +321,7 @@ public class CreateBaltimore23Test {
             return;
         }
 
-        KeyInfo sn = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo sn = kifac.newKeyInfo(Collections.singletonList
             (kifac.newX509Data(Collections.singletonList
             ("CN=Sean Mullan,DC=sun,DC=com"))));
 
@@ -340,11 +340,11 @@ public class CreateBaltimore23Test {
         }
 
         // set up reusable objects
-        Transform env = fac.newTransform(Transform.ENVELOPED,
+        final Transform env = fac.newTransform(Transform.ENVELOPED,
             (TransformParameterSpec) null);
 
         // create references
-        List<Reference> refs = new ArrayList<>();
+        final List<Reference> refs = new ArrayList<>();
 
         // Reference 1
         refs.add(fac.newReference("http://www.w3.org/TR/xml-stylesheet", sha1));
@@ -363,7 +363,7 @@ public class CreateBaltimore23Test {
             XMLObject.TYPE, null));
 
         // Reference 4
-        String expr = "\n"
+        final String expr = "\n"
           + " ancestor-or-self::dsig:SignedInfo			 " + "\n"
           + "  and                                               " + "\n"
           + " count(ancestor-or-self::dsig:Reference |		 " + "\n"
@@ -394,7 +394,7 @@ public class CreateBaltimore23Test {
             SignatureProperties.TYPE, null));
 
         // Reference 8
-        List<Transform> transforms = new ArrayList<>();
+        final List<Transform> transforms = new ArrayList<>();
         transforms.add(env);
         refs.add(fac.newReference("", sha1, transforms, null, null));
 
@@ -438,21 +438,21 @@ public class CreateBaltimore23Test {
             "reference-2"));
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(withoutComments, dsaSha1, refs);
+        final SignedInfo si = fac.newSignedInfo(withoutComments, dsaSha1, refs);
 
         // create keyinfo
-        XPathFilterParameterSpec xpf = new XPathFilterParameterSpec(
+        final XPathFilterParameterSpec xpf = new XPathFilterParameterSpec(
             "ancestor-or-self::dsig:X509Data",
             Collections.singletonMap("dsig", XMLSignature.XMLNS));
-        RetrievalMethod rm = kifac.newRetrievalMethod("#object-4",
+        final RetrievalMethod rm = kifac.newRetrievalMethod("#object-4",
             X509Data.TYPE, Collections.singletonList(fac.newTransform
             (Transform.XPATH, xpf)));
-        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList(rm), null);
+        final KeyInfo ki = kifac.newKeyInfo(Collections.singletonList(rm), null);
 
         Document doc = TestUtils.newDocument();
 
         // create objects
-        List<XMLObject> objs = new ArrayList<>();
+        final List<XMLObject> objs = new ArrayList<>();
 
         // Object 1
         objs.add(fac.newXMLObject(Collections.singletonList
@@ -465,14 +465,14 @@ public class CreateBaltimore23Test {
             "object-2", "text/plain", Transform.BASE64));
 
         // Object 3
-        Element nc = doc.createElementNS(null, "NonCommentandus");
+        final Element nc = doc.createElementNS(null, "NonCommentandus");
         nc.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "");
         nc.appendChild(doc.createComment(" Commentandum "));
         objs.add(fac.newXMLObject(Collections.singletonList
             (new DOMStructure(nc)), "object-3", null, null));
 
         // Manifest
-        List<Reference> manRefs = new ArrayList<>();
+        final List<Reference> manRefs = new ArrayList<>();
 
         // Manifest Reference 1
         manRefs.add(fac.newReference("http://www.w3.org/TR/xml-stylesheet",
@@ -482,8 +482,8 @@ public class CreateBaltimore23Test {
         manRefs.add(fac.newReference("#reference-1", sha1));
 
         // Manifest Reference 3
-        List<Transform> manTrans = new ArrayList<>();
-        String xslt = ""
+        final List<Transform> manTrans = new ArrayList<>();
+        final String xslt = ""
           + "<xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform'\n"
           + "		 xmlns='http://www.w3.org/TR/xhtml1/strict' \n"
           + "		 exclude-result-prefixes='foo' \n"
@@ -514,7 +514,7 @@ public class CreateBaltimore23Test {
         try (InputStream is = new ByteArrayInputStream(xslt.getBytes())) {
             docxslt = XMLUtils.read(is, false);
         }
-        Node xslElem = docxslt.getDocumentElement();
+        final Node xslElem = docxslt.getDocumentElement();
 
         manTrans.add(fac.newTransform(Transform.XSLT,
             new XSLTTransformParameterSpec(new DOMStructure(xslElem))));
@@ -528,21 +528,21 @@ public class CreateBaltimore23Test {
             (fac.newManifest(manRefs, "manifest-1")), null, null, null));
 
         // SignatureProperties
-        Element sa = doc.createElementNS("urn:demo", "SignerAddress");
+        final Element sa = doc.createElementNS("urn:demo", "SignerAddress");
         sa.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "urn:demo");
-        Element ip = doc.createElementNS("urn:demo", "IP");
+        final Element ip = doc.createElementNS("urn:demo", "IP");
         ip.appendChild(doc.createTextNode("192.168.21.138"));
         sa.appendChild(ip);
-        SignatureProperty sp = fac.newSignatureProperty
+        final SignatureProperty sp = fac.newSignatureProperty
             (Collections.singletonList(new DOMStructure(sa)),
             "#signature", null);
-        SignatureProperties sps = fac.newSignatureProperties
+        final SignatureProperties sps = fac.newSignatureProperties
             (Collections.singletonList(sp), "signature-properties-1");
         objs.add(fac.newXMLObject(Collections.singletonList(sps), null,
             null, null));
 
         // Object 4
-        List<Object> xds = new ArrayList<>();
+        final List<Object> xds = new ArrayList<>();
         xds.add("CN=Sean Mullan,DC=sun,DC=com");
         xds.add(kifac.newX509IssuerSerial
             ("CN=Sean Mullan,DC=sun,DC=com",
@@ -552,45 +552,45 @@ public class CreateBaltimore23Test {
             (kifac.newX509Data(xds)), "object-4", null, null));
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature(si, ki, objs, "signature", null);
+        final XMLSignature sig = fac.newXMLSignature(si, ki, objs, "signature", null);
 
         // create envelope header
-        Element envelope = doc.createElementNS
+        final Element envelope = doc.createElementNS
             ("http://example.org/usps", "Envelope");
         envelope.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns",
             "http://example.org/usps");
         envelope.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:foo",
             "http://example.org/foo");
         doc.appendChild(envelope);
-        Element dearSir = doc.createElementNS
+        final Element dearSir = doc.createElementNS
             ("http://example.org/usps", "DearSir");
         dearSir.appendChild(doc.createTextNode("foo"));
         envelope.appendChild(dearSir);
-        Element body = doc.createElementNS("http://example.org/usps", "Body");
+        final Element body = doc.createElementNS("http://example.org/usps", "Body");
         body.appendChild(doc.createTextNode("bar"));
         envelope.appendChild(body);
-        Element ys = doc.createElementNS
+        final Element ys = doc.createElementNS
             ("http://example.org/usps", "YoursSincerely");
         envelope.appendChild(ys);
 
         // create envelope footer
-        Element ps = doc.createElementNS
+        final Element ps = doc.createElementNS
             ("http://example.org/usps", "PostScript");
         ps.appendChild(doc.createTextNode("bar"));
         envelope.appendChild(ps);
-        Element notaries = doc.createElementNS(null, "Notaries");
+        final Element notaries = doc.createElementNS(null, "Notaries");
         notaries.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "");
         notaries.setAttributeNS(null, "Id", "notaries");
-        Element notary1 = doc.createElementNS(null, "Notary");
+        final Element notary1 = doc.createElementNS(null, "Notary");
         notary1.setAttributeNS(null, "name", "Great, A. T.");
-        Element notary2 = doc.createElementNS(null, "Notary");
+        final Element notary2 = doc.createElementNS(null, "Notary");
         notary2.setAttributeNS(null, "name", "Hun, A. T.");
         notaries.appendChild(notary1);
         notaries.appendChild(notary2);
         envelope.appendChild(notaries);
         envelope.appendChild(doc.createComment(" Commentary "));
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, ys);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, ys);
         dsc.setIdAttributeNS(notaries, null, "Id");
         dsc.setURIDereferencer(ud);
 
@@ -606,7 +606,7 @@ public class CreateBaltimore23Test {
         //          + "<!ENTITY xslt 'http://www.w3.org/TR/1999/REC-xslt-19991116'>\n"
         //          + "<!ATTLIST Notaries Id ID #IMPLIED>\n"
         //          + "]>\n";
-                StringWriter sw = new StringWriter();
+                final StringWriter sw = new StringWriter();
         //	sw.write(docType);
 
         dumpDocument(doc, sw);
@@ -614,17 +614,17 @@ public class CreateBaltimore23Test {
         // read document back into DOM tree
         try {
             doc = XMLUtils.read(new ByteArrayInputStream(sw.toString().getBytes(StandardCharsets.UTF_8)), false);
-        } catch (XMLParserException spe) {
+        } catch (final XMLParserException spe) {
             System.err.println("xml:" + sw.toString());
         }
-        Element sigElement = SignatureValidator.getSignatureElement(doc);
+        final Element sigElement = SignatureValidator.getSignatureElement(doc);
         if (sigElement == null) {
             throw new Exception("Couldn't find signature Element");
         }
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (new X509KeySelector(ks), sigElement);
-        File f = new File(
+        final File f = new File(
         System.getProperty("dir.test.vector.baltimore") +
         FileSystems.getDefault().getSeparator() +
         "merlin-xmldsig-twenty-three" +
@@ -638,15 +638,15 @@ public class CreateBaltimore23Test {
         //	dvc.setIdAttributeNS(notariesElem, "", "Id");
         //	notariesElem.setIdAttributeNS("", "Id", true);
 
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
     }
 
     private void dumpDocument(Document doc, Writer w) throws Exception {
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer trans = tf.newTransformer();
+        final TransformerFactory tf = TransformerFactory.newInstance();
+        final Transformer trans = tf.newTransformer();
         // trans.setOutputProperty(OutputKeys.INDENT, "yes");
         trans.transform(new DOMSource(doc), new StreamResult(w));
     }
@@ -669,15 +669,15 @@ public class CreateBaltimore23Test {
         }
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(withoutComments, sm,
+        final SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature(si, ki);
+        final XMLSignature sig = fac.newXMLSignature(si, ki);
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, doc);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, doc);
         dsc.setURIDereferencer(ud);
 
         sig.sign(dsc);
@@ -689,12 +689,12 @@ public class CreateBaltimore23Test {
         System.out.println(sw.toString());
         */
 
-        DOMValidateContext dvc = new DOMValidateContext(ks, doc.getDocumentElement());
-        File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmldsig-twenty-three");
+        final DOMValidateContext dvc = new DOMValidateContext(ks, doc.getDocumentElement());
+        final File f = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmldsig-twenty-three");
         dvc.setBaseURI(f.toURI().toString());
         dvc.setURIDereferencer(ud);
 
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
@@ -715,26 +715,26 @@ public class CreateBaltimore23Test {
         }
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(withoutComments, sm,
+        final SignedInfo si = fac.newSignedInfo(withoutComments, sm,
             Collections.singletonList(ref));
 
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
         // create Objects
-        XMLObject obj = fac.newXMLObject(Collections.singletonList
+        final XMLObject obj = fac.newXMLObject(Collections.singletonList
             (new DOMStructure(doc.createTextNode("some text"))),
             "object", null, null);
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature
+        final XMLSignature sig = fac.newXMLSignature
             (si, ki, Collections.singletonList(obj), null, null);
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, doc);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, doc);
 
         sig.sign(dsc);
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (ks, doc.getDocumentElement());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));

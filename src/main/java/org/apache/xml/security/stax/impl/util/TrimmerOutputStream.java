@@ -78,7 +78,7 @@ public class TrimmerOutputStream extends FilterOutputStream {
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
         if (preTrimmed < startTrimLength) {
-            int missingBytes = startTrimLength - preTrimmed;
+            final int missingBytes = startTrimLength - preTrimmed;
             if (missingBytes >= len) {
                 //discard bytes
                 preTrimmed += len;

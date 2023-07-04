@@ -89,22 +89,22 @@ public class KeyResolverTest {
             return;
         }
 
-        char[] pwd = "secret".toCharArray();
-        KeyStore ks = KeyStore.getInstance("JCEKS");
+        final char[] pwd = "secret".toCharArray();
+        final KeyStore ks = KeyStore.getInstance("JCEKS");
         try (FileInputStream fis = new FileInputStream(resolveFile("src/test/resources/test.jceks"))) {
             ks.load(fis, pwd);
         }
 
-        X509Certificate cert = (X509Certificate)ks.getCertificate("rsakey");
-        PublicKey publicKey = cert.getPublicKey();
-        PrivateKey privateKey = (PrivateKey) ks.getKey("rsakey", pwd);
-        SecretKey secretKey = (SecretKey) ks.getKey("des3key", pwd);
+        final X509Certificate cert = (X509Certificate)ks.getCertificate("rsakey");
+        final PublicKey publicKey = cert.getPublicKey();
+        final PrivateKey privateKey = (PrivateKey) ks.getKey("rsakey", pwd);
+        final SecretKey secretKey = (SecretKey) ks.getKey("des3key", pwd);
 
-        StorageResolver storage = new StorageResolver(new KeyStoreResolver(ks));
-        KeyResolverSpi privateKeyResolver = new PrivateKeyResolver(ks, pwd);
-        KeyResolverSpi secretKeyResolver = new SecretKeyResolver(ks, pwd);
+        final StorageResolver storage = new StorageResolver(new KeyStoreResolver(ks));
+        final KeyResolverSpi privateKeyResolver = new PrivateKeyResolver(ks, pwd);
+        final KeyResolverSpi secretKeyResolver = new SecretKeyResolver(ks, pwd);
 
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
         KeyInfo ki;
         X509Data x509data;
@@ -155,7 +155,7 @@ public class KeyResolverTest {
         assertEquals(privateKey, ki.getPrivateKey());
 
         // KeyName hint
-        String rsaKeyName = "rsakey";
+        final String rsaKeyName = "rsakey";
         ki = new KeyInfo(doc);
         ki.addKeyName(rsaKeyName);
         ki.registerInternalKeyResolver(new SingleKeyResolver(rsaKeyName, publicKey));
@@ -171,7 +171,7 @@ public class KeyResolverTest {
         ki.registerInternalKeyResolver(new SingleKeyResolver(rsaKeyName, privateKey));
         assertEquals(privateKey, ki.getPrivateKey());
 
-        String des3KeyName = "des3key";
+        final String des3KeyName = "des3key";
         ki = new KeyInfo(doc);
         ki.addKeyName(des3KeyName);
         ki.registerInternalKeyResolver(secretKeyResolver);
@@ -192,7 +192,7 @@ public class KeyResolverTest {
     @Test
     public void testResolvePrivateKey() throws Exception {
         // See if AES-128 is available...
-        String algorithmId =
+        final String algorithmId =
             JCEMapper.translateURItoJCEID(
                     org.apache.xml.security.utils.EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128
                 );
@@ -202,9 +202,9 @@ public class KeyResolverTest {
                 if (Cipher.getInstance(algorithmId) != null) {
                     haveAES = true;
                 }
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 //
-            } catch (NoSuchPaddingException nspe) {
+            } catch (final NoSuchPaddingException nspe) {
                 //
             }
         }
@@ -214,22 +214,22 @@ public class KeyResolverTest {
         }
 
         // Create a sample XML document
-        Document document = TestUtils.newDocument();
+        final Document document = TestUtils.newDocument();
 
-        Element rootElement = document.createElement("root");
+        final Element rootElement = document.createElement("root");
         document.appendChild(rootElement);
-        Element elem = document.createElement("elem");
-        Text text = document.createTextNode("text");
+        final Element elem = document.createElement("elem");
+        final Text text = document.createTextNode("text");
         elem.appendChild(text);
         rootElement.appendChild(elem);
 
         // Create a data encryption key
-        byte[] keyBytes = { 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7 };
-        SecretKeySpec dataEncryptKey = new SecretKeySpec(keyBytes, "AES");
+        final byte[] keyBytes = { 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7 };
+        final SecretKeySpec dataEncryptKey = new SecretKeySpec(keyBytes, "AES");
 
         // Create public and private keys
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(
+        final KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        final RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(
                 new BigInteger(
                     "8710a2bcb2f3fdac177f0ae0461c2dd0ebf72e0d88a5400583a7d8bdabd6" +
                     "ae009d30cfdf6acb5b6a64cdc730bc630a39d946d08babffe62ea20a87e37c93b3b0e8a8e576045b" +
@@ -237,7 +237,7 @@ public class KeyResolverTest {
                     "1539219e7e45dd6a60be65ac95d2049b8f21", 16),
                 new BigInteger("10001", 16));
 
-        RSAPrivateKeySpec privKeySpec = new RSAPrivateKeySpec(
+        final RSAPrivateKeySpec privKeySpec = new RSAPrivateKeySpec(
                 new BigInteger(
                     "8710a2bcb2f3fdac177f0ae0461c2dd0ebf72e0d88a5400583a7d8bdabd" +
                     "6ae009d30cfdf6acb5b6a64cdc730bc630a39d946d08babffe62ea20a87e37c93b3b0e8a8e576045" +
@@ -249,31 +249,31 @@ public class KeyResolverTest {
                     "36ff8674b301e2198b2c56abb0a0313f8ff84c1fcd6fa541aa6e5d9c018fab4784d2940def5dc709" +
                     "ddc714d73b6c23b5d178eaa5933577b8e8ae9", 16));
 
-        RSAPublicKey pubKey = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
-        RSAPrivateKey privKey = (RSAPrivateKey) keyFactory.generatePrivate(privKeySpec);
+        final RSAPublicKey pubKey = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
+        final RSAPrivateKey privKey = (RSAPrivateKey) keyFactory.generatePrivate(privKeySpec);
 
         // Encrypt the data encryption key with the key encryption key
-        XMLCipher keyCipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
+        final XMLCipher keyCipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
         keyCipher.init(XMLCipher.WRAP_MODE, pubKey);
-        EncryptedKey encryptedKey = keyCipher.encryptKey(document, dataEncryptKey);
+        final EncryptedKey encryptedKey = keyCipher.encryptKey(document, dataEncryptKey);
 
-        String keyName = "testResolvePrivateKey";
-        KeyInfo kekInfo = new KeyInfo(document);
+        final String keyName = "testResolvePrivateKey";
+        final KeyInfo kekInfo = new KeyInfo(document);
         kekInfo.addKeyName(keyName);
         encryptedKey.setKeyInfo(kekInfo);
 
         // Encrypt the data
-        XMLCipher xmlCipher = XMLCipher.getInstance(XMLCipher.AES_128);
+        final XMLCipher xmlCipher = XMLCipher.getInstance(XMLCipher.AES_128);
         xmlCipher.init(XMLCipher.ENCRYPT_MODE, dataEncryptKey);
 
-        EncryptedData encryptedData = xmlCipher.getEncryptedData();
-        KeyInfo keyInfo = new KeyInfo(document);
+        final EncryptedData encryptedData = xmlCipher.getEncryptedData();
+        final KeyInfo keyInfo = new KeyInfo(document);
         keyInfo.add(encryptedKey);
         encryptedData.setKeyInfo(keyInfo);
 
         xmlCipher.doFinal(document, rootElement, true);
 
-        Element encryptedDataElement = (Element) rootElement.getFirstChild();
+        final Element encryptedDataElement = (Element) rootElement.getFirstChild();
         assertEquals("EncryptedData", encryptedDataElement.getLocalName());
 
         // Decrypt the data by resolving the private key used as the KEK
@@ -285,7 +285,7 @@ public class KeyResolverTest {
 
         // Now test with a static KeyResolver
         KeyResolver.registerAtStart(MyPrivateKeyResolver.class.getName());
-        KeyResolverSpi resolver = KeyResolver.iterator().next();
+        final KeyResolverSpi resolver = KeyResolver.iterator().next();
         assertEquals(MyPrivateKeyResolver.class.getName(), resolver.getClass().getName());
 
         decryptDocument(document, null);
@@ -293,18 +293,18 @@ public class KeyResolverTest {
 
     private void decryptDocument(Document docSource, KeyResolverSpi internalResolver) throws Exception
     {
-        Document document = (Document)docSource.cloneNode(true);
-        Element rootElement = document.getDocumentElement();
-        Element encryptedDataElement = (Element)rootElement.getFirstChild();
+        final Document document = (Document)docSource.cloneNode(true);
+        final Element rootElement = document.getDocumentElement();
+        final Element encryptedDataElement = (Element)rootElement.getFirstChild();
 
-        XMLCipher decryptCipher = XMLCipher.getInstance();
+        final XMLCipher decryptCipher = XMLCipher.getInstance();
         decryptCipher.init(XMLCipher.DECRYPT_MODE, null);
         if (internalResolver != null) {
             decryptCipher.registerInternalKeyResolver(internalResolver);
         }
         decryptCipher.doFinal(document, encryptedDataElement);
 
-        Element decryptedElement = (Element) rootElement.getFirstChild();
+        final Element decryptedElement = (Element) rootElement.getFirstChild();
         assertEquals("elem", decryptedElement.getLocalName());
     }
 
@@ -340,7 +340,7 @@ public class KeyResolverTest {
         protected PrivateKey engineResolvePrivateKey(
             Element element, String baseURI, StorageResolver storage, boolean secureValidation
         ) throws KeyResolverException {
-            String keyName = element.getFirstChild().getNodeValue();
+            final String keyName = element.getFirstChild().getNodeValue();
             if (pkName.equals(keyName)) {
                 return pk;
             }

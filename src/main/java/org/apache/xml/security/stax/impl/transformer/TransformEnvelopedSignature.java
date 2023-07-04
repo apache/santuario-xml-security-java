@@ -51,13 +51,13 @@ public class TransformEnvelopedSignature extends TransformIdentity {
     public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
         if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
             curLevel++;
-            XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
+            final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
             if (XMLSecurityConstants.TAG_dsig_Signature.equals(xmlSecStartElement.getName())) {
                 sigElementLevel = curLevel;
                 return;
             }
         } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
-            XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
+            final XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
             if (sigElementLevel == curLevel && XMLSecurityConstants.TAG_dsig_Signature.equals(xmlSecEndElement.getName())) {
                 sigElementLevel = -1;
                 return;

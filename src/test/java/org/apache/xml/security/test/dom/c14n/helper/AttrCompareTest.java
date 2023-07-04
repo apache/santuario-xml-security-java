@@ -54,25 +54,25 @@ public class AttrCompareTest {
     @Test
     public void testA1() throws ParserConfigurationException {
 
-        Document doc = createDoc("documentElement");
-        Element root = doc.getDocumentElement();
-        Attr attr0 = createAttr(doc, "xmlns", "http://default/", Constants.NamespaceSpecNS);
-        Attr attr1 = createAttr(doc, "xmlns:b", "http://val1/", Constants.NamespaceSpecNS);
+        final Document doc = createDoc("documentElement");
+        final Element root = doc.getDocumentElement();
+        final Attr attr0 = createAttr(doc, "xmlns", "http://default/", Constants.NamespaceSpecNS);
+        final Attr attr1 = createAttr(doc, "xmlns:b", "http://val1/", Constants.NamespaceSpecNS);
 
         root.setAttributeNode(attr0);
         root.setAttributeNode(attr1);
 
-        NamedNodeMap nnm = root.getAttributes();
+        final NamedNodeMap nnm = root.getAttributes();
 
         assertEquals(nnm.getLength(), 2, "nnm.getLength()");
 
-        Attr attr00 = (Attr) nnm.item(0);
-        Attr attr10 = (Attr) nnm.item(1);
+        final Attr attr00 = (Attr) nnm.item(0);
+        final Attr attr10 = (Attr) nnm.item(1);
 
         assertNotNull(attr00, "Attribute attr00");
         assertNotNull(attr10, "Attribute attr10");
 
-        AttrCompare attrCompare = new AttrCompare();
+        final AttrCompare attrCompare = new AttrCompare();
 
         assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
         assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
@@ -81,14 +81,14 @@ public class AttrCompareTest {
     @Test
     public void testA2() throws ParserConfigurationException {
 
-        Document doc = createDoc("documentElement");
-        Attr attr0 = doc.createAttributeNS(null, "foo");
-        Attr attr1 = doc.createAttributeNS("http://goo", "goo:foo");
+        final Document doc = createDoc("documentElement");
+        final Attr attr0 = doc.createAttributeNS(null, "foo");
+        final Attr attr1 = doc.createAttributeNS("http://goo", "goo:foo");
 
         // System.out.println("Attr1: " + attr1 + " (" + attr1.getLocalName()  +")");
 
 
-        AttrCompare attrCompare = new AttrCompare();
+        final AttrCompare attrCompare = new AttrCompare();
 
         assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
         assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
@@ -102,25 +102,25 @@ public class AttrCompareTest {
     @Test
     public void __testA2() throws ParserConfigurationException {
 
-        Document doc = createDoc("documentElement");
-        Element root = doc.getDocumentElement();
-        Attr attr0 = createAttr(doc, "aAttr", "val0", null);
-        Attr attr1 = createAttr(doc, "bAttr", "val1", null);
+        final Document doc = createDoc("documentElement");
+        final Element root = doc.getDocumentElement();
+        final Attr attr0 = createAttr(doc, "aAttr", "val0", null);
+        final Attr attr1 = createAttr(doc, "bAttr", "val1", null);
 
         root.setAttributeNode(attr0);
         root.setAttributeNode(attr1);
 
-        NamedNodeMap nnm = root.getAttributes();
+        final NamedNodeMap nnm = root.getAttributes();
 
         assertEquals(nnm.getLength(), 2, "nnm.getLength()");
 
-        Attr attr00 = (Attr) nnm.item(0);
-        Attr attr10 = (Attr) nnm.item(1);
+        final Attr attr00 = (Attr) nnm.item(0);
+        final Attr attr10 = (Attr) nnm.item(1);
 
         assertNotNull(attr00, "Attribute attr00");
         assertNotNull(attr10, "Attribute attr10");
 
-        AttrCompare attrCompare = new AttrCompare();
+        final AttrCompare attrCompare = new AttrCompare();
 
         assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
         assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
@@ -146,12 +146,12 @@ public class AttrCompareTest {
          *     b:attr="sorted"
          *     a:attr="out"></e5>
          */
-        Document doc = createDoc("documentElement");
-        Element root = doc.getDocumentElement();
+        final Document doc = createDoc("documentElement");
+        final Element root = doc.getDocumentElement();
 
         // This List has to be ordered to verify correctness of the comparison
         //J-
-        Attr attrs[] = {
+        final Attr attrs[] = {
                         createAttr(doc, "xmlns", "http://example.org", Constants.NamespaceSpecNS),
                         createAttr(doc, "xmlns:a", "http://www.w3.org", Constants.NamespaceSpecNS),
                         createAttr(doc, "xmlns:b", "http://www.ietf.org", Constants.NamespaceSpecNS),
@@ -161,24 +161,24 @@ public class AttrCompareTest {
                         createAttr(doc, "a:attr", "out", "http://www.w3.org") };
 
         //J+
-        for (Attr attr : attrs) {
+        for (final Attr attr : attrs) {
             root.setAttributeNode(attr);
         }
 
-        NamedNodeMap nnm = root.getAttributes();
+        final NamedNodeMap nnm = root.getAttributes();
 
         assertEquals(nnm.getLength(), attrs.length, "nnm.getLength()");
 
-        for (Attr attr : attrs) {
+        for (final Attr attr : attrs) {
             assertNotNull(attr, "Attribute attr");
         }
 
-        AttrCompare attrCompare = new AttrCompare();
+        final AttrCompare attrCompare = new AttrCompare();
 
         for (int i = 0; i < attrs.length; i++) {
             for (int j = i + 1; j < attrs.length; j++) {
-                Attr attr0 = attrs[i];
-                Attr attr1 = attrs[j];
+                final Attr attr0 = attrs[i];
+                final Attr attr1 = attrs[j];
                 assertTrue(attrCompare.compare(attr0, attr1) < 0, attr0 + " < " + attr1);
                 assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
             }
@@ -220,8 +220,8 @@ public class AttrCompareTest {
     private static Document createDoc(
         String documentElement
     ) throws ParserConfigurationException {
-        Document doc = TestUtils.newDocument();
-        Element root = doc.createElementNS(null, documentElement);
+        final Document doc = TestUtils.newDocument();
+        final Element root = doc.createElementNS(null, documentElement);
 
         doc.appendChild(root);
 

@@ -55,12 +55,12 @@ public class DigestMethodTest {
     @Test
     public void testisFeatureSupported() throws Exception {
         DigestMethod dm;
-        for (String algo : MD_ALGOS) {
+        for (final String algo : MD_ALGOS) {
             dm = factory.newDigestMethod(algo, null);
             try {
                 dm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
-            } catch (NullPointerException npe) {}
+            } catch (final NullPointerException npe) {}
             assertFalse(dm.isFeatureSupported("not supported"));
         }
     }
@@ -71,7 +71,7 @@ public class DigestMethodTest {
         // (String algorithm, AlgorithmParameterSpec params)
         // for generating DigestMethod objects
         DigestMethod dm;
-        for (String algo : MD_ALGOS) {
+        for (final String algo : MD_ALGOS) {
             dm = factory.newDigestMethod(algo, null);
             assertEquals(dm.getAlgorithm(), algo);
 
@@ -80,8 +80,8 @@ public class DigestMethodTest {
                 dm = factory.newDigestMethod(algo,
                                   new TestUtils.MyOwnDigestMethodParameterSpec());
                 fail("Should raise an IAPE for invalid parameters");
-            } catch (InvalidAlgorithmParameterException iape) {
-            } catch (Exception ex) {
+            } catch (final InvalidAlgorithmParameterException iape) {
+            } catch (final Exception ex) {
                 fail("Should raise an IAPE instead of " + ex);
             }
         }
@@ -90,12 +90,12 @@ public class DigestMethodTest {
             dm = factory.newDigestMethod("non-existent",
                                          null);
             fail("Should raise an NSAE for non-existent algos");
-        } catch (NoSuchAlgorithmException nsae) {}
+        } catch (final NoSuchAlgorithmException nsae) {}
 
         try {
             dm = factory.newDigestMethod(null, null);
             fail("Should raise a NPE for null algo");
-        } catch (NullPointerException npe) {
+        } catch (final NullPointerException npe) {
             //
         }
     }

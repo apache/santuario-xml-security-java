@@ -42,11 +42,11 @@ public class ForbiddenRetrievalMethodTest {
 
     @Test
     public void testMultipleRetrievalMethods() throws Exception {
-        String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod3.xml";
-        File fis = XmlSecTestEnvironment.resolveFile(filename);
-        Document doc = XMLUtils.read(fis, false);
+        final String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod3.xml";
+        final File fis = XmlSecTestEnvironment.resolveFile(filename);
+        final Document doc = XMLUtils.read(fis, false);
 
-        KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
+        final KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
         keyInfo.setSecureValidation(true);
 
         // Check neither of these give a StackOverflowError.

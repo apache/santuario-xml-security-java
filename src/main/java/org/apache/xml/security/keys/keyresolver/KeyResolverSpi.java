@@ -206,11 +206,11 @@ public abstract class KeyResolverSpi {
      */
     protected static Element getDocFromBytes(byte[] bytes, boolean secureValidation) throws KeyResolverException {
         try (InputStream is = new ByteArrayInputStream(bytes)) {
-            Document doc = XMLUtils.read(is, secureValidation);
+            final Document doc = XMLUtils.read(is, secureValidation);
             return doc.getDocumentElement();
-        } catch (XMLParserException ex) {
+        } catch (final XMLParserException ex) {
             throw new KeyResolverException(ex);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new KeyResolverException(ex);
         }
     }

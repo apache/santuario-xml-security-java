@@ -61,10 +61,10 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         try {
             outputProcessorChain.reset();
             outputProcessorChain.processEvent(xmlSecEvent);
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             throw new XMLStreamException(e);
-        } catch (XMLStreamException e) {
-            String msg = e.getMessage();
+        } catch (final XMLStreamException e) {
+            final String msg = e.getMessage();
             if (msg != null && msg.contains("Trying to declare prefix xmlns (illegal as per NS 1.1 #4)")) {
                 throw new XMLStreamException("If you hit this exception this most probably means" +
                         "you are using the javax.xml.transform.stax.StAXResult. Don't use " +
@@ -163,7 +163,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
     @Override
     public void writeEndElement() throws XMLStreamException {
         outputOpenStartElement();
-        Element element = this.elementStack;
+        final Element element = this.elementStack;
         this.elementStack = this.elementStack.getParentElement();
         chainProcessEvent(XMLSecEventFactory.createXmlSecEndElement(element.getQName()));
 
@@ -174,7 +174,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         if (!endDocumentWritten) {
             outputOpenStartElement();
             while (this.elementStack != null) {
-                Element element = this.elementStack;
+                final Element element = this.elementStack;
                 this.elementStack = element.getParentElement();
                 chainProcessEvent(XMLSecEventFactory.createXmlSecEndElement(element.getQName()));
             }
@@ -189,7 +189,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
             writeEndDocument();
             outputProcessorChain.reset();
             outputProcessorChain.doFinal();
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             throw new XMLStreamException(e);
         }
     }
@@ -494,7 +494,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         @Override
         public String getNamespaceURI(String prefix) {
             for (int i = 0; i < prefixNsList.size(); i += 2) {
-                String s = prefixNsList.get(i);
+                final String s = prefixNsList.get(i);
                 if (s.equals(prefix)) {
                     return prefixNsList.get(i + 1);
                 }
@@ -509,7 +509,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         @Override
         public String getPrefix(String namespaceURI) {
             for (int i = 1; i < prefixNsList.size(); i += 2) {
-                String s = prefixNsList.get(i);
+                final String s = prefixNsList.get(i);
                 if (s.equals(namespaceURI)) {
                     return prefixNsList.get(i - 1);
                 }
@@ -524,9 +524,9 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
         @SuppressWarnings("rawtypes")
         @Override
         public Iterator getPrefixes(String namespaceURI) {
-            List<String> prefixes = new ArrayList<>(1);
+            final List<String> prefixes = new ArrayList<>(1);
             for (int i = 1; i < prefixNsList.size(); i += 2) {
-                String s = prefixNsList.get(i);
+                final String s = prefixNsList.get(i);
                 if (s.equals(namespaceURI)) {
                     prefixes.add(prefixNsList.get(i - 1));
                 }
@@ -534,6 +534,7 @@ public class XMLSecurityStreamWriter implements XMLStreamWriter {
 
             if (parentNamespaceContext != null) {
                 @SuppressWarnings("unchecked")
+                final
                 Iterator<String> parentPrefixes = parentNamespaceContext.getPrefixes(namespaceURI);
                 while (parentPrefixes.hasNext()) {
                     prefixes.add(parentPrefixes.next());

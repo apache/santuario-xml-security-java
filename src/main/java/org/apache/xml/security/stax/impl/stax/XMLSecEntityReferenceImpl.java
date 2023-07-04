@@ -67,7 +67,7 @@ public class XMLSecEntityReferenceImpl extends XMLSecEventBaseImpl implements XM
             writer.write('&');
             writer.write(getName());
             writer.write(';');
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

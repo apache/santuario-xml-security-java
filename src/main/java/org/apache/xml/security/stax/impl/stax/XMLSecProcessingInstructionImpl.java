@@ -71,7 +71,7 @@ public class XMLSecProcessingInstructionImpl extends XMLSecEventBaseImpl impleme
                 writer.write(data);
             }
             writer.write("?>");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

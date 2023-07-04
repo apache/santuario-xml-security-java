@@ -69,7 +69,7 @@ public class XMLSecDTDImpl extends XMLSecEventBaseImpl implements XMLSecDTD {
     public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
         try {
             writer.write(getDocumentTypeDeclaration());
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

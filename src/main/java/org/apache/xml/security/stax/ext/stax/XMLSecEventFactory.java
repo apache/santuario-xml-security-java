@@ -76,7 +76,7 @@ public final class XMLSecEventFactory {
             case XMLStreamConstants.PROCESSING_INSTRUCTION:
                 return new XMLSecProcessingInstructionImpl(xmlStreamReader.getPITarget(), xmlStreamReader.getPIData(), parentXMLSecStartElement);
             case XMLStreamConstants.CHARACTERS:
-                char[] text = new char[xmlStreamReader.getTextLength()];
+                final char[] text = new char[xmlStreamReader.getTextLength()];
                 xmlStreamReader.getTextCharacters(0, text, 0, xmlStreamReader.getTextLength());
                 return new XMLSecCharactersImpl(text, false, false, xmlStreamReader.isWhiteSpace(), parentXMLSecStartElement);
             case XMLStreamConstants.COMMENT:
@@ -84,7 +84,7 @@ public final class XMLSecEventFactory {
             case XMLStreamConstants.SPACE:
                 return new XMLSecCharactersImpl(xmlStreamReader.getText(), false, true, xmlStreamReader.isWhiteSpace(), parentXMLSecStartElement);
             case XMLStreamConstants.START_DOCUMENT:
-                String systemId = xmlStreamReader.getLocation() != null ? xmlStreamReader.getLocation().getSystemId() : null;
+                final String systemId = xmlStreamReader.getLocation() != null ? xmlStreamReader.getLocation().getSystemId() : null;
                 return new XMLSecStartDocumentImpl(systemId, xmlStreamReader.getCharacterEncodingScheme(),
                         xmlStreamReader.standaloneSet() ? xmlStreamReader.isStandalone() : null, xmlStreamReader.getVersion());
             case XMLStreamConstants.END_DOCUMENT:

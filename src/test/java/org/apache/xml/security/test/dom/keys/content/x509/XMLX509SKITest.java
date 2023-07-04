@@ -51,36 +51,36 @@ public class XMLX509SKITest {
 
     @Test
     public void testGetSKIBytesFromCert() throws Exception {
-        File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+        final File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
         X509Certificate cert;
         try (FileInputStream fis = new FileInputStream(f)) {
             cert = (X509Certificate) cf.generateCertificate(fis);
         }
 
         // Get subject key identifier from certificate
-        byte[] skid = XMLX509SKI.getSKIBytesFromCert(cert);
+        final byte[] skid = XMLX509SKI.getSKIBytesFromCert(cert);
 
         // Use X509CertSelector to match on certificate using the skid,
         // thereby testing that the returned skid was correct
-        X509CertSelector xcs = new X509CertSelector();
+        final X509CertSelector xcs = new X509CertSelector();
         // DER-encode skid - required by X509CertSelector
-        byte[] encodedSkid = new byte[skid.length+2];
+        final byte[] encodedSkid = new byte[skid.length+2];
         encodedSkid[0] = 0x04; // OCTET STRING tag value
         encodedSkid[1] = (byte) skid.length; // length
         System.arraycopy(skid, 0, encodedSkid, 2, skid.length);
         xcs.setSubjectKeyIdentifier(encodedSkid);
 
-        CertStore cs = CertStore.getInstance(
+        final CertStore cs = CertStore.getInstance(
             "Collection",
             new CollectionCertStoreParameters(Collections.singleton(cert)));
 
-        Collection<?> certs = cs.getCertificates(xcs);
+        final Collection<?> certs = cs.getCertificates(xcs);
         assertFalse(certs.isEmpty());
 
-        XMLX509SKI xmlx509SKI = new XMLX509SKI(TestUtils.newDocument(), skid);
+        final XMLX509SKI xmlx509SKI = new XMLX509SKI(TestUtils.newDocument(), skid);
         assertNotNull(xmlx509SKI.getSKIBytes());
 
-        XMLX509SKI xmlx509SKI2 = new XMLX509SKI(TestUtils.newDocument(), cert);
+        final XMLX509SKI xmlx509SKI2 = new XMLX509SKI(TestUtils.newDocument(), cert);
         assertNotNull(xmlx509SKI2.getSKIBytes());
 
         assertEquals(xmlx509SKI, xmlx509SKI2);

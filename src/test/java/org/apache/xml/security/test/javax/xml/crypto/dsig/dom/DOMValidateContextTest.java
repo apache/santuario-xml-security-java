@@ -44,9 +44,9 @@ public class DOMValidateContextTest {
     private final DOMValidateContext domVC;
 
     public DOMValidateContextTest() throws Exception {
-        File dir = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
+        final File dir = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples",
             "merlin-xmldsig-twenty-three");
-        File input = new File(dir, "signature.xml");
+        final File input = new File(dir, "signature.xml");
         domVC = (DOMValidateContext) TestUtils.getXMLValidateContext("DOM", input, "Reference");
     }
 
@@ -56,8 +56,8 @@ public class DOMValidateContextTest {
         try {
             new DOMValidateContext(TestUtils.getPublicKey("RSA"), null);
             fail("Should throw a NPE for null node");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null node");
         }
     }
@@ -66,19 +66,19 @@ public class DOMValidateContextTest {
     public void testSetGetProperty() throws Exception {
         try {
             domVC.setProperty(null, "value");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null name");
         }
         try {
             domVC.getProperty(null);
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null name");
         }
-        String pname = "name";
-        String pvalue1 = "value";
-        String pvalue2 = "newvalue";
+        final String pname = "name";
+        final String pvalue1 = "value";
+        final String pvalue2 = "newvalue";
         assertNull(domVC.setProperty(pname, pvalue1));
         assertEquals(domVC.getProperty(pname), pvalue1);
         assertEquals(domVC.setProperty(pname, pvalue2), pvalue1);
@@ -89,8 +89,8 @@ public class DOMValidateContextTest {
     public void testSetGetNode() throws Exception {
         try {
             domVC.setNode(null);
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null node");
         }
         assertNotNull(domVC.getNode());

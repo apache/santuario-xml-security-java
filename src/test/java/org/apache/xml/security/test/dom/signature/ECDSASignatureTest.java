@@ -70,9 +70,9 @@ public class ECDSASignatureTest {
 
         org.apache.xml.security.Init.init();
         try {
-            int javaVersion = Integer.getInteger("java.specification.version", 0);
+            final int javaVersion = Integer.getInteger("java.specification.version", 0);
             isJDK16up = javaVersion >= 16;
-        } catch (NumberFormatException ex) {
+        } catch (final NumberFormatException ex) {
             // ignore
         }
     }
@@ -88,10 +88,10 @@ public class ECDSASignatureTest {
         // https://bugs.openjdk.java.net/browse/JDK-8251547
         assumeTrue(!isJDK16up);
 
-        KeyStore keyStore = KeyStore.getInstance("JKS");
+        final KeyStore keyStore = KeyStore.getInstance("JKS");
         keyStore.load(new FileInputStream(ECDSA_JKS), ECDSA_JKS_PASSWORD.toCharArray());
 
-        PrivateKey privateKey =
+        final PrivateKey privateKey =
             (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
 
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
@@ -102,7 +102,7 @@ public class ECDSASignatureTest {
     @Test
     @Disabled
     public void testTwo() throws Exception {
-        File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
+        final File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
         try (InputStream is = new FileInputStream(file)) {
             doVerify(is);
         }
@@ -111,7 +111,7 @@ public class ECDSASignatureTest {
     @Test
     @Disabled
     public void testThree()  throws Exception {
-        File file = resolveFile("src/test/resources/at/buergerkarte/testresp.xml");
+        final File file = resolveFile("src/test/resources/at/buergerkarte/testresp.xml");
         try (InputStream is = new FileInputStream(file)) {
             doVerify(is);
         }
@@ -126,35 +126,35 @@ public class ECDSASignatureTest {
             return;
         }
 
-        KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
+        final KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
         ecKpg.initialize(256);
-        KeyPair ecKeyPair = ecKpg.genKeyPair();
+        final KeyPair ecKeyPair = ecKpg.genKeyPair();
 
         doVerify(doSign(ecKeyPair.getPrivate(), null, ecKeyPair.getPublic()));
     }
 
     private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey) throws Exception {
-        org.w3c.dom.Document doc = TestUtils.newDocument();
+        final org.w3c.dom.Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
-        Element root = doc.createElementNS("", "RootElement");
+        final Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
-        Element canonElem =
+        final Element canonElem =
             XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
         canonElem.setAttributeNS(
             null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
         );
 
-        SignatureAlgorithm signatureAlgorithm =
+        final SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
-        XMLSignature sig =
+        final XMLSignature sig =
             new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
 
         root.appendChild(sig.getElement());
         doc.appendChild(doc.createComment(" Comment after "));
-        Transforms transforms = new Transforms(doc);
+        final Transforms transforms = new Transforms(doc);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
@@ -166,7 +166,7 @@ public class ECDSASignatureTest {
         }
         sig.sign(privateKey);
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         XMLUtils.outputDOMc14nWithComments(doc, bos);
         return bos.toByteArray();
@@ -179,24 +179,24 @@ public class ECDSASignatureTest {
     }
 
     private void doVerify(InputStream is) throws Exception {
-        org.w3c.dom.Document doc = XMLUtils.read(is, false);
+        final org.w3c.dom.Document doc = XMLUtils.read(is, false);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        final XMLSignature signature = new XMLSignature(sigElement, "");
 
         signature.addResourceResolver(new XPointerResourceResolver(sigElement));
 
-        KeyInfo ki = signature.getKeyInfo();
+        final KeyInfo ki = signature.getKeyInfo();
         if (ki == null) {
             throw new RuntimeException("No keyinfo");
         }
-        X509Certificate cert = signature.getKeyInfo().getX509Certificate();
+        final X509Certificate cert = signature.getKeyInfo().getX509Certificate();
         if (cert != null) {
             assertTrue(signature.checkSignatureValue(cert));
         } else {

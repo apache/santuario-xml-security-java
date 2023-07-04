@@ -145,20 +145,20 @@ public class XMLSignatureTest {
                     sig = fac.newXMLSignature(null, defKi, objs, id, sigValueId);
                 }
                 fail("Should throw a NPE for null references");
-            } catch (NullPointerException npe) {
-            } catch (Exception ex) {
+            } catch (final NullPointerException npe) {
+            } catch (final Exception ex) {
                 fail("Should throw a NPE instead of " + ex +
                      " for null references");
             }
         }
         try {
             // use raw List type to test for invalid entries
-            List invalidObjects = new ArrayList();
+            final List invalidObjects = new ArrayList();
             addEntryToRawList(invalidObjects, "wrongType");
             fac.newXMLSignature(defSi, defKi, invalidObjects, id, sigValueId);
             fail("Should throw a CCE for invalid objects");
-        } catch (ClassCastException cce) {
-        } catch (Exception ex) {
+        } catch (final ClassCastException cce) {
+        } catch (final Exception ex) {
             fail("Should throw a CCE instead of " + ex +
                  " for invalid objects");
         }
@@ -182,12 +182,12 @@ public class XMLSignatureTest {
     @Test
     public void testisFeatureSupported() throws Exception {
 
-        XMLSignature sig = fac.newXMLSignature(defSi, null);
+        final XMLSignature sig = fac.newXMLSignature(defSi, null);
 
         try {
             sig.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(sig.isFeatureSupported("not supported"));
     }
@@ -210,7 +210,7 @@ public class XMLSignatureTest {
                     (kifac.newKeyName("testuser")));
             }
             sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
-            Document doc = TestUtils.newDocument();
+            final Document doc = TestUtils.newDocument();
             signContext = new DOMSignContext(SIGN_KEYS[i], doc);
             signContext.setURIDereferencer(ud);
             sig.sign(signContext);
@@ -231,7 +231,7 @@ public class XMLSignatureTest {
         SignedInfo si;
         KeyInfo ki = null;
         XMLSignContext signContext;
-        Provider p = new TestProvider();
+        final Provider p = new TestProvider();
         for (int i = SIGN_KEYS.length-1; i>=0 ; i--) {
             si = createSignedInfo(SIG_METHODS[i]);
             if (VALIDATE_KEYS[i] instanceof PublicKey) {
@@ -242,7 +242,7 @@ public class XMLSignatureTest {
                     (kifac.newKeyName("testuser")));
             }
             sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
-            Document doc = TestUtils.newDocument();
+            final Document doc = TestUtils.newDocument();
             signContext = new DOMSignContext(SIGN_KEYS[i], doc);
             if (SIGN_KEYS[i] instanceof PrivateKey) {
                 signContext.setProperty("org.jcp.xml.dsig.internal.dom.SignatureProvider", p);
@@ -255,7 +255,7 @@ public class XMLSignatureTest {
                 sig.sign(signContext);
                 fail("Should have failed because TestProvider does not " +
                      "support " + SIGN_KEYS[i].getAlgorithm());
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 assertTrue(e.getCause() instanceof NoSuchAlgorithmException, e.getMessage());
             }
         }
@@ -263,12 +263,12 @@ public class XMLSignatureTest {
 
     @Test
     public void testSignWithEmptyNSPrefix() throws Exception {
-        SignedInfo si = createSignedInfo(SIG_METHODS[1]);
-        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
+        final SignedInfo si = createSignedInfo(SIG_METHODS[1]);
+        final KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
-        XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
-        Document doc = TestUtils.newDocument();
-        XMLSignContext signContext = new DOMSignContext(SIGN_KEYS[1], doc);
+        final XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
+        final Document doc = TestUtils.newDocument();
+        final XMLSignContext signContext = new DOMSignContext(SIGN_KEYS[1], doc);
         signContext.putNamespacePrefix(XMLSignature.XMLNS, "");
         signContext.setURIDereferencer(ud);
         sig.sign(signContext);
@@ -282,37 +282,37 @@ public class XMLSignatureTest {
     @Test
     public void testSignWithReferenceManifestDependencies() throws Exception {
         // create references
-        DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
-        List<Reference> refs = Collections.singletonList(fac.newReference("#object-1", dm));
+        final DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
+        final List<Reference> refs = Collections.singletonList(fac.newReference("#object-1", dm));
 
         // create SignedInfo
-        CanonicalizationMethod cm = fac.newCanonicalizationMethod
+        final CanonicalizationMethod cm = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
-        SignedInfo si = fac.newSignedInfo(cm, SIG_METHODS[1], refs);
+        final SignedInfo si = fac.newSignedInfo(cm, SIG_METHODS[1], refs);
 
         // create objects
-        List<XMLObject> objs = new ArrayList<>();
+        final List<XMLObject> objs = new ArrayList<>();
 
         // Object 1
-        List<Reference> manRefs = Collections.singletonList
+        final List<Reference> manRefs = Collections.singletonList
             (fac.newReference("#object-2", dm));
         objs.add(fac.newXMLObject(Collections.singletonList
             (fac.newManifest(manRefs, "manifest-1")), "object-1", null, null));
 
         // Object 2
-        Document doc = TestUtils.newDocument();
-        Element nc = doc.createElementNS(null, "NonCommentandus");
+        final Document doc = TestUtils.newDocument();
+        final Element nc = doc.createElementNS(null, "NonCommentandus");
         nc.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns", "");
         nc.appendChild(doc.createComment(" Commentandum "));
         objs.add(fac.newXMLObject(Collections.singletonList
             (new DOMStructure(nc)), "object-2", null, null));
 
-        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature(si, ki, objs, "signature", null);
-        DOMSignContext dsc = new DOMSignContext(SIGN_KEYS[1], doc);
+        final XMLSignature sig = fac.newXMLSignature(si, ki, objs, "signature", null);
+        final DOMSignContext dsc = new DOMSignContext(SIGN_KEYS[1], doc);
 
         sig.sign(dsc);
 
@@ -322,10 +322,10 @@ public class XMLSignatureTest {
         System.out.println(sw);
 */
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (VALIDATE_KEYS[1], doc.getDocumentElement());
         dvc.setProperty("org.jcp.xml.dsig.validateManifests", Boolean.TRUE);
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         if (!sig.equals(sig2)) {
             throw new Exception
@@ -338,36 +338,36 @@ public class XMLSignatureTest {
 
     @Test
     public void testSignTemplateWithObjectNSDefs() throws Exception {
-        File f = resolveFile(
+        final File f = resolveFile(
             "src/test/resources/org/apache/xml/security/test/javax/xml/crypto/dsig/signature-enveloping-rsa-template.xml");
 
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+        final Document doc = XMLUtils.read(new FileInputStream(f), false);
 
         // Find Signature element
-        NodeList nl =
+        final NodeList nl =
             doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Cannot find Signature element");
         }
-        DOMStructure domSignature = new DOMStructure(nl.item(0));
+        final DOMStructure domSignature = new DOMStructure(nl.item(0));
         // unmarshal the XMLSignature
-        XMLSignature signature = fac.unmarshalXMLSignature(domSignature);
+        final XMLSignature signature = fac.unmarshalXMLSignature(domSignature);
 
         // create copy of Signature
-        XMLSignature newSignature = fac.newXMLSignature
+        final XMLSignature newSignature = fac.newXMLSignature
             (signature.getSignedInfo(), null, signature.getObjects(),
              signature.getId(), signature.getSignatureValue().getId());
 
         // Sign the template
-        Node parent = domSignature.getNode().getParentNode();
-        DOMSignContext signContext = new DOMSignContext(SIGN_KEYS[0], parent);
+        final Node parent = domSignature.getNode().getParentNode();
+        final DOMSignContext signContext = new DOMSignContext(SIGN_KEYS[0], parent);
         // remove the signature node (since it will get recreated)
         parent.removeChild(domSignature.getNode());
         newSignature.sign(signContext);
 
         // check that Object element retained namespace definitions
-        Element objElem = (Element)parent.getFirstChild().getLastChild();
-        Attr a = objElem.getAttributeNode("xmlns:test");
+        final Element objElem = (Element)parent.getFirstChild().getLastChild();
+        final Attr a = objElem.getAttributeNode("xmlns:test");
         if (!"http://www.example.org/ns".equals(a.getValue())) {
             throw new Exception("Object namespace definition not retained");
         }
@@ -376,29 +376,29 @@ public class XMLSignatureTest {
     @Test
     public void testCreateSignatureWithEmptyId() throws Exception {
         // create references
-        DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
-        List<Reference> refs = Collections.singletonList
+        final DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
+        final List<Reference> refs = Collections.singletonList
             (fac.newReference("#", dm));
 
         // create SignedInfo
-        CanonicalizationMethod cm = fac.newCanonicalizationMethod
+        final CanonicalizationMethod cm = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
-        SignedInfo si = fac.newSignedInfo(cm, SIG_METHODS[1], refs);
+        final SignedInfo si = fac.newSignedInfo(cm, SIG_METHODS[1], refs);
 
         // create object with empty id
-        Document doc = TestUtils.newDocument();
-        XMLObject obj = fac.newXMLObject(Collections.singletonList
+        final Document doc = TestUtils.newDocument();
+        final XMLObject obj = fac.newXMLObject(Collections.singletonList
             (new DOMStructure(doc.createTextNode("I am the text."))),
             "", "text/plain", null);
 
-        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature(si, ki,
+        final XMLSignature sig = fac.newXMLSignature(si, ki,
                                                Collections.singletonList(obj),
                                                "signature", null);
-        DOMSignContext dsc = new DOMSignContext(SIGN_KEYS[1], doc);
+        final DOMSignContext dsc = new DOMSignContext(SIGN_KEYS[1], doc);
         sig.sign(dsc);
     }
 
@@ -410,20 +410,20 @@ public class XMLSignatureTest {
         try {
             Signature.getInstance("SHA256withDSA");
             gotSHA256withDSA = true;
-        } catch (NoSuchAlgorithmException e) {}
+        } catch (final NoSuchAlgorithmException e) {}
         Assumptions.assumeTrue(gotSHA256withDSA);
 
-        SignatureMethod sm = fac.newSignatureMethod(DSA_SHA256, null);
-        SignedInfo si = createSignedInfo(sm);
-        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
+        final SignatureMethod sm = fac.newSignatureMethod(DSA_SHA256, null);
+        final SignedInfo si = createSignedInfo(sm);
+        final KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
             (kifac.newKeyValue(TestUtils.getPublicKey("DSA", 2048))));
-        XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
-        Document doc = TestUtils.newDocument();
-        XMLSignContext signContext =
+        final XMLSignature sig = fac.newXMLSignature(si, ki, objs, id, sigValueId);
+        final Document doc = TestUtils.newDocument();
+        final XMLSignContext signContext =
             new DOMSignContext(TestUtils.getPrivateKey("DSA", 2048), doc);
         signContext.setURIDereferencer(ud);
         sig.sign(signContext);
-        XMLValidateContext validateContext = new DOMValidateContext
+        final XMLValidateContext validateContext = new DOMValidateContext
             (TestUtils.getPublicKey("DSA", 2048), doc.getDocumentElement());
         validateContext.setURIDereferencer(ud);
         assertTrue(sig.validate(validateContext));
@@ -431,28 +431,28 @@ public class XMLSignatureTest {
 
     @Test
     public void testBadXPointer() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Element root = doc.createElementNS(null, "Root");
-        SignatureMethod sm = SIG_METHODS[1];
-        CanonicalizationMethod cm = fac.newCanonicalizationMethod(
+        final Document doc = TestUtils.newDocument();
+        final Element root = doc.createElementNS(null, "Root");
+        final SignatureMethod sm = SIG_METHODS[1];
+        final CanonicalizationMethod cm = fac.newCanonicalizationMethod(
             CanonicalizationMethod.EXCLUSIVE, (C14NMethodParameterSpec)null);
-        DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA256, null);
-        Transform tr = fac.newTransform(
+        final DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA256, null);
+        final Transform tr = fac.newTransform(
             Transform.ENVELOPED, (TransformParameterSpec)null);
-        KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
+        final KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
             (kifac.newKeyValue((PublicKey)VALIDATE_KEYS[1])));
-        XMLObject xo = fac.newXMLObject(
+        final XMLObject xo = fac.newXMLObject(
             Collections.singletonList(new DOMStructure(root)), "a", null, null);
-        SignedInfo si = fac.newSignedInfo(cm, sm,
+        final SignedInfo si = fac.newSignedInfo(cm, sm,
             Collections.singletonList(fac.newReference("#xpointer(id('a))",
                 dm, Collections.singletonList(tr), null, null)));
-        XMLSignature sig = fac.newXMLSignature(si, ki,
+        final XMLSignature sig = fac.newXMLSignature(si, ki,
             Collections.singletonList(xo), id, sigValueId);
-        XMLSignContext signContext = new DOMSignContext(SIGN_KEYS[1], doc);
+        final XMLSignContext signContext = new DOMSignContext(SIGN_KEYS[1], doc);
         try {
             sig.sign(signContext);
             throw new Exception("Failed: expected XMLSignatureException");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             if (!(xse.getCause() instanceof URIReferenceException) &&
                 !(xse.getMessage().contains("Could not find a resolver"))) {
                 throw new Exception("Failed: wrong cause or reason", xse);
@@ -462,11 +462,11 @@ public class XMLSignatureTest {
 
     private SignedInfo createSignedInfo(SignatureMethod sm) throws Exception {
         // set up the building blocks
-        CanonicalizationMethod cm = fac.newCanonicalizationMethod
+        final CanonicalizationMethod cm = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
              (C14NMethodParameterSpec) null);
-        DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
-        List<Reference> refs = Collections.singletonList(fac.newReference
+        final DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
+        final List<Reference> refs = Collections.singletonList(fac.newReference
             ("http://www.w3.org/Signature/2002/04/xml-stylesheet.b64", dm));
         return fac.newSignedInfo(cm, sm, refs);
     }

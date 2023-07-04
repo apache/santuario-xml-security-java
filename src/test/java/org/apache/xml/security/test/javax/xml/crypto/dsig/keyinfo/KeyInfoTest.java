@@ -59,7 +59,7 @@ public class KeyInfoTest {
 
     @Test
     public void testgetId() {
-        KeyInfo ki = fac.newKeyInfo
+        final KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "skeleton");
         assertNotNull(ki.getId());
     }
@@ -67,16 +67,16 @@ public class KeyInfoTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testgetContent() {
-        KeyInfo[] infos = new KeyInfo[2];
+        final KeyInfo[] infos = new KeyInfo[2];
         infos[0] = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "skeleton");
         infos[1] = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")));
-        for (KeyInfo ki : infos) {
-            List<XMLStructure> li = ki.getContent();
+        for (final KeyInfo ki : infos) {
+            final List<XMLStructure> li = ki.getContent();
             assertNotNull(ki.getContent());
-            Object[] content = li.toArray();
-            for (Object element : content) {
+            final Object[] content = li.toArray();
+            for (final Object element : content) {
                 if (!(element instanceof XMLStructure)) {
                     fail("KeyInfo element has the wrong type");
                 }
@@ -94,31 +94,31 @@ public class KeyInfoTest {
         try {
             ki = fac.newKeyInfo(null, id);
             fail("Should raise a NullPointerException");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
         // test newKeyInfo(List)
         ki = fac.newKeyInfo(Collections.singletonList(fac.newKeyName("foo")));
     }
 
     @Test
     public void testisFeatureSupported() {
-        KeyInfo ki = fac.newKeyInfo
+        final KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "keyid");
         try {
             ki.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(ki.isFeatureSupported("not supported"));
     }
 
     @Test
     public void testMarshal() throws Exception {
-        KeyInfo ki = fac.newKeyInfo
+        final KeyInfo ki = fac.newKeyInfo
             (Collections.singletonList(fac.newKeyName("foo")), "keyid");
         try {
             ki.marshal(null, null);
             fail("Should raise a NullPointerException");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         Document doc = TestUtils.newDocument();
         Element elem = doc.createElementNS("http://acme.org", "parent");
@@ -126,15 +126,15 @@ public class KeyInfoTest {
         DOMStructure parent = new DOMStructure(elem);
         try {
             ki.marshal(parent, null);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             fail("Should not throw an exception: " + e);
         }
 
-        Element kiElem = DOMUtils.getFirstChildElement(elem);
+        final Element kiElem = DOMUtils.getFirstChildElement(elem);
         if (!"KeyInfo".equals(kiElem.getLocalName())) {
             fail("Should be KeyInfo element: " + kiElem.getLocalName());
         }
-        Element knElem = DOMUtils.getFirstChildElement(kiElem);
+        final Element knElem = DOMUtils.getFirstChildElement(kiElem);
         if (!"KeyName".equals(knElem.getLocalName())) {
             fail("Should be KeyName element: " + knElem.getLocalName());
         }
@@ -143,10 +143,10 @@ public class KeyInfoTest {
         doc = TestUtils.newDocument();
         elem = doc.createElementNS("http://acme.org", "parent");
         doc.appendChild(elem);
-        Element nextSib = doc.createElementNS("http://acme.org", "nextSib");
+        final Element nextSib = doc.createElementNS("http://acme.org", "nextSib");
         elem.appendChild(nextSib);
 
-        Key key = new Key() {
+        final Key key = new Key() {
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -165,7 +165,7 @@ public class KeyInfoTest {
             }
         };
 
-        DOMSignContext ctx = new DOMSignContext(key, elem, nextSib);
+        final DOMSignContext ctx = new DOMSignContext(key, elem, nextSib);
         parent = new DOMStructure(elem);
         ki.marshal(parent, ctx);
         // no need for catching/calling fail() explicitly ... if it fails, it fails ...

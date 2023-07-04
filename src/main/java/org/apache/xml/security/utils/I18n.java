@@ -88,7 +88,7 @@ public final class I18n {
     public static String getExceptionMessage(String msgID) {
         try {
             return resourceBundle.getString(msgID);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             if (org.apache.xml.security.Init.isInitialized()) {
                 return "No message with ID \"" + msgID
                 + "\" found in resource bundle \""
@@ -107,9 +107,9 @@ public final class I18n {
      */
     public static String getExceptionMessage(String msgID, Exception originalException) {
         try {
-            Object[] exArgs = { originalException.getMessage() };
+            final Object[] exArgs = { originalException.getMessage() };
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             if (org.apache.xml.security.Init.isInitialized()) {
                 return "No message with ID \"" + msgID
                 + "\" found in resource bundle \""
@@ -132,7 +132,7 @@ public final class I18n {
     public static String getExceptionMessage(String msgID, Object[] exArgs) {
         try {
             return MessageFormat.format(resourceBundle.getString(msgID), exArgs);
-        } catch (Throwable t) {
+        } catch (final Throwable t) {
             if (org.apache.xml.security.Init.isInitialized()) {
                 return "No message with ID \"" + msgID
                 + "\" found in resource bundle \""

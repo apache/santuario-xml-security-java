@@ -108,7 +108,7 @@ public class XMLCipherTest {
         // 3DES encryption
 
         haveISOPadding = false;
-        String algorithmId =
+        final String algorithmId =
             JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
 
         if (algorithmId != null) {
@@ -116,9 +116,9 @@ public class XMLCipherTest {
                 if (Cipher.getInstance(algorithmId) != null) {
                     haveISOPadding = true;
                 }
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 //
-            } catch (NoSuchPaddingException nspe) {
+            } catch (final NoSuchPaddingException nspe) {
                 //
             }
         }
@@ -134,10 +134,10 @@ public class XMLCipherTest {
     @Test
     public void testAES128ElementAES192KWCipherUsingKEK() throws Exception {
 
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;
         Document dd = null;
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -147,23 +147,23 @@ public class XMLCipherTest {
             source = toString(d);
 
             // Set up a Key Encryption Key
-            byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-            Key kek = new SecretKeySpec(bits192, "AES");
+            final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+            final Key kek = new SecretKeySpec(bits192, "AES");
 
             // Generate a traffic key
-            KeyGenerator keygen = KeyGenerator.getInstance("AES");
+            final KeyGenerator keygen = KeyGenerator.getInstance("AES");
             keygen.init(128);
             Key key = keygen.generateKey();
 
             cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
             cipher.init(XMLCipher.WRAP_MODE, kek);
             cipher.setSecureValidation(true);
-            EncryptedKey encryptedKey = cipher.encryptKey(d, key);
+            final EncryptedKey encryptedKey = cipher.encryptKey(d, key);
 
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.AES_128);
             cipher.init(XMLCipher.ENCRYPT_MODE, key);
-            EncryptedData builder = cipher.getEncryptedData();
+            final EncryptedData builder = cipher.getEncryptedData();
 
             KeyInfo builderKeyInfo = builder.getKeyInfo();
             if (builderKeyInfo == null) {
@@ -201,10 +201,10 @@ public class XMLCipherTest {
     @Test
     public void testAES256ElementRSAKWCipherUsingKEK() throws Exception {
 
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;
         Document dd = null;
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -214,13 +214,13 @@ public class XMLCipherTest {
             source = toString(d);
 
             // Generate an RSA key
-            KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-            KeyPair kp = rsaKeygen.generateKeyPair();
-            PrivateKey priv = kp.getPrivate();
-            PublicKey pub = kp.getPublic();
+            final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+            final KeyPair kp = rsaKeygen.generateKeyPair();
+            final PrivateKey priv = kp.getPrivate();
+            final PublicKey pub = kp.getPublic();
 
             // Generate a traffic key
-            KeyGenerator keygen = KeyGenerator.getInstance("AES");
+            final KeyGenerator keygen = KeyGenerator.getInstance("AES");
             keygen.init(256);
             Key key = keygen.generateKey();
 
@@ -228,12 +228,12 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance(XMLCipher.RSA_v1dot5);
             cipher.init(XMLCipher.WRAP_MODE, pub);
             cipher.setSecureValidation(true);
-            EncryptedKey encryptedKey = cipher.encryptKey(d, key);
+            final EncryptedKey encryptedKey = cipher.encryptKey(d, key);
 
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.AES_256);
             cipher.init(XMLCipher.ENCRYPT_MODE, key);
-            EncryptedData builder = cipher.getEncryptedData();
+            final EncryptedData builder = cipher.getEncryptedData();
 
             KeyInfo builderKeyInfo = builder.getKeyInfo();
             if (builderKeyInfo == null) {
@@ -277,10 +277,10 @@ public class XMLCipherTest {
 
         assumeFalse(isIBMJdK);
 
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;
         Document dd = null;
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -290,24 +290,24 @@ public class XMLCipherTest {
             source = toString(d);
 
             // Set up a Key Encryption Key
-            byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-            DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-            Key kek = keyFactory.generateSecret(keySpec);
+            final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+            final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+            final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+            final Key kek = keyFactory.generateSecret(keySpec);
 
             // Generate a traffic key
-            KeyGenerator keygen = KeyGenerator.getInstance("AES");
+            final KeyGenerator keygen = KeyGenerator.getInstance("AES");
             keygen.init(192);
             Key key = keygen.generateKey();
 
             cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES_KeyWrap);
             cipher.init(XMLCipher.WRAP_MODE, kek);
-            EncryptedKey encryptedKey = cipher.encryptKey(d, key);
+            final EncryptedKey encryptedKey = cipher.encryptKey(d, key);
 
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.AES_192);
             cipher.init(XMLCipher.ENCRYPT_MODE, key);
-            EncryptedData builder = cipher.getEncryptedData();
+            final EncryptedData builder = cipher.getEncryptedData();
 
             KeyInfo builderKeyInfo = builder.getKeyInfo();
             if (builderKeyInfo == null) {
@@ -325,7 +325,7 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance();
             cipher.init(XMLCipher.DECRYPT_MODE, null);
 
-            EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
+            final EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
 
             if(encryptedData == null) {
                 System.out.println("ed is null");
@@ -333,16 +333,16 @@ public class XMLCipherTest {
             else if (encryptedData.getKeyInfo() == null) {
                 System.out.println("ki is null");
             }
-            EncryptedKey ek = encryptedData.getKeyInfo().itemEncryptedKey(0);
+            final EncryptedKey ek = encryptedData.getKeyInfo().itemEncryptedKey(0);
 
             if (ek != null) {
-                XMLCipher keyCipher = XMLCipher.getInstance();
+                final XMLCipher keyCipher = XMLCipher.getInstance();
                 keyCipher.init(XMLCipher.UNWRAP_MODE, kek);
                 key = keyCipher.decryptKey(ek, encryptedData.getEncryptionMethod().getAlgorithm());
             }
 
             // Create a new cipher just to be paranoid
-            XMLCipher cipher3 = XMLCipher.getInstance();
+            final XMLCipher cipher3 = XMLCipher.getInstance();
             cipher3.init(XMLCipher.DECRYPT_MODE, key);
             dd = cipher3.doFinal(ed, ee);
 
@@ -358,10 +358,10 @@ public class XMLCipherTest {
 
     @Test
     public void testTripleDesElementCipher() throws Exception {
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -371,10 +371,10 @@ public class XMLCipherTest {
             source = toString(d);
 
             // prepare for encryption
-            byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
-            DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-            SecretKey key = keyFactory.generateSecret(keySpec);
+            final byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
+            final DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
+            final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+            final SecretKey key = keyFactory.generateSecret(keySpec);
 
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
@@ -385,8 +385,8 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             cipher.init(XMLCipher.DECRYPT_MODE, key);
             ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
-            EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
-            String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+            final EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
+            final String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
             assertEquals(XMLCipher.TRIPLEDES, algorithm);
             dd = cipher.doFinal(ed, ee);
 
@@ -401,17 +401,17 @@ public class XMLCipherTest {
 
     @Test
     public void testAes128ElementCipher() throws Exception {
-        byte[] bits128 = {
+        final byte[] bits128 = {
                           (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                           (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                           (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                           (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        Key key = new SecretKeySpec(bits128, "AES");
+        final Key key = new SecretKeySpec(bits128, "AES");
 
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -429,8 +429,8 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance(XMLCipher.AES_128);
             cipher.init(XMLCipher.DECRYPT_MODE, key);
             ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
-            EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
-            String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+            final EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
+            final String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
             assertEquals(XMLCipher.AES_128, algorithm);
             dd = cipher.doFinal(ed, ee);
 
@@ -445,19 +445,19 @@ public class XMLCipherTest {
 
     @Test
     public void testAes192ElementCipher() throws Exception {
-        byte[] bits192 = {
+        final byte[] bits192 = {
                           (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
                           (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
                           (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                           (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                           (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                           (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        Key key = new SecretKeySpec(bits192, "AES");
+        final Key key = new SecretKeySpec(bits192, "AES");
 
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -475,8 +475,8 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance(XMLCipher.AES_192);
             cipher.init(XMLCipher.DECRYPT_MODE, key);
             ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
-            EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
-            String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+            final EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
+            final String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
             assertEquals(XMLCipher.AES_192, algorithm);
             dd = cipher.doFinal(ed, ee);
 
@@ -489,7 +489,7 @@ public class XMLCipherTest {
 
     @Test
     public void testAes265ElementCipher() throws Exception {
-        byte[] bits256 = {
+        final byte[] bits256 = {
                           (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
                           (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
                           (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
@@ -498,12 +498,12 @@ public class XMLCipherTest {
                           (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                           (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                           (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        Key key = new SecretKeySpec(bits256, "AES");
+        final Key key = new SecretKeySpec(bits256, "AES");
 
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -521,8 +521,8 @@ public class XMLCipherTest {
             cipher = XMLCipher.getInstance(XMLCipher.AES_256);
             cipher.init(XMLCipher.DECRYPT_MODE, key);
             ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
-            EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
-            String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+            final EncryptedData encryptedData = cipher.loadEncryptedData(ed, ee);
+            final String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
             assertEquals(XMLCipher.AES_256, algorithm);
             dd = cipher.doFinal(ed, ee);
 
@@ -539,10 +539,10 @@ public class XMLCipherTest {
      */
     @Test
     public void testTripleDesDocumentCipher() throws Exception {
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
-        Element e = d.getDocumentElement();
+        final Element e = d.getDocumentElement();
         Element ee = null;
 
         String source = null;
@@ -552,10 +552,10 @@ public class XMLCipherTest {
             source = toString(d);
 
             // prepare for encryption
-            byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
-            DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-            SecretKey key = keyFactory.generateSecret(keySpec);
+            final byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
+            final DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
+            final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+            final SecretKey key = keyFactory.generateSecret(keySpec);
 
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
@@ -580,10 +580,10 @@ public class XMLCipherTest {
 
     @Test
     public void testEncryptionProperties() throws Exception {
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
-        Element e = d.getDocumentElement();
+        final Element e = d.getDocumentElement();
         Element ee = null;
 
         String source = null;
@@ -593,28 +593,28 @@ public class XMLCipherTest {
             source = toString(d);
 
             // prepare for encryption
-            byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
-            DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-            SecretKey key = keyFactory.generateSecret(keySpec);
+            final byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
+            final DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
+            final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+            final SecretKey key = keyFactory.generateSecret(keySpec);
 
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.TRIPLEDES);
             cipher.init(XMLCipher.ENCRYPT_MODE, key);
 
             // Add EncryptionProperties
-            Element elem = d.createElement("CustomInformation");
+            final Element elem = d.createElement("CustomInformation");
             elem.setTextContent("Some text content");
 
-            EncryptionProperties eps = cipher.createEncryptionProperties();
-            EncryptionProperty ep = cipher.createEncryptionProperty();
+            final EncryptionProperties eps = cipher.createEncryptionProperties();
+            final EncryptionProperty ep = cipher.createEncryptionProperty();
             ep.addEncryptionInformation(elem);
             ep.setId("_124124");
             ep.setTarget("http://localhost/");
             ep.setAttribute("xml:lang", "en");
             eps.addEncryptionProperty(ep);
 
-            EncryptedData encData = cipher.getEncryptedData();
+            final EncryptedData encData = cipher.getEncryptedData();
             encData.setEncryptionProperties(eps);
 
             ed = cipher.doFinal(d, e);
@@ -643,30 +643,30 @@ public class XMLCipherTest {
     public void testSameDocumentCipherReference() throws Exception {
 
         if (haveISOPadding) {
-            Document d = TestUtils.newDocument();
+            final Document d = TestUtils.newDocument();
 
-            Element docElement = d.createElement("EncryptedDoc");
+            final Element docElement = d.createElement("EncryptedDoc");
             d.appendChild(docElement);
 
             // Create the XMLCipher object
             cipher = XMLCipher.getInstance();
 
-            EncryptedData ed =
+            final EncryptedData ed =
                 cipher.createEncryptedData(CipherData.REFERENCE_TYPE,
                                            "#CipherTextId");
-            EncryptionMethod em =
+            final EncryptionMethod em =
                 cipher.createEncryptionMethod(XMLCipher.AES_128);
 
             ed.setEncryptionMethod(em);
 
-            org.apache.xml.security.encryption.Transforms xencTransforms =
+            final org.apache.xml.security.encryption.Transforms xencTransforms =
                 cipher.createTransforms(d);
             ed.getCipherData().getCipherReference().setTransforms(xencTransforms);
-            org.apache.xml.security.transforms.Transforms dsTransforms =
+            final org.apache.xml.security.transforms.Transforms dsTransforms =
                 xencTransforms.getDSTransforms();
 
             // An XPath transform
-            XPathContainer xpc = new XPathContainer(d);
+            final XPathContainer xpc = new XPathContainer(d);
             xpc.setXPath("self::text()[parent::CipherText[@Id=\"CipherTextId\"]]");
             dsTransforms.addTransform(
                 org.apache.xml.security.transforms.Transforms.TRANSFORM_XPATH,
@@ -678,12 +678,12 @@ public class XMLCipherTest {
                 org.apache.xml.security.transforms.Transforms.TRANSFORM_BASE64_DECODE
             );
 
-            Element ee = cipher.martial(d, ed);
+            final Element ee = cipher.martial(d, ed);
 
             docElement.appendChild(ee);
 
             // Add the cipher text
-            Element encryptedElement = d.createElement("CipherText");
+            final Element encryptedElement = d.createElement("CipherText");
             encryptedElement.setAttributeNS(null, "Id", "CipherTextId");
             encryptedElement.setIdAttributeNS(null, "Id", true);
             encryptedElement.appendChild(d.createTextNode(tstBase64EncodedString));
@@ -691,11 +691,11 @@ public class XMLCipherTest {
             // dump(d);
 
             // Now the decrypt, with a brand new cipher
-            XMLCipher cipherDecrypt = XMLCipher.getInstance();
-            Key key = new SecretKeySpec("abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII), "AES");
+            final XMLCipher cipherDecrypt = XMLCipher.getInstance();
+            final Key key = new SecretKeySpec("abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII), "AES");
 
             cipherDecrypt.init(XMLCipher.DECRYPT_MODE, key);
-            byte[] decryptBytes = cipherDecrypt.decryptToByteArray(ee);
+            final byte[] decryptBytes = cipherDecrypt.decryptToByteArray(ee);
 
             assertEquals("A test encrypted secret",
                         new String(decryptBytes, StandardCharsets.US_ASCII));
@@ -714,10 +714,10 @@ public class XMLCipherTest {
     public void testPhysicalRepresentation() throws Exception {
 
         if (haveISOPadding) {
-            byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-            DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-            SecretKey secretKey = keyFactory.generateSecret(keySpec);
+            final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+            final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+            final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+            final SecretKey secretKey = keyFactory.generateSecret(keySpec);
 
             // Test inherited namespaces don't add extra attributes
             // Test unused namespaces are preserved
@@ -820,41 +820,41 @@ public class XMLCipherTest {
             return;
         }
 
-        byte[] bits128 = {
+        final byte[] bits128 = {
                           (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                           (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                           (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                           (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        Key key = new SecretKeySpec(bits128, "AES");
+        final Key key = new SecretKeySpec(bits128, "AES");
 
-        Document d = document(); // source
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Document d = document(); // source
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
 
         // encrypt
         cipher = XMLCipher.getInstance(XMLCipher.AES_128);
         cipher.init(XMLCipher.ENCRYPT_MODE, key);
 
         // serialize element ...
-        Canonicalizer canon =
+        final Canonicalizer canon =
             Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.canonicalizeSubtree(e, baos);
         baos.close();
-        String before = baos.toString(StandardCharsets.UTF_8.name());
+        final String before = baos.toString(StandardCharsets.UTF_8.name());
 
-        byte[] serialized = baos.toByteArray();
+        final byte[] serialized = baos.toByteArray();
         EncryptedData encryptedData = null;
         try (InputStream is = new ByteArrayInputStream(serialized)) {
             encryptedData = cipher.encryptData(d, EncryptionConstants.TYPE_ELEMENT, is);
         }
 
         //decrypt
-        XMLCipher dcipher = XMLCipher.getInstance(XMLCipher.AES_128);
+        final XMLCipher dcipher = XMLCipher.getInstance(XMLCipher.AES_128);
         dcipher.init(XMLCipher.DECRYPT_MODE, key);
-        String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+        final String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
         assertEquals(XMLCipher.AES_128, algorithm);
-        byte[] bytes = dcipher.decryptToByteArray(dcipher.martial(encryptedData));
-        String after = new String(bytes, StandardCharsets.UTF_8);
+        final byte[] bytes = dcipher.decryptToByteArray(dcipher.martial(encryptedData));
+        final String after = new String(bytes, StandardCharsets.UTF_8);
         assertEquals(before, after);
 
         // test with null type
@@ -870,19 +870,19 @@ public class XMLCipherTest {
         if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
-        File f = new File(filename);
+        final File f = new File(filename);
 
-        Document document = XMLUtils.read(new FileInputStream(f), false);
+        final Document document = XMLUtils.read(new FileInputStream(f), false);
 
-        XMLCipher keyCipher = XMLCipher.getInstance();
+        final XMLCipher keyCipher = XMLCipher.getInstance();
         keyCipher.init(XMLCipher.UNWRAP_MODE, null);
 
-        NodeList ekList =
+        final NodeList ekList =
             document.getElementsByTagNameNS(
                 EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDKEY
             );
         for (int i = 0; i < ekList.getLength(); i++) {
-            EncryptedKey ek =
+            final EncryptedKey ek =
                 keyCipher.loadEncryptedKey(document, (Element) ekList.item(i));
             assertNotNull(ek.getRecipient());
         }
@@ -892,21 +892,21 @@ public class XMLCipherTest {
     public void testEecryptToByteArray() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        Key key = keygen.generateKey();
+        final Key key = keygen.generateKey();
 
-        Document document = document();
+        final Document document = document();
 
-        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128_GCM);
+        final XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128_GCM);
         cipher.init(XMLCipher.ENCRYPT_MODE, key);
         cipher.getEncryptedData();
 
-        Document encrypted = cipher.doFinal(document, document);
+        final Document encrypted = cipher.doFinal(document, document);
 
-        XMLCipher xmlCipher = XMLCipher.getInstance();
+        final XMLCipher xmlCipher = XMLCipher.getInstance();
         xmlCipher.init(XMLCipher.DECRYPT_MODE, key);
-        Element encryptedData = (Element) encrypted.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
+        final Element encryptedData = (Element) encrypted.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
 
         xmlCipher.decryptToByteArray(encryptedData);
     }
@@ -914,10 +914,10 @@ public class XMLCipherTest {
     @Test
     public void testMultipleKEKs() throws Exception {
 
-        Document d = document(); // source
+        final Document d = document(); // source
         Document ed = null;
         Document dd = null;
-        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        final Element e = (Element) d.getElementsByTagName(element()).item(index());
         Element ee = null;
 
         String source = null;
@@ -929,10 +929,10 @@ public class XMLCipherTest {
             // Set up Key Encryption Key no. 1
             KeyGenerator keygen = KeyGenerator.getInstance("AES");
             keygen.init(192);
-            Key kek1 = keygen.generateKey();
+            final Key kek1 = keygen.generateKey();
 
             // Set up Key Encryption Key no. 2
-            Key kek2 = keygen.generateKey();
+            final Key kek2 = keygen.generateKey();
 
             // Generate a traffic key
             keygen = KeyGenerator.getInstance("AES");
@@ -941,15 +941,15 @@ public class XMLCipherTest {
 
             cipher = XMLCipher.getInstance(XMLCipher.AES_192_KeyWrap);
             cipher.init(XMLCipher.WRAP_MODE, kek1);
-            EncryptedKey encryptedKey1 = cipher.encryptKey(d, key);
+            final EncryptedKey encryptedKey1 = cipher.encryptKey(d, key);
 
             cipher.init(XMLCipher.WRAP_MODE, kek2);
-            EncryptedKey encryptedKey2 = cipher.encryptKey(d, key);
+            final EncryptedKey encryptedKey2 = cipher.encryptKey(d, key);
 
             // encrypt
             cipher = XMLCipher.getInstance(XMLCipher.AES_128);
             cipher.init(XMLCipher.ENCRYPT_MODE, key);
-            EncryptedData builder = cipher.getEncryptedData();
+            final EncryptedData builder = cipher.getEncryptedData();
 
             KeyInfo builderKeyInfo = builder.getKeyInfo();
             if (builderKeyInfo == null) {
@@ -981,8 +981,8 @@ public class XMLCipherTest {
     }
 
     private String toString (Node n) throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        Canonicalizer c14n = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final Canonicalizer c14n = Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS);
 
         c14n.canonicalizeSubtree(n, baos);
         baos.flush();
@@ -991,7 +991,7 @@ public class XMLCipherTest {
     }
 
     private Document document() throws XMLParserException, IOException {
-        File f = new File(documentName);
+        final File f = new File(documentName);
         return XMLUtils.read(new FileInputStream(f), false);
     }
 

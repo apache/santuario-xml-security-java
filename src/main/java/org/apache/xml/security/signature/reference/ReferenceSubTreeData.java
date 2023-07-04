@@ -111,7 +111,7 @@ public class ReferenceSubTreeData implements ReferenceNodeSetData {
          * @return a set of nodes (minus any comment nodes)
          */
         private List<Node> dereferenceSameDocumentURI(Node node) {
-            List<Node> nodeSet = new ArrayList<>();
+            final List<Node> nodeSet = new ArrayList<>();
             if (node != null) {
                 nodeSetMinusCommentNodes(node, nodeSet, null);
             }
@@ -134,7 +134,7 @@ public class ReferenceSubTreeData implements ReferenceNodeSetData {
             switch (node.getNodeType()) {
                 case Node.ELEMENT_NODE :
                     nodeSet.add(node);
-                    NamedNodeMap attrs = node.getAttributes();
+                    final NamedNodeMap attrs = node.getAttributes();
                     if (attrs != null) {
                         for (int i = 0, len = attrs.getLength(); i < len; i++) {
                             nodeSet.add(attrs.item(i));

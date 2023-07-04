@@ -54,74 +54,74 @@ public class KeyInfoReferenceResolverTest {
 
     @Test
     public void testRSAPublicKey() throws Exception {
-        PublicKey rsaKeyControl = loadPublicKey("rsa-KeyInfoReference.key", "RSA");
+        final PublicKey rsaKeyControl = loadPublicKey("rsa-KeyInfoReference.key", "RSA");
 
-        Document doc = loadXML("KeyInfoReference-RSA.xml");
+        final Document doc = loadXML("KeyInfoReference-RSA.xml");
         markKeyInfoIdAttrs(doc);
 
-        Element referenceElement = doc.getElementById("theReference");
+        final Element referenceElement = doc.getElementById("theReference");
         assertNotNull(referenceElement);
 
-        KeyInfo keyInfo = new KeyInfo(referenceElement, "");
+        final KeyInfo keyInfo = new KeyInfo(referenceElement, "");
         assertEquals(rsaKeyControl, keyInfo.getPublicKey());
     }
 
     @Test
     public void testX509Certificate() throws Exception {
-        X509Certificate certControl = loadCertificate("cert-KeyInfoReference.crt");
+        final X509Certificate certControl = loadCertificate("cert-KeyInfoReference.crt");
 
-        Document doc = loadXML("KeyInfoReference-X509Certificate.xml");
+        final Document doc = loadXML("KeyInfoReference-X509Certificate.xml");
         markKeyInfoIdAttrs(doc);
 
-        Element referenceElement = doc.getElementById("theReference");
+        final Element referenceElement = doc.getElementById("theReference");
         assertNotNull(referenceElement);
 
-        KeyInfo keyInfo = new KeyInfo(referenceElement, "");
+        final KeyInfo keyInfo = new KeyInfo(referenceElement, "");
         assertEquals(certControl, keyInfo.getX509Certificate());
         assertEquals(certControl.getPublicKey(), keyInfo.getPublicKey());
     }
 
     @Test
     public void testWrongReferentType() throws Exception {
-        Document doc = loadXML("KeyInfoReference-WrongReferentType.xml");
+        final Document doc = loadXML("KeyInfoReference-WrongReferentType.xml");
         markKeyInfoIdAttrs(doc);
 
         // Mark the ID-ness of the bogus element so can be resolved
-        NodeList nl = doc.getElementsByTagNameNS("http://www.example.org/test", "KeyInfo");
+        final NodeList nl = doc.getElementsByTagNameNS("http://www.example.org/test", "KeyInfo");
         for (int i = 0; i < nl.getLength(); i++) {
-            Element keyInfoElement = (Element) nl.item(i);
+            final Element keyInfoElement = (Element) nl.item(i);
             keyInfoElement.setIdAttributeNS(null, Constants._ATT_ID, true);
         }
 
-        Element referenceElement = doc.getElementById("theReference");
+        final Element referenceElement = doc.getElementById("theReference");
         assertNotNull(referenceElement);
 
-        KeyInfo keyInfo = new KeyInfo(referenceElement, "");
+        final KeyInfo keyInfo = new KeyInfo(referenceElement, "");
         assertNull(keyInfo.getPublicKey());
     }
 
     @Test
     public void testSameDocumentReferenceChain() throws Exception {
-        Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
+        final Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);
 
-        Element referenceElement = doc.getElementById("theReference");
+        final Element referenceElement = doc.getElementById("theReference");
         assertNotNull(referenceElement);
 
-        KeyInfo keyInfo = new KeyInfo(referenceElement, "");
+        final KeyInfo keyInfo = new KeyInfo(referenceElement, "");
         // Chains of references are not supported at this time
         assertNull(keyInfo.getPublicKey());
     }
 
     @Test
     public void testSameDocumentReferenceChainWithSecureValidation() throws Exception {
-        Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
+        final Document doc = loadXML("KeyInfoReference-ReferenceChain.xml");
         markKeyInfoIdAttrs(doc);
 
-        Element referenceElement = doc.getElementById("theReference");
+        final Element referenceElement = doc.getElementById("theReference");
         assertNotNull(referenceElement);
 
-        KeyInfo keyInfo = new KeyInfo(referenceElement, "");
+        final KeyInfo keyInfo = new KeyInfo(referenceElement, "");
         keyInfo.setSecureValidation(true);
         // Chains of references are not supported at this time
         assertNull(keyInfo.getPublicKey());
@@ -129,14 +129,14 @@ public class KeyInfoReferenceResolverTest {
 
     @Test
     public void testKeyInfoReferenceToRetrievalMethodNotAllowed() throws Exception {
-        Document doc = loadXML("KeyInfoReference-RSA-RetrievalMethod.xml");
+        final Document doc = loadXML("KeyInfoReference-RSA-RetrievalMethod.xml");
         markKeyInfoIdAttrs(doc);
         markEncodedKeyValueIdAttrs(doc);
 
-        Element referenceElement = doc.getElementById("theReference");
+        final Element referenceElement = doc.getElementById("theReference");
         assertNotNull(referenceElement);
 
-        KeyInfo keyInfo = new KeyInfo(referenceElement, "");
+        final KeyInfo keyInfo = new KeyInfo(referenceElement, "");
         assertNull(keyInfo.getPublicKey());
     }
 
@@ -152,32 +152,32 @@ public class KeyInfoReferenceResolverTest {
     }
 
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
-        byte[] keyBytes = XMLUtils.decode(fileData);
-        KeyFactory kf = KeyFactory.getInstance(algorithm);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        final String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
+        final byte[] keyBytes = XMLUtils.decode(fileData);
+        final KeyFactory kf = KeyFactory.getInstance(algorithm);
+        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);
     }
 
     private X509Certificate loadCertificate(String fileName) throws Exception {
         try (InputStream fis = Files.newInputStream(getControlFilePath(fileName).toPath())) {
-            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            final CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) certFactory.generateCertificate(fis);
         }
     }
 
     private void markKeyInfoIdAttrs(Document doc) {
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_KEYINFO);
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_KEYINFO);
         for (int i = 0; i < nl.getLength(); i++) {
-            Element keyInfoElement = (Element) nl.item(i);
+            final Element keyInfoElement = (Element) nl.item(i);
             keyInfoElement.setIdAttributeNS(null, Constants._ATT_ID, true);
         }
     }
 
     private void markEncodedKeyValueIdAttrs(Document doc) {
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
         for (int i = 0; i < nl.getLength(); i++) {
-            Element keyInfoElement = (Element) nl.item(i);
+            final Element keyInfoElement = (Element) nl.item(i);
             keyInfoElement.setIdAttributeNS(null, Constants._ATT_ID, true);
         }
     }

@@ -52,10 +52,10 @@ public class RSASecurityTest extends InteropTestBase {
     @Test
     public void test_enveloping() throws Exception {
 
-        File filename = new File(blakesDir, "certj201_enveloping.xml");
-        boolean followManifests = false;
-        ResourceResolverSpi resolver = null;
-        boolean verify = this.verify(filename, resolver, followManifests);
+        final File filename = new File(blakesDir, "certj201_enveloping.xml");
+        final boolean followManifests = false;
+        final ResourceResolverSpi resolver = null;
+        final boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
             LOG.error("Verification failed for " + filename);
@@ -67,10 +67,10 @@ public class RSASecurityTest extends InteropTestBase {
     @Test
     public void test_enveloped() throws Exception {
 
-        File filename = new File(blakesDir, "certj201_enveloped.xml");
-        boolean followManifests = false;
-        ResourceResolverSpi resolver = null;
-        boolean verify = this.verify(filename, resolver, followManifests);
+        final File filename = new File(blakesDir, "certj201_enveloped.xml");
+        final boolean followManifests = false;
+        final ResourceResolverSpi resolver = null;
+        final boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
             LOG.error("Verification failed for " + filename);

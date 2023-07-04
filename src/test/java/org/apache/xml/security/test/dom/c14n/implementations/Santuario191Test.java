@@ -72,8 +72,8 @@ public class Santuario191Test {
         //
         // Canonicalize the data
         //
-        NodeList dataNodes = doc.getElementsByTagName("data");
-        Canonicalizer11_OmitComments c14ner = new Canonicalizer11_OmitComments();
+        final NodeList dataNodes = doc.getElementsByTagName("data");
+        final Canonicalizer11_OmitComments c14ner = new Canonicalizer11_OmitComments();
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             c14ner.engineCanonicalizeSubTree(dataNodes.item(0), output);
 

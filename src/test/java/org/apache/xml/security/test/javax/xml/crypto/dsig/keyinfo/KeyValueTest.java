@@ -63,9 +63,9 @@ public class KeyValueTest {
     @Test
     public void testgetPublicKey() {
         try {
-            KeyValue kv = fac.newKeyValue(keys[0]);
+            final KeyValue kv = fac.newKeyValue(keys[0]);
             assertNotNull(kv.getPublicKey());
-        } catch (KeyException ke) {
+        } catch (final KeyException ke) {
             fail("Should pass instead of throwing KeyException");
         }
     }
@@ -73,11 +73,11 @@ public class KeyValueTest {
     @Test
     public void testConstructor() {
         // test newKeyValue(PublicKey pk)
-        for (PublicKey key : keys) {
+        for (final PublicKey key : keys) {
             try {
-                KeyValue kv = fac.newKeyValue(key);
+                final KeyValue kv = fac.newKeyValue(key);
                 assertEquals(key, kv.getPublicKey());
-            } catch (KeyException ke) {
+            } catch (final KeyException ke) {
                 fail("Should pass instead of throwing KeyException");
             }
         }
@@ -90,18 +90,18 @@ public class KeyValueTest {
             kv = fac.newKeyValue(keys[0]);
             kv.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (KeyException ke) {
+        } catch (final KeyException ke) {
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(kv.isFeatureSupported("not supported"));
     }
 
     private PublicKey genPublicKey(String algo, int keysize) throws Exception {
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance(algo);
+        final KeyPairGenerator kpg = KeyPairGenerator.getInstance(algo);
         kpg.initialize(keysize, new SecureRandom(("Not so random bytes"
             + System.currentTimeMillis() ).getBytes() ));
-        KeyPair kp = kpg.generateKeyPair();
+        final KeyPair kp = kpg.generateKeyPair();
         return kp.getPublic();
     }
 

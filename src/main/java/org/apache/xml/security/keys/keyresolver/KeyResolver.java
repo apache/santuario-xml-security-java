@@ -79,9 +79,9 @@ public class KeyResolver {
     public static final X509Certificate getX509Certificate(
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
-        for (KeyResolverSpi resolver : resolverList) {
+        for (final KeyResolverSpi resolver : resolverList) {
             if (resolver == null) {
-                Object[] exArgs = {
+                final Object[] exArgs = {
                         element != null
                                 && element.getNodeType() == Node.ELEMENT_NODE
                                 ? element.getTagName() : "null"
@@ -91,13 +91,13 @@ public class KeyResolver {
             }
             LOG.debug("check resolvability by class {}", resolver.getClass());
 
-            X509Certificate cert = resolver.engineLookupResolveX509Certificate(element, baseURI, storage, secureValidation);
+            final X509Certificate cert = resolver.engineLookupResolveX509Certificate(element, baseURI, storage, secureValidation);
             if (cert != null) {
                 return cert;
             }
         }
 
-        Object[] exArgs = {
+        final Object[] exArgs = {
                 element != null && element.getNodeType() == Node.ELEMENT_NODE
                         ? element.getTagName() : "null"
         };
@@ -119,9 +119,9 @@ public class KeyResolver {
     public static final PublicKey getPublicKey(
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
-        for (KeyResolverSpi resolver : resolverList) {
+        for (final KeyResolverSpi resolver : resolverList) {
             if (resolver == null) {
-                Object[] exArgs = {
+                final Object[] exArgs = {
                         element != null
                                 && element.getNodeType() == Node.ELEMENT_NODE
                                 ? element.getTagName() : "null"
@@ -131,13 +131,13 @@ public class KeyResolver {
             }
             LOG.debug("check resolvability by class {}", resolver.getClass());
 
-            PublicKey cert = resolver.engineLookupAndResolvePublicKey(element, baseURI, storage, secureValidation);
+            final PublicKey cert = resolver.engineLookupAndResolvePublicKey(element, baseURI, storage, secureValidation);
             if (cert != null) {
                 return cert;
             }
         }
 
-        Object[] exArgs = {
+        final Object[] exArgs = {
                 element != null && element.getNodeType() == Node.ELEMENT_NODE
                         ? element.getTagName() : "null"
         };
@@ -164,7 +164,7 @@ public class KeyResolver {
     public static void register(String className)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
-        KeyResolverSpi keyResolverSpi = (KeyResolverSpi)
+        final KeyResolverSpi keyResolverSpi = (KeyResolverSpi)
             JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(className, KeyResolver.class));
         register(keyResolverSpi, false);
     }
@@ -245,9 +245,9 @@ public class KeyResolver {
     public static void registerClassNames(List<String> classNames)
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
-        List<KeyResolverSpi> keyResolverList = new ArrayList<>(classNames.size());
-        for (String className : classNames) {
-            KeyResolverSpi keyResolverSpi = (KeyResolverSpi)
+        final List<KeyResolverSpi> keyResolverList = new ArrayList<>(classNames.size());
+        for (final String className : classNames) {
+            final KeyResolverSpi keyResolverSpi = (KeyResolverSpi)
                 JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(className, KeyResolver.class));
             keyResolverList.add(keyResolverSpi);
         }
@@ -260,7 +260,7 @@ public class KeyResolver {
     public static void registerDefaultResolvers() {
         // Add a guard so that we don't repeatedly add the default resolvers
         if (defaultResolversAdded.compareAndSet(false, true)) {
-            List<KeyResolverSpi> keyResolverList = new ArrayList<>();
+            final List<KeyResolverSpi> keyResolverList = new ArrayList<>();
             keyResolverList.add(new RSAKeyValueResolver());
             keyResolverList.add(new DSAKeyValueResolver());
             keyResolverList.add(new X509CertificateResolver());
@@ -296,7 +296,7 @@ public class KeyResolver {
 
         @Override
         public KeyResolverSpi next() {
-            KeyResolverSpi resolver = it.next();
+            final KeyResolverSpi resolver = it.next();
             if (resolver == null) {
                 throw new RuntimeException("utils.resolver.noClass");
             }

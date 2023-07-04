@@ -48,6 +48,7 @@ public abstract class ComparableType<T extends ComparableType> implements Compar
         }
         if (this.getClass().isAssignableFrom(obj.getClass())) {
             @SuppressWarnings("unchecked")
+            final
             T other = (T) obj;
             if (this.getName().equals(other.getName())) {
                 return true;

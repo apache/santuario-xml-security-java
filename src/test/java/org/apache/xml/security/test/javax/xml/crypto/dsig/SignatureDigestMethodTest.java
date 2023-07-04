@@ -72,7 +72,7 @@ public class SignatureDigestMethodTest {
 
         // create common objects
         fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        KeyInfoFactory kifac = fac.getKeyInfoFactory();
+        final KeyInfoFactory kifac = fac.getKeyInfoFactory();
         withoutComments = fac.newCanonicalizationMethod
             (CanonicalizationMethod.INCLUSIVE, (C14NMethodParameterSpec) null);
 
@@ -176,26 +176,26 @@ public class SignatureDigestMethodTest {
     ) throws Exception {
 
         // create reference
-        Reference ref = fac.newReference("#DSig.Object_1", dm, null,
+        final Reference ref = fac.newReference("#DSig.Object_1", dm, null,
                                          XMLObject.TYPE, null);
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(withoutComments, sm,
+        final SignedInfo si = fac.newSignedInfo(withoutComments, sm,
                                           Collections.singletonList(ref));
 
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
         // create Objects
-        Element webElem = doc.createElementNS(null, "Web");
-        Text text = doc.createTextNode("up up and away");
+        final Element webElem = doc.createElementNS(null, "Web");
+        final Text text = doc.createTextNode("up up and away");
         webElem.appendChild(text);
-        XMLObject obj = fac.newXMLObject(Collections.singletonList
+        final XMLObject obj = fac.newXMLObject(Collections.singletonList
                                          (new DOMStructure(webElem)), "DSig.Object_1", "text/xml", null);
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature
+        final XMLSignature sig = fac.newXMLSignature
         (si, ki, Collections.singletonList(obj), null, null);
 
-        DOMSignContext dsc = new DOMSignContext(signingKey, doc);
+        final DOMSignContext dsc = new DOMSignContext(signingKey, doc);
         dsc.setDefaultNamespacePrefix("dsig");
 
         sig.sign(dsc);
@@ -203,9 +203,9 @@ public class SignatureDigestMethodTest {
 
         // XMLUtils.outputDOM(doc.getDocumentElement(), System.out);
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
         (ks, doc.getDocumentElement());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));

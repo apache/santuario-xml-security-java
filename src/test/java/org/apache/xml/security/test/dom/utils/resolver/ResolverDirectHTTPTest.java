@@ -55,17 +55,17 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testProxyAuth() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uri = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
-        ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-        Map<String, String> resolverProperties = new HashMap<>();
+        final ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
+        final Map<String, String> resolverProperties = new HashMap<>();
         resolverProperties.put("http.proxy.host",proxyHost);
         resolverProperties.put("http.proxy.port", proxyPort);
         resolverProperties.put("http.proxy.username", proxyUsername);
         resolverProperties.put("http.proxy.password", proxyPassword);
-        ResourceResolverContext context =
+        final ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true, resolverProperties);
         resolverDirectHTTP.engineResolveURI(context);
     }
@@ -73,22 +73,22 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testProxyAuthWithWrongPassword() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uri = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
-        ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-        Map<String, String> resolverProperties = new HashMap<>();
+        final ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
+        final Map<String, String> resolverProperties = new HashMap<>();
         resolverProperties.put("http.proxy.host",proxyHost);
         resolverProperties.put("http.proxy.port", proxyPort);
         resolverProperties.put("http.proxy.username", proxyUsername);
         resolverProperties.put("http.proxy.password", "wrongPassword");
-        ResourceResolverContext context =
+        final ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true, resolverProperties);
         try {
             resolverDirectHTTP.engineResolveURI(context);
             fail("Expected ResourceResolverException");
-        } catch (ResourceResolverException e) {
+        } catch (final ResourceResolverException e) {
             assertEquals("Server returned HTTP response code: 407 for URL: " + url, e.getMessage());
         }
     }
@@ -96,15 +96,15 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testServerAuth() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uri = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
-        ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-        Map<String, String> resolverProperties = new HashMap<>();
+        final ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
+        final Map<String, String> resolverProperties = new HashMap<>();
         resolverProperties.put("http.basic.username", serverUsername);
         resolverProperties.put("http.basic.password", serverPassword);
-        ResourceResolverContext context =
+        final ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true, resolverProperties);
         resolverDirectHTTP.engineResolveURI(context);
     }
@@ -112,20 +112,20 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testServerAuthWithWrongPassword() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uri = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
-        ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-        Map<String, String> resolverProperties = new HashMap<>();
+        final ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
+        final Map<String, String> resolverProperties = new HashMap<>();
         resolverProperties.put("http.basic.username", serverUsername);
         resolverProperties.put("http.basic.password", "wrongPassword");
-        ResourceResolverContext context =
+        final ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true, resolverProperties);
         try {
             resolverDirectHTTP.engineResolveURI(context);
             fail("Expected ResourceResolverException");
-        } catch (ResourceResolverException e) {
+        } catch (final ResourceResolverException e) {
             assertEquals("Server returned HTTP response code: 401 for URL: " + url, e.getMessage());
         }
     }
@@ -133,19 +133,19 @@ public class ResolverDirectHTTPTest {
     @Test
     @Disabled
     public void testProxyAndServerAuth() throws Exception {
-        Document doc = TestUtils.newDocument();
-        Attr uri = doc.createAttribute("URI");
+        final Document doc = TestUtils.newDocument();
+        final Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
 
-        ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
-        Map<String, String> resolverProperties = new HashMap<>();
+        final ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
+        final Map<String, String> resolverProperties = new HashMap<>();
         resolverProperties.put("http.proxy.host",proxyHost);
         resolverProperties.put("http.proxy.port", proxyPort);
         resolverProperties.put("http.proxy.username", proxyUsername);
         resolverProperties.put("http.proxy.password", proxyPassword);
         resolverProperties.put("http.basic.username", serverUsername);
         resolverProperties.put("http.basic.password", serverPassword);
-        ResourceResolverContext context =
+        final ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true, resolverProperties);
         resolverDirectHTTP.engineResolveURI(context);
     }

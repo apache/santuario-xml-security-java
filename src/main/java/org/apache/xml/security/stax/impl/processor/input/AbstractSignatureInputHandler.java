@@ -85,7 +85,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
     private static final Set<String> C14N_ALGORITHMS;
 
     static {
-        Set<String> algorithms = new HashSet<>();
+        final Set<String> algorithms = new HashSet<>();
         algorithms.add(XMLSecurityConstants.NS_C14N_OMIT_COMMENTS);
         algorithms.add(XMLSecurityConstants.NS_C14N_WITH_COMMENTS);
         algorithms.add(XMLSecurityConstants.NS_C14N_EXCL_OMIT_COMMENTS);
@@ -116,7 +116,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
         if (signatureType.getId() == null) {
             signatureType.setId(IDGenerator.generateID(null));
         }
-        InboundSecurityToken inboundSecurityToken = verifySignedInfo(inputProcessorChain, securityProperties, signatureType, eventQueue, index);
+        final InboundSecurityToken inboundSecurityToken = verifySignedInfo(inputProcessorChain, securityProperties, signatureType, eventQueue, index);
         addSignatureReferenceInputProcessorToChain(inputProcessorChain, securityProperties, signatureType, inboundSecurityToken);
     }
 
@@ -130,7 +130,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
         Iterator<XMLSecEvent> iterator;
 
-        String c14NMethod = signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm();
+        final String c14NMethod = signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm();
         if (c14NMethod != null && C14N_ALGORITHMS.contains(c14NMethod)) {
 
             iterator = eventDeque.descendingIterator();
@@ -146,12 +146,12 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             index = 0;
         }
 
-        SignatureVerifier signatureVerifier = newSignatureVerifier(inputProcessorChain, securityProperties, signatureType);
+        final SignatureVerifier signatureVerifier = newSignatureVerifier(inputProcessorChain, securityProperties, signatureType);
 
         try {
             loop:
             while (iterator.hasNext()) {
-                XMLSecEvent xmlSecEvent = iterator.next();
+                final XMLSecEvent xmlSecEvent = iterator.next();
                 if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()
                     && xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
                     signatureVerifier.processEvent(xmlSecEvent);
@@ -160,14 +160,14 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             }
             loop:
             while (iterator.hasNext()) {
-                XMLSecEvent xmlSecEvent = iterator.next();
+                final XMLSecEvent xmlSecEvent = iterator.next();
                 signatureVerifier.processEvent(xmlSecEvent);
                 if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()
                     && xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
                     break loop;
                 }
             }
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             throw new XMLSecurityException(e);
         }
         signatureVerifier.doFinal();
@@ -178,17 +178,17 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                                                    SignatureType signatureType, Deque<XMLSecEvent> eventDeque, int index
     ) throws XMLSecurityException {
 
-        Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<>();
+        final Deque<XMLSecEvent> signedInfoDeque = new ArrayDeque<>();
 
         try (UnsyncByteArrayOutputStream unsynchronizedByteArrayOutputStream = new UnsyncByteArrayOutputStream()) {
-            Transformer transformer = XMLSecurityUtils.getTransformer(
+            final Transformer transformer = XMLSecurityUtils.getTransformer(
                     null,
                     unsynchronizedByteArrayOutputStream,
                     null,
                     signatureType.getSignedInfo().getCanonicalizationMethod().getAlgorithm(),
                     XMLSecurityConstants.DIRECTION.IN);
 
-            Iterator<XMLSecEvent> iterator = eventDeque.descendingIterator();
+            final Iterator<XMLSecEvent> iterator = eventDeque.descendingIterator();
             //forward to <Signature> Element
             int i = 0;
             while (i < index) {
@@ -198,7 +198,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
             loop:
             while (iterator.hasNext()) {
-                XMLSecEvent xmlSecEvent = iterator.next();
+                final XMLSecEvent xmlSecEvent = iterator.next();
                 if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()
                     && xmlSecEvent.asStartElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
                     transformer.transform(xmlSecEvent);
@@ -208,7 +208,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
             loop:
             while (iterator.hasNext()) {
-                XMLSecEvent xmlSecEvent = iterator.next();
+                final XMLSecEvent xmlSecEvent = iterator.next();
                 transformer.transform(xmlSecEvent);
                 if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()
                     && xmlSecEvent.asEndElement().getName().equals(XMLSecurityConstants.TAG_dsig_SignedInfo)) {
@@ -219,12 +219,12 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             transformer.doFinal();
 
             try (InputStream is = new UnsyncByteArrayInputStream(unsynchronizedByteArrayOutputStream.toByteArray())) {
-                XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
+                final XMLStreamReader xmlStreamReader = inputProcessorChain.getSecurityContext().
                         <XMLInputFactory>get(XMLSecurityConstants.XMLINPUTFACTORY).
                         createXMLStreamReader(is);
 
                 while (xmlStreamReader.hasNext()) {
-                    XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
+                    final XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
                     signedInfoDeque.push(xmlSecEvent);
                     xmlStreamReader.next();
                 }
@@ -293,7 +293,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                                  XMLSecurityProperties securityProperties) throws XMLSecurityException {
             this.signatureType = signatureType;
 
-            InboundSecurityToken inboundSecurityToken =
+            final InboundSecurityToken inboundSecurityToken =
                 retrieveSecurityToken(signatureType, securityProperties, inboundSecurityContext);
             this.inboundSecurityToken = inboundSecurityToken;
 
@@ -328,11 +328,11 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             }
 
             try {
-                SignatureAlgorithm signatureAlgorithm =
+                final SignatureAlgorithm signatureAlgorithm =
                         SignatureAlgorithmFactory.getInstance().getSignatureAlgorithm(
                                 algorithmURI);
                 if (XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS.equals(algorithmURI)) {
-                    PSSParameterSpec spec = rsaPSSParameterSpec(signatureType);
+                    final PSSParameterSpec spec = rsaPSSParameterSpec(signatureType);
                     signatureAlgorithm.engineSetParameter(spec);
                 }
                 signatureAlgorithm.engineInitVerify(verifyKey);
@@ -341,7 +341,7 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
 
                 final CanonicalizationMethodType canonicalizationMethodType =
                         signatureType.getSignedInfo().getCanonicalizationMethod();
-                InclusiveNamespaces inclusiveNamespacesType =
+                final InclusiveNamespaces inclusiveNamespacesType =
                         XMLSecurityUtils.getQNameType(
                                 canonicalizationMethodType.getContent(),
                                 XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces
@@ -368,16 +368,16 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             if (verifyKey instanceof Destroyable) {
                 try {
                     ((Destroyable)verifyKey).destroy();
-                } catch (DestroyFailedException e) {
+                } catch (final DestroyFailedException e) {
                     LOG.debug("Error destroying key: {}", e.getMessage());
                 }
             }
         }
 
         private PSSParameterSpec rsaPSSParameterSpec(SignatureType signatureType) throws XMLSecurityException {
-            SignatureMethodType signatureMethod = signatureType.getSignedInfo().getSignatureMethod();
+            final SignatureMethodType signatureMethod = signatureType.getSignedInfo().getSignatureMethod();
             RSAPSSParams rsapssParams = null;
-            for (Object o : signatureMethod.getContent()) {
+            for (final Object o : signatureMethod.getContent()) {
                 if (o instanceof RSAPSSParams) {
                     rsapssParams = (RSAPSSParams) o;
                     break;
@@ -387,13 +387,13 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
                 throw new XMLSecurityException("algorithms.MissingRSAPSSParams");
             }
 
-            String digestMethod = rsapssParams.getDigestMethod() == null ? SHA256.getXmlDigestAlgorithm() : rsapssParams.getDigestMethod().getAlgorithm();
-            String maskGenerationDigestMethod = rsapssParams.getMaskGenerationFunction() == null ? SHA256.getXmlDigestAlgorithm() : rsapssParams.getMaskGenerationFunction().getDigestMethod().getAlgorithm();
-            DigestAlgorithm digestAlgorithm = fromXmlDigestAlgorithm(digestMethod);
+            final String digestMethod = rsapssParams.getDigestMethod() == null ? SHA256.getXmlDigestAlgorithm() : rsapssParams.getDigestMethod().getAlgorithm();
+            final String maskGenerationDigestMethod = rsapssParams.getMaskGenerationFunction() == null ? SHA256.getXmlDigestAlgorithm() : rsapssParams.getMaskGenerationFunction().getDigestMethod().getAlgorithm();
+            final DigestAlgorithm digestAlgorithm = fromXmlDigestAlgorithm(digestMethod);
 
-            int saltLength = rsapssParams.getSaltLength() == null ? digestAlgorithm.getSaltLength() : rsapssParams.getSaltLength();
-            int trailerField = rsapssParams.getTrailerField() == null ? 1 : rsapssParams.getTrailerField();
-            String maskDigestAlgorithm = fromXmlDigestAlgorithm(maskGenerationDigestMethod).getDigestAlgorithm();
+            final int saltLength = rsapssParams.getSaltLength() == null ? digestAlgorithm.getSaltLength() : rsapssParams.getSaltLength();
+            final int trailerField = rsapssParams.getTrailerField() == null ? 1 : rsapssParams.getTrailerField();
+            final String maskDigestAlgorithm = fromXmlDigestAlgorithm(maskGenerationDigestMethod).getDigestAlgorithm();
 
             return new PSSParameterSpec(digestAlgorithm.getDigestAlgorithm(), "MGF1",
                                         new MGF1ParameterSpec(maskDigestAlgorithm), saltLength, trailerField);

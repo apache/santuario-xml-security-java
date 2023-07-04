@@ -71,26 +71,26 @@ public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificati
     @Test
     public void testMaximumAllowedReferencesPerManifest() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("Item");
         localNames.add("PaymentInfo");
         localNames.add("ShippingAddress");
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
         );
 
@@ -98,8 +98,8 @@ public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificati
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -108,16 +108,16 @@ public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificati
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         try {
             StAX2DOM.readDoc(securityStreamReader);
             fail("Exception expected");
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
             assertEquals("4 references are contained in the Manifest, maximum 2 are allowed. You can raise the maximum " +
                             "via the \"MaximumAllowedReferencesPerManifest\" property in the configuration.",

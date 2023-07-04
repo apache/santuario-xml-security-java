@@ -113,7 +113,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
     @Override
     public void processHeaderEvent(OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
 
-        OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+        final OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
 
         List<XMLSecAttribute> attributes = new ArrayList<>(1);
         String signatureId = null;
@@ -125,7 +125,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             attributes = Collections.emptyList();
         }
 
-        XMLSecStartElement signatureElement = createStartElementAndOutputAsEvent(subOutputProcessorChain,
+        final XMLSecStartElement signatureElement = createStartElementAndOutputAsEvent(subOutputProcessorChain,
                 XMLSecurityConstants.TAG_dsig_Signature, true, attributes);
 
         SignatureAlgorithm signatureAlgorithm;
@@ -139,11 +139,11 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             throw new XMLSecurityException(e);
         }
 
-        String tokenId = outputProcessorChain.getSecurityContext().get(XMLSecurityConstants.PROP_USE_THIS_TOKEN_ID_FOR_SIGNATURE);
+        final String tokenId = outputProcessorChain.getSecurityContext().get(XMLSecurityConstants.PROP_USE_THIS_TOKEN_ID_FOR_SIGNATURE);
         if (tokenId == null) {
             throw new XMLSecurityException("stax.keyNotFound");
         }
-        SecurityTokenProvider<OutboundSecurityToken> wrappingSecurityTokenProvider =
+        final SecurityTokenProvider<OutboundSecurityToken> wrappingSecurityTokenProvider =
                 outputProcessorChain.getSecurityContext().getSecurityTokenProvider(tokenId);
         if (wrappingSecurityTokenProvider == null) {
             throw new XMLSecurityException("stax.keyNotFound");
@@ -153,7 +153,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             throw new XMLSecurityException("stax.keyNotFound");
         }
 
-        String sigAlgorithm = getSecurityProperties().getSignatureAlgorithm();
+        final String sigAlgorithm = getSecurityProperties().getSignatureAlgorithm();
         Key key = wrappingSecurityToken.getSecretKey(sigAlgorithm);
         //todo remove and use wrappingSecurityToken.isSymmetric or so?
         if (XMLSecurityConstants.NS_XMLDSIG_HMACSHA1.equals(sigAlgorithm)) {
@@ -161,7 +161,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         }
         signatureAlgorithm.engineInitSign(key);
 
-        SignedInfoProcessor signedInfoProcessor =
+        final SignedInfoProcessor signedInfoProcessor =
             newSignedInfoProcessor(signatureAlgorithm, signatureId, signatureElement, subOutputProcessorChain);
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignedInfo, false, null);
 
@@ -184,7 +184,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureMethod, false, attributes);
 
         if (getSecurityProperties().getAlgorithmParameterSpec() instanceof PSSParameterSpec) {
-            PSSParameterSpec pssParams = (PSSParameterSpec) getSecurityProperties().getAlgorithmParameterSpec();
+            final PSSParameterSpec pssParams = (PSSParameterSpec) getSecurityProperties().getAlgorithmParameterSpec();
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsigmore_RSAPSSPARAMS, false, null);
 
             attributes = new ArrayList<>(1);
@@ -205,7 +205,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
         createEndElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_SignatureMethod);
 
-        for (SignaturePartDef signaturePartDef : signaturePartDefList) {
+        for (final SignaturePartDef signaturePartDef : signaturePartDefList) {
             String uriString;
             if (signaturePartDef.isExternalResource()) {
                 uriString = signaturePartDef.getSigRefId();
@@ -259,7 +259,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         if (key instanceof Destroyable) {
             try {
                 ((Destroyable)key).destroy();
-            } catch (DestroyFailedException e) {
+            } catch (final DestroyFailedException e) {
                 LOG.debug("Error destroying key: {}", e.getMessage());
             }
         }
@@ -311,9 +311,9 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             if (getSecurityProperties().isAddExcC14NInclusivePrefixes() &&
                     XMLSecurityConstants.NS_C14N_EXCL.equals(canonicalizationAlgorithm)) {
 
-                Set<String> prefixSet = XMLSecurityUtils.getExcC14NInclusiveNamespacePrefixes(xmlSecStartElement, false);
-                StringBuilder prefixes = new StringBuilder();
-                for (String prefix : prefixSet) {
+                final Set<String> prefixSet = XMLSecurityUtils.getExcC14NInclusiveNamespacePrefixes(xmlSecStartElement, false);
+                final StringBuilder prefixes = new StringBuilder();
+                for (final String prefix : prefixSet) {
                     if (prefixes.length() != 0) {
                         prefixes.append(' ');
                     }

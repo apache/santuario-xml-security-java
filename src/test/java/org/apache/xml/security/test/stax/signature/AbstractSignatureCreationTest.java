@@ -70,13 +70,13 @@ public class AbstractSignatureCreationTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -139,30 +139,30 @@ public class AbstractSignatureCreationTest {
             String idAttributeNS,
             boolean secureValidation
     ) throws Exception {
-        XPath xpath = getXPath();
+        final XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
-        Element sigElement =
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
 
-        for (SecurePart securePart : secureParts) {
+        for (final SecurePart securePart : secureParts) {
             if (securePart.getName() == null) {
                 continue;
             }
             expression = "//*[local-name()='" + securePart.getName().getLocalPart() + "']";
-            Element signedElement =
+            final Element signedElement =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, idAttributeNS, true);
         }
 
-        XMLSignature signature = new XMLSignature(sigElement, "", secureValidation, null);
+        final XMLSignature signature = new XMLSignature(sigElement, "", secureValidation, null);
         if (resourceResolverSpi != null) {
             signature.addResourceResolver(resourceResolverSpi);
         }
         if (keyInfoRequired) {
-            KeyInfo ki = signature.getKeyInfo();
+            final KeyInfo ki = signature.getKeyInfo();
             assertNotNull(ki);
         }
 
@@ -177,22 +177,22 @@ public class AbstractSignatureCreationTest {
             Key key,
             List<SecurePart> secureParts
     ) throws Exception {
-        XPath xpath = getXPath();
+        final XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
-        Element sigElement =
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
 
-        for (SecurePart securePart : secureParts) {
+        for (final SecurePart securePart : secureParts) {
             expression = "//*[local-name()='" + securePart.getName().getLocalPart() + "']";
-            Element signedElement =
+            final Element signedElement =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        final XMLSignature signature = new XMLSignature(sigElement, "");
         assertTrue(signature.checkSignatureValue(key));
     }
 
@@ -201,22 +201,22 @@ public class AbstractSignatureCreationTest {
             Key key,
             List<SecurePart> secureParts
     ) throws Exception {
-        XPath xpath = getXPath();
+        final XPath xpath = getXPath();
 
         String expression = "//dsig:Signature[1]";
-        Element sigElement =
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
         assertEquals("", sigElement.getAttribute("Id"));
 
         assertEquals(1, secureParts.size(), "Without Id there can only be one secure part");
         expression = "//*[local-name()='" + secureParts.get(0).getName().getLocalPart() + "']";
-        Element signedElement =
+        final Element signedElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(signedElement);
         assertEquals("", signedElement.getAttribute("Id"));
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        final XMLSignature signature = new XMLSignature(sigElement, "");
 
         // We need a special resolver for the empty URI
         signature.addResourceResolver(new EmptyURIResourceResolverSpi(signedElement));
@@ -229,10 +229,10 @@ public class AbstractSignatureCreationTest {
             Key key,
             List<SecurePart> secureParts
     ) throws Exception {
-        XPath xpath = getXPath();
+        final XPath xpath = getXPath();
 
-        String expression = "//dsig:Signature[1]";
-        Element sigElement =
+        final String expression = "//dsig:Signature[1]";
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
         assertEquals("", sigElement.getAttribute("Id"));
@@ -240,9 +240,9 @@ public class AbstractSignatureCreationTest {
         assertEquals(1, secureParts.size(), "Without Id there can only be one secure part");
         //assertNull(secureParts.get(0).getName());
 
-        Element signedElement = document.getDocumentElement();
+        final Element signedElement = document.getDocumentElement();
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        final XMLSignature signature = new XMLSignature(sigElement, "");
 
         // We need a special resolver for the empty URI
         signature.addResourceResolver(new EmptyURIResourceResolverSpi(signedElement));
@@ -251,8 +251,8 @@ public class AbstractSignatureCreationTest {
     }
 
     private XPath getXPath() {
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
         return xpath;
     }

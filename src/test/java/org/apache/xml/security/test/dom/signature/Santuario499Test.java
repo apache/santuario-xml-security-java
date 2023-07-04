@@ -48,24 +48,24 @@ public class Santuario499Test {
     @Test
     public void testXSLTTransform() throws Exception {
 
-        URL signatureFile = this.getClass().getResource("Arbeidstijd_anonymous.xml");
+        final URL signatureFile = this.getClass().getResource("Arbeidstijd_anonymous.xml");
         assertNotNull(signatureFile);
 
-        Document doc = XMLUtils.read(signatureFile.openStream(), false);
+        final Document doc = XMLUtils.read(signatureFile.openStream(), false);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
-        NodeList mainNode = doc.getElementsByTagName("Arbeidstijden");
-        Element ritAdministratieElement = (Element) mainNode.item(0);
+        final NodeList mainNode = doc.getElementsByTagName("Arbeidstijden");
+        final Element ritAdministratieElement = (Element) mainNode.item(0);
         ritAdministratieElement.setIdAttributeNS(null, "Id", true);
 
-        XMLSignature signature = new XMLSignature(sigElement, "", false);
+        final XMLSignature signature = new XMLSignature(sigElement, "", false);
         // Note that the Signature is not valid so we won't check that
         signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }

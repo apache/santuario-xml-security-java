@@ -72,19 +72,19 @@ public class XMLSignatureFactoryTest {
         try {
             XMLSignatureFactory.getInstance("non-existent");
             fail("Should throw NoSuchMechanismException if no impl found");
-        } catch (NoSuchMechanismException ex) {}
+        } catch (final NoSuchMechanismException ex) {}
 
         try {
             XMLSignatureFactory.getInstance(null);
             fail("Should raise a NPE for null mechanismType");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         try {
             XMLSignatureFactory.getInstance("DOM", "non-existent");
             fail("Should throw NoSuchProviderException if specified " +
                  "provider is not found");
-        } catch (NoSuchProviderException nspe) {
-        } catch (NoSuchMechanismException nse) {
+        } catch (final NoSuchProviderException nspe) {
+        } catch (final NoSuchMechanismException nse) {
             fail("Should raise a NoSuchProviderException instead of " + nse +
                  " if specified provider is not found");
         }
@@ -92,12 +92,12 @@ public class XMLSignatureFactoryTest {
         try {
             XMLSignatureFactory.getInstance(null);
             fail("Should raise a NPE for null mechanismType");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         try {
             XMLSignatureFactory.getInstance("DOM", (Provider) null);
             fail("Should raise a NPE for null provider");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
     }
 
     @Test
@@ -111,14 +111,14 @@ public class XMLSignatureFactoryTest {
         try {
             factory.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(factory.isFeatureSupported("not supported"));
     }
 
     @Test
     public void testgetKeyInfoFactory() throws Exception {
-        KeyInfoFactory kifac = factory.getKeyInfoFactory();
+        final KeyInfoFactory kifac = factory.getKeyInfoFactory();
         assertEquals(kifac.getMechanismType(), factory.getMechanismType());
         assertEquals(kifac.getProvider(), factory.getProvider());
     }
@@ -129,8 +129,8 @@ public class XMLSignatureFactoryTest {
         try {
             stuff = factory.unmarshalXMLSignature((XMLValidateContext) null);
             fail("Should raise an NPE for null inputs");
-        } catch (NullPointerException ex) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException ex) {
+        } catch (final Exception ex) {
             fail("Should throw an NPE instead of " + ex +
                  " for null inputs");
         }
@@ -172,26 +172,26 @@ public class XMLSignatureFactoryTest {
                         (String nsURI, String defPrefix) {return null;}
                     });
             fail("Should throw a CCE for input of wrong type");
-        } catch (ClassCastException ex) {
-        } catch (Exception ex) {
+        } catch (final ClassCastException ex) {
+        } catch (final Exception ex) {
             fail("Should raise a CCE instead of " + ex + " for wrong inputs");
         }
 
-        File dir = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmldsig-twenty-three");
-        Document doc = XMLUtils.read(new File(dir, "signature.xml"), false);
+        final File dir = resolveFile("src", "test", "resources", "ie", "baltimore", "merlin-examples", "merlin-xmldsig-twenty-three");
+        final Document doc = XMLUtils.read(new File(dir, "signature.xml"), false);
         NodeList nl = doc.getElementsByTagName("KeyInfo");
         try {
             stuff = factory.unmarshalXMLSignature
             (new DOMValidateContext(TestUtils.getPublicKey("RSA"), nl.item(0)));
             fail("Should throw a MarshalException for non-XMLSignature inputs");
-        } catch (MarshalException ex) {}
+        } catch (final MarshalException ex) {}
 
         nl = doc.getElementsByTagName("Signature");
         try {
             stuff = factory.unmarshalXMLSignature
             (new DOMValidateContext(TestUtils.getPublicKey("DSA"), nl.item(0)));
             assertNotNull(stuff);
-        } catch (MarshalException ex) {
+        } catch (final MarshalException ex) {
             fail("Unmarshal failed: " + ex.getMessage());
         }
     }

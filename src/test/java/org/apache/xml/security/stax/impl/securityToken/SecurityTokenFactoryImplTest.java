@@ -52,9 +52,9 @@ public class SecurityTokenFactoryImplTest {
     public void setUp() throws Exception {
         Init.init(null, this.getClass());
 
-        ObjectFactory of = new ObjectFactory();
+        final ObjectFactory of = new ObjectFactory();
 
-        JAXBElement<String> keyname = of.createKeyName("mykey");
+        final JAXBElement<String> keyname = of.createKeyName("mykey");
         keyInfoType = new KeyInfoType();
         keyInfoType.setId("KeyName");
         keyInfoType.getContent().add(keyname);
@@ -67,13 +67,13 @@ public class SecurityTokenFactoryImplTest {
 
     @Test
     public void testKeyNameToken() throws Exception {
-        SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
+        final SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
-        SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
+        final SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
 
         xmlSecurityProperties.addKeyNameMapping("mykey", loadPublicKey("dsa.key", "DSA"));
 
-        InboundSecurityToken token =
+        final InboundSecurityToken token =
                 factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
 
         assertEquals(KeyIdentifier_KeyName, token.getKeyIdentifier());
@@ -83,16 +83,16 @@ public class SecurityTokenFactoryImplTest {
 
     @Test
     public void testKeyNameTokenWithSignatureVerificationKeySet() throws Exception {
-        SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
+        final SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
-        SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
+        final SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
 
         xmlSecurityProperties.addKeyNameMapping("mykey", loadPublicKey("dsa.key", "DSA"));
         xmlSecurityProperties.setSignatureVerificationKey(loadPublicKey("rsa.key", "RSA"));
 
-        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
+        final InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
 
-        InboundSecurityToken token =
+        final InboundSecurityToken token =
                 factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
 
         assertEquals(KeyIdentifier_KeyName, token.getKeyIdentifier());
@@ -102,13 +102,13 @@ public class SecurityTokenFactoryImplTest {
 
     @Test
     public void testKeyNameTokenWithoutKeyInMap() throws Exception {
-        SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
+        final SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
-        SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
+        final SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
 
-        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
+        final InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
 
-        XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
+        final XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
             factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
         });
         assertEquals("No key configured for KeyName: mykey", exception.getMessage());
@@ -116,19 +116,19 @@ public class SecurityTokenFactoryImplTest {
 
     @Test
     public void testKeyNameTokenWithWrongKeyInMap() throws Exception {
-        SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
+        final SecurityTokenFactory factory = new SecurityTokenFactoryImpl();
 
-        SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
+        final SecurityTokenConstants.KeyUsage keyUsage = SecurityTokenConstants.KeyUsage_Signature_Verification;
 
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA");
-        KeyPair keyPair = keyGen.generateKeyPair();
-        Key privateKey = keyPair.getPrivate();
+        final KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA");
+        final KeyPair keyPair = keyGen.generateKeyPair();
+        final Key privateKey = keyPair.getPrivate();
 
         xmlSecurityProperties.addKeyNameMapping("mykey", privateKey);
 
-        InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
+        final InboundSecurityContext inboundSecurityContext = new InboundSecurityContextImpl();
 
-        XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
+        final XMLSecurityException exception = Assertions.assertThrows(XMLSecurityException.class, () -> {
             factory.getSecurityToken(keyInfoType, keyUsage, xmlSecurityProperties, inboundSecurityContext);
         });
         assertEquals("Key of type DSAPrivateKey not supported for a KeyName lookup", exception.getMessage());

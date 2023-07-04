@@ -50,17 +50,17 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
     @Test
     public void testRunFirstOutboundSignatureTimePerformance() throws Exception {
         System.out.println("Testing Outbound Signature Time Performance");
-        FileWriter outSignatureSamplesWriter = new FileWriter("target/signatureOutTimeSamples.txt", false);
+        final FileWriter outSignatureSamplesWriter = new FileWriter("target/signatureOutTimeSamples.txt", false);
         for (int i = 1; i <= runs; i++) {
             System.out.println("Run " + i);
 
-            File file = generateLargeXMLFile(i * xmlResizeFactor);
+            final File file = generateLargeXMLFile(i * xmlResizeFactor);
 
-            int startTagCount = countXMLStartTags(file);
+            final int startTagCount = countXMLStartTags(file);
             outSignatureSamplesWriter.write("" + startTagCount);
 
             long start = System.currentTimeMillis();
-            File signedFile = doStreamingSignatureOutbound(file, startTagCount);
+            final File signedFile = doStreamingSignatureOutbound(file, startTagCount);
             outSignatureSamplesWriter.write(" " + ((System.currentTimeMillis() - start) / 1000.0));
             signedFiles.put(startTagCount, signedFile);
             doGC();
@@ -79,14 +79,14 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
     @Test
     public void testRunSecondInboundSignatureTimePerformance() throws Exception {
         System.out.println("Testing Inbound Signature Time Performance");
-        FileWriter inSignatureSamplesWriter = new FileWriter("target/signatureInTimeSamples.txt", false);
+        final FileWriter inSignatureSamplesWriter = new FileWriter("target/signatureInTimeSamples.txt", false);
 
         int run = 1;
-        for (Entry<Integer, File> entry : signedFiles.entrySet()) {
+        for (final Entry<Integer, File> entry : signedFiles.entrySet()) {
             System.out.println("Run " + (run++));
 
-            File file = entry.getValue();
-            Integer startTagCount = entry.getKey();
+            final File file = entry.getValue();
+            final Integer startTagCount = entry.getKey();
             inSignatureSamplesWriter.write("" + startTagCount);
 
             long start = System.currentTimeMillis();
@@ -108,17 +108,17 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
     @Test
     public void testRunFirstOutboundEncryptionTimePerformance() throws Exception {
         System.out.println("Testing Outbound Encryption Time Performance");
-        FileWriter outEncryptionSamplesWriter = new FileWriter("target/encryptionOutTimeSamples.txt", false);
+        final FileWriter outEncryptionSamplesWriter = new FileWriter("target/encryptionOutTimeSamples.txt", false);
         for (int i = 1; i <= runs; i++) {
             System.out.println("Run " + i);
 
-            File file = generateLargeXMLFile(i * xmlResizeFactor);
+            final File file = generateLargeXMLFile(i * xmlResizeFactor);
 
-            int startTagCount = countXMLStartTags(file);
+            final int startTagCount = countXMLStartTags(file);
             outEncryptionSamplesWriter.write("" + startTagCount);
 
             long start = System.currentTimeMillis();
-            File encryptedFile = doStreamingEncryptionOutbound(file, startTagCount);
+            final File encryptedFile = doStreamingEncryptionOutbound(file, startTagCount);
             outEncryptionSamplesWriter.write(" " + ((System.currentTimeMillis() - start) / 1000.0));
             encryptedFiles.put(startTagCount, encryptedFile);
             doGC();
@@ -137,14 +137,14 @@ public class PerformanceTimingTest extends AbstractPerformanceTest {
     @Test
     public void testRunSecondInboundDecryptionTimePerformance() throws Exception {
         System.out.println("Testing Inbound Decryption Time Performance");
-        FileWriter inEncryptionSamplesWriter = new FileWriter("target/encryptionInTimeSamples.txt", false);
+        final FileWriter inEncryptionSamplesWriter = new FileWriter("target/encryptionInTimeSamples.txt", false);
 
         int run = 1;
-        for (Entry<Integer, File> entry : encryptedFiles.entrySet()) {
+        for (final Entry<Integer, File> entry : encryptedFiles.entrySet()) {
             System.out.println("Run " + (run++));
 
-            File file = entry.getValue();
-            Integer startTagCount = entry.getKey();
+            final File file = entry.getValue();
+            final Integer startTagCount = entry.getKey();
             inEncryptionSamplesWriter.write("" + startTagCount);
 
             long start = System.currentTimeMillis();

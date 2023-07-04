@@ -50,7 +50,7 @@ public abstract class AbstractBufferingOutputProcessor extends AbstractOutputPro
 
     @Override
     public void doFinal(OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
-        OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
+        final OutputProcessorChain subOutputProcessorChain = outputProcessorChain.createSubChain(this);
         flushBufferAndCallbackAfterHeader(subOutputProcessorChain, getXmlSecEventBuffer());
         //call final on the rest of the chain
         subOutputProcessorChain.doFinal();
@@ -69,7 +69,7 @@ public abstract class AbstractBufferingOutputProcessor extends AbstractOutputPro
 
         //loop through the rest of the document
         while (!xmlSecEventDeque.isEmpty()) {
-            XMLSecEvent xmlSecEvent = xmlSecEventDeque.pop();
+            final XMLSecEvent xmlSecEvent = xmlSecEventDeque.pop();
             outputProcessorChain.reset();
             outputProcessorChain.processEvent(xmlSecEvent);
         }

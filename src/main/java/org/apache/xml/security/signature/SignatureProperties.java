@@ -55,15 +55,15 @@ public class SignatureProperties extends SignatureElementProxy {
     public SignatureProperties(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);
 
-        Attr attr = element.getAttributeNodeNS(null, "Id");
+        final Attr attr = element.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             element.setIdAttributeNode(attr, true);
         }
 
-        Element[] propertyElems =
+        final Element[] propertyElems =
                 XMLUtils.selectDsNodes(getFirstChild(), Constants._TAG_SIGNATUREPROPERTY);
-        for (Element propertyElem : propertyElems) {
-            Attr propertyAttr = propertyElem.getAttributeNodeNS(null, "Id");
+        for (final Element propertyElem : propertyElems) {
+            final Attr propertyAttr = propertyElem.getAttributeNodeNS(null, "Id");
             if (propertyAttr != null) {
                 propertyElem.setIdAttributeNode(propertyAttr, true);
             }
@@ -76,7 +76,7 @@ public class SignatureProperties extends SignatureElementProxy {
      * @return the number of SignatureProperty elements
      */
     public int getLength() {
-        Element[] propertyElems =
+        final Element[] propertyElems =
             XMLUtils.selectDsNodes(getFirstChild(), Constants._TAG_SIGNATUREPROPERTY);
 
         return propertyElems.length;
@@ -92,14 +92,14 @@ public class SignatureProperties extends SignatureElementProxy {
      */
     public SignatureProperty item(int i) throws XMLSignatureException {
         try {
-            Element propertyElem =
+            final Element propertyElem =
                 XMLUtils.selectDsNode(getFirstChild(), Constants._TAG_SIGNATUREPROPERTY, i);
 
             if (propertyElem == null) {
                 return null;
             }
             return new SignatureProperty(propertyElem, this.baseURI);
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new XMLSignatureException(ex);
         }
     }

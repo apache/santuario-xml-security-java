@@ -44,9 +44,9 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
     protected boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             try {
-                X509Data x509Data = new X509Data(element, baseURI);
+                final X509Data x509Data = new X509Data(element, baseURI);
                 return x509Data.containsIssuerSerial();
-            } catch (XMLSecurityException e) {
+            } catch (final XMLSecurityException e) {
                 return false;
             }
         } else {
@@ -60,7 +60,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
 
-        X509Certificate cert =
+        final X509Certificate cert =
             this.engineResolveX509Certificate(element, baseURI, storage, secureValidation);
 
         if (cert != null) {
@@ -79,7 +79,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         X509Data x509data = null;
         try {
             x509data = new X509Data(element, baseURI);
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             return null;
         }
 
@@ -88,26 +88,26 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
         }
         try {
             if (storage == null) {
-                Object[] exArgs = { Constants._TAG_X509ISSUERSERIAL };
-                KeyResolverException ex =
+                final Object[] exArgs = { Constants._TAG_X509ISSUERSERIAL };
+                final KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
                 LOG.debug("", ex);
                 throw ex;
             }
 
-            int noOfISS = x509data.lengthIssuerSerial();
+            final int noOfISS = x509data.lengthIssuerSerial();
 
-            Iterator<Certificate> storageIterator = storage.getIterator();
+            final Iterator<Certificate> storageIterator = storage.getIterator();
             while (storageIterator.hasNext()) {
-                X509Certificate cert = (X509Certificate)storageIterator.next();
-                XMLX509IssuerSerial certSerial = new XMLX509IssuerSerial(element.getOwnerDocument(), cert);
+                final X509Certificate cert = (X509Certificate)storageIterator.next();
+                final XMLX509IssuerSerial certSerial = new XMLX509IssuerSerial(element.getOwnerDocument(), cert);
 
                 LOG.debug("Found Certificate Issuer: {}", certSerial.getIssuerName());
                 LOG.debug("Found Certificate Serial: {}", certSerial.getSerialNumber().toString());
 
                 for (int i = 0; i < noOfISS; i++) {
-                    XMLX509IssuerSerial xmliss = x509data.itemIssuerSerial(i);
+                    final XMLX509IssuerSerial xmliss = x509data.itemIssuerSerial(i);
 
                     LOG.debug("Found Element Issuer:     {}", xmliss.getIssuerName());
                     LOG.debug("Found Element Serial:     {}", xmliss.getSerialNumber().toString());
@@ -121,7 +121,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
             }
 
             return null;
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.debug("XMLSecurityException", ex);
 
             throw new KeyResolverException(ex);

@@ -110,7 +110,7 @@ public class XMLSecStartDocumentImpl extends XMLSecEventBaseImpl implements XMLS
                 }
             }
             writer.write(" ?>");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

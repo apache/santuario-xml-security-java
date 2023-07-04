@@ -140,9 +140,9 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     public XMLSecStartElement addAttributes(XMLSecStartElement xmlSecStartElement,
                                             List<XMLSecAttribute> attributeList) throws XMLStreamException {
 
-        List<XMLSecNamespace> declaredNamespaces = xmlSecStartElement.getOnElementDeclaredNamespaces();
+        final List<XMLSecNamespace> declaredNamespaces = xmlSecStartElement.getOnElementDeclaredNamespaces();
         for (int i = 0; i < attributeList.size(); i++) {
-            XMLSecAttribute xmlSecAttribute = attributeList.get(i);
+            final XMLSecAttribute xmlSecAttribute = attributeList.get(i);
             xmlSecStartElement.addAttribute(xmlSecAttribute);
 
             final QName attributeName = xmlSecAttribute.getName();
@@ -159,7 +159,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
             List<XMLSecNamespace> namespaces, List<XMLSecAttribute> attributes)
             throws XMLStreamException, XMLSecurityException {
 
-        XMLSecStartElement xmlSecStartElement = XMLSecEventFactory.createXmlSecStartElement(element, attributes, namespaces);
+        final XMLSecStartElement xmlSecStartElement = XMLSecEventFactory.createXmlSecStartElement(element, attributes, namespaces);
         outputAsEvent(outputProcessorChain, xmlSecStartElement);
     }
 
@@ -175,9 +175,9 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
 
         if (attributes != null) {
             for (int i = 0; i < attributes.size(); i++) {
-                XMLSecAttribute xmlSecAttribute = attributes.get(i);
-                QName attributeName = xmlSecAttribute.getName();
-                String attributeNamePrefix = attributeName.getPrefix();
+                final XMLSecAttribute xmlSecAttribute = attributes.get(i);
+                final QName attributeName = xmlSecAttribute.getName();
+                final String attributeNamePrefix = attributeName.getPrefix();
 
                 if (attributeNamePrefix != null && attributeNamePrefix.isEmpty()) {
                     continue;
@@ -191,7 +191,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
                 }
             }
         }
-        XMLSecStartElement xmlSecStartElement
+        final XMLSecStartElement xmlSecStartElement
                 = XMLSecEventFactory.createXmlSecStartElement(element, attributes, comparableNamespaces);
         outputAsEvent(outputProcessorChain, xmlSecStartElement);
         return xmlSecStartElement;
@@ -240,7 +240,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
 
     protected SecurePart securePartMatches(XMLSecStartElement xmlSecStartElement,
                                            OutputProcessorChain outputProcessorChain, String dynamicParts) {
-        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(dynamicParts);
+        final Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(dynamicParts);
         return securePartMatches(xmlSecStartElement, dynamicSecureParts);
     }
 
@@ -249,7 +249,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
         if (secureParts != null) {
             securePart = secureParts.get(xmlSecStartElement.getName());
             if (securePart == null) {
-                Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
+                final Attribute attribute = xmlSecStartElement.getAttributeByName(securityProperties.getIdAttributeNS());
                 if (attribute != null) {
                     securePart = secureParts.get(attribute.getValue());
                 }
@@ -261,11 +261,11 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
     protected void outputDOMElement(Element element, OutputProcessorChain outputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
 
-        NamedNodeMap namedNodeMap = element.getAttributes();
-        List<XMLSecAttribute> attributes = new ArrayList<>(namedNodeMap.getLength());
-        List<XMLSecNamespace> namespaces = new ArrayList<>(namedNodeMap.getLength());
+        final NamedNodeMap namedNodeMap = element.getAttributes();
+        final List<XMLSecAttribute> attributes = new ArrayList<>(namedNodeMap.getLength());
+        final List<XMLSecNamespace> namespaces = new ArrayList<>(namedNodeMap.getLength());
         for (int i = 0; i < namedNodeMap.getLength(); i++) {
-            Attr attribute = (Attr) namedNodeMap.item(i);
+            final Attr attribute = (Attr) namedNodeMap.item(i);
             if (attribute.getPrefix() == null) {
                 attributes.add(
                         createAttribute(
@@ -280,7 +280,7 @@ public abstract class AbstractOutputProcessor implements OutputProcessor {
             }
         }
 
-        QName elementName = new QName(element.getNamespaceURI(), element.getLocalName(), element.getPrefix());
+        final QName elementName = new QName(element.getNamespaceURI(), element.getLocalName(), element.getPrefix());
         createStartElementAndOutputAsEvent(outputProcessorChain, elementName, namespaces, attributes);
         Node childNode = element.getFirstChild();
         while (childNode != null) {

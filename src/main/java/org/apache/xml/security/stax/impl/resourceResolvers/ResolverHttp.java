@@ -95,7 +95,7 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
             if (tmp.getFragment() != null) {
                 tmp = new URI(tmp.getScheme(), tmp.getSchemeSpecificPart(), null);
             }
-            URL url = tmp.toURL();
+            final URL url = tmp.toURL();
             HttpURLConnection urlConnection;
             if (proxy != null) {
                 urlConnection = (HttpURLConnection)url.openConnection(proxy);

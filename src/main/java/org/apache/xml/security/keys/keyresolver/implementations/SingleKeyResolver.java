@@ -89,7 +89,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
         if (publicKey != null) {
-            String name = element.getFirstChild().getNodeValue();
+            final String name = element.getFirstChild().getNodeValue();
             if (keyName.equals(name)) {
                 return publicKey;
             }
@@ -112,7 +112,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
         if (secretKey != null) {
-            String name = element.getFirstChild().getNodeValue();
+            final String name = element.getFirstChild().getNodeValue();
             if (keyName.equals(name)) {
                 return secretKey;
             }
@@ -128,7 +128,7 @@ public class SingleKeyResolver extends KeyResolverSpi {
     ) throws KeyResolverException {
 
         if (privateKey != null) {
-            String name = element.getFirstChild().getNodeValue();
+            final String name = element.getFirstChild().getNodeValue();
             if (keyName.equals(name)) {
                 return privateKey;
             }

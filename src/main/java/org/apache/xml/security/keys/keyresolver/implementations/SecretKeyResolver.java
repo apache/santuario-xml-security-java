@@ -83,13 +83,13 @@ public class SecretKeyResolver extends KeyResolverSpi
         LOG.debug("Can I resolve {}?", element.getTagName());
 
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
-            String keyName = element.getFirstChild().getNodeValue();
+            final String keyName = element.getFirstChild().getNodeValue();
             try {
-                Key key = keyStore.getKey(keyName, password);
+                final Key key = keyStore.getKey(keyName, password);
                 if (key instanceof SecretKey) {
                     return (SecretKey) key;
                 }
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 LOG.debug("Cannot recover the key", e);
             }
         }

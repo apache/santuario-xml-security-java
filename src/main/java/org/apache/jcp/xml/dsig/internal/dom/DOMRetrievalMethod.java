@@ -108,7 +108,7 @@ public final class DOMRetrievalMethod extends DOMStructure
         if (!uri.isEmpty()) {
             try {
                 new URI(uri);
-            } catch (URISyntaxException e) {
+            } catch (final URISyntaxException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
         }
@@ -132,14 +132,14 @@ public final class DOMRetrievalMethod extends DOMStructure
         // get here node
         here = rmElem.getAttributeNodeNS(null, "URI");
 
-        boolean secVal = Utils.secureValidation(context);
+        final boolean secVal = Utils.secureValidation(context);
 
         // get Transforms, if specified
-        List<Transform> newTransforms = new ArrayList<>();
-        Element transformsElem = DOMUtils.getFirstChildElement(rmElem);
+        final List<Transform> newTransforms = new ArrayList<>();
+        final Element transformsElem = DOMUtils.getFirstChildElement(rmElem);
 
         if (transformsElem != null) {
-            String localName = transformsElem.getLocalName();
+            final String localName = transformsElem.getLocalName();
             String namespace = transformsElem.getNamespaceURI();
             if (!"Transforms".equals(localName) || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
@@ -148,7 +148,7 @@ public final class DOMRetrievalMethod extends DOMStructure
             Element transformElem =
                 DOMUtils.getFirstChildElement(transformsElem, "Transform", XMLSignature.XMLNS);
             while (transformElem != null) {
-                String name = transformElem.getLocalName();
+                final String name = transformElem.getLocalName();
                 namespace = transformElem.getNamespaceURI();
                 if (!"Transform".equals(name) || !XMLSignature.XMLNS.equals(namespace)) {
                     throw new MarshalException("Invalid element name: " +
@@ -157,7 +157,7 @@ public final class DOMRetrievalMethod extends DOMStructure
                 newTransforms.add
                     (new DOMTransform(transformElem, context, provider));
                 if (secVal && newTransforms.size() > DOMReference.MAXIMUM_TRANSFORM_COUNT) {
-                    String error = "A maximum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " "
+                    final String error = "A maximum of " + DOMReference.MAXIMUM_TRANSFORM_COUNT + " "
                         + "transforms per Reference are allowed with secure validation";
                     throw new MarshalException(error);
                 }
@@ -190,8 +190,8 @@ public final class DOMRetrievalMethod extends DOMStructure
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
-        Element rmElem = DOMUtils.createElement(ownerDoc, "RetrievalMethod",
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Element rmElem = DOMUtils.createElement(ownerDoc, "RetrievalMethod",
                                                 XMLSignature.XMLNS, dsPrefix);
 
         // add URI and Type attributes
@@ -200,12 +200,12 @@ public final class DOMRetrievalMethod extends DOMStructure
 
         // add Transforms elements
         if (!transforms.isEmpty()) {
-            Element transformsElem = DOMUtils.createElement(ownerDoc,
+            final Element transformsElem = DOMUtils.createElement(ownerDoc,
                                                             "Transforms",
                                                             XMLSignature.XMLNS,
                                                             dsPrefix);
             rmElem.appendChild(transformsElem);
-            for (Transform transform : transforms) {
+            for (final Transform transform : transforms) {
                 ((DOMTransform)transform).marshal(transformsElem,
                                                    dsPrefix, context);
             }
@@ -243,19 +243,19 @@ public final class DOMRetrievalMethod extends DOMStructure
 
         // pass dereferenced data through Transforms
         try {
-            for (Transform transform : transforms) {
+            for (final Transform transform : transforms) {
                 data = ((DOMTransform)transform).transform(data, context);
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new URIReferenceException(e);
         }
 
         // guard against RetrievalMethod loops
         if (data instanceof NodeSetData && Utils.secureValidation(context)) {
-            NodeSetData nsd = (NodeSetData)data;
-            Iterator<?> i = nsd.iterator();
+            final NodeSetData nsd = (NodeSetData)data;
+            final Iterator<?> i = nsd.iterator();
             if (i.hasNext()) {
-                Node root = (Node)i.next();
+                final Node root = (Node)i.next();
                 if ("RetrievalMethod".equals(root.getLocalName())) {
                     throw new URIReferenceException(
                         "It is forbidden to have one RetrievalMethod point " +
@@ -270,18 +270,18 @@ public final class DOMRetrievalMethod extends DOMStructure
     public XMLStructure dereferenceAsXMLStructure(XMLCryptoContext context)
         throws URIReferenceException
     {
-        boolean secVal = Utils.secureValidation(context);
-        ApacheData data = (ApacheData)dereference(context);
+        final boolean secVal = Utils.secureValidation(context);
+        final ApacheData data = (ApacheData)dereference(context);
         try (InputStream is = new ByteArrayInputStream(data.getXMLSignatureInput().getBytes())) {
-            Document doc = XMLUtils.read(is, secVal);
-            Element kiElem = doc.getDocumentElement();
+            final Document doc = XMLUtils.read(is, secVal);
+            final Element kiElem = doc.getDocumentElement();
             if ("X509Data".equals(kiElem.getLocalName())
                 && XMLSignature.XMLNS.equals(kiElem.getNamespaceURI())) {
                 return new DOMX509Data(kiElem);
             } else {
                 return null; // unsupported
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new URIReferenceException(e);
         }
     }
@@ -294,9 +294,9 @@ public final class DOMRetrievalMethod extends DOMStructure
         if (!(obj instanceof RetrievalMethod)) {
             return false;
         }
-        RetrievalMethod orm = (RetrievalMethod)obj;
+        final RetrievalMethod orm = (RetrievalMethod)obj;
 
-        boolean typesEqual = type == null ? orm.getType() == null
+        final boolean typesEqual = type == null ? orm.getType() == null
                                            : type.equals(orm.getType());
 
         return uri.equals(orm.getURI()) &&

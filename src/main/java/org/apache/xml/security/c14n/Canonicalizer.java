@@ -101,12 +101,12 @@ public final class Canonicalizer {
      */
     private Canonicalizer(String algorithmURI) throws InvalidCanonicalizerException {
         try {
-            Class<? extends CanonicalizerSpi> implementingClass =
+            final Class<? extends CanonicalizerSpi> implementingClass =
                 canonicalizerHash.get(algorithmURI);
 
             canonicalizerSpi = JavaUtils.newInstanceWithEmptyConstructor(implementingClass);
-        } catch (Exception e) {
-            Object[] exArgs = { algorithmURI };
+        } catch (final Exception e) {
+            final Object[] exArgs = { algorithmURI };
             throw new InvalidCanonicalizerException(
                 e, "signature.Canonicalizer.UnknownCanonicalizer", exArgs
             );
@@ -139,11 +139,11 @@ public final class Canonicalizer {
         throws AlgorithmAlreadyRegisteredException, ClassNotFoundException {
         JavaUtils.checkRegisterPermission();
         // check whether URI is already registered
-        Class<? extends CanonicalizerSpi> registeredClass =
+        final Class<? extends CanonicalizerSpi> registeredClass =
             canonicalizerHash.get(algorithmURI);
 
         if (registeredClass != null)  {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            final Object[] exArgs = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
 
@@ -166,10 +166,10 @@ public final class Canonicalizer {
         throws AlgorithmAlreadyRegisteredException, ClassNotFoundException {
         JavaUtils.checkRegisterPermission();
         // check whether URI is already registered
-        Class<? extends CanonicalizerSpi> registeredClass = canonicalizerHash.get(algorithmURI);
+        final Class<? extends CanonicalizerSpi> registeredClass = canonicalizerHash.get(algorithmURI);
 
         if (registeredClass != null)  {
-            Object[] exArgs = { algorithmURI, registeredClass };
+            final Object[] exArgs = { algorithmURI, registeredClass };
             throw new AlgorithmAlreadyRegisteredException("algorithm.alreadyRegistered", exArgs);
         }
 

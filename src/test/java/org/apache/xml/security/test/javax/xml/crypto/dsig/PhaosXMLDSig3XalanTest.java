@@ -67,8 +67,8 @@ public class PhaosXMLDSig3XalanTest {
 
     @Test
     public void test_signature_rsa_xpath_transform_enveloped() throws Exception {
-        String file = "signature-rsa-xpath-transform-enveloped.xml";
-        boolean coreValidity = validator.validate(file, new KeySelectors.RawX509KeySelector());
+        final String file = "signature-rsa-xpath-transform-enveloped.xml";
+        final boolean coreValidity = validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 }

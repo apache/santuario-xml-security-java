@@ -87,7 +87,7 @@ public class XMLSecEntityDeclarationImpl extends XMLSecEventBaseImpl implements 
                 writer.write(replacementText);
             }
             writer.write("\">");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

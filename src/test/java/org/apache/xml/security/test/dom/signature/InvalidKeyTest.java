@@ -47,7 +47,7 @@ public class InvalidKeyTest {
 
     @Test
     public void test() throws Exception {
-        KeyStore trustStore = KeyStore.getInstance("JKS");
+        final KeyStore trustStore = KeyStore.getInstance("JKS");
         try (FileInputStream input = new FileInputStream(
             resolveFile("src/test/resources/org/apache/xml/security/samples/input/truststore.jks"))) {
             trustStore.load(input, "testpw".toCharArray());
@@ -56,27 +56,27 @@ public class InvalidKeyTest {
         try {
             validate(trustStore.getCertificate("bedag-test").getPublicKey());
             throw new Exception("Failure expected on a DSA key");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // e.printStackTrace();
         }
         validate(trustStore.getCertificate("a70-garaio-frontend-u").getPublicKey());
     }
 
     private void validate(PublicKey pk) throws Exception {
-        File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
-        Document e = XMLUtils.read(file, false);
+        final File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
+        final Document e = XMLUtils.read(file, false);
         Node assertion = e.getFirstChild();
         while (!(assertion instanceof Element)) {
             assertion = assertion.getNextSibling();
         }
-        Attr attr = ((Element)assertion).getAttributeNodeNS(null, "AssertionID");
+        final Attr attr = ((Element)assertion).getAttributeNodeNS(null, "AssertionID");
         if (attr != null) {
             ((Element)assertion).setIdAttributeNode(attr, true);
         }
 
-        Element n = (Element)assertion.getLastChild();
+        final Element n = (Element)assertion.getLastChild();
 
-        XMLSignature si = new XMLSignature(n, "");
+        final XMLSignature si = new XMLSignature(n, "");
         si.checkSignatureValue(pk);
 
         // System.out.println("VALIDATION OK" );

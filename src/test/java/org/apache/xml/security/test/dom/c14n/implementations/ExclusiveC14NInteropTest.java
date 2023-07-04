@@ -64,7 +64,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @Test
     public void test_Y1() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml", true);
+        final String success = t("src/test/resources/interop/c14n/Y1", "exc-signature.xml", true);
 
         assertNull(success);
     }
@@ -77,7 +77,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @Test
     public void test_Y2() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
+        final String success = t("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
 
         assertNull(success);
     }
@@ -90,7 +90,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @Test
     public void test_Y3() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y3", "signature.xml", false);
+        final String success = t("src/test/resources/interop/c14n/Y3", "signature.xml", false);
 
         assertNull(success);
     }
@@ -103,7 +103,7 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @Test
     public void test_Y4() throws Exception {
 
-        String success = t("src/test/resources/interop/c14n/Y4", "signature.xml", true);
+        final String success = t("src/test/resources/interop/c14n/Y4", "signature.xml", true);
 
         assertNull(success);
     }
@@ -111,27 +111,27 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
     @Test
     public void test_xfilter2() throws Exception {
 
-        String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml", true);
+        final String success = t("src/test/resources/interop/xfilter2/merlin-xpath-filter2-three", "sign-spec.xml", true);
 
         assertNull(success);
     }
 
     private String t(String directory, String file, boolean secureValidation) throws Exception {
-        File f = XmlSecTestEnvironment.resolveFile(directory, file);
-        org.w3c.dom.Document doc = XMLUtils.read(f, false);
+        final File f = XmlSecTestEnvironment.resolveFile(directory, file);
+        final org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+        final Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
             .item(0);
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
-        boolean verify = signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
+        final XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secureValidation);
+        final boolean verify = signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
 
         LOG.debug("   signature.checkSignatureValue finished: " + verify);
 
         // if (!verify) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < signature.getSignedInfo().getLength(); i++) {
-            boolean refVerify =
+            final boolean refVerify =
                 signature.getSignedInfo().getVerificationResult(i);
             //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.html", signature.getSignedInfo().item(i).getHTMLRepresentation().getBytes());
 
@@ -144,15 +144,15 @@ public class ExclusiveC14NInteropTest extends InteropTestBase {
                 //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.txt", signature.getSignedInfo().item(i).getContentsAfterTransformation().getBytes());
                 //JavaUtils.writeBytesToFilename(directory + "/c14n-" + i + ".apache.html", signature.getSignedInfo().item(i).getHTMLRepresentation().getBytes());
 
-                Reference reference = signature.getSignedInfo().item(i);
-                int length = reference.getTransforms().getLength();
-                String algo = reference.getTransforms().item(length - 1).getURI();
+                final Reference reference = signature.getSignedInfo().item(i);
+                final int length = reference.getTransforms().getLength();
+                final String algo = reference.getTransforms().item(length - 1).getURI();
 
                 LOG.debug("Reference " + i + " failed: " + algo);
             }
         }
 
-        String r = sb.toString().trim();
+        final String r = sb.toString().trim();
         return r.isEmpty() ? null : r;
     }
 

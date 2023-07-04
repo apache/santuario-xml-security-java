@@ -54,7 +54,7 @@ public class KeyStoreResolver extends StorageResolverSpi {
         // Do a quick check on the keystore
         try {
             keyStore.aliases();
-        } catch (KeyStoreException ex) {
+        } catch (final KeyStoreException ex) {
             throw new StorageResolverException(ex);
         }
     }
@@ -81,17 +81,17 @@ public class KeyStoreResolver extends StorageResolverSpi {
          */
         public KeyStoreIterator(KeyStore keyStore) {
 
-            List<Certificate> tmpCerts = new ArrayList<>();
+            final List<Certificate> tmpCerts = new ArrayList<>();
             try {
-                Enumeration<String> aliases = keyStore.aliases();
+                final Enumeration<String> aliases = keyStore.aliases();
                 while (aliases.hasMoreElements()) {
-                    String alias = aliases.nextElement();
-                    Certificate cert = keyStore.getCertificate(alias);
+                    final String alias = aliases.nextElement();
+                    final Certificate cert = keyStore.getCertificate(alias);
                     if (cert != null) {
                         tmpCerts.add(cert);
                     }
                 }
-            } catch (KeyStoreException ex) {
+            } catch (final KeyStoreException ex) {
                 LOG.debug("Error reading certificates: {}", ex.getMessage());
             }
 

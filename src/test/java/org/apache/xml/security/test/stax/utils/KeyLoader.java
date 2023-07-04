@@ -34,10 +34,10 @@ public class KeyLoader {
     private static final File DIR = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys", "content");
 
     public static PublicKey loadPublicKey(String fileName, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(new File(DIR, fileName).getAbsolutePath()));
-        byte[] keyBytes = XMLUtils.decode(fileData);
-        KeyFactory kf = KeyFactory.getInstance(algorithm);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
+        final String fileData = new String(JavaUtils.getBytesFromFile(new File(DIR, fileName).getAbsolutePath()));
+        final byte[] keyBytes = XMLUtils.decode(fileData);
+        final KeyFactory kf = KeyFactory.getInstance(algorithm);
+        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);
     }
 

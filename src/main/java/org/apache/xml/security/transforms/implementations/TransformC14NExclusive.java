@@ -63,7 +63,7 @@ public class TransformC14NExclusive extends TransformSpi {
                 InclusiveNamespaces.ExclusiveCanonicalizationNamespace,
                 InclusiveNamespaces._TAG_EC_INCLUSIVENAMESPACES) == 1
             ) {
-                Element inclusiveElement =
+                final Element inclusiveElement =
                     XMLUtils.selectNode(
                         transformElement.getFirstChild(),
                         InclusiveNamespaces.ExclusiveCanonicalizationNamespace,
@@ -76,26 +76,26 @@ public class TransformC14NExclusive extends TransformSpi {
                         inclusiveElement, baseURI).getInclusiveNamespaces();
             }
 
-            Canonicalizer20010315Excl c14n = getCanonicalizer();
+            final Canonicalizer20010315Excl c14n = getCanonicalizer();
 
             if (os == null && (input.isOctetStream() || input.isElement() || input.isNodeSet())) {
                 try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                     c14n.engineCanonicalize(input, inclusiveNamespaces, writer, secureValidation);
                     writer.flush();
-                    XMLSignatureInput output = new XMLSignatureInput(writer.toByteArray());
+                    final XMLSignatureInput output = new XMLSignatureInput(writer.toByteArray());
                     output.setSecureValidation(secureValidation);
                     return output;
-                } catch (IOException ex) {
+                } catch (final IOException ex) {
                     throw new CanonicalizationException("empty", new Object[] {ex.getMessage()});
                 }
             } else {
                 c14n.engineCanonicalize(input, inclusiveNamespaces, os, secureValidation);
-                XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+                final XMLSignatureInput output = new XMLSignatureInput((byte[])null);
                 output.setSecureValidation(secureValidation);
                 output.setOutputStream(os);
                 return output;
             }
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new CanonicalizationException(ex);
         }
     }

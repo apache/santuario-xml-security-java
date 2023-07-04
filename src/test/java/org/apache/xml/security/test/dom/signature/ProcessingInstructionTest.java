@@ -60,14 +60,14 @@ public class ProcessingInstructionTest {
 
     @Test
     public void testProcessingInstruction() throws Exception {
-        File f = new File(dir, "upp_sign.xml");
-        Document doc = XMLUtils.read(f, false);
+        final File f = new File(dir, "upp_sign.xml");
+        final Document doc = XMLUtils.read(f, false);
 
         Node obj =
             doc.getElementsByTagNameNS("http://uri.etsi.org/01903/v1.3.2#", "QualifyingProperties").item(0);
         while (obj != null) {
             if (obj instanceof Element) {
-                Attr attr = ((Element)obj).getAttributeNode("Id");
+                final Attr attr = ((Element)obj).getAttributeNode("Id");
                 if (attr != null) {
                     ((Element)obj).setIdAttributeNode(attr, true);
                 }
@@ -75,18 +75,18 @@ public class ProcessingInstructionTest {
             obj = obj.getFirstChild();
         }
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
             (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
-        String baseUri = new File(".").toURI().toURL().toString();
-        XMLSignature signature = new XMLSignature(sigElement, baseUri);
+        final String baseUri = new File(".").toURI().toURL().toString();
+        final XMLSignature signature = new XMLSignature(sigElement, baseUri);
         signature.addResourceResolver(FileResolver.getInstance());
-        X509Certificate cert = signature.getKeyInfo().getX509Certificate();
+        final X509Certificate cert = signature.getKeyInfo().getX509Certificate();
         if (!signature.checkSignatureValue(cert)) {
             throw new Exception("Signature is invalid!");
         }
@@ -113,15 +113,15 @@ public class ProcessingInstructionTest {
         public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
             throws ResourceResolverException {
             try {
-                URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
+                final URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
 
-                FileInputStream inputStream = new FileInputStream(new File(dir, "out.xml"));
-                XMLSignatureInput result = new XMLSignatureInput(inputStream);
+                final FileInputStream inputStream = new FileInputStream(new File(dir, "out.xml"));
+                final XMLSignatureInput result = new XMLSignatureInput(inputStream);
 
                 result.setSourceURI(uriNew.toString());
 
                 return result;
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new ResourceResolverException(
                     ex, context.uriToResolve, context.baseUri, "generic.EmptyMessage"
                 );
@@ -143,7 +143,7 @@ public class ProcessingInstructionTest {
 
             // if the URI contains a fragment, ignore it
             if (newUri.getFragment() != null) {
-                URI uriNewNoFrag =
+                final URI uriNewNoFrag =
                     new URI(newUri.getScheme(), newUri.getSchemeSpecificPart(), null);
                 return uriNewNoFrag;
             }

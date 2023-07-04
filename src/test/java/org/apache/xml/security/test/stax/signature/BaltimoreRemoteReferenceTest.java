@@ -124,24 +124,24 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_fifteen_external_b64_dsa() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-b64-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            Key publicKey = getPublicKey("DSA", 15);
+            final Key publicKey = getPublicKey("DSA", 15);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -150,11 +150,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(publicKey);
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -171,25 +171,25 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_fifteen_external_dsa() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-external-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            Key publicKey = getPublicKey("DSA", 15);
+            final Key publicKey = getPublicKey("DSA", 15);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -198,11 +198,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(publicKey);
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -219,25 +219,25 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_twenty_three_external_b64_dsa() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-b64-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            Key publicKey = getPublicKey("DSA", 23);
+            final Key publicKey = getPublicKey("DSA", 23);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -246,11 +246,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(publicKey);
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -267,25 +267,25 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_twenty_three_external_dsa() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-external-dsa.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            Key publicKey = getPublicKey("DSA", 23);
+            final Key publicKey = getPublicKey("DSA", 23);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -294,11 +294,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(publicKey);
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -315,30 +315,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_keyname() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-keyname.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -347,11 +347,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -368,30 +368,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_retrievalmethod_rawx509crt() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-retrievalmethod-rawx509crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/balor.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -400,10 +400,10 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -415,22 +415,22 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_crt_crl() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt-crl.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -439,9 +439,9 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -453,22 +453,22 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_crt() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -477,9 +477,9 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -491,30 +491,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_is() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-is.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/macha.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -523,11 +523,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -544,30 +544,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_ski() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-ski.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/nemain.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -576,10 +576,10 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -591,30 +591,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_sn() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-x509-sn.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/badb.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -623,11 +623,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -643,30 +643,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_keyname_18() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-keyname.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/lugh.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -675,11 +675,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -696,30 +696,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_retrievalmethod_rawx509crt_18() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-retrievalmethod-rawx509crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/balor.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -728,10 +728,10 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -743,22 +743,22 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_crt_crl_18() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt-crl.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -767,9 +767,9 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -781,22 +781,22 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_crt_18() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-crt.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -805,9 +805,9 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -819,30 +819,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_is_18() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-is.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/macha.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -851,11 +851,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -872,30 +872,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_ski_18() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-ski.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/nemain.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -904,10 +904,10 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {
@@ -919,30 +919,30 @@ public class BaltimoreRemoteReferenceTest {
     @Test
     public void test_signature_x509_sn_18() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/signature-x509-sn.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // XMLUtils.outputDOM(document, System.out);
 
             // Set up the Key
-            CertificateFactory cf = CertificateFactory.getInstance("X509");
-            InputStream sourceCert =
+            final CertificateFactory cf = CertificateFactory.getInstance("X509");
+            final InputStream sourceCert =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmldsig-eighteen/certs/badb.crt");
 
-            Certificate cert = cf.generateCertificate(sourceCert);
+            final Certificate cert = cf.generateCertificate(sourceCert);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -951,11 +951,11 @@ public class BaltimoreRemoteReferenceTest {
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-            XMLStreamReader securityStreamReader =
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+            final XMLStreamReader securityStreamReader =
                     inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
             StAX2DOM.readDoc(securityStreamReader);
@@ -971,7 +971,7 @@ public class BaltimoreRemoteReferenceTest {
 
     private static PublicKey getPublicKey(String algo, int number)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
-        KeyFactory kf = KeyFactory.getInstance(algo);
+        final KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec = null;
         if ("DSA".equalsIgnoreCase(algo)) {
             if (number == 15) {
@@ -1007,36 +1007,36 @@ public class BaltimoreRemoteReferenceTest {
         if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {      //NOPMD
 
         } else if (SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
-            DefaultTokenSecurityEvent tokenEvent =
+            final DefaultTokenSecurityEvent tokenEvent =
                     (DefaultTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.DefaultToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
         } else if (SecurityTokenConstants.KeyIdentifier_KeyName.equals(keyIdentifier)) {
-            KeyNameTokenSecurityEvent tokenEvent =
+            final KeyNameTokenSecurityEvent tokenEvent =
                     (KeyNameTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.KeyNameToken);
             assertNotNull(tokenEvent);
             if (key instanceof SecretKey) {
-                Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+                final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
                 assertEquals(processedKey, key);
             } else {
-                Key processedKey = tokenEvent.getSecurityToken().getPublicKey();
+                final Key processedKey = tokenEvent.getSecurityToken().getPublicKey();
                 assertEquals(processedKey, key);
             }
             assertNotNull(((KeyNameSecurityToken) tokenEvent.getSecurityToken()).getKeyName());
         } else {
-            X509TokenSecurityEvent tokenEvent =
+            final X509TokenSecurityEvent tokenEvent =
                     (X509TokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.X509Token);
             assertNotNull(tokenEvent);
-            X509SecurityToken x509SecurityToken =
+            final X509SecurityToken x509SecurityToken =
                     (X509SecurityToken) tokenEvent.getSecurityToken();
             assertNotNull(x509SecurityToken);
             if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, key);
                 assertNotNull(((X509SubjectNameSecurityToken) x509SecurityToken).getSubjectName());
             } else if (SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, key);
                 assertNotNull(((X509IssuerSerialSecurityToken) x509SecurityToken).getIssuerName());
                 assertNotNull(((X509IssuerSerialSecurityToken) x509SecurityToken).getSerialNumber());

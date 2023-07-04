@@ -96,7 +96,7 @@ public abstract class AbstractSecurityToken implements SecurityToken {
         if (this.publicKey != null) {
             return this.publicKey;
         }
-        X509Certificate[] x509Certificates = getX509Certificates();
+        final X509Certificate[] x509Certificates = getX509Certificates();
         if (x509Certificates != null && x509Certificates.length > 0) {
             this.publicKey = x509Certificates[0].getPublicKey();
         }

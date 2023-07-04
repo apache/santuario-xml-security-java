@@ -97,8 +97,8 @@ public class XMLEncryption11Test {
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
 
-        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
-        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+        final Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
 
         cardNumber = retrieveCCNumber(doc);
         nodeCount = countNodes(doc);
@@ -111,17 +111,17 @@ public class XMLEncryption11Test {
     public void testKeyWrappingRSA2048Outbound() throws Exception {
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
 
-        String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-2048__aes128-gcm__rsa-oaep-mgf1p.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-2048__aes128-gcm__rsa-oaep-mgf1p.xml";
 
-        Document dd = decryptElement(filename, rsaKey);
+        final Document dd = decryptElement(filename, rsaKey);
         checkDecryptedDoc(dd, true);
     }
 
@@ -133,33 +133,33 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks";
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
-        X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
 
         // Perform encryption
-        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey sessionKey = keygen.generateKey();
+        final SecretKey sessionKey = keygen.generateKey();
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
 
-        Document ed = encryptDocument(filename, securePart, x509Certificate.getPublicKey(),
+        final Document ed = encryptDocument(filename, securePart, x509Certificate.getPublicKey(),
                 "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p", null, null,
                 sessionKey, "http://www.w3.org/2009/xmlenc11#aes128-gcm",
                 null);
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey);
+        final Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -172,18 +172,18 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
 
         // Perform encryption
-        String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-3072__aes192-gcm__rsa-oaep-mgf1p__Sha256.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-3072__aes192-gcm__rsa-oaep-mgf1p__Sha256.xml";
 
-        Document dd = decryptElement(filename, rsaKey);
+        final Document dd = decryptElement(filename, rsaKey);
         checkDecryptedDoc(dd, true);
     }
 
@@ -195,26 +195,26 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
-        X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
 
         // Perform encryption
-        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey sessionKey = keygen.generateKey();
+        final SecretKey sessionKey = keygen.generateKey();
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
 
-        Document ed = encryptDocument(filename, securePart,
+        final Document ed = encryptDocument(filename, securePart,
                 x509Certificate.getPublicKey(), "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p",
                 "http://www.w3.org/2001/04/xmlenc#sha256",
                 null,
@@ -223,7 +223,7 @@ public class XMLEncryption11Test {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey);
+        final Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -236,17 +236,17 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
 
-        String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-3072__aes256-gcm__rsa-oaep__Sha384-MGF_Sha1.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-3072__aes256-gcm__rsa-oaep__Sha384-MGF_Sha1.xml";
 
-        Document dd = decryptElement(filename, rsaKey);
+        final Document dd = decryptElement(filename, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -259,26 +259,26 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-3072_SHA256WithRSA.jks";
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
-        X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
 
         // Perform encryption
-        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey sessionKey = keygen.generateKey();
+        final SecretKey sessionKey = keygen.generateKey();
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
 
-        Document ed = encryptDocument(filename, securePart,
+        final Document ed = encryptDocument(filename, securePart,
                 x509Certificate.getPublicKey(), "http://www.w3.org/2009/xmlenc11#rsa-oaep",
                 "http://www.w3.org/2001/04/xmldsig-more#sha384",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha1",
@@ -287,7 +287,7 @@ public class XMLEncryption11Test {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey);
+        final Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -300,17 +300,17 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
 
-        String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-4096__aes256-gcm__rsa-oaep__Sha512-MGF_Sha1_PSource.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/cipherText__RSA-4096__aes256-gcm__rsa-oaep__Sha512-MGF_Sha1_PSource.xml";
 
-        Document dd = decryptElement(filename, rsaKey);
+        final Document dd = decryptElement(filename, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -323,27 +323,27 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
-        X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
 
         // Perform encryption
-        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey sessionKey = keygen.generateKey();
+        final SecretKey sessionKey = keygen.generateKey();
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
 
-        Document ed = encryptDocument(filename, securePart,
+        final Document ed = encryptDocument(filename, securePart,
                 x509Certificate.getPublicKey(), "http://www.w3.org/2009/xmlenc11#rsa-oaep",
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha1",
@@ -352,7 +352,7 @@ public class XMLEncryption11Test {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey);
+        final Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -365,27 +365,27 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
-        X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
 
         // Perform encryption
-        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey sessionKey = keygen.generateKey();
+        final SecretKey sessionKey = keygen.generateKey();
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
 
-        Document ed = encryptDocument(filename, securePart,
+        final Document ed = encryptDocument(filename, securePart,
                 x509Certificate.getPublicKey(), "http://www.w3.org/2009/xmlenc11#rsa-oaep",
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
@@ -394,7 +394,7 @@ public class XMLEncryption11Test {
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
         // Perform decryption
-        Document dd = decryptElement(ed, rsaKey);
+        final Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
         checkDecryptedDoc(dd, true);
     }
@@ -407,27 +407,27 @@ public class XMLEncryption11Test {
 
         assumeFalse(isIBMJdK);
 
-        String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
+        final String keystore = "org/w3c/www/interop/xmlenc-core-11/RSA-4096_SHA256WithRSA.jks";
 
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(this.getClass().getClassLoader().getResourceAsStream(keystore), "passwd".toCharArray());
 
-        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+        final KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
                 keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
-        PrivateKey rsaKey = pkEntry.getPrivateKey();
-        X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
+        final PrivateKey rsaKey = pkEntry.getPrivateKey();
+        final X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
 
         // Perform encryption
-        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+        final String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey sessionKey = keygen.generateKey();
+        final SecretKey sessionKey = keygen.generateKey();
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
 
-        Document ed = encryptDocument(filename, securePart,
+        final Document ed = encryptDocument(filename, securePart,
                 x509Certificate.getPublicKey(), "http://www.w3.org/2009/xmlenc11#rsa-oaep",
                 "http://www.w3.org/2001/04/xmlenc#sha512",
                 "http://www.w3.org/2009/xmlenc11#mgf1sha512",
@@ -435,8 +435,8 @@ public class XMLEncryption11Test {
                 XMLUtils.decode("ZHVtbXkxMjM=".getBytes(StandardCharsets.UTF_8)));
         // XMLUtils.outputDOM(ed.getFirstChild(), System.out);
 
-        NodeList nl = ed.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "CipherValue");
-        Element cipherValue = (Element) nl.item(1);
+        final NodeList nl = ed.getElementsByTagNameNS("http://www.w3.org/2001/04/xmlenc#", "CipherValue");
+        final Element cipherValue = (Element) nl.item(1);
         String elementText = cipherValue.getTextContent();
         elementText = elementText.substring(0, 100) + 0 + elementText.substring(100);
         cipherValue.setTextContent(elementText);
@@ -445,10 +445,10 @@ public class XMLEncryption11Test {
         try {
             decryptElementStAX(ed, rsaKey);
             fail("Exception expected");
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             assertTrue(e.getCause() instanceof IOException);
             assertTrue(e.getCause().getCause() instanceof BadPaddingException);
-            String cause = e.getCause().getCause().getMessage();
+            final String cause = e.getCause().getCause().getMessage();
             assertTrue("mac check in GCM failed".equals(cause) || "Tag mismatch!".equals(cause));
         }
     }
@@ -460,7 +460,7 @@ public class XMLEncryption11Test {
      * decrypt it and return the resulting document
      */
     private Document decryptElement(String filename, Key rsaKey) throws Exception {
-        Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
+        final Document doc = XMLUtils.read(this.getClass().getClassLoader().getResourceAsStream(filename), false);
 
         return decryptElement(doc, rsaKey);
     }
@@ -472,7 +472,7 @@ public class XMLEncryption11Test {
      * decrypt it and return the resulting document
      */
     private Document decryptElement(Document doc, Key rsaKey) throws Exception {
-        Document clonedDocument = (Document) doc.cloneNode(true);
+        final Document clonedDocument = (Document) doc.cloneNode(true);
         decryptElementDOM(doc, rsaKey);
         return decryptElementStAX(clonedDocument, rsaKey);
     }
@@ -481,19 +481,19 @@ public class XMLEncryption11Test {
      * Decrypt using StAX API
      */
     private Document decryptElementStAX(Document doc, Key rsaKey) throws Exception {
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setDecryptionKey(rsaKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
 
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(doc), new StreamResult(baos));
 
         final XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
-        XMLStreamReader securityStreamReader =
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         return StAX2DOM.readDoc(securityStreamReader);
@@ -505,28 +505,28 @@ public class XMLEncryption11Test {
     private Document decryptElementDOM(Document doc, Key rsaKey) throws Exception {
 
         // Create the XMLCipher element
-        XMLCipher cipher = XMLCipher.getInstance();
+        final XMLCipher cipher = XMLCipher.getInstance();
 
         // Need to pre-load the Encrypted Data so we can get the key info
-        Element ee =
+        final Element ee =
                 (Element) doc.getElementsByTagNameNS(
                         "http://www.w3.org/2001/04/xmlenc#", "EncryptedData"
                 ).item(0);
         cipher.init(XMLCipher.DECRYPT_MODE, null);
-        EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
+        final EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
 
-        KeyInfo ki = encryptedData.getKeyInfo();
-        EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
+        final KeyInfo ki = encryptedData.getKeyInfo();
+        final EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
 
-        XMLCipher cipher2 = XMLCipher.getInstance();
+        final XMLCipher cipher2 = XMLCipher.getInstance();
         cipher2.init(XMLCipher.UNWRAP_MODE, rsaKey);
-        Key key =
+        final Key key =
                 cipher2.decryptKey(
                         encryptedKey, encryptedData.getEncryptionMethod().getAlgorithm()
                 );
 
         cipher.init(XMLCipher.DECRYPT_MODE, key);
-        Document dd = cipher.doFinal(doc, ee);
+        final Document dd = cipher.doFinal(doc, ee);
 
         return dd;
     }
@@ -540,8 +540,8 @@ public class XMLEncryption11Test {
             throws Exception {
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
@@ -556,13 +556,13 @@ public class XMLEncryption11Test {
 
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(filename);
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -572,28 +572,28 @@ public class XMLEncryption11Test {
             document = XMLUtils.read(is, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
+        final NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
         assertEquals(nodeList.getLength(), 0);
 
-        NodeList encryptionMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "EncryptionMethod");
+        final NodeList encryptionMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "EncryptionMethod");
         assertEquals(2, encryptionMethodElements.getLength());
         assertEquals(encryptionMethodAlgo, ((Element) encryptionMethodElements.item(0)).getAttribute("Algorithm"));
         assertEquals(encryptedKeyAlgo, ((Element) encryptionMethodElements.item(1)).getAttribute("Algorithm"));
 
         if (digestMethodAlgo != null) {
-            NodeList digestMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_DSIG, "DigestMethod");
+            final NodeList digestMethodElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_DSIG, "DigestMethod");
             assertEquals(1, digestMethodElements.getLength());
             assertEquals(digestMethodAlgo, ((Element) digestMethodElements.item(0)).getAttribute("Algorithm"));
         }
         if (mgfAlgo != null) {
-            NodeList mfgElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, "MGF");
+            final NodeList mfgElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, "MGF");
             assertEquals(1, mfgElements.getLength());
             assertEquals(mgfAlgo, ((Element) mfgElements.item(0)).getAttribute("Algorithm"));
         }
         if (oaepParams != null) {
-            NodeList oaepParamsElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "OAEPparams");
+            final NodeList oaepParamsElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC, "OAEPparams");
             assertEquals(1, oaepParamsElements.getLength());
-            String content = XMLUtils.getFullTextChildrenFromNode(oaepParamsElements.item(0));
+            final String content = XMLUtils.getFullTextChildrenFromNode(oaepParamsElements.item(0));
             assertArrayEquals(oaepParams, XMLUtils.decode(content));
         }
         return document;
@@ -638,15 +638,15 @@ public class XMLEncryption11Test {
             throws javax.xml.transform.TransformerException,
             XPathExpressionException {
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
-        Map<String, String> namespace = new HashMap<>();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
+        final Map<String, String> namespace = new HashMap<>();
         namespace.put("x", "urn:example:po");
-        DSNamespaceContext context = new DSNamespaceContext(namespace);
+        final DSNamespaceContext context = new DSNamespaceContext(namespace);
         xpath.setNamespaceContext(context);
 
-        String expression = "//x:Number/text()";
-        Node ccnumElt =
+        final String expression = "//x:Number/text()";
+        final Node ccnumElt =
                 (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
         if (ccnumElt != null) {
@@ -662,12 +662,12 @@ public class XMLEncryption11Test {
      */
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
-        String cc = retrieveCCNumber(d);
+        final String cc = retrieveCCNumber(d);
         assertEquals(cardNumber, cc);
 
         // Test cc numbers
         if (doNodeCheck) {
-            int myNodeCount = countNodes(d);
+            final int myNodeCount = countNodes(d);
 
             assertTrue(
                 myNodeCount > 0 && myNodeCount == nodeCount, "Node count mismatches"

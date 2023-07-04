@@ -60,8 +60,8 @@ public class DOMNamespaceContextTest {
 
     @Test
     public void testUnboundDefaultNamespace() throws Exception {
-        Document document = createDocument("<root/>");
-        DOMNamespaceContext namespaceContext = new DOMNamespaceContext(document);
+        final Document document = createDocument("<root/>");
+        final DOMNamespaceContext namespaceContext = new DOMNamespaceContext(document);
         assertThrows(IllegalArgumentException.class, () -> namespaceContext.getNamespaceURI(null));
         assertThat(namespaceContext.getNamespaceURI(DEFAULT_NS_PREFIX), is(equalTo(NULL_NS_URI)));
         assertThat(namespaceContext.getNamespaceURI(XML_NS_PREFIX), is(equalTo(XML_NS_URI)));
@@ -76,10 +76,10 @@ public class DOMNamespaceContextTest {
 
     @Test
     public void testBoundDefaultNamespace() throws Exception {
-        Document document = createDocument("<root xmlns='urn:ns'/>");
-        TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
-        Node root = walker.nextNode();
-        DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
+        final Document document = createDocument("<root xmlns='urn:ns'/>");
+        final TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
+        final Node root = walker.nextNode();
+        final DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
         assertThrows(IllegalArgumentException.class, () -> namespaceContext.getNamespaceURI(null));
         assertThat(namespaceContext.getNamespaceURI(DEFAULT_NS_PREFIX), is(equalTo("urn:ns")));
         assertThat(namespaceContext.getNamespaceURI(XML_NS_PREFIX), is(equalTo(XML_NS_URI)));
@@ -95,15 +95,15 @@ public class DOMNamespaceContextTest {
 
     @Test
     public void testNamespaceInheritance() throws Exception {
-        Document document = createDocument("<root xmlns='urn:ns'><branch xmlns:ns1='urn:ns1'/></root>");
-        TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
-        Node root = walker.nextNode();
-        DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
+        final Document document = createDocument("<root xmlns='urn:ns'><branch xmlns:ns1='urn:ns1'/></root>");
+        final TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
+        final Node root = walker.nextNode();
+        final DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
         assertThat(namespaceContext.getNamespaceURI(DEFAULT_NS_PREFIX), is(equalTo("urn:ns")));
         assertThat(namespaceContext.getPrefix("urn:ns"), is(equalTo(DEFAULT_NS_PREFIX)));
         assertThat(namespaceContext.getNamespaceURI("urn:ns1"), is(equalTo(DEFAULT_NS_PREFIX)));
         assertThat(namespaceContext.getPrefix("ns1"), is(nullValue()));
-        Node branch = walker.nextNode();
+        final Node branch = walker.nextNode();
         namespaceContext.setContext(branch);
         assertThat(namespaceContext.getNamespaceURI(DEFAULT_NS_PREFIX), is(equalTo("urn:ns")));
         assertThat(namespaceContext.getPrefix("urn:ns"), is(equalTo(DEFAULT_NS_PREFIX)));
@@ -113,14 +113,14 @@ public class DOMNamespaceContextTest {
 
     @Test
     public void testOverriddenDefaultNamespace() throws Exception {
-        Document document = createDocument("<root xmlns='urn:ns1'><branch xmlns='urn:ns2'/></root>");
-        TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
-        Node root = walker.nextNode();
-        DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
+        final Document document = createDocument("<root xmlns='urn:ns1'><branch xmlns='urn:ns2'/></root>");
+        final TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
+        final Node root = walker.nextNode();
+        final DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
         assertThat(namespaceContext.getNamespaceURI(DEFAULT_NS_PREFIX), is(equalTo("urn:ns1")));
         assertThat(namespaceContext.getPrefix("urn:ns1"), is(equalTo(DEFAULT_NS_PREFIX)));
         assertThat(namespaceContext.getPrefix("urn:ns2"), is(nullValue()));
-        Node branch = walker.nextNode();
+        final Node branch = walker.nextNode();
         namespaceContext.setContext(branch);
         assertThat(namespaceContext.getNamespaceURI(DEFAULT_NS_PREFIX), is(equalTo("urn:ns2")));
         assertThat(namespaceContext.getPrefix("urn:ns2"), is(equalTo(DEFAULT_NS_PREFIX)));
@@ -129,10 +129,10 @@ public class DOMNamespaceContextTest {
 
     @Test
     public void testGetPrefixesIsUnsupported() throws Exception {
-        Document document = createDocument("<root/>");
-        TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
-        Node root = walker.nextNode();
-        DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
+        final Document document = createDocument("<root/>");
+        final TreeWalker walker = ((DocumentTraversal) document).createTreeWalker(document, SHOW_ELEMENT, null, true);
+        final Node root = walker.nextNode();
+        final DOMNamespaceContext namespaceContext = new DOMNamespaceContext(root);
         assertThrows(UnsupportedOperationException.class, () -> namespaceContext.getPrefixes(NULL_NS_URI));
     }
 }

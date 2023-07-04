@@ -40,7 +40,7 @@ public class SignatureValidatorEdDSATest extends EdDSATestAbstract {
 
     @BeforeEach
     public void before() {
-        String base = System.getProperty("basedir", "./");
+        final String base = System.getProperty("basedir", "./");
         testInstance = new SignatureValidator(Paths.get(base, "src", "test", "resources", "javax", "xml", "crypto", "dsig", "eddsa").toFile());
     }
 
@@ -54,11 +54,11 @@ public class SignatureValidatorEdDSATest extends EdDSATestAbstract {
             "envelopingInvalidSignatureEd25519.xml,false,Invalid signature should fail!",
             "envelopingInvalidSignatureEd448.xml,false,Invalid signature should fail!"})
     public void test_enveloping_signature_with_ID(String filename, String result, String message) throws Exception {
-        DOMValidateContext vc = testInstance.getValidateContext
+        final DOMValidateContext vc = testInstance.getValidateContext
                 (filename, new KeySelectors.RawX509KeySelector());
         updateIdReferences(vc);
 
-        boolean coreValidity = testInstance.validate(vc);
+        final boolean coreValidity = testInstance.validate(vc);
         // assert expected result
         assertEquals(Boolean.valueOf(result), coreValidity, message);
     }

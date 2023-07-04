@@ -73,36 +73,36 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     @Test
     public void testSignatureVerificationWithExternalFilesystemXMLReference() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
-        File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
+        final File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
 
-        ReferenceInfo referenceInfo = new ReferenceInfo(
+        final ReferenceInfo referenceInfo = new ReferenceInfo(
                 file.toURI().toString(),
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1",
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<>();
+        final List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
                 document,
                 localNames,
@@ -114,8 +114,8 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -124,10 +124,10 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         StAX2DOM.readDoc(securityStreamReader);
     }
@@ -135,38 +135,38 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     @Test
     public void testSignatureVerificationWithExternalFilesystemBinaryReference() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        File file = resolveFile(
+        final File file = resolveFile(
             "target/test-classes/org/apache/xml/security/test/stax/signature/SignatureVerificationReferenceURIResolverTest.class");
 
-        ReferenceInfo referenceInfo = new ReferenceInfo(
+        final ReferenceInfo referenceInfo = new ReferenceInfo(
                 file.toURI().toString(),
                 null,
                 "http://www.w3.org/2000/09/xmldsig#sha1",
                 true
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<>();
+        final List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
                 document,
                 localNames,
@@ -178,8 +178,8 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -188,10 +188,10 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         StAX2DOM.readDoc(securityStreamReader);
     }
@@ -199,46 +199,46 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
     @Test
     public void testSignatureVerificationWithExternalHttpReference() throws Exception {
 
-        Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
+        final Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
         try {
             ResolverHttp.setProxy(proxy);
 
-            Map<String, String> resolverProperties = new HashMap<>();
+            final Map<String, String> resolverProperties = new HashMap<>();
             resolverProperties.put("http.proxy.host", ((InetSocketAddress)proxy.address()).getAddress().getHostAddress());
             resolverProperties.put("http.proxy.port", "" + ((InetSocketAddress)proxy.address()).getPort());
-            ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP(resolverProperties);
+            final ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP(resolverProperties);
 
             // Read in plaintext document
-            InputStream sourceDocument =
+            final InputStream sourceDocument =
                     this.getClass().getClassLoader().getResourceAsStream(
                             "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            final Document document = XMLUtils.read(sourceDocument, false);
 
             // Set up the Key
-            KeyStore keyStore = KeyStore.getInstance("jks");
+            final KeyStore keyStore = KeyStore.getInstance("jks");
             keyStore.load(
                     this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                     "default".toCharArray()
             );
-            Key key = keyStore.getKey("transmitter", "default".toCharArray());
-            X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+            final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+            final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
             // Sign using DOM
-            List<String> localNames = new ArrayList<>();
+            final List<String> localNames = new ArrayList<>();
             localNames.add("PaymentInfo");
 
-            ReferenceInfo referenceInfo = new ReferenceInfo(
+            final ReferenceInfo referenceInfo = new ReferenceInfo(
                     "http://www.w3.org/Signature/2002/04/xml-stylesheet.b64",
                     null,
                     "http://www.w3.org/2000/09/xmldsig#sha1",
                     true
             );
 
-            List<ReferenceInfo> referenceInfos = new ArrayList<>();
+            final List<ReferenceInfo> referenceInfos = new ArrayList<>();
             referenceInfos.add(referenceInfo);
 
-            XMLSignature sig = signUsingDOM(
+            final XMLSignature sig = signUsingDOM(
                     "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
                     document,
                     localNames,
@@ -251,8 +251,8 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
             sig.addKeyInfo(cert);
 
             // Convert Document to a Stream Reader
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
             transformer.transform(new DOMSource(document), new StreamResult(baos));
 
             XMLStreamReader xmlStreamReader = null;
@@ -261,10 +261,10 @@ public class SignatureVerificationReferenceURIResolverRemoteReferenceTest extend
             }
 
             // Verify signature
-            XMLSecurityProperties properties = new XMLSecurityProperties();
+            final XMLSecurityProperties properties = new XMLSecurityProperties();
             properties.setSignatureVerificationKey(cert.getPublicKey());
-            InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-            XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+            final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+            final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
             StAX2DOM.readDoc(securityStreamReader);
         } finally {

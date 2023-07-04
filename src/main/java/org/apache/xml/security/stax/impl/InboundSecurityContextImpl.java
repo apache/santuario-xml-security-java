@@ -45,7 +45,7 @@ public class InboundSecurityContextImpl extends AbstractSecurityContextImpl impl
     @Override
     protected void forwardSecurityEvent(SecurityEvent securityEvent) throws XMLSecurityException {
         if (!InboundSecurityContextImpl.allowMD5Algorithm && SecurityEventConstants.AlgorithmSuite.equals(securityEvent.getSecurityEventType())) {
-            AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = (AlgorithmSuiteSecurityEvent)securityEvent;
+            final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = (AlgorithmSuiteSecurityEvent)securityEvent;
             if (algorithmSuiteSecurityEvent.getAlgorithmURI().contains("md5") ||
                     algorithmSuiteSecurityEvent.getAlgorithmURI().contains("MD5")) {
                 throw new XMLSecurityException("secureProcessing.AllowMD5Algorithm");

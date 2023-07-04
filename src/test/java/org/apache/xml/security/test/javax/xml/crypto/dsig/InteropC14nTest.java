@@ -56,9 +56,9 @@ public class InteropC14nTest {
     @Test
     public void test_y1_exc_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y1"));
-        String file = "exc-signature.xml";
+        final String file = "exc-signature.xml";
 
-        boolean coreValidity = validator.validate
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
 
@@ -78,7 +78,7 @@ public class InteropC14nTest {
     @Test
     public void test_y3_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y3"));
-        String file = "signature.xml";
+        final String file = "signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
@@ -92,7 +92,7 @@ public class InteropC14nTest {
     @Test
     public void test_y4_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y4"));
-        String file = "signature.xml";
+        final String file = "signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
@@ -107,7 +107,7 @@ public class InteropC14nTest {
     @Disabled
     public void test_y5_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y5"));
-        String file = "signature.xml";
+        final String file = "signature.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
@@ -122,7 +122,7 @@ public class InteropC14nTest {
     @Disabled
     public void test_y5_signatureCommented() throws Exception {
         validator = new SignatureValidator(new File(base, "Y5"));
-        String file = "signatureCommented.xml";
+        final String file = "signatureCommented.xml";
 
         boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());

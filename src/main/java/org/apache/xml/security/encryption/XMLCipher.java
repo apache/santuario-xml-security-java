@@ -292,7 +292,7 @@ public class XMLCipher {
     private List<KeyResolverSpi> internalKeyResolvers;
 
     static {
-        Set<String> encryptionAlgorithms = new HashSet<>();
+        final Set<String> encryptionAlgorithms = new HashSet<>();
         encryptionAlgorithms.add(TRIPLEDES);
         encryptionAlgorithms.add(AES_128);
         encryptionAlgorithms.add(AES_256);
@@ -356,7 +356,7 @@ public class XMLCipher {
     }
 
     private static Serializer createSerializer(String canonAlg, boolean secureValidation) throws XMLEncryptionException {
-        String c14nAlg = canonAlg != null ? canonAlg : Canonicalizer.ALGO_ID_C14N_PHYSICAL;
+        final String c14nAlg = canonAlg != null ? canonAlg : Canonicalizer.ALGO_ID_C14N_PHYSICAL;
 
         try {
             if (HAVE_FUNCTIONAL_IDENTITY_TRANSFORMER) {
@@ -857,9 +857,9 @@ public class XMLCipher {
         }
         encryptData(contextDocument, element, false);
 
-        Element encryptedElement = factory.toElement(ed);
+        final Element encryptedElement = factory.toElement(ed);
 
-        Node sourceParent = element.getParentNode();
+        final Node sourceParent = element.getParentNode();
         sourceParent.replaceChild(encryptedElement, element);
 
         return contextDocument;
@@ -893,7 +893,7 @@ public class XMLCipher {
         }
         encryptData(contextDocument, element, true);
 
-        Element encryptedElement = factory.toElement(ed);
+        final Element encryptedElement = factory.toElement(ed);
 
         removeContent(element);
         element.appendChild(encryptedElement);
@@ -1085,7 +1085,7 @@ public class XMLCipher {
             throw new XMLEncryptionException("empty", "XMLCipher unexpectedly not in ENCRYPT_MODE...");
         }
 
-        String type = contentMode ? EncryptionConstants.TYPE_CONTENT : EncryptionConstants.TYPE_ELEMENT;
+        final String type = contentMode ? EncryptionConstants.TYPE_CONTENT : EncryptionConstants.TYPE_ELEMENT;
         return encryptData(context, element, type, null);
     }
 
@@ -1107,7 +1107,7 @@ public class XMLCipher {
                 if (element == null) {
                     throw new XMLEncryptionException("empty", "Cannot encrypt null element");
                 }
-                NodeList children = element.getChildNodes();
+                final NodeList children = element.getChildNodes();
                 if (null != children) {
                     serializedOctets = serializer.serializeToByteArray(children);
                 } else {
@@ -1132,22 +1132,22 @@ public class XMLCipher {
         }
         // Now perform the encryption
 
-        int ivLen = JCEMapper.getIVLengthFromURI(algorithm) / 8;
+        final int ivLen = JCEMapper.getIVLengthFromURI(algorithm) / 8;
         byte[] iv = XMLSecurityConstants.generateBytes(ivLen);
         try {
-            AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(algorithm, iv);
+            final AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(algorithm, iv);
             c.init(cipherMode, key, paramSpec);
-        } catch (InvalidKeyException ike) {
+        } catch (final InvalidKeyException ike) {
             throw new XMLEncryptionException(ike);
         }
 
         try {
             if (serializedData != null) {
                 int numBytes;
-                byte[] buf = new byte[8192];
+                final byte[] buf = new byte[8192];
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                     while ((numBytes = serializedData.read(buf)) != -1) {
-                        byte[] data = c.update(buf, 0, numBytes);
+                        final byte[] data = c.update(buf, 0, numBytes);
                         baos.write(data);
                     }
                     baos.write(c.doFinal());
@@ -1175,27 +1175,27 @@ public class XMLCipher {
             iv = c.getIV();
         }
         // Now build up to a properly XML Encryption encoded octet stream
-        byte[] finalEncryptedBytes = new byte[iv.length + encryptedBytes.length];
+        final byte[] finalEncryptedBytes = new byte[iv.length + encryptedBytes.length];
         System.arraycopy(iv, 0, finalEncryptedBytes, 0, iv.length);
         System.arraycopy(encryptedBytes, 0, finalEncryptedBytes, iv.length, encryptedBytes.length);
-        String base64EncodedEncryptedOctets = XMLUtils.encodeToString(finalEncryptedBytes);
+        final String base64EncodedEncryptedOctets = XMLUtils.encodeToString(finalEncryptedBytes);
 
         LOG.debug("Encrypted octets:\n{}", base64EncodedEncryptedOctets);
         LOG.debug("Encrypted octets length = {}", base64EncodedEncryptedOctets.length());
 
         try {
-            CipherData cd = ed.getCipherData();
-            CipherValue cv = cd.getCipherValue();
+            final CipherData cd = ed.getCipherData();
+            final CipherValue cv = cd.getCipherValue();
             cv.setValue(base64EncodedEncryptedOctets);
 
             if (type != null) {
                 ed.setType(new URI(type).toString());
             }
-            EncryptionMethod method =
+            final EncryptionMethod method =
                 factory.newEncryptionMethod(new URI(algorithm).toString());
             method.setDigestAlgorithm(digestAlg);
             ed.setEncryptionMethod(method);
-        } catch (URISyntaxException ex) {
+        } catch (final URISyntaxException ex) {
             throw new XMLEncryptionException(ex);
         }
         return ed;
@@ -1368,7 +1368,7 @@ public class XMLCipher {
         try {
             // Should internally generate an IV
             // todo - allow user to set an IV
-            OAEPParameterSpec oaepParameters =
+            final OAEPParameterSpec oaepParameters =
                 constructOAEPParameters(
                     algorithm, digestAlg, mgfAlgorithm, oaepParams
                 );
@@ -1390,20 +1390,20 @@ public class XMLCipher {
             throw new XMLEncryptionException(e);
         }
 
-        String base64EncodedEncryptedOctets = XMLUtils.encodeToString(encryptedBytes);
+        final String base64EncodedEncryptedOctets = XMLUtils.encodeToString(encryptedBytes);
         LOG.debug("Encrypted key octets:\n{}", base64EncodedEncryptedOctets);
         LOG.debug("Encrypted key octets length = {}", base64EncodedEncryptedOctets.length());
 
-        CipherValue cv = ek.getCipherData().getCipherValue();
+        final CipherValue cv = ek.getCipherData().getCipherValue();
         cv.setValue(base64EncodedEncryptedOctets);
 
         try {
-            EncryptionMethod method = factory.newEncryptionMethod(new URI(algorithm).toString());
+            final EncryptionMethod method = factory.newEncryptionMethod(new URI(algorithm).toString());
             method.setDigestAlgorithm(digestAlg);
             method.setMGFAlgorithm(mgfAlgorithm);
             method.setOAEPparams(oaepParams);
             ek.setEncryptionMethod(method);
-        } catch (URISyntaxException ex) {
+        } catch (final URISyntaxException ex) {
             throw new XMLEncryptionException(ex);
         }
         return ek;
@@ -1433,19 +1433,19 @@ public class XMLCipher {
         if (key == null) {
             LOG.debug("Trying to find a KEK via key resolvers");
 
-            KeyInfo ki = encryptedKey.getKeyInfo();
+            final KeyInfo ki = encryptedKey.getKeyInfo();
             if (ki != null) {
                 ki.setSecureValidation(secureValidation);
                 try {
-                    String keyWrapAlg = encryptedKey.getEncryptionMethod().getAlgorithm();
-                    String keyType = JCEMapper.getJCEKeyAlgorithmFromURI(keyWrapAlg);
+                    final String keyWrapAlg = encryptedKey.getEncryptionMethod().getAlgorithm();
+                    final String keyType = JCEMapper.getJCEKeyAlgorithmFromURI(keyWrapAlg);
                     if ("RSA".equals(keyType) || "EC".equals(keyType)) {
                         key = ki.getPrivateKey();
                     } else {
                         key = ki.getSecretKey();
                     }
                 }
-                catch (Exception e) {
+                catch (final Exception e) {
                     LOG.debug(e.getMessage(), e);
                 }
             }
@@ -1456,11 +1456,11 @@ public class XMLCipher {
         }
 
         // Obtain the encrypted octets
-        XMLCipherInput cipherInput = new XMLCipherInput(encryptedKey);
+        final XMLCipherInput cipherInput = new XMLCipherInput(encryptedKey);
         cipherInput.setSecureValidation(secureValidation);
-        byte[] encryptedBytes = cipherInput.getBytes();
+        final byte[] encryptedBytes = cipherInput.getBytes();
 
-        String jceKeyAlgorithm = JCEMapper.getJCEKeyAlgorithmFromURI(algorithm);
+        final String jceKeyAlgorithm = JCEMapper.getJCEKeyAlgorithmFromURI(algorithm);
         LOG.debug("JCE Key Algorithm: {}", jceKeyAlgorithm);
 
         Cipher c;
@@ -1478,8 +1478,8 @@ public class XMLCipher {
         Key ret;
 
         try {
-            EncryptionMethod encMethod = encryptedKey.getEncryptionMethod();
-            OAEPParameterSpec oaepParameters =
+            final EncryptionMethod encMethod = encryptedKey.getEncryptionMethod();
+            final OAEPParameterSpec oaepParameters =
                 constructOAEPParameters(
                     encMethod.getAlgorithm(), encMethod.getDigestAlgorithm(),
                     encMethod.getMGFAlgorithm(), encMethod.getOAEPparams()
@@ -1542,7 +1542,7 @@ public class XMLCipher {
      * Construct a Cipher object
      */
     private Cipher constructCipher(String algorithm, String digestAlgorithm) throws XMLEncryptionException {
-        String jceAlgorithm = JCEMapper.translateURItoJCEID(algorithm);
+        final String jceAlgorithm = JCEMapper.translateURItoJCEID(algorithm);
         LOG.debug("JCE Algorithm = {}", jceAlgorithm);
 
         Cipher c;
@@ -1552,7 +1552,7 @@ public class XMLCipher {
             } else {
                 c = Cipher.getInstance(jceAlgorithm, requestedJCEProvider);
             }
-        } catch (NoSuchAlgorithmException nsae) {
+        } catch (final NoSuchAlgorithmException nsae) {
             // Check to see if an RSA OAEP MGF-1 with SHA-1 algorithm was requested
             // Some JDKs don't support RSA/ECB/OAEPPadding
             c = constructCipher(algorithm, digestAlgorithm, nsae);
@@ -1576,7 +1576,7 @@ public class XMLCipher {
                 } else {
                     return Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding", requestedJCEProvider);
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new XMLEncryptionException(ex);
             }
         } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA224.equals(digestAlgorithm)) {
@@ -1586,7 +1586,7 @@ public class XMLCipher {
                 } else {
                     return Cipher.getInstance("RSA/ECB/OAEPWithSHA-224andMGF1Padding", requestedJCEProvider);
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new XMLEncryptionException(ex);
             }
         } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256.equals(digestAlgorithm)) {
@@ -1596,7 +1596,7 @@ public class XMLCipher {
                 } else {
                     return Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding", requestedJCEProvider);
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new XMLEncryptionException(ex);
             }
         } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA384.equals(digestAlgorithm)) {
@@ -1606,7 +1606,7 @@ public class XMLCipher {
                 } else {
                     return Cipher.getInstance("RSA/ECB/OAEPWithSHA-384AndMGF1Padding", requestedJCEProvider);
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new XMLEncryptionException(ex);
             }
         } else if (MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA512.equals(digestAlgorithm)) {
@@ -1616,7 +1616,7 @@ public class XMLCipher {
                 } else {
                     return Cipher.getInstance("RSA/ECB/OAEPWithSHA-512AndMGF1Padding", requestedJCEProvider);
                 }
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 throw new XMLEncryptionException(ex);
             }
         } else {
@@ -1670,15 +1670,15 @@ public class XMLCipher {
             throw new XMLEncryptionException("empty", "XMLCipher unexpectedly not in DECRYPT_MODE...");
         }
 
-        byte[] octets = decryptToByteArray(element);
+        final byte[] octets = decryptToByteArray(element);
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Decrypted octets:\n" + new String(octets));
         }
 
-        Node sourceParent = element.getParentNode();
+        final Node sourceParent = element.getParentNode();
         try {
-            Node decryptedNode = serializer.deserialize(octets, sourceParent);
+            final Node decryptedNode = serializer.deserialize(octets, sourceParent);
 
             // The de-serialiser returns a node whose children we need to take on.
             if (sourceParent != null && Node.DOCUMENT_NODE == sourceParent.getNodeType()) {
@@ -1688,7 +1688,7 @@ public class XMLCipher {
             } else if (sourceParent != null) {
                 sourceParent.replaceChild(decryptedNode, element);
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             throw new XMLEncryptionException(ex);
         }
 
@@ -1702,7 +1702,7 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     private Document decryptElementContent(Element element) throws XMLEncryptionException {
-        Element e =
+        final Element e =
             (Element) element.getElementsByTagNameNS(
                 EncryptionConstants.EncryptionSpecNS,
                 EncryptionConstants._TAG_ENCRYPTEDDATA
@@ -1733,19 +1733,19 @@ public class XMLCipher {
             throw new XMLEncryptionException("empty", "XMLCipher unexpectedly not in DECRYPT_MODE...");
         }
 
-        EncryptedData encryptedData = factory.newEncryptedData(element);
-        String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+        final EncryptedData encryptedData = factory.newEncryptedData(element);
+        final String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
 
         if (key == null) {
-            KeyInfo ki = encryptedData.getKeyInfo();
+            final KeyInfo ki = encryptedData.getKeyInfo();
             if (ki != null) {
                 try {
                     // Add an EncryptedKey resolver
-                    EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek, internalKeyResolvers);
+                    final EncryptedKeyResolver resolver = new EncryptedKeyResolver(encMethodAlgorithm, kek, internalKeyResolvers);
                     ki.registerInternalKeyResolver(resolver);
                     ki.setSecureValidation(secureValidation);
                     key = ki.getSecretKey();
-                } catch (KeyResolverException kre) {
+                } catch (final KeyResolverException kre) {
                     LOG.debug(kre.getMessage(), kre);
                 }
             }
@@ -1759,12 +1759,12 @@ public class XMLCipher {
         }
 
         // Obtain the encrypted octets
-        XMLCipherInput cipherInput = new XMLCipherInput(encryptedData);
+        final XMLCipherInput cipherInput = new XMLCipherInput(encryptedData);
         cipherInput.setSecureValidation(secureValidation);
-        byte[] encryptedBytes = cipherInput.getBytes();
+        final byte[] encryptedBytes = cipherInput.getBytes();
 
         // Now create the working cipher
-        String jceAlgorithm =
+        final String jceAlgorithm =
             JCEMapper.translateURItoJCEID(encMethodAlgorithm);
         LOG.debug("JCE Algorithm = {}", jceAlgorithm);
 
@@ -1779,8 +1779,8 @@ public class XMLCipher {
             throw new XMLEncryptionException(e);
         }
 
-        int ivLen = JCEMapper.getIVLengthFromURI(encMethodAlgorithm) / 8;
-        byte[] ivBytes = new byte[ivLen];
+        final int ivLen = JCEMapper.getIVLengthFromURI(encMethodAlgorithm) / 8;
+        final byte[] ivBytes = new byte[ivLen];
 
         // You may be able to pass the entire piece in to IvParameterSpec
         // and it will only take the first x bytes, but no way to be certain
@@ -1793,7 +1793,7 @@ public class XMLCipher {
         if (blockCipherAlg == null) {
             blockCipherAlg = encMethodAlgorithm;
         }
-        AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(blockCipherAlg, ivBytes);
+        final AlgorithmParameterSpec paramSpec = constructBlockCipherParameters(blockCipherAlg, ivBytes);
 
         try {
             c.init(cipherMode, key, paramSpec);
@@ -1851,12 +1851,12 @@ public class XMLCipher {
         CipherData data = null;
 
         if (CipherData.REFERENCE_TYPE == type) {
-            CipherReference cipherReference = factory.newCipherReference(value);
+            final CipherReference cipherReference = factory.newCipherReference(value);
             data = factory.newCipherData(type);
             data.setCipherReference(cipherReference);
             result = factory.newEncryptedData(data);
         } else if (CipherData.VALUE_TYPE == type) {
-            CipherValue cipherValue = factory.newCipherValue(value);
+            final CipherValue cipherValue = factory.newCipherValue(value);
             data = factory.newCipherData(type);
             data.setCipherValue(cipherValue);
             result = factory.newEncryptedData(data);
@@ -1904,12 +1904,12 @@ public class XMLCipher {
         CipherData data = null;
 
         if (CipherData.REFERENCE_TYPE == type) {
-            CipherReference cipherReference = factory.newCipherReference(value);
+            final CipherReference cipherReference = factory.newCipherReference(value);
             data = factory.newCipherData(type);
             data.setCipherReference(cipherReference);
             result = factory.newEncryptedKey(data);
         } else if (CipherData.VALUE_TYPE == type) {
-            CipherValue cipherValue = factory.newCipherValue(value);
+            final CipherValue cipherValue = factory.newCipherValue(value);
             data = factory.newCipherData(type);
             data.setCipherValue(cipherValue);
             result = factory.newEncryptedKey(data);
@@ -2153,7 +2153,7 @@ public class XMLCipher {
                     EncryptionConstants._TAG_CIPHERREFERENCE).item(0);
             }
 
-            CipherData result = newCipherData(type);
+            final CipherData result = newCipherData(type);
             if (type == CipherData.VALUE_TYPE) {
                 result.setCipherValue(newCipherValue(e));
             } else if (type == CipherData.REFERENCE_TYPE) {
@@ -2171,21 +2171,21 @@ public class XMLCipher {
          */
         CipherReference newCipherReference(Element element) throws XMLEncryptionException {
 
-            Attr uriAttr =
+            final Attr uriAttr =
                 element.getAttributeNodeNS(null, EncryptionConstants._ATT_URI);
-            CipherReference result = new CipherReferenceImpl(uriAttr);
+            final CipherReference result = new CipherReferenceImpl(uriAttr);
 
             // Find any Transforms
-            NodeList transformsElements =
+            final NodeList transformsElements =
                 element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_TRANSFORMS);
-            Element transformsElement = (Element) transformsElements.item(0);
+            final Element transformsElement = (Element) transformsElements.item(0);
 
             if (transformsElement != null) {
                 LOG.debug("Creating a DSIG based Transforms element");
                 try {
                     result.setTransforms(new TransformsImpl(transformsElement));
-                } catch (XMLSecurityException e) {
+                } catch (final XMLSecurityException e) {
                     throw new XMLEncryptionException(e);
                 }
             }
@@ -2198,7 +2198,7 @@ public class XMLCipher {
          * @return a new CipherValue
          */
         CipherValue newCipherValue(Element element) {
-            String value = XMLUtils.getFullTextChildrenFromNode(element);
+            final String value = XMLUtils.getFullTextChildrenFromNode(element);
 
             return newCipherValue(value);
         }
@@ -2212,17 +2212,17 @@ public class XMLCipher {
         EncryptedData newEncryptedData(Element element) throws XMLEncryptionException {
             EncryptedData result = null;
 
-            NodeList dataElements =
+            final NodeList dataElements =
                 element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_CIPHERDATA);
 
             // Need to get the last CipherData found, as earlier ones will
             // be for elements in the KeyInfo lists
 
-            Element dataElement =
+            final Element dataElement =
                 (Element) dataElements.item(dataElements.getLength() - 1);
 
-            CipherData data = newCipherData(dataElement);
+            final CipherData data = newCipherData(dataElement);
 
             result = newEncryptedData(data);
 
@@ -2231,7 +2231,7 @@ public class XMLCipher {
             result.setMimeType(element.getAttributeNS(null, EncryptionConstants._ATT_MIMETYPE));
             result.setEncoding(element.getAttributeNS(null, Constants._ATT_ENCODING));
 
-            Element encryptionMethodElement =
+            final Element encryptionMethodElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_ENCRYPTIONMETHOD).item(0);
@@ -2242,15 +2242,15 @@ public class XMLCipher {
             // BFL 16/7/03 - simple implementation
             // TODO: Work out how to handle relative URI
 
-            Element keyInfoElement =
+            final Element keyInfoElement =
                 (Element) element.getElementsByTagNameNS(
                     Constants.SignatureSpecNS, Constants._TAG_KEYINFO).item(0);
             if (null != keyInfoElement) {
-                KeyInfo ki = newKeyInfo(keyInfoElement);
+                final KeyInfo ki = newKeyInfo(keyInfoElement);
                 result.setKeyInfo(ki);
             }
 
-            Element encryptionPropertiesElement =
+            final Element encryptionPropertiesElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_ENCRYPTIONPROPERTIES).item(0);
@@ -2270,13 +2270,13 @@ public class XMLCipher {
          */
         EncryptedKey newEncryptedKey(Element element) throws XMLEncryptionException {
             EncryptedKey result = null;
-            NodeList dataElements =
+            final NodeList dataElements =
                 element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_CIPHERDATA);
-            Element dataElement =
+            final Element dataElement =
                 (Element) dataElements.item(dataElements.getLength() - 1);
 
-            CipherData data = newCipherData(dataElement);
+            final CipherData data = newCipherData(dataElement);
             result = newEncryptedKey(data);
 
             result.setId(element.getAttributeNS(null, EncryptionConstants._ATT_ID));
@@ -2285,7 +2285,7 @@ public class XMLCipher {
             result.setEncoding(element.getAttributeNS(null, Constants._ATT_ENCODING));
             result.setRecipient(element.getAttributeNS(null, EncryptionConstants._ATT_RECIPIENT));
 
-            Element encryptionMethodElement =
+            final Element encryptionMethodElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_ENCRYPTIONMETHOD).item(0);
@@ -2293,15 +2293,15 @@ public class XMLCipher {
                 result.setEncryptionMethod(newEncryptionMethod(encryptionMethodElement));
             }
 
-            Element keyInfoElement =
+            final Element keyInfoElement =
                 (Element) element.getElementsByTagNameNS(
                     Constants.SignatureSpecNS, Constants._TAG_KEYINFO).item(0);
             if (null != keyInfoElement) {
-                KeyInfo ki = newKeyInfo(keyInfoElement);
+                final KeyInfo ki = newKeyInfo(keyInfoElement);
                 result.setKeyInfo(ki);
             }
 
-            Element encryptionPropertiesElement =
+            final Element encryptionPropertiesElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_ENCRYPTIONPROPERTIES).item(0);
@@ -2311,7 +2311,7 @@ public class XMLCipher {
                 );
             }
 
-            Element referenceListElement =
+            final Element referenceListElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_REFERENCELIST).item(0);
@@ -2319,7 +2319,7 @@ public class XMLCipher {
                 result.setReferenceList(newReferenceList(referenceListElement));
             }
 
-            Element carriedNameElement =
+            final Element carriedNameElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_CARRIEDKEYNAME).item(0);
@@ -2337,16 +2337,16 @@ public class XMLCipher {
          */
         KeyInfo newKeyInfo(Element element) throws XMLEncryptionException {
             try {
-                KeyInfo ki = new KeyInfo(element, null);
+                final KeyInfo ki = new KeyInfo(element, null);
                 ki.setSecureValidation(secureValidation);
                 if (internalKeyResolvers != null) {
-                    int size = internalKeyResolvers.size();
+                    final int size = internalKeyResolvers.size();
                     for (int i = 0; i < size; i++) {
                         ki.registerInternalKeyResolver(internalKeyResolvers.get(i));
                     }
                 }
                 return ki;
-            } catch (XMLSecurityException xse) {
+            } catch (final XMLSecurityException xse) {
                 throw new XMLEncryptionException(xse, "KeyInfo.error");
             }
         }
@@ -2356,10 +2356,10 @@ public class XMLCipher {
          * @return a new EncryptionMethod
          */
         EncryptionMethod newEncryptionMethod(Element element) {
-            String encAlgorithm = element.getAttributeNS(null, EncryptionConstants._ATT_ALGORITHM);
-            EncryptionMethod result = newEncryptionMethod(encAlgorithm);
+            final String encAlgorithm = element.getAttributeNS(null, EncryptionConstants._ATT_ALGORITHM);
+            final EncryptionMethod result = newEncryptionMethod(encAlgorithm);
 
-            Element keySizeElement =
+            final Element keySizeElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_KEYSIZE).item(0);
@@ -2369,28 +2369,28 @@ public class XMLCipher {
                         keySizeElement.getFirstChild().getNodeValue()));
             }
 
-            Element oaepParamsElement =
+            final Element oaepParamsElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_OAEPPARAMS).item(0);
             if (null != oaepParamsElement) {
-                String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
+                final String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
                 result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
             }
 
-            Element digestElement =
+            final Element digestElement =
                 (Element) element.getElementsByTagNameNS(
                     Constants.SignatureSpecNS, Constants._TAG_DIGESTMETHOD).item(0);
             if (digestElement != null) {
-                String digestAlgorithm = digestElement.getAttributeNS(null, "Algorithm");
+                final String digestAlgorithm = digestElement.getAttributeNS(null, "Algorithm");
                 result.setDigestAlgorithm(digestAlgorithm);
             }
 
-            Element mgfElement =
+            final Element mgfElement =
                 (Element) element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpec11NS, EncryptionConstants._TAG_MGF).item(0);
             if (mgfElement != null && !XMLCipher.RSA_OAEP.equals(algorithm)) {
-                String mgfAlgorithm = mgfElement.getAttributeNS(null, "Algorithm");
+                final String mgfAlgorithm = mgfElement.getAttributeNS(null, "Algorithm");
                 result.setMGFAlgorithm(mgfAlgorithm);
             }
 
@@ -2405,17 +2405,17 @@ public class XMLCipher {
          * @return a new EncryptionProperties
          */
         EncryptionProperties newEncryptionProperties(Element element) {
-            EncryptionProperties result = newEncryptionProperties();
+            final EncryptionProperties result = newEncryptionProperties();
 
             result.setId(element.getAttributeNS(null, EncryptionConstants._ATT_ID));
 
-            NodeList encryptionPropertyList =
+            final NodeList encryptionPropertyList =
                 element.getElementsByTagNameNS(
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_ENCRYPTIONPROPERTY);
-            int length = encryptionPropertyList.getLength();
+            final int length = encryptionPropertyList.getLength();
             for (int i = 0; i < length; i++) {
-                Node n = encryptionPropertyList.item(i);
+                final Node n = encryptionPropertyList.item(i);
                 if (null != n) {
                     result.addEncryptionProperty(newEncryptionProperty((Element) n));
                 }
@@ -2429,7 +2429,7 @@ public class XMLCipher {
          * @return a new EncryptionProperty
          */
         EncryptionProperty newEncryptionProperty(Element element) {
-            EncryptionProperty result = newEncryptionProperty();
+            final EncryptionProperty result = newEncryptionProperty();
 
             result.setTarget(element.getAttributeNS(null, EncryptionConstants._ATT_TARGET));
             result.setId(element.getAttributeNS(null, EncryptionConstants._ATT_ID));
@@ -2458,16 +2458,16 @@ public class XMLCipher {
                 type = ReferenceList.KEY_REFERENCE;
             }
 
-            ReferenceList result = new ReferenceListImpl(type);
+            final ReferenceList result = new ReferenceListImpl(type);
             NodeList list = null;
             if (ReferenceList.DATA_REFERENCE == type) {
                 list =
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_DATAREFERENCE);
-                int drLength = list.getLength();
+                final int drLength = list.getLength();
                 for (int i = 0; i < drLength; i++) {
-                    String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
+                    final String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
                     result.add(result.newDataReference(uri));
                 }
             } else if (ReferenceList.KEY_REFERENCE == type) {
@@ -2475,9 +2475,9 @@ public class XMLCipher {
                     element.getElementsByTagNameNS(
                         EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_KEYREFERENCE);
-                int krLength = list.getLength();
+                final int krLength = list.getLength();
                 for (int i = 0; i < krLength; i++) {
-                    String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
+                    final String uri = ((Element) list.item(i)).getAttributeNS(null, "URI");
                     result.add(result.newKeyReference(uri));
                 }
             }
@@ -2524,7 +2524,7 @@ public class XMLCipher {
                 URI tmpAlgorithm = null;
                 try {
                     tmpAlgorithm = new URI(algorithm);
-                } catch (URISyntaxException ex) {
+                } catch (final URISyntaxException ex) {
                     throw (IllegalArgumentException)
                             new IllegalArgumentException().initCause(ex);
                 }
@@ -2651,7 +2651,7 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     XMLUtils.createElementInEncryptionSpace(
                         contextDocument, EncryptionConstants._TAG_CIPHERDATA
                     );
@@ -2712,7 +2712,7 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     XMLUtils.createElementInEncryptionSpace(
                         contextDocument, EncryptionConstants._TAG_CIPHERREFERENCE
                     );
@@ -2748,7 +2748,7 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     XMLUtils.createElementInEncryptionSpace(
                         contextDocument, EncryptionConstants._TAG_CIPHERVALUE
                     );
@@ -2768,7 +2768,7 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     ElementProxy.createElementForFamily(
                         contextDocument, EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_ENCRYPTEDDATA
@@ -2858,7 +2858,7 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     ElementProxy.createElementForFamily(
                         contextDocument, EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_ENCRYPTEDKEY
@@ -2899,13 +2899,13 @@ public class XMLCipher {
                     result.appendChild(((ReferenceListImpl)getReferenceList()).toElement());
                 }
                 if (null != carriedName) {
-                    Element element =
+                    final Element element =
                         ElementProxy.createElementForFamily(
                             contextDocument,
                             EncryptionConstants.EncryptionSpecNS,
                             EncryptionConstants._TAG_CARRIEDKEYNAME
                         );
-                    Node node = contextDocument.createTextNode(carriedName);
+                    final Node node = contextDocument.createTextNode(carriedName);
                     element.appendChild(node);
                     result.appendChild(element);
                 }
@@ -2967,7 +2967,7 @@ public class XMLCipher {
                     URI tmpType = null;
                     try {
                         tmpType = new URI(type);
-                    } catch (URISyntaxException ex) {
+                    } catch (final URISyntaxException ex) {
                         throw (IllegalArgumentException)
                                 new IllegalArgumentException().initCause(ex);
                     }
@@ -3009,7 +3009,7 @@ public class XMLCipher {
                     URI tmpEncoding = null;
                     try {
                         tmpEncoding = new URI(encoding);
-                    } catch (URISyntaxException ex) {
+                    } catch (final URISyntaxException ex) {
                         throw (IllegalArgumentException)
                                 new IllegalArgumentException().initCause(ex);
                     }
@@ -3090,7 +3090,7 @@ public class XMLCipher {
                 URI tmpAlgorithm = null;
                 try {
                     tmpAlgorithm = new URI(algorithm);
-                } catch (URISyntaxException ex) {
+                } catch (final URISyntaxException ex) {
                     throw (IllegalArgumentException)
                             new IllegalArgumentException().initCause(ex);
                 }
@@ -3171,7 +3171,7 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     XMLUtils.createElementInEncryptionSpace(
                         contextDocument, EncryptionConstants._TAG_ENCRYPTIONMETHOD
                     );
@@ -3183,7 +3183,7 @@ public class XMLCipher {
                     ).appendChild(contextDocument.createTextNode(String.valueOf(keySize))));
                 }
                 if (null != oaepParams) {
-                    Element oaepElement =
+                    final Element oaepElement =
                         XMLUtils.createElementInEncryptionSpace(
                             contextDocument, EncryptionConstants._TAG_OAEPPARAMS
                         );
@@ -3192,7 +3192,7 @@ public class XMLCipher {
                     result.appendChild(oaepElement);
                 }
                 if (digestAlgorithm != null) {
-                    Element digestElement =
+                    final Element digestElement =
                         XMLUtils.createElementInSignatureSpace(contextDocument, Constants._TAG_DIGESTMETHOD);
                     digestElement.setAttributeNS(null, "Algorithm", digestAlgorithm);
                     digestElement.setAttributeNS(
@@ -3203,7 +3203,7 @@ public class XMLCipher {
                     result.appendChild(digestElement);
                 }
                 if (mgfAlgorithm != null) {
-                    Element mgfElement =
+                    final Element mgfElement =
                         XMLUtils.createElementInEncryption11Space(
                             contextDocument, EncryptionConstants._TAG_MGF
                         );
@@ -3215,7 +3215,7 @@ public class XMLCipher {
                     );
                     result.appendChild(mgfElement);
                 }
-                for (Element element : encryptionMethodInformation) {
+                for (final Element element : encryptionMethodInformation) {
                     result.appendChild(element);
                 }
 
@@ -3265,14 +3265,14 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     XMLUtils.createElementInEncryptionSpace(
                         contextDocument, EncryptionConstants._TAG_ENCRYPTIONPROPERTIES
                     );
                 if (null != id) {
                     result.setAttributeNS(null, EncryptionConstants._ATT_ID, id);
                 }
-                Iterator<EncryptionProperty> itr = getEncryptionProperties();
+                final Iterator<EncryptionProperty> itr = getEncryptionProperties();
                 while (itr.hasNext()) {
                     result.appendChild(((EncryptionPropertyImpl)itr.next()).toElement());
                 }
@@ -3315,7 +3315,7 @@ public class XMLCipher {
                     URI tmpTarget = null;
                     try {
                         tmpTarget = new URI(target);
-                    } catch (URISyntaxException ex) {
+                    } catch (final URISyntaxException ex) {
                         throw (IllegalArgumentException)
                                 new IllegalArgumentException().initCause(ex);
                     }
@@ -3366,7 +3366,7 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     XMLUtils.createElementInEncryptionSpace(
                         contextDocument, EncryptionConstants._TAG_ENCRYPTIONPROPERTY
                     );
@@ -3378,14 +3378,14 @@ public class XMLCipher {
                 }
 
                 if (!attributeMap.isEmpty()) {
-                    for (Entry<String, String> entry : attributeMap.entrySet()) {
+                    for (final Entry<String, String> entry : attributeMap.entrySet()) {
                         result.setAttributeNS(Constants.XML_LANG_SPACE_SpecNS,
                                               entry.getKey(), entry.getValue());
                     }
                 }
 
                 if (!encryptionInformation.isEmpty()) {
-                    for (Element element : encryptionInformation) {
+                    for (final Element element : encryptionInformation) {
                         result.appendChild(element);
                     }
                 }
@@ -3516,13 +3516,13 @@ public class XMLCipher {
             }
 
             Element toElement() {
-                Element result =
+                final Element result =
                     ElementProxy.createElementForFamily(
                         contextDocument,
                         EncryptionConstants.EncryptionSpecNS,
                         EncryptionConstants._TAG_REFERENCELIST
                     );
-                for (Reference reference : references) {
+                for (final Reference reference : references) {
                     result.appendChild(((ReferenceImpl)reference).toElement());
                 }
                 return result;
@@ -3593,8 +3593,8 @@ public class XMLCipher {
                  * @return the XML Element form of that Reference
                  */
                 public Element toElement() {
-                    String tagName = getType();
-                    Element result =
+                    final String tagName = getType();
+                    final Element result =
                         ElementProxy.createElementForFamily(
                             contextDocument,
                             EncryptionConstants.EncryptionSpecNS,
@@ -3661,7 +3661,7 @@ public class XMLCipher {
             LOG.debug("Have functional IdentityTransformer: {}", result);
             return result;
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOG.debug(e.getMessage(), e);
             return false;
         }

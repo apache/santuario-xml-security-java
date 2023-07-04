@@ -46,7 +46,7 @@ public class ResolverFragment extends ResourceResolverSpi {
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
         throws ResourceResolverException {
 
-        Document doc = context.attr.getOwnerElement().getOwnerDocument();
+        final Document doc = context.attr.getOwnerElement().getOwnerDocument();
 
         Node selectedElem = null;
         if (context.uriToResolve.isEmpty()) {
@@ -65,19 +65,19 @@ public class ResolverFragment extends ResourceResolverSpi {
              * include the element plus all descendants including namespaces and
              * attributes -- but not comments.
              */
-            String id = context.uriToResolve.substring(1);
+            final String id = context.uriToResolve.substring(1);
 
             selectedElem = doc.getElementById(id);
             if (selectedElem == null) {
-                Object[] exArgs = { id };
+                final Object[] exArgs = { id };
                 throw new ResourceResolverException(
                     "signature.Verification.MissingID", exArgs, context.uriToResolve, context.baseUri
                 );
             }
             if (context.secureValidation) {
-                Element start = context.attr.getOwnerDocument().getDocumentElement();
+                final Element start = context.attr.getOwnerDocument().getDocumentElement();
                 if (!XMLUtils.protectAgainstWrappingAttack(start, id)) {
-                    Object[] exArgs = { id };
+                    final Object[] exArgs = { id };
                     throw new ResourceResolverException(
                         "signature.Verification.MultipleIDs", exArgs, context.uriToResolve, context.baseUri
                     );
@@ -88,7 +88,7 @@ public class ResolverFragment extends ResourceResolverSpi {
             );
         }
 
-        XMLSignatureInput result = new XMLSignatureInput(selectedElem);
+        final XMLSignatureInput result = new XMLSignatureInput(selectedElem);
         result.setSecureValidation(context.secureValidation);
         result.setExcludeComments(true);
 

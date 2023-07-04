@@ -52,9 +52,9 @@ public class X509DigestResolver extends KeyResolverSpi {
     protected boolean engineCanResolve(Element element, String baseURI, StorageResolver storage) {
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_X509DATA)) {
             try {
-                X509Data x509Data = new X509Data(element, baseURI);
+                final X509Data x509Data = new X509Data(element, baseURI);
                 return x509Data.containsDigest();
-            } catch (XMLSecurityException e) {
+            } catch (final XMLSecurityException e) {
                 return false;
             }
         } else {
@@ -67,7 +67,7 @@ public class X509DigestResolver extends KeyResolverSpi {
     protected PublicKey engineResolvePublicKey(Element element, String baseURI, StorageResolver storage, boolean secureValidation)
         throws KeyResolverException {
 
-        X509Certificate cert = this.engineResolveX509Certificate(element, baseURI, storage, secureValidation);
+        final X509Certificate cert = this.engineResolveX509Certificate(element, baseURI, storage, secureValidation);
 
         if (cert != null) {
             return cert.getPublicKey();
@@ -83,7 +83,7 @@ public class X509DigestResolver extends KeyResolverSpi {
 
         try {
             return resolveCertificate(element, baseURI, storage);
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             LOG.debug("XMLSecurityException", e);
         }
 
@@ -111,7 +111,7 @@ public class X509DigestResolver extends KeyResolverSpi {
 
         XMLX509Digest x509Digests[] = null;
 
-        Element x509childNodes[] = XMLUtils.selectDs11Nodes(element.getFirstChild(), Constants._TAG_X509DIGEST);
+        final Element x509childNodes[] = XMLUtils.selectDs11Nodes(element.getFirstChild(), Constants._TAG_X509DIGEST);
 
         if (x509childNodes == null || x509childNodes.length <= 0) {
             return null;
@@ -126,12 +126,12 @@ public class X509DigestResolver extends KeyResolverSpi {
                 x509Digests[i] = new XMLX509Digest(x509childNodes[i], baseURI);
             }
 
-            Iterator<Certificate> storageIterator = storage.getIterator();
+            final Iterator<Certificate> storageIterator = storage.getIterator();
             while (storageIterator.hasNext()) {
-                X509Certificate cert = (X509Certificate) storageIterator.next();
+                final X509Certificate cert = (X509Certificate) storageIterator.next();
 
-                for (XMLX509Digest keyInfoDigest : x509Digests) {
-                    byte[] certDigestBytes = XMLX509Digest.getDigestBytesFromCert(cert, keyInfoDigest.getAlgorithm());
+                for (final XMLX509Digest keyInfoDigest : x509Digests) {
+                    final byte[] certDigestBytes = XMLX509Digest.getDigestBytesFromCert(cert, keyInfoDigest.getAlgorithm());
 
                     if (Arrays.equals(keyInfoDigest.getDigestBytes(), certDigestBytes)) {
                         LOG.debug("Found certificate with: {}", cert.getSubjectX500Principal().getName());
@@ -141,7 +141,7 @@ public class X509DigestResolver extends KeyResolverSpi {
                 }
             }
 
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             throw new KeyResolverException(ex);
         }
 
@@ -156,8 +156,8 @@ public class X509DigestResolver extends KeyResolverSpi {
      */
     private void checkStorage(StorageResolver storage) throws KeyResolverException {
         if (storage == null) {
-            Object[] exArgs = { Constants._TAG_X509DIGEST };
-            KeyResolverException ex = new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
+            final Object[] exArgs = { Constants._TAG_X509DIGEST };
+            final KeyResolverException ex = new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
             LOG.debug("", ex);
             throw ex;
         }

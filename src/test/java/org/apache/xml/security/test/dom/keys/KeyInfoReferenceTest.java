@@ -45,8 +45,8 @@ public class KeyInfoReferenceTest {
 
     @Test
     public void testSchema() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
-        Element element = keyInfoReference.getElement();
+        final KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
+        final Element element = keyInfoReference.getElement();
 
         assertEquals("http://www.w3.org/2009/xmldsig11#", element.getNamespaceURI());
         assertEquals("KeyInfoReference", element.getLocalName());
@@ -54,24 +54,24 @@ public class KeyInfoReferenceTest {
 
     @Test
     public void testURIFromElement() throws Exception {
-        Document doc = loadXML("KeyInfoReference.xml");
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
-        Element element = (Element) nl.item(0);
+        final Document doc = loadXML("KeyInfoReference.xml");
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
+        final Element element = (Element) nl.item(0);
 
-        KeyInfoReference keyInfoReference = new KeyInfoReference(element, "");
+        final KeyInfoReference keyInfoReference = new KeyInfoReference(element, "");
         assertEquals(URI_CONTROL, keyInfoReference.getURI());
         assertEquals(ID_CONTROL, keyInfoReference.getId());
     }
 
     @Test
     public void testURIOnConstruction() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
+        final KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals(URI_CONTROL, keyInfoReference.getURI());
     }
 
     @Test
     public void testId() throws Exception {
-        KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
+        final KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals("", keyInfoReference.getId());
         assertNull(keyInfoReference.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
 

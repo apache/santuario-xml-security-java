@@ -72,56 +72,56 @@ public class XMLSecurityStreamReaderTest {
 
     @Test
     public void testPassThroughDocumentEvents() throws Exception {
-        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        final XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(false);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        final InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
-        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
-        int event = xmlSecurityStreamReader.next();
+        final XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        final int event = xmlSecurityStreamReader.next();
         assertEquals(XMLStreamConstants.START_DOCUMENT, event);
     }
 
     @Test
     public void testSkipThroughDocumentEvents() throws Exception {
-        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        final XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(true);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        final InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
-        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
-        int event = xmlSecurityStreamReader.next();
+        final XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        final int event = xmlSecurityStreamReader.next();
         assertEquals(XMLStreamConstants.START_ELEMENT, event);
     }
 
     @Test
     public void testIdentityTransformSource() throws Exception {
-        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        final XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        final InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
-        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        final XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         //use the sun internal TransformerFactory since the current xalan version don't know how to handle StaxSources:
-        TransformerFactory transformerFactory = TransformerFactory.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", this.getClass().getClassLoader());
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final TransformerFactory transformerFactory = TransformerFactory.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", this.getClass().getClassLoader());
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new StAXSource(xmlSecurityStreamReader), new StreamResult(baos));
         assertThat(readTestFile(), isSimilarTo(baos.toString(StandardCharsets.UTF_8.name())));
     }
 
     @Test
     public void testDocumentDeclaration() throws Exception {
-        String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
+        final String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
                 + "<Document/>";
-        ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        final ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
+        final InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
-        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        final XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(false);
-        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        final XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         advanceToFirstEvent(xmlSecurityStreamReader);
         assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_DOCUMENT));
         assertThat(xmlSecurityStreamReader.getVersion(), is(equalTo("1.1")));
@@ -142,17 +142,17 @@ public class XMLSecurityStreamReaderTest {
 
     @Test
     public void testDocumentDeclarationWithoutOptionalAttributes() throws Exception {
-        String xml = "<?xml version='1.1'?>\n"
+        final String xml = "<?xml version='1.1'?>\n"
                 + "<Document/>";
-        ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        final ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
+        final InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
-        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        final XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(false);
-        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        final XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         advanceToFirstEvent(xmlSecurityStreamReader);
         assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_DOCUMENT));
         assertThat(xmlSecurityStreamReader.getVersion(), is(equalTo("1.1")));
@@ -163,17 +163,17 @@ public class XMLSecurityStreamReaderTest {
 
     @Test
     public void testDocumentDeclarationWhenSkipDocumentEvents() throws Exception {
-        String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
+        final String xml = "<?xml version='1.1' encoding='ISO-8859-1' standalone='yes'?>\n"
                 + "<Document/>";
-        ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
+        final ByteArrayInputStream xmlInput = new ByteArrayInputStream(xml.getBytes(StandardCharsets.ISO_8859_1));
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLStreamReader stdXmlStreamReader = xmlInputFactory.createXMLStreamReader(xmlInput);
+        final InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor(stdXmlStreamReader));
-        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        final XMLSecurityProperties securityProperties = new XMLSecurityProperties();
         securityProperties.setSkipDocumentEvents(true);
-        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        final XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
         advanceToFirstEvent(xmlSecurityStreamReader);
         assertThat(xmlSecurityStreamReader.getEventType(), is(XMLStreamConstants.START_ELEMENT));
         assertThat(xmlSecurityStreamReader.getVersion(), is(equalTo("1.1")));
@@ -196,18 +196,18 @@ public class XMLSecurityStreamReaderTest {
 
     @Test
     public void testCorrectness() throws Exception {
-        XMLSecurityProperties securityProperties = new XMLSecurityProperties();
-        InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
-        DocumentContextImpl documentContext = new DocumentContextImpl();
+        final XMLSecurityProperties securityProperties = new XMLSecurityProperties();
+        final InboundSecurityContextImpl securityContext = new InboundSecurityContextImpl();
+        final DocumentContextImpl documentContext = new DocumentContextImpl();
         documentContext.setEncoding(StandardCharsets.UTF_8.name());
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext, documentContext);
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(securityContext, documentContext);
         inputProcessorChain.addProcessor(new EventReaderProcessor());
-        XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
+        final XMLSecurityStreamReader xmlSecurityStreamReader = new XMLSecurityStreamReader(inputProcessorChain, securityProperties);
 
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
         xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
-        XMLStreamReader stdXmlStreamReader =
+        final XMLStreamReader stdXmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
@@ -348,13 +348,13 @@ public class XMLSecurityStreamReaderTest {
     }
 
     private String readTestFile() throws Exception {
-        InputStream inputStream =
+        final InputStream inputStream =
             this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        char[] buf = new char[1024];
+        final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        final char[] buf = new char[1024];
         int read;
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         while ((read = bufferedReader.read(buf)) != -1) {
             stringBuilder.append(buf, 0, read);
         }
@@ -362,7 +362,7 @@ public class XMLSecurityStreamReaderTest {
     }
 
     private static XMLStreamReader createXmlStreamReader() throws XMLStreamException {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.IS_COALESCING, true);
         xmlInputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
         return xmlInputFactory.createXMLStreamReader(InputProcessor.class.getClassLoader().getResourceAsStream(
@@ -412,7 +412,7 @@ public class XMLSecurityStreamReaderTest {
         @Override
         public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException {
             inputProcessorChain.reset();
-            XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
+            final XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
             if (xmlStreamReader.hasNext()) {
                 xmlStreamReader.next();
             }

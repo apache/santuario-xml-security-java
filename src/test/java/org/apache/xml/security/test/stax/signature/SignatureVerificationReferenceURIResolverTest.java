@@ -55,47 +55,47 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
     @Test
     public void testSignatureVerificationWithSameDocumentXPointerIdApostropheReference() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//*[local-name()='ShippingAddress']";
-        Element elementToSign =
+        final String expression = "//*[local-name()='ShippingAddress']";
+        final Element elementToSign =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(elementToSign);
-        String id = UUID.randomUUID().toString();
+        final String id = UUID.randomUUID().toString();
         elementToSign.setAttributeNS(null, "Id", id);
         elementToSign.setIdAttributeNS(null, "Id", true);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        ReferenceInfo referenceInfo = new ReferenceInfo(
+        final ReferenceInfo referenceInfo = new ReferenceInfo(
                 "#xpointer(id('" + id + "'))",
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1",
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<>();
+        final List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
                 document,
                 localNames,
@@ -107,8 +107,8 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -117,10 +117,10 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         StAX2DOM.readDoc(securityStreamReader);
     }
@@ -128,47 +128,47 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
     @Test
     public void testSignatureVerificationWithSameDocumentXPointerIdDoubleQuoteReference() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//*[local-name()='ShippingAddress']";
-        Element elementToSign =
+        final String expression = "//*[local-name()='ShippingAddress']";
+        final Element elementToSign =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(elementToSign);
-        String id = UUID.randomUUID().toString();
+        final String id = UUID.randomUUID().toString();
         elementToSign.setAttributeNS(null, "Id", id);
         elementToSign.setIdAttributeNS(null, "Id", true);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        ReferenceInfo referenceInfo = new ReferenceInfo(
+        final ReferenceInfo referenceInfo = new ReferenceInfo(
                 "#xpointer(id(\"" + id + "\"))",
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1",
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<>();
+        final List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
                 document,
                 localNames,
@@ -180,8 +180,8 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -190,10 +190,10 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         StAX2DOM.readDoc(securityStreamReader);
     }
@@ -201,24 +201,24 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
     @Test
     public void testSignatureVerificationWithSameDocumentXPointerSlashReference() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
                 this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
                 "default".toCharArray()
         );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
+        final Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate("transmitter");
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
 
-        ReferenceInfo referenceInfo = new ReferenceInfo(
+        final ReferenceInfo referenceInfo = new ReferenceInfo(
                 "#xpointer(/)",
                 new String[]{
                         "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
@@ -228,10 +228,10 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
                 false
         );
 
-        List<ReferenceInfo> referenceInfos = new ArrayList<>();
+        final List<ReferenceInfo> referenceInfos = new ArrayList<>();
         referenceInfos.add(referenceInfo);
 
-        XMLSignature sig = signUsingDOM(
+        final XMLSignature sig = signUsingDOM(
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
                 document,
                 localNames,
@@ -243,8 +243,8 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         sig.addKeyInfo(cert);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         //System.out.println(baos.toString());
@@ -255,10 +255,10 @@ public class SignatureVerificationReferenceURIResolverTest extends AbstractSigna
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(cert.getPublicKey());
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final XMLStreamReader securityStreamReader = inboundXMLSec.processInMessage(xmlStreamReader);
 
         StAX2DOM.readDoc(securityStreamReader);
     }

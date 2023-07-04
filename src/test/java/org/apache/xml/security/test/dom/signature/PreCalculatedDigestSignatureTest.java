@@ -84,34 +84,34 @@ public class PreCalculatedDigestSignatureTest {
     public void setUp() throws Exception {
         org.apache.xml.security.Init.init();
         signatureFile = resolveFile("src/test/resources/org/apache/xml/security/samples/input/signatureWithExternalReference.xml");
-        KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
+        final KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
         privateKey = (PrivateKey) keyStore.getKey(ALIAS, PASSWORD);
         signingCert = (X509Certificate) keyStore.getCertificate(ALIAS);
     }
 
     @Test
     public void validateSignatureWithCorrectDigestShouldBeValid() throws Exception {
-        XMLSignature signature = openSignature(signatureFile);
+        final XMLSignature signature = openSignature(signatureFile);
         //Add resource resolver for the external document (test.txt) with the pre-calculated digest (valid for this test)
-        ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, PRE_CALCULATED_DIGEST);
+        final ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, PRE_CALCULATED_DIGEST);
         signature.addResourceResolver(resolver);
-        boolean validSignature = validateSignature(signature);
+        final boolean validSignature = validateSignature(signature);
         assertTrue(validSignature);
     }
 
     @Test
     public void validateSignatureWithWrongDigestShouldBeInvalid() throws Exception {
-        XMLSignature signature = openSignature(signatureFile);
+        final XMLSignature signature = openSignature(signatureFile);
         //Add resource resolver for the external document (test.txt) with the pre-calculated digest (invalid for this test)
-        ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, "BjVs1oFu54LZwQuUA+kHgZApH0pIc8PGOoo0YrLrNUI=");
+        final ExternalResourceResolver resolver = new ExternalResourceResolver(EXTERNAL_DOCUMENT_URI, "BjVs1oFu54LZwQuUA+kHgZApH0pIc8PGOoo0YrLrNUI=");
         signature.addResourceResolver(resolver);
-        boolean validSignature = validateSignature(signature);
+        final boolean validSignature = validateSignature(signature);
         assertFalse(validSignature);
     }
 
     @Test
     public void createSignatureWithPreCalculatedDigestShouldBeValid() throws Exception {
-        XMLSignature signature = createXmlSignature();
+        final XMLSignature signature = createXmlSignature();
 
         //Add external URI. This is a detached Reference.
         signature.addDocument(EXTERNAL_DOCUMENT_URI, null, "http://www.w3.org/2001/04/xmlenc#sha256");
@@ -126,50 +126,50 @@ public class PreCalculatedDigestSignatureTest {
     }
 
     private XMLSignature openSignature(File signatureFile) throws Exception {
-        Document document = XMLUtils.read(new FileInputStream(signatureFile), false);
-        Element root = document.getDocumentElement();
-        Element signatureDocument = (Element) root.getFirstChild();
-        String baseURI = "";
-        XMLSignature signature = new XMLSignature(signatureDocument, baseURI);
+        final Document document = XMLUtils.read(new FileInputStream(signatureFile), false);
+        final Element root = document.getDocumentElement();
+        final Element signatureDocument = (Element) root.getFirstChild();
+        final String baseURI = "";
+        final XMLSignature signature = new XMLSignature(signatureDocument, baseURI);
         return signature;
     }
 
     private boolean validateSignature(XMLSignature signature) throws XMLSecurityException {
-        PublicKey publicKey = signature.getKeyInfo().getPublicKey();
-        boolean validSignature = signature.checkSignatureValue(publicKey);
+        final PublicKey publicKey = signature.getKeyInfo().getPublicKey();
+        final boolean validSignature = signature.checkSignatureValue(publicKey);
         LOG.debug("Is signature valid: " + validSignature);
         return validSignature;
     }
 
     private XMLSignature createXmlSignature() throws ParserConfigurationException, XMLSecurityException {
-        Document signatureDocument = TestUtils.newDocument();
-        Element root = createSignatureRoot(signatureDocument);
+        final Document signatureDocument = TestUtils.newDocument();
+        final Element root = createSignatureRoot(signatureDocument);
 
-        String baseURI = "";
-        XMLSignature signature = new XMLSignature(signatureDocument, baseURI, XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        final String baseURI = "";
+        final XMLSignature signature = new XMLSignature(signatureDocument, baseURI, XMLSignature.ALGO_ID_SIGNATURE_DSA);
         root.appendChild(signature.getElement());
 
-        Transforms transforms = createTransformsForSignature(signatureDocument);
+        final Transforms transforms = createTransformsForSignature(signatureDocument);
         signature.addDocument("", transforms, "http://www.w3.org/2001/04/xmlenc#sha256");
         return signature;
     }
 
     private Transforms createTransformsForSignature(Document signatureDocument) throws TransformationException {
-        Transforms transforms = new Transforms(signatureDocument);
+        final Transforms transforms = new Transforms(signatureDocument);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_OMIT_COMMENTS);
         return transforms;
     }
 
     private Element createSignatureRoot(Document signatureDocument) {
-        Element root = signatureDocument.createElementNS("http://www.apache.org/ns/#app1", "apache:RootElement");
+        final Element root = signatureDocument.createElementNS("http://www.apache.org/ns/#app1", "apache:RootElement");
         root.setAttributeNS(Constants.NamespaceSpecNS, "xmlns:apache", "http://www.apache.org/ns/#app1");
         signatureDocument.appendChild(root);
         return root;
     }
 
     private void writeSignature(Document doc) throws IOException {
-        String signatureFilePath = Files.createFile(testFolder.resolve("signature.xml")).toString();
+        final String signatureFilePath = Files.createFile(testFolder.resolve("signature.xml")).toString();
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(signatureFilePath);
@@ -201,8 +201,8 @@ public class PreCalculatedDigestSignatureTest {
 
         @Override
         public XMLSignatureInput engineResolveURI(ResourceResolverContext context) throws ResourceResolverException {
-            String documentUri = extractDocumentUri(context);
-            XMLSignatureInput result = new XMLSignatureInput(preCalculatedDigest);
+            final String documentUri = extractDocumentUri(context);
+            final XMLSignatureInput result = new XMLSignatureInput(preCalculatedDigest);
             result.setSourceURI(documentUri);
             result.setMIMEType("text/plain");
             return result;
@@ -210,12 +210,12 @@ public class PreCalculatedDigestSignatureTest {
 
         @Override
         public boolean engineCanResolveURI(ResourceResolverContext context) {
-            String documentUri = extractDocumentUri(context);
+            final String documentUri = extractDocumentUri(context);
             return documentUri.equals(externalDocumentUri);
         }
 
         private String extractDocumentUri(ResourceResolverContext context) {
-            Attr uriAttr = context.attr;
+            final Attr uriAttr = context.attr;
             return uriAttr.getNodeValue();
         }
     }

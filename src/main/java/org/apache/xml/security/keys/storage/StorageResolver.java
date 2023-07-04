@@ -84,7 +84,7 @@ public class StorageResolver {
     public void add(KeyStore keyStore) {
         try {
             this.add(new KeyStoreResolver(keyStore));
-        } catch (StorageResolverException ex) {
+        } catch (final StorageResolverException ex) {
             LOG.error("Could not add KeyStore because of: ", ex);
         }
     }
@@ -164,8 +164,8 @@ public class StorageResolver {
         // Find the next storage with at least one element and return its Iterator
         private Iterator<Certificate> findNextResolver() {
             while (resolvers.hasNext()) {
-                StorageResolverSpi resolverSpi = resolvers.next();
-                Iterator<Certificate> iter = resolverSpi.getIterator();
+                final StorageResolverSpi resolverSpi = resolvers.next();
+                final Iterator<Certificate> iter = resolverSpi.getIterator();
                 if (iter.hasNext()) {
                     return iter;
                 }

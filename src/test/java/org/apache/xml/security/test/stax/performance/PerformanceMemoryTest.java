@@ -53,13 +53,13 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
     @Test
     public void testRunFirstOutboundSignatureMemoryPerformance() throws Exception {
         System.out.println("Testing Outbound Signature Memory Performance");
-        FileWriter outSignatureSamplesWriter = new FileWriter("target/signatureOutMemorySamples.txt", false);
+        final FileWriter outSignatureSamplesWriter = new FileWriter("target/signatureOutMemorySamples.txt", false);
         for (int i = 1; i <= runs; i++) {
             System.out.println("Run " + i);
 
-            File file = generateLargeXMLFile(i * xmlResizeFactor);
+            final File file = generateLargeXMLFile(i * xmlResizeFactor);
 
-            int startTagCount = countXMLStartTags(file);
+            final int startTagCount = countXMLStartTags(file);
             outSignatureSamplesWriter.write("" + startTagCount);
 
             long startMem = getUsedMemory();
@@ -67,7 +67,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
             Thread thread = new Thread(mst);
             thread.setPriority(9);
             thread.start();
-            File signedFile = doStreamingSignatureOutbound(file, startTagCount);
+            final File signedFile = doStreamingSignatureOutbound(file, startTagCount);
             mst.setStop(true);
             thread.join();
             outSignatureSamplesWriter.write(" " + mst.getMaxUsedMemory());
@@ -92,14 +92,14 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
     @Test
     public void testRunSecondInboundSignatureMemoryPerformance() throws Exception {
         System.out.println("Testing Inbound Signature Memory Performance");
-        FileWriter inSignatureSamplesWriter = new FileWriter("target/signatureInMemorySamples.txt", false);
+        final FileWriter inSignatureSamplesWriter = new FileWriter("target/signatureInMemorySamples.txt", false);
 
         int run = 1;
-        for (Entry<Integer, File> entry : signedFiles.entrySet()) {
+        for (final Entry<Integer, File> entry : signedFiles.entrySet()) {
             System.out.println("Run " + (run++));
 
-            File file = entry.getValue();
-            Integer startTagCount = entry.getKey();
+            final File file = entry.getValue();
+            final Integer startTagCount = entry.getKey();
             inSignatureSamplesWriter.write("" + startTagCount);
 
             long startMem = getUsedMemory();
@@ -131,13 +131,13 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
     @Test
     public void testRunFirstOutboundEncryptionMemoryPerformance() throws Exception {
         System.out.println("Testing Outbound Encryption Memory Performance");
-        FileWriter outEncryptionSamplesWriter = new FileWriter("target/encryptionOutMemorySamples.txt", false);
+        final FileWriter outEncryptionSamplesWriter = new FileWriter("target/encryptionOutMemorySamples.txt", false);
         for (int i = 1; i <= runs; i++) {
             System.out.println("Run " + i);
 
-            File file = generateLargeXMLFile(i * xmlResizeFactor);
+            final File file = generateLargeXMLFile(i * xmlResizeFactor);
 
-            int startTagCount = countXMLStartTags(file);
+            final int startTagCount = countXMLStartTags(file);
             outEncryptionSamplesWriter.write("" + startTagCount);
 
             long startMem = getUsedMemory();
@@ -145,7 +145,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
             Thread thread = new Thread(mst);
             thread.setPriority(9);
             thread.start();
-            File encryptedFile = doStreamingEncryptionOutbound(file, startTagCount);
+            final File encryptedFile = doStreamingEncryptionOutbound(file, startTagCount);
             mst.setStop(true);
             thread.join();
             outEncryptionSamplesWriter.write(" " + mst.getMaxUsedMemory());
@@ -170,14 +170,14 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
     @Test
     public void testRunSecondInboundDecryptionMemoryPerformance() throws Exception {
         System.out.println("Testing Inbound Decryption Memory Performance");
-        FileWriter inEncryptionSamplesWriter = new FileWriter("target/encryptionInMemorySamples.txt", false);
+        final FileWriter inEncryptionSamplesWriter = new FileWriter("target/encryptionInMemorySamples.txt", false);
 
         int run = 1;
-        for (Entry<Integer, File> entry : encryptedFiles.entrySet()) {
+        for (final Entry<Integer, File> entry : encryptedFiles.entrySet()) {
             System.out.println("Run " + (run++));
 
-            File file = entry.getValue();
-            Integer startTagCount = entry.getKey();
+            final File file = entry.getValue();
+            final Integer startTagCount = entry.getKey();
             inEncryptionSamplesWriter.write("" + startTagCount);
 
             long startMem = getUsedMemory();
@@ -214,8 +214,8 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
     private static long getUsedMemory() {
         gc();
         gc();
-        long totalMemory = Runtime.getRuntime().totalMemory();
-        long freeMemory = Runtime.getRuntime().freeMemory();
+        final long totalMemory = Runtime.getRuntime().totalMemory();
+        final long freeMemory = Runtime.getRuntime().freeMemory();
         return totalMemory - freeMemory;
     }
 
@@ -241,14 +241,14 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
 
         @Override
         public void run() {
-            int sleepTime = 50;
+            final int sleepTime = 50;
             while (!isStop()) {
                 try {
                     Thread.sleep(sleepTime);
                     if (isStop()) {
                         break;
                     }
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     throw new RuntimeException(e);
                 }
                 memory.add((int)((getUsedMemory() - memoryDiff) / 1024.0 / 1024.0));
@@ -258,7 +258,7 @@ public class PerformanceMemoryTest extends AbstractPerformanceTest {
         public int getMaxUsedMemory() {
             System.out.println("Collected " + memory.size() + " samples");
             int maxMem = Integer.MIN_VALUE;
-            for (Integer mem : memory) {
+            for (final Integer mem : memory) {
                 maxMem = mem > maxMem ? mem : maxMem;
             }
             System.out.println("Max memory usage: " + maxMem + "MB");

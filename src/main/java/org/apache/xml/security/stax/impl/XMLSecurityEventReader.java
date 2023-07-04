@@ -54,7 +54,7 @@ public class XMLSecurityEventReader implements XMLEventReader {
         final XMLEvent currentXMLEvent;
         try {
             currentXMLEvent = xmlSecEventIterator.next();
-        } catch (NoSuchElementException e) {
+        } catch (final NoSuchElementException e) {
             throw new XMLStreamException(e);
         }
         return currentXMLEvent;
@@ -76,7 +76,7 @@ public class XMLSecurityEventReader implements XMLEventReader {
         try {
             this.xmlSecEvent = xmlSecEventIterator.next();
             return this.xmlSecEvent;
-        } catch (NoSuchElementException e) {
+        } catch (final NoSuchElementException e) {
             return null;
         }
     }
@@ -108,7 +108,7 @@ public class XMLSecurityEventReader implements XMLEventReader {
     public Object next() {
         try {
             return nextEvent();
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             throw new NoSuchElementException(e.getMessage());
         }
     }

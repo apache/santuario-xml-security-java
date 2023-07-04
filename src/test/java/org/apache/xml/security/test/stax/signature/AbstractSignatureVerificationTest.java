@@ -89,13 +89,13 @@ public class AbstractSignatureVerificationTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -122,7 +122,7 @@ public class AbstractSignatureVerificationTest {
             List<String> localNames,
             Key signingKey
     ) throws Exception {
-        String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        final String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
         return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, (List<ReferenceInfo>)null);
     }
 
@@ -136,7 +136,7 @@ public class AbstractSignatureVerificationTest {
             String referenceC14Nmethod,
             Key signingKey
     ) throws Exception {
-        String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        final String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
         return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, (List<ReferenceInfo>)null);
     }
 
@@ -152,7 +152,7 @@ public class AbstractSignatureVerificationTest {
             List<ReferenceInfo> additionalReferences,
             ResourceResolverSpi resourceResolverSpi
     ) throws Exception {
-        String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        final String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
         return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod,
                 additionalReferences, resourceResolverSpi);
     }
@@ -167,7 +167,7 @@ public class AbstractSignatureVerificationTest {
             Key signingKey,
             List<ReferenceInfo> additionalReferences
     ) throws Exception {
-        String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        final String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
         return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, additionalReferences);
     }
 
@@ -181,7 +181,7 @@ public class AbstractSignatureVerificationTest {
             Key signingKey,
             String c14nMethod
     ) throws Exception {
-        String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
+        final String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
         return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, digestMethod, null, null, null);
     }
 
@@ -197,7 +197,7 @@ public class AbstractSignatureVerificationTest {
             List<ReferenceInfo> additionalReferences,
             ResourceResolverSpi resourceResolverSpi
     ) throws Exception {
-        String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
+        final String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
         return signUsingDOM(algorithm, document, localNames, signingKey,
                 c14nMethod, digestMethod, additionalReferences, resourceResolverSpi, null);
     }
@@ -213,7 +213,7 @@ public class AbstractSignatureVerificationTest {
             String c14nMethod,
             List<ReferenceInfo> additionalReferences
     ) throws Exception {
-        String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
+        final String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
         return signUsingDOM(algorithm, document, localNames, signingKey,
                 c14nMethod, digestMethod, additionalReferences, null, null);
     }
@@ -246,42 +246,42 @@ public class AbstractSignatureVerificationTest {
             ResourceResolverSpi resourceResolverSpi,
             AlgorithmParameterSpec spec
     ) throws Exception {
-        XMLSignature sig = new XMLSignature(document, "", algorithm, 0, c14nMethod, null, spec);
+        final XMLSignature sig = new XMLSignature(document, "", algorithm, 0, c14nMethod, null, spec);
         if (resourceResolverSpi != null) {
             sig.addResourceResolver(resourceResolverSpi);
         }
-        Element root = document.getDocumentElement();
+        final Element root = document.getDocumentElement();
         root.appendChild(sig.getElement());
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        for (String localName : localNames) {
-            String expression = "//*[local-name()='" + localName + "']";
-            NodeList elementsToSign =
+        for (final String localName : localNames) {
+            final String expression = "//*[local-name()='" + localName + "']";
+            final NodeList elementsToSign =
                     (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < elementsToSign.getLength(); i++) {
-                Element elementToSign = (Element)elementsToSign.item(i);
+                final Element elementToSign = (Element)elementsToSign.item(i);
                 assertNotNull(elementToSign);
-                String id = UUID.randomUUID().toString();
+                final String id = UUID.randomUUID().toString();
                 elementToSign.setAttributeNS(null, "Id", id);
                 elementToSign.setIdAttributeNS(null, "Id", true);
 
-                Transforms transforms = new Transforms(document);
+                final Transforms transforms = new Transforms(document);
                 transforms.addTransform(c14nMethod);
                 sig.addDocument("#" + id, transforms, digestMethod);
             }
         }
 
         if (additionalReferences != null) {
-            for (ReferenceInfo referenceInfo : additionalReferences) {
+            for (final ReferenceInfo referenceInfo : additionalReferences) {
                 if (referenceInfo.isBinary()) {
                     sig.addDocument(referenceInfo.getResource(), null, referenceInfo.getDigestMethod());
                 } else {
-                    Transforms transforms = new Transforms(document);
+                    final Transforms transforms = new Transforms(document);
                     for (int j = 0; j < referenceInfo.getC14NMethod().length; j++) {
-                        String transform = referenceInfo.getC14NMethod()[j];
+                        final String transform = referenceInfo.getC14NMethod()[j];
                         transforms.addTransform(transform);
                     }
                     sig.addDocument(referenceInfo.getResource(), transforms, referenceInfo.getDigestMethod());
@@ -291,8 +291,8 @@ public class AbstractSignatureVerificationTest {
 
         sig.sign(signingKey);
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
 
@@ -300,9 +300,9 @@ public class AbstractSignatureVerificationTest {
     }
 
     protected void checkSecurityEvents(TestSecurityEventListener securityEventListener) {
-        String c14nAlgorithm = "http://www.w3.org/2001/10/xml-exc-c14n#";
-        String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
-        String signatureMethod = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
+        final String c14nAlgorithm = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        final String digestAlgorithm = "http://www.w3.org/2000/09/xmldsig#sha1";
+        final String signatureMethod = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
         checkSecurityEvents(securityEventListener, c14nAlgorithm, digestAlgorithm, signatureMethod);
     }
 
@@ -312,18 +312,18 @@ public class AbstractSignatureVerificationTest {
             String digestAlgorithm,
             String signatureMethod
     ) {
-        SignatureValueSecurityEvent sigValueEvent =
+        final SignatureValueSecurityEvent sigValueEvent =
                 (SignatureValueSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.SignatureValue);
         assertNotNull(sigValueEvent);
         assertNotNull(sigValueEvent.getSignatureValue());
 
-        List<SecurityEvent> algorithmEvents =
+        final List<SecurityEvent> algorithmEvents =
                 securityEventListener.getSecurityEvents(SecurityEventConstants.AlgorithmSuite);
         assertFalse(algorithmEvents.isEmpty());
 
         // C14n algorithm
-        for (SecurityEvent event : algorithmEvents) {
-            AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
+        for (final SecurityEvent event : algorithmEvents) {
+            final AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
             if (XMLSecurityConstants.SigC14n.equals(algorithmEvent.getAlgorithmUsage())
                 || XMLSecurityConstants.SigTransform.equals(algorithmEvent.getAlgorithmUsage())) {
                 assertEquals(c14nAlgorithm, algorithmEvent.getAlgorithmURI());
@@ -331,16 +331,16 @@ public class AbstractSignatureVerificationTest {
         }
 
         // Digest algorithm
-        for (SecurityEvent event : algorithmEvents) {
-            AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
+        for (final SecurityEvent event : algorithmEvents) {
+            final AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
             if (XMLSecurityConstants.SigDig.equals(algorithmEvent.getAlgorithmUsage())) {
                 assertEquals(digestAlgorithm, algorithmEvent.getAlgorithmURI());
             }
         }
 
         // Signature method
-        for (SecurityEvent event : algorithmEvents) {
-            AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
+        for (final SecurityEvent event : algorithmEvents) {
+            final AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
             if (XMLSecurityConstants.Asym_Sig.equals(algorithmEvent.getAlgorithmUsage())
                     || XMLSecurityConstants.Sym_Sig.equals(algorithmEvent.getAlgorithmUsage())) {
                 assertEquals(signatureMethod, algorithmEvent.getAlgorithmURI());
@@ -349,7 +349,7 @@ public class AbstractSignatureVerificationTest {
     }
 
     protected void checkSignedElementSecurityEvents(TestSecurityEventListener securityEventListener) {
-        SignedElementSecurityEvent signedElementEvent =
+        final SignedElementSecurityEvent signedElementEvent =
                 (SignedElementSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.SignedElement);
         assertNotNull(signedElementEvent);
         assertEquals(signedElementEvent.getElementPath().size(), 2);
@@ -361,7 +361,7 @@ public class AbstractSignatureVerificationTest {
     protected void checkSignedElementMultipleSecurityEvents(
             TestSecurityEventListener securityEventListener
     ) {
-        List<SecurityEvent> signedElements =
+        final List<SecurityEvent> signedElements =
                 securityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement);
         assertTrue(signedElements.size() == 2);
         SignedElementSecurityEvent signedElementEvent =
@@ -389,37 +389,37 @@ public class AbstractSignatureVerificationTest {
             SecurityTokenConstants.KeyIdentifier keyIdentifier
     ) throws XMLSecurityException {
         if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) {
-            KeyValueTokenSecurityEvent tokenEvent =
+            final KeyValueTokenSecurityEvent tokenEvent =
                     (KeyValueTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.KeyValueToken);
             assertNotNull(tokenEvent);
         } else if (SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
-            DefaultTokenSecurityEvent tokenEvent =
+            final DefaultTokenSecurityEvent tokenEvent =
                     (DefaultTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.DefaultToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
         } else if (SecurityTokenConstants.KeyIdentifier_KeyName.equals(keyIdentifier)) {
-            KeyNameTokenSecurityEvent tokenEvent =
+            final KeyNameTokenSecurityEvent tokenEvent =
                     (KeyNameTokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.KeyNameToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
             assertNotNull(((KeyNameSecurityToken) tokenEvent.getSecurityToken()).getKeyName());
         } else {
-            X509TokenSecurityEvent tokenEvent =
+            final X509TokenSecurityEvent tokenEvent =
                     (X509TokenSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.X509Token);
             assertNotNull(tokenEvent);
-            X509SecurityToken x509SecurityToken =
+            final X509SecurityToken x509SecurityToken =
                     (X509SecurityToken) tokenEvent.getSecurityToken();
             assertNotNull(x509SecurityToken);
             if (SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier.equals(keyIdentifier)) {
                 assertEquals(cert, x509SecurityToken.getX509Certificates()[0]);
             } else if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, cert.getPublicKey());
                 assertNotNull(((X509SubjectNameSecurityToken) x509SecurityToken).getSubjectName());
             } else if (SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, cert.getPublicKey());
                 assertNotNull(((X509IssuerSerialSecurityToken) x509SecurityToken).getIssuerName());
                 assertNotNull(((X509IssuerSerialSecurityToken) x509SecurityToken).getSerialNumber());

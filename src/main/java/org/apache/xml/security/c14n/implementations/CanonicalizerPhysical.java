@@ -126,18 +126,18 @@ public class CanonicalizerPhysical extends CanonicalizerBase {
         throws CanonicalizationException, DOMException, IOException {
         if (element.hasAttributes()) {
             // result will contain all the attrs declared directly on that element
-            SortedSet<Attr> result = new TreeSet<>(COMPARE);
+            final SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
-            NamedNodeMap attrs = element.getAttributes();
-            int attrsLength = attrs.getLength();
+            final NamedNodeMap attrs = element.getAttributes();
+            final int attrsLength = attrs.getLength();
 
             for (int i = 0; i < attrsLength; i++) {
-                Attr attribute = (Attr) attrs.item(i);
+                final Attr attribute = (Attr) attrs.item(i);
                 result.add(attribute);
             }
 
             //we output all Attrs which are available
-            for (Attr attr : result) {
+            for (final Attr attr : result) {
                 outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
             }
         }

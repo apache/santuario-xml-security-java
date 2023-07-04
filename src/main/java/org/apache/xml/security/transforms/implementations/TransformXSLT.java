@@ -81,19 +81,19 @@ public class TransformXSLT extends TransformSpi {
                     XMLUtils.selectNode(transformElement.getFirstChild(), XSLTSpecNS, "transform", 0);
             }
             if (xsltElement == null) {
-                Object[] exArgs = { "xslt:stylesheet", "Transform" };
+                final Object[] exArgs = { "xslt:stylesheet", "Transform" };
 
                 throw new TransformationException("xml.WrongContent", exArgs);
             }
 
-            TransformerFactory tFactory = TransformerFactory.newInstance();
+            final TransformerFactory tFactory = TransformerFactory.newInstance();
             // Process XSLT stylesheets in a secure manner
             tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
             if (secureValidation) {
                 try {
                     tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
                     tFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-                } catch (IllegalArgumentException ex) {
+                } catch (final IllegalArgumentException ex) {
                     // ignore
                 }
             }
@@ -116,9 +116,9 @@ public class TransformXSLT extends TransformSpi {
              */
             {
                 try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-                    Transformer transformer = tFactory.newTransformer();
-                    DOMSource source = new DOMSource(xsltElement);
-                    StreamResult result = new StreamResult(os);
+                    final Transformer transformer = tFactory.newTransformer();
+                    final DOMSource source = new DOMSource(xsltElement);
+                    final StreamResult result = new StreamResult(os);
 
                     transformer.transform(source, result);
 
@@ -127,7 +127,7 @@ public class TransformXSLT extends TransformSpi {
                 }
             }
 
-            Transformer transformer = tFactory.newTransformer(stylesheet);
+            final Transformer transformer = tFactory.newTransformer(stylesheet);
 
             // Force Xalan to use \n as line separator on all OSes. This
             // avoids OS specific signature validation failures due to line
@@ -136,26 +136,26 @@ public class TransformXSLT extends TransformSpi {
             // implementations.
             try {
                 transformer.setOutputProperty("{http://xml.apache.org/xalan}line-separator", "\n");
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 LOG.warn("Unable to set Xalan line-separator property: " + e.getMessage());
             }
 
             try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
-                Source xmlSource = new StreamSource(is);
+                final Source xmlSource = new StreamSource(is);
                 if (baos == null) {
                     try (ByteArrayOutputStream baos1 = new ByteArrayOutputStream()) {
-                        StreamResult outputTarget = new StreamResult(baos1);
+                        final StreamResult outputTarget = new StreamResult(baos1);
                         transformer.transform(xmlSource, outputTarget);
-                        XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
+                        final XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
                         output.setSecureValidation(secureValidation);
                         return output;
                     }
                 }
-                StreamResult outputTarget = new StreamResult(baos);
+                final StreamResult outputTarget = new StreamResult(baos);
 
                 transformer.transform(xmlSource, outputTarget);
             }
-            XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+            final XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(baos);
             return output;

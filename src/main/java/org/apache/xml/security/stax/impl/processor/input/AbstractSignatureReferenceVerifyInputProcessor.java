@@ -97,7 +97,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         this.signatureType = signatureType;
         this.inboundSecurityToken = inboundSecurityToken;
 
-        List<ReferenceType> referencesTypeList = signatureType.getSignedInfo().getReference();
+        final List<ReferenceType> referencesTypeList = signatureType.getSignedInfo().getReference();
         if (referencesTypeList.size() > maximumAllowedReferencesPerManifest) {
             throw new XMLSecurityException(
                     "secureProcessing.MaximumAllowedReferencesPerManifest",
@@ -107,7 +107,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         externalReferences = new ArrayList<>(referencesTypeList.size());
         processedReferences = new ArrayList<>(referencesTypeList.size());
 
-        for (ReferenceType referenceType : referencesTypeList) {
+        for (final ReferenceType referenceType : referencesTypeList) {
             if (!doNotThrowExceptionForManifests && XMLSecurityConstants.NS_XMLDSIG_MANIFEST.equals(referenceType.getType())) {
                 throw new XMLSecurityException(
                         "secureProcessing.DoNotThrowExceptionForManifests"
@@ -119,7 +119,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             if (referenceType.getId() == null) {
                 referenceType.setId(IDGenerator.generateID(null));
             }
-            ResourceResolver resourceResolver =
+            final ResourceResolver resourceResolver =
                     ResourceResolverMapper.getResourceResolver(
                             referenceType.getURI(), inputProcessorChain.getDocumentContext().getBaseURI());
 
@@ -158,19 +158,19 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
             throws XMLStreamException, XMLSecurityException {
 
-        XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
+        final XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
         if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
-            XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
-            List<ReferenceType> referenceTypes = resolvesResource(xmlSecStartElement);
+            final XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
+            final List<ReferenceType> referenceTypes = resolvesResource(xmlSecStartElement);
             if (!referenceTypes.isEmpty()) {
                 for (int i = 0; i < referenceTypes.size(); i++) {
-                    ReferenceType referenceType = referenceTypes.get(i);
+                    final ReferenceType referenceType = referenceTypes.get(i);
 
                     if (processedReferences.contains(referenceType)) {
                         throw new XMLSecurityException("signature.Verification.MultipleIDs",
                                                        new Object[] {referenceType.getURI()});
                     }
-                    InternalSignatureReferenceVerifier internalSignatureReferenceVerifier =
+                    final InternalSignatureReferenceVerifier internalSignatureReferenceVerifier =
                         getSignatureReferenceVerifier(getSecurityProperties(), inputProcessorChain,
                                                       referenceType, xmlSecStartElement);
                     if (!internalSignatureReferenceVerifier.isFinished()) {
@@ -197,13 +197,13 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     protected List<ReferenceType> resolvesResource(XMLSecStartElement xmlSecStartElement) {
         List<ReferenceType> referenceTypes = Collections.emptyList();
         for (int i = 0; i < sameDocumentReferences.size(); i++) {
-            KeyValue<ResourceResolver, ReferenceType> keyValue = sameDocumentReferences.get(i);
+            final KeyValue<ResourceResolver, ReferenceType> keyValue = sameDocumentReferences.get(i);
 
-            ResourceResolver resolver = keyValue.getKey();
+            final ResourceResolver resolver = keyValue.getKey();
             boolean resourceMatches = false;
             try {
                 // A reflection hack to avoid breaking the ResourceResolver interface for SANTUARIO-407.
-                Method m = resolver.getClass().getMethod("matches", XMLSecStartElement.class, QName.class);
+                final Method m = resolver.getClass().getMethod("matches", XMLSecStartElement.class, QName.class);
                 if (m != null
                     && (Boolean)m.invoke(resolver, xmlSecStartElement, getSecurityProperties().getIdAttributeNS())) {
                     if (referenceTypes == Collections.<ReferenceType>emptyList()) {
@@ -212,11 +212,11 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                     referenceTypes.add(keyValue.getValue());
                     resourceMatches = true;
                 }
-            } catch (NoSuchMethodException ex) {
+            } catch (final NoSuchMethodException ex) {
                 // No need to report this
-            } catch (InvocationTargetException ex) {
+            } catch (final InvocationTargetException ex) {
                 // No need to report this
-            } catch (IllegalAccessException ex) {
+            } catch (final IllegalAccessException ex) {
                 // No need to report this
             }
 
@@ -235,7 +235,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         inputProcessorChain.doFinal();
 
         for (int i = 0; i < sameDocumentReferences.size(); i++) {
-            KeyValue<ResourceResolver, ReferenceType> keyValue = sameDocumentReferences.get(i);
+            final KeyValue<ResourceResolver, ReferenceType> keyValue = sameDocumentReferences.get(i);
             if (!processedReferences.contains(keyValue.getValue())) {
                 throw new XMLSecurityException("stax.signature.unprocessedReferences");
             }
@@ -243,7 +243,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
 
         if (!externalReferences.isEmpty()) {
             for (int i = 0; i < externalReferences.size(); i++) {
-                KeyValue<ResourceResolver, ReferenceType> keyValue = externalReferences.get(i);
+                final KeyValue<ResourceResolver, ReferenceType> keyValue = externalReferences.get(i);
                 verifyExternalReference(
                         inputProcessorChain,
                         keyValue.getKey().getInputStreamFromExternalReference(),
@@ -252,7 +252,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             }
 
             for (int i = 0; i < externalReferences.size(); i++) {
-                KeyValue<ResourceResolver, ReferenceType> keyValue = externalReferences.get(i);
+                final KeyValue<ResourceResolver, ReferenceType> keyValue = externalReferences.get(i);
                 if (!processedReferences.contains(keyValue.getValue())) {
                     throw new XMLSecurityException("stax.signature.unprocessedReferences");
                 }
@@ -276,7 +276,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                     new UnsyncBufferedOutputStream(digestOutputStream)) {
 
             if (referenceType.getTransforms() != null) {
-                Transformer transformer =
+                final Transformer transformer =
                         buildTransformerChain(referenceType, bufferedDigestOutputStream, inputProcessorChain, null);
                 transformer.transform(bufferedInputStream);
                 bufferedDigestOutputStream.close();
@@ -285,7 +285,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                 bufferedDigestOutputStream.close();
             }
             compareDigest(digestOutputStream.getDigestValue(), referenceType);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLSecurityException(e);
         }
     }
@@ -293,15 +293,15 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
     protected DigestOutputStream createMessageDigestOutputStream(ReferenceType referenceType, InboundSecurityContext inboundSecurityContext)
             throws XMLSecurityException {
 
-        String digestMethodAlgorithm = referenceType.getDigestMethod().getAlgorithm();
-        String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestMethodAlgorithm);
-        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestMethodAlgorithm);
+        final String digestMethodAlgorithm = referenceType.getDigestMethod().getAlgorithm();
+        final String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestMethodAlgorithm);
+        final String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestMethodAlgorithm);
         if (jceName == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {digestMethodAlgorithm});
         }
 
-        AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
+        final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
         algorithmSuiteSecurityEvent.setAlgorithmURI(digestMethodAlgorithm);
         algorithmSuiteSecurityEvent.setAlgorithmUsage(XMLSecurityConstants.SigDig);
         algorithmSuiteSecurityEvent.setCorrelationID(referenceType.getId());
@@ -314,9 +314,9 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             } else {
                 messageDigest = MessageDigest.getInstance(jceName);
             }
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             throw new XMLSecurityException(e);
-        } catch (NoSuchProviderException e) {
+        } catch (final NoSuchProviderException e) {
             throw new XMLSecurityException(e);
         }
 
@@ -331,22 +331,22 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         // If no Transforms then just default to an Inclusive without comments transform
         if (referenceType.getTransforms() == null || referenceType.getTransforms().getTransform().isEmpty()) {
 
-            AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
+            final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
             algorithmSuiteSecurityEvent.setAlgorithmURI(XMLSecurityConstants.NS_C14N_OMIT_COMMENTS);
             algorithmSuiteSecurityEvent.setAlgorithmUsage(XMLSecurityConstants.SigTransform);
             algorithmSuiteSecurityEvent.setCorrelationID(referenceType.getId());
             inputProcessorChain.getSecurityContext().registerSecurityEvent(algorithmSuiteSecurityEvent);
 
-            Transformer transformer = new Canonicalizer20010315_OmitCommentsTransformer();
+            final Transformer transformer = new Canonicalizer20010315_OmitCommentsTransformer();
             transformer.setOutputStream(outputStream);
             return transformer;
         }
 
-        List<TransformType> transformTypeList = referenceType.getTransforms().getTransform();
+        final List<TransformType> transformTypeList = referenceType.getTransforms().getTransform();
 
         if (transformTypeList.size() == 1 &&
                 XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE.equals(transformTypeList.get(0).getAlgorithm())) {
-            TransformType transformType = new TransformType();
+            final TransformType transformType = new TransformType();
             transformType.setAlgorithm(XMLSecurityConstants.NS_C14N_OMIT_COMMENTS);
             transformTypeList.add(transformType);
         }
@@ -359,17 +359,17 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
 
         Transformer parentTransformer = null;
         for (int i = transformTypeList.size() - 1; i >= 0; i--) {
-            TransformType transformType = transformTypeList.get(i);
+            final TransformType transformType = transformTypeList.get(i);
 
-            String algorithm = transformType.getAlgorithm();
+            final String algorithm = transformType.getAlgorithm();
 
-            AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
+            final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
             algorithmSuiteSecurityEvent.setAlgorithmURI(algorithm);
             algorithmSuiteSecurityEvent.setAlgorithmUsage(XMLSecurityConstants.SigTransform);
             algorithmSuiteSecurityEvent.setCorrelationID(referenceType.getId());
             inputProcessorChain.getSecurityContext().registerSecurityEvent(algorithmSuiteSecurityEvent);
 
-            InclusiveNamespaces inclusiveNamespacesType =
+            final InclusiveNamespaces inclusiveNamespacesType =
                     XMLSecurityUtils.getQNameType(transformType.getContent(),
                             XMLSecurityConstants.TAG_c14nExcl_InclusiveNamespaces);
 
@@ -443,7 +443,7 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
         @Override
         public XMLSecEvent processEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
-            XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
+            final XMLSecEvent xmlSecEvent = inputProcessorChain.processEvent();
             processEvent(xmlSecEvent, inputProcessorChain);
             return xmlSecEvent;
         }
@@ -455,14 +455,14 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
                 this.elementCounter++;
             } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
-                XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
+                final XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
                 this.elementCounter--;
 
                 if (this.elementCounter == 0 && xmlSecEndElement.getName().equals(startElement.getName())) {
                     getTransformer().doFinal();
                     try {
                         getBufferedDigestOutputStream().close();
-                    } catch (IOException e) {
+                    } catch (final IOException e) {
                         throw new XMLSecurityException(e);
                     }
 

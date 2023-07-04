@@ -96,7 +96,7 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
         // unmarshal attributes
         this.encoding = DOMUtils.getAttributeValue(objElem, "Encoding");
 
-        Attr attr = objElem.getAttributeNodeNS(null, "Id");
+        final Attr attr = objElem.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             this.id = attr.getValue();
             objElem.setIdAttributeNode(attr, true);
@@ -105,13 +105,13 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
         }
         this.mimeType = DOMUtils.getAttributeValue(objElem, "MimeType");
 
-        List<XMLStructure> newContent = new ArrayList<>();
+        final List<XMLStructure> newContent = new ArrayList<>();
         Node firstChild = objElem.getFirstChild();
         while (firstChild != null) {
             if (firstChild.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElem = (Element)firstChild;
-                String tag = childElem.getLocalName();
-                String namespace = childElem.getNamespaceURI();
+                final Element childElem = (Element)firstChild;
+                final String tag = childElem.getLocalName();
+                final String namespace = childElem.getNamespaceURI();
                 if ("Manifest".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
                     newContent.add(new DOMManifest(childElem, context, provider));
                 } else if ("SignatureProperties".equals(tag) && XMLSignature.XMLNS.equals(namespace)) {
@@ -130,9 +130,9 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
 
         // Here we capture namespace declarations, so that when they're marshalled back
         // out, we can make copies of them. Note that attributes are NOT captured.
-        NamedNodeMap nnm = objElem.getAttributes();
+        final NamedNodeMap nnm = objElem.getAttributes();
         for (int idx = 0 ; idx < nnm.getLength() ; idx++) {
-            Node nsDecl = nnm.item(idx);
+            final Node nsDecl = nnm.item(idx);
             if (DOMUtils.isNamespace(nsDecl)) {
                 newContent.add(new javax.xml.crypto.dom.DOMStructure(nsDecl));
             }
@@ -169,7 +169,7 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
     @Override
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
         Element objElem = objectElem;
         if (objElem == null) {
@@ -182,11 +182,11 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
             DOMUtils.setAttribute(objElem, "Encoding", encoding);
 
             // create and append any elements and mixed content, if necessary
-            for (XMLStructure object : content) {
+            for (final XMLStructure object : content) {
                 if (object instanceof DOMStructure) {
                     ((DOMStructure)object).marshal(objElem, dsPrefix, context);
                 } else {
-                    javax.xml.crypto.dom.DOMStructure domObject =
+                    final javax.xml.crypto.dom.DOMStructure domObject =
                         (javax.xml.crypto.dom.DOMStructure)object;
                     DOMUtils.appendChild(objElem, domObject.getNode());
                 }
@@ -206,14 +206,14 @@ public final class DOMXMLObject extends DOMStructure implements XMLObject {
         if (!(o instanceof XMLObject)) {
             return false;
         }
-        XMLObject oxo = (XMLObject)o;
+        final XMLObject oxo = (XMLObject)o;
 
-        boolean idsEqual = id == null ? oxo.getId() == null
+        final boolean idsEqual = id == null ? oxo.getId() == null
                                        : id.equals(oxo.getId());
-        boolean encodingsEqual =
+        final boolean encodingsEqual =
             encoding == null ? oxo.getEncoding() == null
                               : encoding.equals(oxo.getEncoding());
-        boolean mimeTypesEqual =
+        final boolean mimeTypesEqual =
             mimeType == null ? oxo.getMimeType() == null
                               : mimeType.equals(oxo.getMimeType());
 

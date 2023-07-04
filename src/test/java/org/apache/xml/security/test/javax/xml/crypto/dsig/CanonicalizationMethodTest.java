@@ -71,7 +71,7 @@ public class CanonicalizationMethodTest {
     public void testIsFeatureSupported() throws Exception {
         CanonicalizationMethod cm;
         for (int i = 0; i < C14N_ALGOS.length; i++) {
-            String algo = C14N_ALGOS[i];
+            final String algo = C14N_ALGOS[i];
             ExcC14NParameterSpec params = null;
             if (i >= 2) {
                 params = new ExcC14NParameterSpec();
@@ -80,7 +80,7 @@ public class CanonicalizationMethodTest {
             try {
                 cm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
-            } catch (NullPointerException npe) {}
+            } catch (final NullPointerException npe) {}
 
             assertFalse(cm.isFeatureSupported("not supported"));
         }
@@ -92,7 +92,7 @@ public class CanonicalizationMethodTest {
         //                         AlgorithmParameterSpec params)
         // for generating CanonicalizationMethod objects
         CanonicalizationMethod cm;
-        for (String algo : C14N_ALGOS) {
+        for (final String algo : C14N_ALGOS) {
             cm = factory.newCanonicalizationMethod(algo,
                 (C14NMethodParameterSpec) null);
             assertNotNull(cm);
@@ -103,8 +103,8 @@ public class CanonicalizationMethodTest {
                 cm = factory.newCanonicalizationMethod
                     (algo, new TestUtils.MyOwnC14nParameterSpec());
                 fail("Should raise an IAPE for invalid c14n parameters");
-            } catch (InvalidAlgorithmParameterException iape) {
-            } catch (Exception ex) {
+            } catch (final InvalidAlgorithmParameterException iape) {
+            } catch (final Exception ex) {
                 fail("Should raise a IAPE instead of " + ex);
             }
             if (algo.equals(CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS) ||
@@ -112,7 +112,7 @@ public class CanonicalizationMethodTest {
                 cm = factory.newCanonicalizationMethod
                     (CanonicalizationMethod.EXCLUSIVE,
                      new ExcC14NParameterSpec());
-                AlgorithmParameterSpec aps = cm.getParameterSpec();
+                final AlgorithmParameterSpec aps = cm.getParameterSpec();
                 assertNotNull(aps);
                 assertTrue(aps instanceof ExcC14NParameterSpec);
             }
@@ -122,8 +122,8 @@ public class CanonicalizationMethodTest {
             cm = factory.newCanonicalizationMethod(null,
                 (C14NMethodParameterSpec) null);
             fail("Should raise a NPE for null algo");
-        } catch (NullPointerException npe) {
-        } catch (Exception ex) {
+        } catch (final NullPointerException npe) {
+        } catch (final Exception ex) {
             fail("Should raise a NPE instead of " + ex);
         }
 
@@ -131,8 +131,8 @@ public class CanonicalizationMethodTest {
             cm = factory.newCanonicalizationMethod("non-existent",
                 (C14NMethodParameterSpec) null);
             fail("Should raise an NSAE for non-existent algos");
-        } catch (NoSuchAlgorithmException nsae) {
-        } catch (Exception ex) {
+        } catch (final NoSuchAlgorithmException nsae) {
+        } catch (final Exception ex) {
             fail("Should raise an NSAE instead of " + ex);
         }
     }

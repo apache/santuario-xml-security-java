@@ -121,17 +121,17 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor1);
 
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor2);
 
-        AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor3);
 
@@ -142,33 +142,33 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase2() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor1);
 
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessor2.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor2);
 
-        AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
         };
         outputProcessor3.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor3);
 
-        AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
         };
         outputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor4);
 
-        AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
         };
         outputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor5);
 
-        AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor6);
 
@@ -182,35 +182,35 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorBefore1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor1);
 
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessor2.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor2);
 
-        AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
         };
         outputProcessor3.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor3);
 
-        AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
         };
         outputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         outputProcessor4.addBeforeProcessor(outputProcessor3.getClass());
         outputProcessorChain.addProcessor(outputProcessor4);
 
-        AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
         };
         outputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         outputProcessor5.addBeforeProcessor(outputProcessor2.getClass());
         outputProcessorChain.addProcessor(outputProcessor5);
 
-        AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
         };
         outputProcessor6.addBeforeProcessor(outputProcessor1.getClass());
         outputProcessorChain.addProcessor(outputProcessor6);
@@ -225,35 +225,35 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorAfter1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor1);
 
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessor2.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor2);
 
-        AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
         };
         outputProcessor3.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         outputProcessorChain.addProcessor(outputProcessor3);
 
-        AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
         };
         outputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         outputProcessor4.addAfterProcessor(outputProcessor3.getClass());
         outputProcessorChain.addProcessor(outputProcessor4);
 
-        AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
         };
         outputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         outputProcessor5.addAfterProcessor(outputProcessor2.getClass());
         outputProcessorChain.addProcessor(outputProcessor5);
 
-        AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
         };
         outputProcessor6.addAfterProcessor(outputProcessor1.getClass());
         outputProcessorChain.addProcessor(outputProcessor6);
@@ -268,31 +268,31 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testAddProcessorBeforeAndAfter1() {
-        OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor1);
 
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor2);
 
-        AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor3);
 
-        AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor4 = new AbstractOutputProcessor() {
         };
         outputProcessorChain.addProcessor(outputProcessor4);
 
-        AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor5 = new AbstractOutputProcessor() {
         };
         outputProcessor5.addBeforeProcessor(outputProcessor4.getClass());
         outputProcessor5.addAfterProcessor(outputProcessor3.getClass());
         outputProcessorChain.addProcessor(outputProcessor5);
 
-        AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor6 = new AbstractOutputProcessor() {
         };
         outputProcessor6.addBeforeProcessor(outputProcessor5.getClass());
         outputProcessor6.addAfterProcessor(outputProcessor3.getClass());
@@ -308,33 +308,33 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testOrderOfProcessorsIsIndependentOfWhenTheyAreAddedToTheChain() {
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
-        AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
         };
         outputProcessor1.addBeforeProcessor(outputProcessor3.getClass());
         outputProcessor2.addBeforeProcessor(outputProcessor3.getClass());
         outputProcessor2.addAfterProcessor(outputProcessor1.getClass());
         outputProcessor3.addAfterProcessor(outputProcessor1.getClass());
 
-        OutputProcessorChain outputProcessorChain1 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChain outputProcessorChain1 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
         outputProcessorChain1.addProcessor(outputProcessor1);
         outputProcessorChain1.addProcessor(outputProcessor2);
         outputProcessorChain1.addProcessor(outputProcessor3);
 
-        List<OutputProcessor> processors1 = outputProcessorChain1.getProcessors();
+        final List<OutputProcessor> processors1 = outputProcessorChain1.getProcessors();
         assertEquals(outputProcessor1, processors1.get(0));
         assertEquals(outputProcessor2, processors1.get(1));
         assertEquals(outputProcessor3, processors1.get(2));
 
-        OutputProcessorChain outputProcessorChain2 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChain outputProcessorChain2 = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
         outputProcessorChain2.addProcessor(outputProcessor1);
         outputProcessorChain2.addProcessor(outputProcessor3);
         outputProcessorChain2.addProcessor(outputProcessor2);
 
-        List<OutputProcessor> processors2 = outputProcessorChain1.getProcessors();
+        final List<OutputProcessor> processors2 = outputProcessorChain1.getProcessors();
         assertEquals(outputProcessor1, processors2.get(0));
         assertEquals(outputProcessor2, processors2.get(1));
         assertEquals(outputProcessor3, processors2.get(2));
@@ -342,40 +342,40 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testActionOrderOfProcessorsGroupsThemTogether() {
-        AbstractOutputProcessor finalOutputProcessor = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor finalOutputProcessor = new AbstractOutputProcessor() {
         };
         finalOutputProcessor.setAction(null, -1);
 
-        AbstractOutputProcessor initialEncryptionOutputProcessor = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor initialEncryptionOutputProcessor = new AbstractOutputProcessor() {
         };
         initialEncryptionOutputProcessor.setAction(XMLSecurityConstants.ENCRYPTION, 0);
         initialEncryptionOutputProcessor.addBeforeProcessor(finalOutputProcessor.getClass());
 
-        AbstractOutputProcessor myEncryptionOutputProcessor = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor myEncryptionOutputProcessor = new AbstractOutputProcessor() {
         };
         myEncryptionOutputProcessor.setAction(XMLSecurityConstants.ENCRYPTION, 0);
         myEncryptionOutputProcessor.addBeforeProcessor(finalOutputProcessor.getClass());
         myEncryptionOutputProcessor.addAfterProcessor(initialEncryptionOutputProcessor.getClass());
 
-        AbstractOutputProcessor initialSignatureOutputProcessor = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor initialSignatureOutputProcessor = new AbstractOutputProcessor() {
         };
         initialSignatureOutputProcessor.setAction(XMLSecurityConstants.SIGNATURE, 1);
         initialSignatureOutputProcessor.addBeforeProcessor(finalOutputProcessor.getClass());
 
-        AbstractOutputProcessor mySignatureOutputProcessor = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor mySignatureOutputProcessor = new AbstractOutputProcessor() {
         };
         mySignatureOutputProcessor.setAction(XMLSecurityConstants.SIGNATURE, 1);
         mySignatureOutputProcessor.addBeforeProcessor(finalOutputProcessor.getClass());
         mySignatureOutputProcessor.addAfterProcessor(initialSignatureOutputProcessor.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
         outputProcessorChain.addProcessor(finalOutputProcessor);
         outputProcessorChain.addProcessor(initialSignatureOutputProcessor);
         outputProcessorChain.addProcessor(mySignatureOutputProcessor);
         outputProcessorChain.addProcessor(myEncryptionOutputProcessor);
         outputProcessorChain.addProcessor(initialEncryptionOutputProcessor);
 
-        List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
+        final List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
         assertEquals(initialEncryptionOutputProcessor, outputProcessors.get(0));
         assertEquals(myEncryptionOutputProcessor, outputProcessors.get(1));
         assertEquals(initialSignatureOutputProcessor, outputProcessors.get(2));
@@ -385,65 +385,65 @@ public class OutputProcessorChainTest {
 
     @Test
     public void testConflictingOrderOfProcessors1() {
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessor1.setAction(null, -1);
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessor2.setAction(null, -1);
         outputProcessor2.addBeforeProcessor(outputProcessor1.getClass());
         outputProcessor2.addAfterProcessor(outputProcessor1.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
         outputProcessorChain.addProcessor(outputProcessor1);
         assertThrows(IllegalArgumentException.class, () -> outputProcessorChain.addProcessor(outputProcessor2));
 
-        List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
+        final List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
         assertEquals(1, outputProcessors.size());
         assertEquals(outputProcessor1, outputProcessors.get(0));
     }
 
     @Test
     public void testConflictingOrderOfProcessors2() {
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessor1.setAction(null, -1);
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessor2.setAction(null, -1);
         outputProcessor1.addBeforeProcessor(outputProcessor2.getClass());
         outputProcessor1.addAfterProcessor(outputProcessor2.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
         outputProcessorChain.addProcessor(outputProcessor1);
         assertThrows(IllegalArgumentException.class, () -> outputProcessorChain.addProcessor(outputProcessor2));
 
-        List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
+        final List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
         assertEquals(1, outputProcessors.size());
         assertEquals(outputProcessor1, outputProcessors.get(0));
     }
 
     @Test
     public void testConflictingOrderOfProcessors3() {
-        AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessor1.setAction(null, -1);
-        AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
         };
         outputProcessor2.setAction(null, -1);
-        AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
+        final AbstractOutputProcessor outputProcessor3 = new AbstractOutputProcessor() {
         };
         outputProcessor3.setAction(null, -1);
         outputProcessor1.addBeforeProcessor(outputProcessor2.getClass());
         outputProcessor2.addBeforeProcessor(outputProcessor3.getClass());
         outputProcessor3.addBeforeProcessor(outputProcessor1.getClass());
 
-        OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
+        final OutputProcessorChain outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
         outputProcessorChain.addProcessor(outputProcessor1);
         outputProcessorChain.addProcessor(outputProcessor2);
         assertThrows(IllegalArgumentException.class, () -> outputProcessorChain.addProcessor(outputProcessor3));
 
-        List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
+        final List<OutputProcessor> outputProcessors = outputProcessorChain.getProcessors();
         assertEquals(2, outputProcessors.size());
         assertEquals(outputProcessor1, outputProcessors.get(0));
         assertEquals(outputProcessor2, outputProcessors.get(1));

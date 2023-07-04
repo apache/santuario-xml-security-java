@@ -55,10 +55,10 @@ public class X509DigestResolverTest {
 
     @Test
     public void testDigest() throws Exception {
-        Document doc = loadXML("X509Digest.xml");
-        Element element = doc.getDocumentElement();
+        final Document doc = loadXML("X509Digest.xml");
+        final Element element = doc.getDocumentElement();
 
-        KeyInfo keyInfo = new KeyInfo(element, "");
+        final KeyInfo keyInfo = new KeyInfo(element, "");
 
         assertNull(keyInfo.getX509Certificate());
         assertNull(keyInfo.getPublicKey());
@@ -83,7 +83,7 @@ public class X509DigestResolverTest {
 
     private X509Certificate loadCertificate(String fileName) throws Exception {
         try (FileInputStream fis = new FileInputStream(getControlFilePath(fileName))) {
-            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            final CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             return (X509Certificate) certFactory.generateCertificate(fis);
         }
     }

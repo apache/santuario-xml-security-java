@@ -167,28 +167,28 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                                            Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        final SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
-        SortedSet<String> visiblyUtilized = new TreeSet<>();
+        final SortedSet<String> visiblyUtilized = new TreeSet<>();
         if (!inclusiveNSSet.isEmpty()) {
             visiblyUtilized.addAll(inclusiveNSSet);
         }
 
         if (element.hasAttributes()) {
-            NamedNodeMap attrs = element.getAttributes();
-            int attrsLength = attrs.getLength();
+            final NamedNodeMap attrs = element.getAttributes();
+            final int attrsLength = attrs.getLength();
             for (int i = 0; i < attrsLength; i++) {
-                Attr attribute = (Attr) attrs.item(i);
-                String NName = attribute.getLocalName();
-                String NNodeValue = attribute.getNodeValue();
+                final Attr attribute = (Attr) attrs.item(i);
+                final String NName = attribute.getLocalName();
+                final String NNodeValue = attribute.getNodeValue();
 
                 if (!XMLNS_URI.equals(attribute.getNamespaceURI())) {
                     // Not a namespace definition.
                     // The Element is output element, add the prefix (if used) to
                     // visiblyUtilized
-                    String prefix = attribute.getPrefix();
+                    final String prefix = attribute.getPrefix();
                     if (prefix != null && !(prefix.equals(XML) || prefix.equals(XMLNS))) {
                         visiblyUtilized.add(prefix);
                     }
@@ -199,7 +199,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                     && C14nHelper.namespaceIsRelative(NNodeValue)) {
                     // The default mapping for xml must not be output.
                     // New definition check if it is relative.
-                    Object[] exArgs = {element.getTagName(), NName, attribute.getNodeValue()};
+                    final Object[] exArgs = {element.getTagName(), NName, attribute.getNodeValue()};
                     throw new CanonicalizationException(
                         "c14n.Canonicalizer.RelativeNamespace", exArgs
                     );
@@ -222,15 +222,15 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         }
         visiblyUtilized.add(prefix);
 
-        for (String s : visiblyUtilized) {
-            Attr key = ns.getMapping(s);
+        for (final String s : visiblyUtilized) {
+            final Attr key = ns.getMapping(s);
             if (key != null) {
                 result.add(key);
             }
         }
 
         //we output all Attrs which are available
-        for (Attr attr : result) {
+        for (final Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
         }
     }
@@ -240,13 +240,13 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                                     Map<String, byte[]> cache, OutputStream writer)
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        final SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         // The prefix visibly utilized (in the attribute or in the name) in
         // the element
         Set<String> visiblyUtilized = null;
         // It's the output selected.
-        boolean isOutputElement = isVisibleDO(element, ns.getLevel()) == 1;
+        final boolean isOutputElement = isVisibleDO(element, ns.getLevel()) == 1;
         if (isOutputElement) {
             visiblyUtilized = new TreeSet<>();
             if (!inclusiveNSSet.isEmpty()) {
@@ -255,19 +255,19 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         }
 
         if (element.hasAttributes()) {
-            NamedNodeMap attrs = element.getAttributes();
-            int attrsLength = attrs.getLength();
+            final NamedNodeMap attrs = element.getAttributes();
+            final int attrsLength = attrs.getLength();
             for (int i = 0; i < attrsLength; i++) {
-                Attr attribute = (Attr) attrs.item(i);
+                final Attr attribute = (Attr) attrs.item(i);
 
-                String NName = attribute.getLocalName();
-                String NNodeValue = attribute.getNodeValue();
+                final String NName = attribute.getLocalName();
+                final String NNodeValue = attribute.getNodeValue();
 
                 if (!XMLNS_URI.equals(attribute.getNamespaceURI())) {
                     if (isVisible(attribute) && isOutputElement) {
                         // The Element is output element, add the prefix (if used)
                         // to visibyUtilized
-                        String prefix = attribute.getPrefix();
+                        final String prefix = attribute.getPrefix();
                         if (prefix != null && !(prefix.equals(XML) || prefix.equals(XMLNS))) {
                             visiblyUtilized.add(prefix);
                         }
@@ -280,11 +280,11 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                     if (!isOutputElement && isVisible(attribute)
                         && inclusiveNSSet.contains(NName)
                         && !ns.removeMappingIfRender(NName)) {
-                        Node n = ns.addMappingAndRender(NName, NNodeValue, attribute);
+                        final Node n = ns.addMappingAndRender(NName, NNodeValue, attribute);
                         if (n != null) {
                             result.add((Attr)n);
                             if (C14nHelper.namespaceIsRelative(attribute)) {
-                                Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                                final Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                                 throw new CanonicalizationException(
                                     "c14n.Canonicalizer.RelativeNamespace", exArgs
                                 );
@@ -295,7 +295,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
                     if (ns.addMapping(NName, NNodeValue, attribute)
                         && C14nHelper.namespaceIsRelative(NNodeValue)) {
                         // New definition check if it is relative
-                        Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                        final Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                         throw new CanonicalizationException(
                             "c14n.Canonicalizer.RelativeNamespace", exArgs
                         );
@@ -306,7 +306,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
 
         if (isOutputElement) {
             // The element is visible, handle the xmlns definition
-            Attr xmlns = element.getAttributeNodeNS(XMLNS_URI, XMLNS);
+            final Attr xmlns = element.getAttributeNodeNS(XMLNS_URI, XMLNS);
             if (xmlns != null && !isVisible(xmlns)) {
                 // There is a definition but the xmlns is not selected by the
                 // xpath. then xmlns=""
@@ -322,8 +322,8 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
             }
             visiblyUtilized.add(prefix);
 
-            for (String s : visiblyUtilized) {
-                Attr key = ns.getMapping(s);
+            for (final String s : visiblyUtilized) {
+                final Attr key = ns.getMapping(s);
                 if (key != null) {
                     result.add(key);
                 }
@@ -331,7 +331,7 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         }
 
         //we output all Attrs which are available
-        for (Attr attr : result) {
+        for (final Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
         }
     }

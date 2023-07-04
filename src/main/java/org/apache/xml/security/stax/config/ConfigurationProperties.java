@@ -40,8 +40,8 @@ public final class ConfigurationProperties {
     protected static synchronized void init(PropertiesType propertiesType,
             Class<?> callingClass) throws Exception {
         properties = new Properties();
-        List<PropertyType> handlerList = propertiesType.getProperty();
-        for (PropertyType propertyType : handlerList) {
+        final List<PropertyType> handlerList = propertiesType.getProperty();
+        for (final PropertyType propertyType : handlerList) {
             properties.setProperty(propertyType.getNAME(), propertyType.getVAL());
         }
         ConfigurationProperties.callingClass = callingClass;

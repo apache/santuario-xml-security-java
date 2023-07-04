@@ -50,7 +50,7 @@ public class XMLSignatureReferenceVerifyInputProcessor extends AbstractSignature
             List<QName> elementPath, InputProcessorChain inputProcessorChain, XMLSecEvent xmlSecEvent,
             ReferenceType referenceType) throws XMLSecurityException {
         final DocumentContext documentContext = inputProcessorChain.getDocumentContext();
-        SignedElementSecurityEvent signedElementSecurityEvent =
+        final SignedElementSecurityEvent signedElementSecurityEvent =
                 new SignedElementSecurityEvent(getInboundSecurityToken(), true, documentContext.getProtectionOrder());
         signedElementSecurityEvent.setElementPath(elementPath);
         signedElementSecurityEvent.setXmlSecEvent(xmlSecEvent);

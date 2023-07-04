@@ -67,7 +67,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
         }
         if (sibling == null || sibling.getNodeType() != Node.ELEMENT_NODE) {
             /* No Elements found */
-            Object[] exArgs = { "Elements", Constants._TAG_X509DATA };
+            final Object[] exArgs = { "Elements", Constants._TAG_X509DATA };
             throw new XMLSecurityException("xml.WrongContent", exArgs);
         }
     }
@@ -343,7 +343,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      * @throws XMLSecurityException
      */
     public XMLX509IssuerSerial itemIssuerSerial(int i) throws XMLSecurityException {
-        Element e =
+        final Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509ISSUERSERIAL, i);
 
@@ -362,7 +362,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509SKI itemSKI(int i) throws XMLSecurityException {
 
-        Element e =
+        final Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509SKI, i);
 
@@ -381,7 +381,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509SubjectName itemSubjectName(int i) throws XMLSecurityException {
 
-        Element e =
+        final Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509SUBJECTNAME, i);
 
@@ -400,7 +400,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509Certificate itemCertificate(int i) throws XMLSecurityException {
 
-        Element e =
+        final Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509CERTIFICATE, i);
 
@@ -419,7 +419,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509CRL itemCRL(int i) throws XMLSecurityException {
 
-        Element e =
+        final Element e =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_X509CRL, i);
 
@@ -438,7 +438,7 @@ public class X509Data extends SignatureElementProxy implements KeyInfoContent {
      */
     public XMLX509Digest itemDigest(int i) throws XMLSecurityException {
 
-        Element e =
+        final Element e =
             XMLUtils.selectDs11Node(
                 getFirstChild(), Constants._TAG_X509DIGEST, i);
 

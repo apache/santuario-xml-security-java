@@ -65,7 +65,7 @@ public class XMLDecryptInputProcessor extends AbstractDecryptInputProcessor {
     ) throws XMLSecurityException {
         inboundSecurityToken.addTokenUsage(SecurityTokenConstants.TokenUsage_Encryption);
 
-        TokenSecurityEvent<?> tokenSecurityEvent = XMLSecurityUtils.createTokenSecurityEvent(inboundSecurityToken, encryptedDataType.getId());
+        final TokenSecurityEvent<?> tokenSecurityEvent = XMLSecurityUtils.createTokenSecurityEvent(inboundSecurityToken, encryptedDataType.getId());
         inboundSecurityContext.registerSecurityEvent(tokenSecurityEvent);
     }
 
@@ -77,9 +77,9 @@ public class XMLDecryptInputProcessor extends AbstractDecryptInputProcessor {
             throws XMLSecurityException {
 
         final DocumentContext documentContext = inputProcessorChain.getDocumentContext();
-        List<QName> elementPath = parentXMLSecStartElement.getElementPath();
+        final List<QName> elementPath = parentXMLSecStartElement.getElementPath();
 
-        ContentEncryptedElementSecurityEvent contentEncryptedElementSecurityEvent =
+        final ContentEncryptedElementSecurityEvent contentEncryptedElementSecurityEvent =
                 new ContentEncryptedElementSecurityEvent(inboundSecurityToken, true, documentContext.getProtectionOrder());
         contentEncryptedElementSecurityEvent.setElementPath(elementPath);
         contentEncryptedElementSecurityEvent.setXmlSecEvent(parentXMLSecStartElement);
@@ -125,9 +125,9 @@ public class XMLDecryptInputProcessor extends AbstractDecryptInputProcessor {
                                               EncryptedDataType encryptedDataType) throws XMLSecurityException {
             //fire a SecurityEvent:
             final DocumentContext documentContext = inputProcessorChain.getDocumentContext();
-            List<QName> elementPath = xmlSecStartElement.getElementPath();
+            final List<QName> elementPath = xmlSecStartElement.getElementPath();
 
-            EncryptedElementSecurityEvent encryptedElementSecurityEvent =
+            final EncryptedElementSecurityEvent encryptedElementSecurityEvent =
                     new EncryptedElementSecurityEvent(inboundSecurityToken, true, documentContext.getProtectionOrder());
             encryptedElementSecurityEvent.setElementPath(elementPath);
             encryptedElementSecurityEvent.setXmlSecEvent(xmlSecStartElement);

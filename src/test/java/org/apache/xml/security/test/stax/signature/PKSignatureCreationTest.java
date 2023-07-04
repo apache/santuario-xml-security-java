@@ -57,7 +57,7 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
 
     @BeforeAll
     public static void createKeys() throws Exception {
-        KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
+        final KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
 
@@ -67,32 +67,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testRSA_SHA1() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
+        final String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -110,32 +110,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testRSA_SHA256() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -153,32 +153,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testRSA_SHA384() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -196,32 +196,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testRSA_SHA512() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -241,32 +241,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-ripemd160";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -286,32 +286,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1";
+        final String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha1-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -331,32 +331,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1";
+        final String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha224-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -376,32 +376,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1";
+        final String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -421,32 +421,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1";
+        final String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -466,32 +466,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
+        final String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -511,33 +511,33 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#rsa-pss";
+        final String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#rsa-pss";
         properties.setAlgorithmParameterSpec(new PSSParameterSpec("SHA-256", "MGF1", SHA256, 32, 1));
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(rsaKeyPair.getPrivate());
         properties.setSignatureVerificationKey(rsaKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -555,32 +555,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testECDSA_SHA1() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha1";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -598,32 +598,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testECDSA_SHA224() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha224";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -641,32 +641,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testECDSA_SHA256() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -684,32 +684,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testECDSA_SHA384() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha384";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -727,32 +727,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
     @Test
     public void testECDSA_SHA512() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha512";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -772,32 +772,32 @@ public class PKSignatureCreationTest extends AbstractSignatureCreationTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
         properties.setSignatureKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
+        final String signatureAlgorithm = "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
         properties.setSignatureAlgorithm(signatureAlgorithm);
         properties.setSignatureKey(ecKeyPair.getPrivate());
         properties.setSignatureVerificationKey(ecKeyPair.getPublic());
 
-        SecurePart securePart = new SecurePart(
+        final SecurePart securePart = new SecurePart(
                 new QName("urn:example:po", "PaymentInfo"),
                 SecurePart.Modifier.Content,
                 new String[]{"http://www.w3.org/2001/10/xml-exc-c14n#"},
                 "http://www.w3.org/2000/09/xmldsig#sha1");
         properties.addSignaturePart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();

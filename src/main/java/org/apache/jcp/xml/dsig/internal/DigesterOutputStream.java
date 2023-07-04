@@ -82,7 +82,7 @@ public class DigesterOutputStream extends OutputStream {
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Pre-digested input:");
-            StringBuilder sb = new StringBuilder(len);
+            final StringBuilder sb = new StringBuilder(len);
             for (int i = offset; i < (offset + len); i++) {
                 sb.append((char)input[i]);
             }

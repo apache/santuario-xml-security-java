@@ -144,36 +144,36 @@ public class C14N11Test {
 
     @Test
     public void test_xmlbase_c14n11spec_102() throws Exception {
-        String[] vendors = {"IAIK", "IBM", "ORCL", "SUN", "UPC"};
+        final String[] vendors = {"IAIK", "IBM", "ORCL", "SUN", "UPC"};
         test_c14n11("xmlbase-c14n11spec-102", vendors);
     }
 
     @Test
     public void test_xmlbase_c14n11spec2_102() throws Exception {
-        String[] vendors = {"IAIK", "IBM", "ORCL", "SUN"};
+        final String[] vendors = {"IAIK", "IBM", "ORCL", "SUN"};
         test_c14n11("xmlbase-c14n11spec2-102", vendors);
     }
 
     @Test
     public void test_xmlbase_c14n11spec3_103() throws Exception {
-        String[] vendors = {"IAIK", "IBM", "ORCL", "SUN", "UPC"};
+        final String[] vendors = {"IAIK", "IBM", "ORCL", "SUN", "UPC"};
         test_c14n11("xmlbase-c14n11spec3-103", vendors);
     }
 
     private void test_c14n11(String test) throws Exception {
-        for (String vendor : vendors) {
-            String file = test + "-" + vendor + ".xml";
+        for (final String vendor : vendors) {
+            final String file = test + "-" + vendor + ".xml";
             // System.out.println("Validating " + file);
-            boolean coreValidity = validator.validate(file, sks);
+            final boolean coreValidity = validator.validate(file, sks);
             assertTrue(coreValidity, file + " failed core validation");
         }
     }
 
     private void test_c14n11(String test, String[] vendors) throws Exception {
-        for (String vendor : vendors) {
-            String file = test + "-" + vendor + ".xml";
+        for (final String vendor : vendors) {
+            final String file = test + "-" + vendor + ".xml";
             // System.out.println("Validating " + file);
-            boolean coreValidity = validator.validate(file, sks, null, false);
+            final boolean coreValidity = validator.validate(file, sks, null, false);
             assertTrue(coreValidity, file + " failed core validation");
         }
     }

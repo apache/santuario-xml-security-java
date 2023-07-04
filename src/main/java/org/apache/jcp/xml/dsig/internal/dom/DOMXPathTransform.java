@@ -66,16 +66,16 @@ public final class DOMXPathTransform extends ApacheTransform {
     }
 
     private void unmarshalParams(Element paramsElem) {
-        String xPath = paramsElem.getFirstChild().getNodeValue();
+        final String xPath = paramsElem.getFirstChild().getNodeValue();
         // create a Map of namespace prefixes
-        NamedNodeMap attributes = paramsElem.getAttributes();
+        final NamedNodeMap attributes = paramsElem.getAttributes();
         if (attributes != null) {
-            int length = attributes.getLength();
-            Map<String, String> namespaceMap =
+            final int length = attributes.getLength();
+            final Map<String, String> namespaceMap =
                 new HashMap<>((int) Math.ceil(length / 0.75));
             for (int i = 0; i < length; i++) {
-                Attr attr = (Attr)attributes.item(i);
-                String prefix = attr.getPrefix();
+                final Attr attr = (Attr)attributes.item(i);
+                final String prefix = attr.getPrefix();
                 if (prefix != null && "xmlns".equals(prefix)) {
                     namespaceMap.put(attr.getLocalName(), attr.getValue());
                 }
@@ -91,17 +91,18 @@ public final class DOMXPathTransform extends ApacheTransform {
         throws MarshalException
     {
         super.marshalParams(parent, context);
-        XPathFilterParameterSpec xp =
+        final XPathFilterParameterSpec xp =
             (XPathFilterParameterSpec)getParameterSpec();
-        Element xpathElem = DOMUtils.createElement(ownerDoc, "XPath",
+        final Element xpathElem = DOMUtils.createElement(ownerDoc, "XPath",
              XMLSignature.XMLNS, DOMUtils.getSignaturePrefix(context));
         xpathElem.appendChild(ownerDoc.createTextNode(xp.getXPath()));
 
         // add namespace attributes, if necessary
         @SuppressWarnings("unchecked")
+        final
         Set<Map.Entry<String, String>> entries =
             xp.getNamespaceMap().entrySet();
-        for (Map.Entry<String, String> entry : entries) {
+        for (final Map.Entry<String, String> entry : entries) {
             xpathElem.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:" +
                                      entry.getKey(),
                                      entry.getValue());

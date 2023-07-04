@@ -84,7 +84,7 @@ public class ResolverSameDocument implements ResourceResolver, ResourceResolverL
             firstElementOccured = true;
             return true;
         } else {
-            Attribute attribute = xmlSecStartElement.getAttributeByName(idAttributeNS);
+            final Attribute attribute = xmlSecStartElement.getAttributeByName(idAttributeNS);
             if (attribute != null && attribute.getValue().equals(id)) {
                 return true;
             }

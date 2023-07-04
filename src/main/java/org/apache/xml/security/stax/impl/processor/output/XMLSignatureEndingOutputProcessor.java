@@ -69,7 +69,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
     @Override
     public void processHeaderEvent(OutputProcessorChain outputProcessorChain) throws XMLStreamException, XMLSecurityException {
         super.processHeaderEvent(outputProcessorChain);
-        SignatureValueSecurityEvent signatureValueSecurityEvent = new SignatureValueSecurityEvent();
+        final SignatureValueSecurityEvent signatureValueSecurityEvent = new SignatureValueSecurityEvent();
         signatureValueSecurityEvent.setSignatureValue(this.signedInfoProcessor.getSignatureValue());
         signatureValueSecurityEvent.setCorrelationID(this.signedInfoProcessor.getSignatureId());
         outputProcessorChain.getSecurityContext().registerSecurityEvent(signatureValueSecurityEvent);
@@ -92,8 +92,8 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
 
         // search the specified position
         int depth = 0;
-        QName signaturePositionQName = getSecurityProperties().getSignaturePositionQName();
-        boolean start = getSecurityProperties().isSignaturePositionStart();
+        final QName signaturePositionQName = getSecurityProperties().getSignaturePositionQName();
+        final boolean start = getSecurityProperties().isSignaturePositionStart();
         if (signaturePositionQName != null) {
             while (!xmlSecEventDeque.isEmpty()
                 && !(start && xmlSecEvent.isStartElement() && xmlSecEvent.asStartElement().getName().equals(signaturePositionQName)
@@ -155,15 +155,15 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             OutboundSecurityToken securityToken,
             boolean useSingleCertificate)
             throws XMLStreamException, XMLSecurityException {
-        X509Certificate[] x509Certificates = securityToken.getX509Certificates();
+        final X509Certificate[] x509Certificates = securityToken.getX509Certificates();
         if (x509Certificates != null) {
             if (getSecurityProperties().getSignatureKeyIdentifiers().isEmpty()) {
                 XMLSecurityUtils.createX509IssuerSerialStructure(this, outputProcessorChain, x509Certificates);
             } else {
-                List<SecurityTokenConstants.KeyIdentifier> keyIdentifiers = getSecurityProperties().getSignatureKeyIdentifiers();
+                final List<SecurityTokenConstants.KeyIdentifier> keyIdentifiers = getSecurityProperties().getSignatureKeyIdentifiers();
                 // KeyName
                 if (keyIdentifiers.remove(SecurityTokenConstants.KeyIdentifier_KeyName)) {
-                    String keyName = getSecurityProperties().getSignatureKeyName();
+                    final String keyName = getSecurityProperties().getSignatureKeyName();
                     XMLSecurityUtils.createKeyNameTokenStructure(this, outputProcessorChain, keyName);
                 }
 
@@ -176,7 +176,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
                 if (!keyIdentifiers.isEmpty()) {
                     createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509Data, true, null);
 
-                    for (SecurityTokenConstants.KeyIdentifier keyIdentifier : keyIdentifiers) {
+                    for (final SecurityTokenConstants.KeyIdentifier keyIdentifier : keyIdentifiers) {
                         if (SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
                             XMLSecurityUtils.createX509IssuerSerialStructure(this, outputProcessorChain, x509Certificates, false);
                         } else if (SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier.equals(keyIdentifier)) {
@@ -205,8 +205,8 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
         if (signaturePartDef.getTransforms() != null) {
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Transforms, false, null);
 
-            String[] transforms = signaturePartDef.getTransforms();
-            for (String transform : transforms) {
+            final String[] transforms = signaturePartDef.getTransforms();
+            for (final String transform : transforms) {
                 if (!shouldIncludeTransform(transform)) {
                     continue;
                 }

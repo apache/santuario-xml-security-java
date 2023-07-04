@@ -41,12 +41,12 @@ public class XMLSecurityEventReaderTest {
 
     @Test
     public void testConformness() throws Exception {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader xmlStreamReader =
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
-        Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
+        final Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
         do {
             xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));
             xmlStreamReader.next();
@@ -54,19 +54,19 @@ public class XMLSecurityEventReaderTest {
         while (xmlStreamReader.hasNext());
         xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
-        XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0);
+        final XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0);
 
-        XMLEventReader xmlEventReader =
+        final XMLEventReader xmlEventReader =
             xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
         while (xmlEventReader.hasNext()) {
             assertEquals(xmlEventReader.hasNext(), xmlSecurityEventReader.hasNext());
-            XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
-            XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
+            final XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
+            final XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
             assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
 
-            XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
-            XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
+            final XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
+            final XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
             if (stdPeekedXMLEvent == null) {
                 assertNull(secPeekedXMLEvent);
             } else {
@@ -80,12 +80,12 @@ public class XMLSecurityEventReaderTest {
 
     @Test
     public void testIndex() throws Exception {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader xmlStreamReader =
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
-        Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
+        final Deque<XMLSecEvent> xmlSecEventDeque = new ArrayDeque<>();
         do {
             xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));
             xmlStreamReader.next();
@@ -93,26 +93,26 @@ public class XMLSecurityEventReaderTest {
         while (xmlStreamReader.hasNext());
         xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
-        int skip = 100;
+        final int skip = 100;
 
-        XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, skip);
+        final XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, skip);
 
-        XMLEventReader xmlEventReader =
+        final XMLEventReader xmlEventReader =
             xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader().getResourceAsStream(
                 "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
         int currentIndex = 0;
         while (xmlEventReader.hasNext()) {
-            XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
+            final XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
 
             if (currentIndex++ < skip) {
                 continue;
             }
 
-            XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
+            final XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
             assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
 
-            XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
-            XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
+            final XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
+            final XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
             if (stdPeekedXMLEvent == null) {
                 assertNull(secPeekedXMLEvent);
             } else {

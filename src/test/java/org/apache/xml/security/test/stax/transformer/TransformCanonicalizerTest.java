@@ -58,11 +58,11 @@ public class TransformCanonicalizerTest {
 
     @Test
     public void testXMLSecEventToXMLSecEventAPI() throws Exception {
-        Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
+        final Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -89,7 +89,7 @@ public class TransformCanonicalizerTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -100,13 +100,13 @@ public class TransformCanonicalizerTest {
         };
         canonicalizerTransformer.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
 
         while (xmlSecEventReader.hasNext()) {
-            XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+            final XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             canonicalizerTransformer.transform(xmlSecEvent);
         }
 
@@ -117,11 +117,11 @@ public class TransformCanonicalizerTest {
 
     @Test
     public void testXMLSecEventToInputStreamAPI() throws Exception {
-        Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
+        final Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -148,7 +148,7 @@ public class TransformCanonicalizerTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -159,13 +159,13 @@ public class TransformCanonicalizerTest {
         };
         canonicalizerTransformer.setTransformer(transformer);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
 
         while (xmlSecEventReader.hasNext()) {
-            XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+            final XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             canonicalizerTransformer.transform(xmlSecEvent);
         }
 
@@ -176,17 +176,17 @@ public class TransformCanonicalizerTest {
 
     @Test
     public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
-        Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
+        final Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         canonicalizerTransformer.setOutputStream(byteArrayOutputStream);
 
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+        final XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext-base64.xml")
         );
 
         while (xmlSecEventReader.hasNext()) {
-            XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+            final XMLSecEvent xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             canonicalizerTransformer.transform(xmlSecEvent);
         }
 
@@ -196,7 +196,7 @@ public class TransformCanonicalizerTest {
 
     @Test
     public void testInputStreamToOutputStreamStreamAPI() throws Exception {
-        Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
+        final Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         canonicalizerTransformer.setOutputStream(byteArrayOutputStream);
 
@@ -208,10 +208,10 @@ public class TransformCanonicalizerTest {
 
     @Test
     public void testInputStreamToXMLSecEventAPI() throws Exception {
-        Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
+        final Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -238,7 +238,7 @@ public class TransformCanonicalizerTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -260,10 +260,10 @@ public class TransformCanonicalizerTest {
 
     @Test
     public void testInputStreamToInputStreamAPI() throws Exception {
-        Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
+        final Canonicalizer20010315_OmitCommentsTransformer canonicalizerTransformer = new Canonicalizer20010315_OmitCommentsTransformer();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        Transformer transformer = new Transformer() {
+        final Transformer transformer = new Transformer() {
             @Override
             public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
             }
@@ -290,7 +290,7 @@ public class TransformCanonicalizerTest {
             public void transform(InputStream inputStream) throws XMLStreamException {
                 try {
                     XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }

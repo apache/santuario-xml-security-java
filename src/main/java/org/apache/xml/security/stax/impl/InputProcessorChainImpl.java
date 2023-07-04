@@ -88,17 +88,17 @@ public class InputProcessorChainImpl implements InputProcessorChain {
         int startPhaseIdx = 0;
         int endPhaseIdx = inputProcessors.size();
 
-        XMLSecurityConstants.Phase targetPhase = newInputProcessor.getPhase();
+        final XMLSecurityConstants.Phase targetPhase = newInputProcessor.getPhase();
 
         for (int i = inputProcessors.size() - 1; i >= 0; i--) {
-            InputProcessor inputProcessor = inputProcessors.get(i);
+            final InputProcessor inputProcessor = inputProcessors.get(i);
             if (inputProcessor.getPhase().ordinal() > targetPhase.ordinal()) {
                 startPhaseIdx = i + 1;
                 break;
             }
         }
         for (int i = startPhaseIdx; i < inputProcessors.size(); i++) {
-            InputProcessor inputProcessor = inputProcessors.get(i);
+            final InputProcessor inputProcessor = inputProcessors.get(i);
             if (inputProcessor.getPhase().ordinal() < targetPhase.ordinal()) {
                 endPhaseIdx = i;
                 break;
@@ -113,7 +113,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
             int idxToInsert = startPhaseIdx;
 
             for (int i = endPhaseIdx - 1; i >= startPhaseIdx; i--) {
-                InputProcessor inputProcessor = inputProcessors.get(i);
+                final InputProcessor inputProcessor = inputProcessors.get(i);
                 if (newInputProcessor.getAfterProcessors().contains(inputProcessor)
                         || newInputProcessor.getAfterProcessors().contains(inputProcessor.getClass().getName())) {
                     idxToInsert = i;
@@ -125,7 +125,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
             int idxToInsert = endPhaseIdx;
 
             for (int i = startPhaseIdx; i < endPhaseIdx; i++) {
-                InputProcessor inputProcessor = inputProcessors.get(i);
+                final InputProcessor inputProcessor = inputProcessors.get(i);
                 if (newInputProcessor.getBeforeProcessors().contains(inputProcessor)
                         || newInputProcessor.getBeforeProcessors().contains(inputProcessor.getClass().getName())) {
                     idxToInsert = i + 1;
@@ -138,7 +138,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
             int idxToInsert = startPhaseIdx;
 
             for (int i = endPhaseIdx - 1; i >= startPhaseIdx; i--) {
-                InputProcessor inputProcessor = inputProcessors.get(i);
+                final InputProcessor inputProcessor = inputProcessors.get(i);
                 if (newInputProcessor.getAfterProcessors().contains(inputProcessor)
                         || newInputProcessor.getAfterProcessors().contains(inputProcessor.getClass().getName())) {
                     idxToInsert = i;
@@ -150,7 +150,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
                 inputProcessors.add(idxToInsert, newInputProcessor);
             } else {
                 for (int i = startPhaseIdx; i < endPhaseIdx; i++) {
-                    InputProcessor inputProcessor = inputProcessors.get(i);
+                    final InputProcessor inputProcessor = inputProcessors.get(i);
                     if (newInputProcessor.getBeforeProcessors().contains(inputProcessor)
                             || newInputProcessor.getBeforeProcessors().contains(inputProcessor.getClass().getName())) {
                         idxToInsert = i + 1;
@@ -162,7 +162,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added {} to input chain: ", newInputProcessor.getClass().getName());
-            for (InputProcessor inputProcessor : inputProcessors) {
+            for (final InputProcessor inputProcessor : inputProcessors) {
                 LOG.debug("Name: {} phase: {}", inputProcessor.getClass().getName(), inputProcessor.getPhase());
             }
         }
@@ -209,7 +209,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
             final DocumentContextImpl docContext = clone ? documentContext.clone() : documentContext;
             inputProcessorChain = new InputProcessorChainImpl(inboundSecurityContext, docContext,
                     inputProcessors.indexOf(inputProcessor) + 1, new ArrayList<>(this.inputProcessors));
-        } catch (CloneNotSupportedException e) {
+        } catch (final CloneNotSupportedException e) {
             throw new XMLSecurityException(e);
         }
         return inputProcessorChain;

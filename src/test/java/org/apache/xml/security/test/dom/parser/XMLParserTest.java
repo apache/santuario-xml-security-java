@@ -77,12 +77,12 @@ public class XMLParserTest {
         assertFalse(CustomXMLParserImpl.isCalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, document, localNames, rsaKeyPair.getPrivate());
@@ -108,38 +108,38 @@ public class XMLParserTest {
             Key signingKey,
             AlgorithmParameterSpec parameterSpec
     ) throws Exception {
-        String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
-        XMLSignature sig = new XMLSignature(document, "", algorithm, 0, c14nMethod, null, parameterSpec);
+        final String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
+        final XMLSignature sig = new XMLSignature(document, "", algorithm, 0, c14nMethod, null, parameterSpec);
 
-        Element root = document.getDocumentElement();
+        final Element root = document.getDocumentElement();
         root.appendChild(sig.getElement());
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        for (String localName : localNames) {
-            String expression = "//*[local-name()='" + localName + "']";
-            NodeList elementsToSign =
+        for (final String localName : localNames) {
+            final String expression = "//*[local-name()='" + localName + "']";
+            final NodeList elementsToSign =
                     (NodeList) xpath.evaluate(expression, document, XPathConstants.NODESET);
             for (int i = 0; i < elementsToSign.getLength(); i++) {
-                Element elementToSign = (Element)elementsToSign.item(i);
+                final Element elementToSign = (Element)elementsToSign.item(i);
                 assertNotNull(elementToSign);
-                String id = UUID.randomUUID().toString();
+                final String id = UUID.randomUUID().toString();
                 elementToSign.setAttributeNS(null, "Id", id);
                 elementToSign.setIdAttributeNS(null, "Id", true);
 
-                Transforms transforms = new Transforms(document);
+                final Transforms transforms = new Transforms(document);
                 transforms.addTransform(c14nMethod);
-                String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
+                final String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
                 sig.addDocument("#" + id, transforms, digestMethod);
             }
         }
 
         sig.sign(signingKey);
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
 
@@ -160,24 +160,24 @@ public class XMLParserTest {
             List<String> localNames,
             boolean secureValidation
     ) throws Exception {
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//dsig:Signature[1]";
-        Element sigElement =
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(sigElement);
 
-        for (String name : localNames) {
+        for (final String name : localNames) {
             expression = "//*[local-name()='" + name + "']";
-            Element signedElement =
+            final Element signedElement =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(signedElement);
             signedElement.setIdAttributeNS(null, "Id", true);
         }
 
-        XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
+        final XMLSignature signature = new XMLSignature(sigElement, "", secureValidation);
 
         assertTrue(signature.checkSignatureValue(key));
     }

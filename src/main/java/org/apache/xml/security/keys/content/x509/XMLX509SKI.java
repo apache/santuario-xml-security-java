@@ -108,7 +108,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
         throws XMLSecurityException {
 
         if (cert.getVersion() < 3) {
-            Object[] exArgs = { cert.getVersion() };
+            final Object[] exArgs = { cert.getVersion() };
             throw new XMLSecurityException("certificate.noSki.lowVersion", exArgs);
         }
 
@@ -118,7 +118,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
          * string is represented by a set of positive whole numbers
          * separated by periods.
          */
-        byte[] extensionValue = cert.getExtensionValue(XMLX509SKI.SKI_OID);
+        final byte[] extensionValue = cert.getExtensionValue(XMLX509SKI.SKI_OID);
         if (extensionValue == null) {
             throw new XMLSecurityException("certificate.noSki.null");
         }
@@ -129,7 +129,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
          * OCTET STRING, and the next two bytes are the tag and length of
          * the ski OCTET STRING.
          */
-        byte[] skidValue = new byte[extensionValue.length - 4];
+        final byte[] skidValue = new byte[extensionValue.length - 4];
 
         System.arraycopy(extensionValue, 4, skidValue, 0, skidValue.length);
 
@@ -147,11 +147,11 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
             return false;
         }
 
-        XMLX509SKI other = (XMLX509SKI) obj;
+        final XMLX509SKI other = (XMLX509SKI) obj;
 
         try {
             return Arrays.equals(other.getSKIBytes(), this.getSKIBytes());
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             return false;
         }
     }
@@ -160,11 +160,11 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
     public int hashCode() {
         int result = 17;
         try {
-            byte[] bytes = getSKIBytes();
-            for (byte element : bytes) {
+            final byte[] bytes = getSKIBytes();
+            for (final byte element : bytes) {
                 result = 31 * result + element;
             }
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             LOG.debug(e.getMessage(), e);
         }
         return result;

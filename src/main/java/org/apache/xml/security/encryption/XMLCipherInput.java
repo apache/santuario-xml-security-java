@@ -104,26 +104,26 @@ public class XMLCipherInput {
         if (cipherData.getDataType() == CipherData.REFERENCE_TYPE) {
             // Fun time!
             LOG.debug("Found a reference type CipherData");
-            CipherReference cr = cipherData.getCipherReference();
+            final CipherReference cr = cipherData.getCipherReference();
 
             // Need to wrap the uri in an Attribute node so that we can
             // Pass to the resource resolvers
 
-            Attr uriAttr = cr.getURIAsAttr();
+            final Attr uriAttr = cr.getURIAsAttr();
             XMLSignatureInput input = null;
 
             try {
-                ResourceResolverContext resolverContext =
+                final ResourceResolverContext resolverContext =
                     new ResourceResolverContext(uriAttr, null, secureValidation);
                 if (resolverContext.isURISafeToResolve()) {
                     input = ResourceResolver.resolve(resolverContext);
                 } else {
-                    String uriToResolve = uriAttr != null ? uriAttr.getValue() : null;
-                    Object[] exArgs = {uriToResolve != null ? uriToResolve : "null", null};
+                    final String uriToResolve = uriAttr != null ? uriAttr.getValue() : null;
+                    final Object[] exArgs = {uriToResolve != null ? uriToResolve : "null", null};
 
                     throw new ResourceResolverException("utils.resolver.noClass", exArgs, uriToResolve, null);
                 }
-            } catch (ResourceResolverException ex) {
+            } catch (final ResourceResolverException ex) {
                 throw new XMLEncryptionException(ex);
             }
 
@@ -135,15 +135,15 @@ public class XMLCipherInput {
             }
 
             // Lets see if there are any transforms
-            Transforms transforms = cr.getTransforms();
+            final Transforms transforms = cr.getTransforms();
             if (transforms != null) {
                 LOG.debug("Have transforms in cipher reference");
                 try {
-                    org.apache.xml.security.transforms.Transforms dsTransforms =
+                    final org.apache.xml.security.transforms.Transforms dsTransforms =
                         transforms.getDSTransforms();
                     dsTransforms.setSecureValidation(secureValidation);
                     input = dsTransforms.performTransforms(input);
-                } catch (TransformationException ex) {
+                } catch (final TransformationException ex) {
                     throw new XMLEncryptionException(ex);
                 }
             }

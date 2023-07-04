@@ -41,12 +41,12 @@ public final class SecurityHeaderHandlerMapper {
 
     protected static synchronized void init(SecurityHeaderHandlersType securityHeaderHandlersType,
             Class<?> callingClass) throws Exception {
-        List<HandlerType> handlerList = securityHeaderHandlersType.getHandler();
+        final List<HandlerType> handlerList = securityHeaderHandlersType.getHandler();
         final int handlerListSize = handlerList.size();
         handlerClassMap = new HashMap<>((int) Math.ceil(handlerListSize / 0.75));
         for (int i = 0; i < handlerListSize; i++) {
-            HandlerType handlerType = handlerList.get(i);
-            QName qName = new QName(handlerType.getURI(), handlerType.getNAME());
+            final HandlerType handlerType = handlerList.get(i);
+            final QName qName = new QName(handlerType.getURI(), handlerType.getNAME());
             handlerClassMap.put(qName,
                     ClassLoaderUtils.loadClass(handlerType.getJAVACLASS(), callingClass));
         }

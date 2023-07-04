@@ -48,7 +48,7 @@ public class DOMCanonicalizationMethod extends DOMTransform
     private static final Set<String> C14N_ALGORITHMS;
 
     static {
-        Set<String> algorithms = new HashSet<>();
+        final Set<String> algorithms = new HashSet<>();
         algorithms.add(CanonicalizationMethod.INCLUSIVE);
         algorithms.add(CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS);
         algorithms.add(CanonicalizationMethod.EXCLUSIVE);
@@ -122,7 +122,7 @@ public class DOMCanonicalizationMethod extends DOMTransform
         if (!(o instanceof CanonicalizationMethod)) {
             return false;
         }
-        CanonicalizationMethod ocm = (CanonicalizationMethod)o;
+        final CanonicalizationMethod ocm = (CanonicalizationMethod)o;
 
         return getAlgorithm().equals(ocm.getAlgorithm()) &&
             DOMUtils.paramsEqual(getParameterSpec(), ocm.getParameterSpec());
@@ -132,7 +132,7 @@ public class DOMCanonicalizationMethod extends DOMTransform
     public int hashCode() {
         int result = 17;
         result = 31 * result + getAlgorithm().hashCode();
-        AlgorithmParameterSpec spec = getParameterSpec();
+        final AlgorithmParameterSpec spec = getParameterSpec();
         if (spec != null) {
             result = 31 * result + spec.hashCode();
         }

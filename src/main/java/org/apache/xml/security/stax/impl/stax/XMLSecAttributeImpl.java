@@ -47,7 +47,7 @@ public class XMLSecAttributeImpl extends XMLSecEventBaseImpl implements XMLSecAt
     public int compareTo(XMLSecAttribute o) {
         //An element's attribute nodes are sorted lexicographically with namespace URI as the primary
         //key and local name as the secondary key (an empty namespace URI is lexicographically least).
-        int namespacePartCompare = this.name.getNamespaceURI().compareTo(o.getName().getNamespaceURI());
+        final int namespacePartCompare = this.name.getNamespaceURI().compareTo(o.getName().getNamespaceURI());
         if (namespacePartCompare != 0) {
             return namespacePartCompare;
         } else {
@@ -60,7 +60,7 @@ public class XMLSecAttributeImpl extends XMLSecEventBaseImpl implements XMLSecAt
         if (!(obj instanceof XMLSecAttribute)) {
             return false;
         }
-        XMLSecAttribute comparableAttribute = (XMLSecAttribute) obj;
+        final XMLSecAttribute comparableAttribute = (XMLSecAttribute) obj;
         if (comparableAttribute.hashCode() != this.hashCode()) {
             return false;
         }
@@ -123,7 +123,7 @@ public class XMLSecAttributeImpl extends XMLSecEventBaseImpl implements XMLSecAt
             writer.write("=\"");
             writeEncoded(writer, getValue());
             writer.write("\"");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }
@@ -134,7 +134,7 @@ public class XMLSecAttributeImpl extends XMLSecEventBaseImpl implements XMLSecAt
         int i = 0;
         int idx = 0;
         while (i < length) {
-            char c = text.charAt(i);
+            final char c = text.charAt(i);
             if (c == '&') {
                 writer.write(text, idx, i - idx);
                 writer.write("&amp;");

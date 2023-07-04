@@ -62,7 +62,7 @@ public class ECKeyValueSecurityToken extends AbstractInboundSecurityToken {
         if (oid.startsWith("urn:oid:")) {
             oid = oid.substring(8);
         }
-        ECDSAUtils.ECCurveDefinition ecCurveDefinition = ECDSAUtils.getECCurveDefinition(oid);
+        final ECDSAUtils.ECCurveDefinition ecCurveDefinition = ECDSAUtils.getECCurveDefinition(oid);
         if (ecCurveDefinition == null) {
             throw new XMLSecurityException("stax.unsupportedKeyValue");
         }
@@ -73,8 +73,8 @@ public class ECKeyValueSecurityToken extends AbstractInboundSecurityToken {
                 new BigInteger(ecCurveDefinition.getA(), 16),
                 new BigInteger(ecCurveDefinition.getB(), 16)
         );
-        ECPoint ecPointG = ECDSAUtils.decodePoint(ecKeyValueType.getPublicKey(), curve);
-        ECPublicKeySpec ecPublicKeySpec = new ECPublicKeySpec(
+        final ECPoint ecPointG = ECDSAUtils.decodePoint(ecKeyValueType.getPublicKey(), curve);
+        final ECPublicKeySpec ecPublicKeySpec = new ECPublicKeySpec(
                 new ECPoint(
                         ecPointG.getAffineX(),
                         ecPointG.getAffineY()
@@ -89,7 +89,7 @@ public class ECKeyValueSecurityToken extends AbstractInboundSecurityToken {
                         ecCurveDefinition.getH()
                 )
         );
-        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        final KeyFactory keyFactory = KeyFactory.getInstance("EC");
         return keyFactory.generatePublic(ecPublicKeySpec);
     }
 
@@ -98,9 +98,9 @@ public class ECKeyValueSecurityToken extends AbstractInboundSecurityToken {
         if (super.getPublicKey() == null) {
             try {
                 setPublicKey(buildPublicKey(this.ecKeyValueType));
-            } catch (InvalidKeySpecException e) {
+            } catch (final InvalidKeySpecException e) {
                 throw new XMLSecurityException(e);
-            } catch (NoSuchAlgorithmException e) {
+            } catch (final NoSuchAlgorithmException e) {
                 throw new XMLSecurityException(e);
             }
         }

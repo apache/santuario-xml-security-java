@@ -94,12 +94,12 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     }
 
     public SignatureECDSA(Provider provider) throws XMLSignatureException {
-        String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
+        final String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
         LOG.debug("Created SignatureECDSA using {}", algorithmID);
 
         try {
             if (provider == null) {
-                String providerId = JCEMapper.getProviderId();
+                final String providerId = JCEMapper.getProviderId();
                 if (providerId == null) {
                     this.signatureAlgorithm = Signature.getInstance(algorithmID);
 
@@ -112,7 +112,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
             }
 
         } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
-            Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
+            final Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -123,7 +123,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
         throws XMLSignatureException {
         try {
             this.signatureAlgorithm.setParameter(params);
-        } catch (InvalidAlgorithmParameterException ex) {
+        } catch (final InvalidAlgorithmParameterException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -132,7 +132,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     @Override
     protected boolean engineVerify(byte[] signature) throws XMLSignatureException {
         try {
-            byte[] jcebytes = SignatureECDSA.convertXMLDSIGtoASN1(signature);
+            final byte[] jcebytes = SignatureECDSA.convertXMLDSIGtoASN1(signature);
 
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Called ECDSA.verify() on " + XMLUtils.encodeToString(signature));
@@ -154,7 +154,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     @Override
     protected byte[] engineSign() throws XMLSignatureException {
         try {
-            byte[] jcebytes = this.signatureAlgorithm.sign();
+            final byte[] jcebytes = this.signatureAlgorithm.sign();
 
             return SignatureECDSA.convertASN1toXMLDSIG(jcebytes, signIntLen);
         } catch (SignatureException | IOException ex) {
@@ -167,7 +167,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     protected void engineInitSign(Key privateKey, SecureRandom secureRandom)
         throws XMLSignatureException {
         if (privateKey instanceof ECPrivateKey) {
-            ECPrivateKey ecKey = (ECPrivateKey) privateKey;
+            final ECPrivateKey ecKey = (ECPrivateKey) privateKey;
             signIntLen = (ecKey.getParams().getCurve().getField().getFieldSize() + 7) / 8;
            // If not ECPrivateKey, signIntLen remains -1
         }
@@ -185,7 +185,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -195,7 +195,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -205,7 +205,7 @@ public abstract class SignatureECDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }

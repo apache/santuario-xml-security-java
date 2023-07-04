@@ -45,14 +45,14 @@ public class XMLSecEventAllocator implements XMLEventAllocator {
     public XMLEventAllocator newInstance() {
         try {
             return new XMLSecEventAllocator();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public XMLEvent allocate(XMLStreamReader xmlStreamReader) throws XMLStreamException {
-        XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
+        final XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
         if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
             parentXmlSecStartElement = (XMLSecStartElement) xmlSecEvent;
         } else if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType() && parentXmlSecStartElement != null) {

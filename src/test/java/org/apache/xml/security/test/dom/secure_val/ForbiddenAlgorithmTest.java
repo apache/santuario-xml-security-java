@@ -49,15 +49,15 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
 
     @Test
     public void testMD5Digest() throws Exception {
-        boolean success = readAndVerifySignature("signature-joseph-exc.xml", false);
+        final boolean success = readAndVerifySignature("signature-joseph-exc.xml", false);
 
         assertTrue(success);
 
         try {
             readAndVerifySignature("signature-joseph-exc.xml", true);
             fail("Failure expected when secure validation is enabled");
-        } catch (XMLSignatureException ex) {
-            String error = "It is forbidden to use algorithm http://www.w3.org/2001/04/xmldsig-more#md5 "
+        } catch (final XMLSignatureException ex) {
+            final String error = "It is forbidden to use algorithm http://www.w3.org/2001/04/xmldsig-more#md5 "
                 + "when secure validation is enabled";
             assertEquals(ex.getMessage(), error);
         }
@@ -65,12 +65,12 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
 
 
     private boolean readAndVerifySignature(String file, boolean secValidation) throws Exception {
-        File f = resolveFile("src", "test", "resources", "interop", "c14n", "Y2", file);
-        org.w3c.dom.Document doc = XMLUtils.read(f, false);
+        final File f = resolveFile("src", "test", "resources", "interop", "c14n", "Y2", file);
+        final org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+        final Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
             .item(0);
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secValidation);
+        final XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secValidation);
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
 

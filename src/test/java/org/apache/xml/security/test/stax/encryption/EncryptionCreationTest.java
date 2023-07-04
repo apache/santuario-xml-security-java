@@ -90,28 +90,28 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptionContentCreation() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        SecretKey key = generateDESSecretKey();
+        final SecretKey key = generateDESSecretKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -137,7 +137,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -148,29 +148,29 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptRootElementInRequest() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        SecretKey key = generateDESSecretKey();
+        final SecretKey key = generateDESSecretKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart((QName)null, SecurePart.Modifier.Content);
         securePart.setSecureEntireRequest(true);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -193,7 +193,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -204,34 +204,34 @@ public class EncryptionCreationTest {
     @Test
     public void testExceptionOnElementToEncryptNotFound() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        SecretKey key = generateDESSecretKey();
+        final SecretKey key = generateDESSecretKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "NotExistingElement"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         try {
             XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
             xmlStreamWriter.close();
             fail("Exception expected");
-        } catch (XMLStreamException e) {
+        } catch (final XMLStreamException e) {
             assertTrue(e.getCause() instanceof XMLSecurityException);
             assertEquals("Part to encrypt not found: {urn:example:po}NotExistingElement", e.getCause().getMessage());
         }
@@ -249,28 +249,28 @@ public class EncryptionCreationTest {
 
     private void testEncryptElementCreation(XMLSecurityConstants.Action action) throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(action);
         properties.setActions(actions);
 
         // Set the key up
-        SecretKey key = generateDESSecretKey();
+        final SecretKey key = generateDESSecretKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -296,7 +296,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -307,29 +307,29 @@ public class EncryptionCreationTest {
     @Test
     public void testStrongEncryption() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -355,7 +355,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -366,13 +366,13 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptionMultipleElements() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        SecretKey key = generateDESSecretKey();
+        final SecretKey key = generateDESSecretKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
@@ -383,14 +383,14 @@ public class EncryptionCreationTest {
             new SecurePart(new QName("urn:example:po", "ShippingAddress"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -420,35 +420,35 @@ public class EncryptionCreationTest {
     @Test
     public void testAES128ElementAES192KWCipherUsingKEKOutbound() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final SecretKey transportKey = new SecretKeySpec(bits192, "AES");
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
         properties.setEncryptionTransportKey(transportKey);
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -474,7 +474,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, transportKey, document);
 
         // Check the CreditCard decrypted ok
@@ -486,38 +486,38 @@ public class EncryptionCreationTest {
     @Test
     public void testAES256ElementRSAKWCipherUsingKEKOutbound() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
         // Generate an RSA key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
         properties.setEncryptionTransportKey(pub);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -543,7 +543,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -554,39 +554,39 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptedKeyKeyValueReference() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
         // Generate an RSA key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
         properties.setEncryptionTransportKey(pub);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -612,7 +612,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -623,40 +623,40 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptedKeyKeyNameReference() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
         // Generate an RSA key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
         properties.setEncryptionTransportKey(pub);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyName);
         properties.setEncryptionKeyName("PublicKey");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                 new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -682,7 +682,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
                 decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -693,23 +693,23 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptedKeyMultipleElements() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
         // Generate an RSA key
-        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
-        KeyPair kp = rsaKeygen.generateKeyPair();
-        PrivateKey priv = kp.getPrivate();
-        PublicKey pub = kp.getPublic();
+        final KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        final KeyPair kp = rsaKeygen.generateKeyPair();
+        final PrivateKey priv = kp.getPrivate();
+        final PublicKey pub = kp.getPublic();
         properties.setEncryptionTransportKey(pub);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_KeyValue);
@@ -721,14 +721,14 @@ public class EncryptionCreationTest {
             new SecurePart(new QName("urn:example:po", "ShippingAddress"), SecurePart.Modifier.Content);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -757,41 +757,41 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptedKeyIssuerSerialReference() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_IssuerSerial);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -817,7 +817,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -828,41 +828,41 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptedKeyX509CertificateReference() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_X509KeyIdentifier);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -888,7 +888,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -907,41 +907,41 @@ public class EncryptionCreationTest {
         }
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("JCEKS");
+        final KeyStore keyStore = KeyStore.getInstance("JCEKS");
         keyStore.load(
             this.getClass().getClassLoader().getResource("test.jceks").openStream(),
             "secret".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("rsakey", "secret".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("rsakey", "secret".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_SkiKeyIdentifier);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -967,7 +967,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -978,41 +978,41 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptedKeyX509SubjectName() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_X509SubjectName);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1038,7 +1038,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -1049,41 +1049,41 @@ public class EncryptionCreationTest {
     @Test
     public void testEncryptedKeyNoKeyInfo() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
+        final KeyStore keyStore = KeyStore.getInstance("jks");
         keyStore.load(
             this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
             "default".toCharArray()
         );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
-        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+        final PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        final X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
         properties.setEncryptionUseThisCertificate(cert);
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#rsa-1_5");
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
         properties.setEncryptionKeyIdentifier(SecurityTokenConstants.KeyIdentifier_NoKeyInfo);
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1109,7 +1109,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
@@ -1123,34 +1123,34 @@ public class EncryptionCreationTest {
         assumeFalse(isIBMJdK);
 
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        SecretKey transportKey = generateDESSecretKey();
+        final SecretKey transportKey = generateDESSecretKey();
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-tripledes");
         properties.setEncryptionTransportKey(transportKey);
 
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes192-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1176,7 +1176,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, transportKey, document);
 
         // Check the CreditCard decrypted ok
@@ -1187,31 +1187,31 @@ public class EncryptionCreationTest {
     @Test
     public void testTripleDesElementCipher() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey key = keyFactory.generateSecret(keySpec);
+        final byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey key = keyFactory.generateSecret(keySpec);
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1237,7 +1237,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -1248,33 +1248,33 @@ public class EncryptionCreationTest {
     @Test
     public void testAes128ElementCipher() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] bits128 = {
+        final byte[] bits128 = {
                 (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                 (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                 (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                 (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        SecretKey key = new SecretKeySpec(bits128, "AES");
+        final SecretKey key = new SecretKeySpec(bits128, "AES");
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1300,7 +1300,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes128-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -1311,35 +1311,35 @@ public class EncryptionCreationTest {
     @Test
     public void testAes192ElementCipher() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] bits192 = {
+        final byte[] bits192 = {
                 (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
                 (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
                 (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                 (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                 (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                 (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        SecretKey key = new SecretKeySpec(bits192, "AES");
+        final SecretKey key = new SecretKeySpec(bits192, "AES");
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes192-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1365,7 +1365,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes192-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -1376,13 +1376,13 @@ public class EncryptionCreationTest {
     @Test
     public void testAes256ElementCipher() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] bits256 = {
+        final byte[] bits256 = {
                 (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
                 (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
                 (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
@@ -1391,29 +1391,29 @@ public class EncryptionCreationTest {
                 (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
                 (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
                 (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
-        SecretKey key = new SecretKeySpec(bits256, "AES");
+        final SecretKey key = new SecretKeySpec(bits256, "AES");
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes256-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
 
         // System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
 
-        Document document =
+        final Document document =
             XMLUtils.read(new ByteArrayInputStream(baos.toByteArray()), false);
 
         NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "PaymentInfo");
@@ -1430,7 +1430,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -1443,31 +1443,31 @@ public class EncryptionCreationTest {
     @Test
     public void testTripleDesDocumentCipher() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey key = keyFactory.generateSecret(keySpec);
+        final byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(passPhrase);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey key = keyFactory.generateSecret(keySpec);
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1493,7 +1493,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", key, null, document);
 
         // Check the CreditCard decrypted ok
@@ -1505,31 +1505,31 @@ public class EncryptionCreationTest {
     @Test
     public void testPhysicalRepresentation1() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey key = keyFactory.generateSecret(keySpec);
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey key = keyFactory.generateSecret(keySpec);
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("ns.com", "elem"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         final String DATA1 =
                 "<ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
         try (InputStream sourceDocument = new ByteArrayInputStream(DATA1.getBytes(StandardCharsets.UTF_8))) {
-            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+            final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
             XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
             xmlStreamWriter.close();
@@ -1552,14 +1552,14 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", key, null, document);
 
-        Element decrElem = (Element)doc.getDocumentElement().getFirstChild();
+        final Element decrElem = (Element)doc.getDocumentElement().getFirstChild();
         assertEquals("ns:elem", decrElem.getNodeName());
         assertEquals("ns.com", decrElem.getNamespaceURI());
         assertEquals(1, decrElem.getAttributes().getLength());
-        Attr attr = (Attr)decrElem.getAttributes().item(0);
+        final Attr attr = (Attr)decrElem.getAttributes().item(0);
         assertEquals("xmlns:ns2", attr.getName());
         assertEquals("ns2.com", attr.getValue());
     }
@@ -1568,31 +1568,31 @@ public class EncryptionCreationTest {
     @Test
     public void testPhysicalRepresentation2() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-        SecretKey key = keyFactory.generateSecret(keySpec);
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final SecretKey key = keyFactory.generateSecret(keySpec);
         properties.setEncryptionKey(key);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#tripledes-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("", "elem"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
         final String DATA2 =
                 "<ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
         try (InputStream sourceDocument = new ByteArrayInputStream(DATA2.getBytes(StandardCharsets.UTF_8))) {
-            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+            final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
             XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
             xmlStreamWriter.close();
@@ -1615,14 +1615,14 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", key, null, document);
 
-        Element decrElem = (Element)doc.getDocumentElement().getFirstChild();
+        final Element decrElem = (Element)doc.getDocumentElement().getFirstChild();
         assertEquals("elem", decrElem.getNodeName());
         assertNull(decrElem.getNamespaceURI());
         assertEquals(1, decrElem.getAttributes().getLength());
-        Attr attr = (Attr)decrElem.getAttributes().item(0);
+        final Attr attr = (Attr)decrElem.getAttributes().item(0);
         assertEquals("xmlns", attr.getName());
         assertEquals("", attr.getValue());
     }
@@ -1630,30 +1630,30 @@ public class EncryptionCreationTest {
     @Test
     public void testTransportKey() throws Exception {
         // Set up the Configuration
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.ENCRYPTION);
         properties.setActions(actions);
 
         // Set the key up - only specify a transport key, so the session key gets generated
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final SecretKey transportKey = new SecretKeySpec(bits192, "AES");
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
         properties.setEncryptionTransportKey(transportKey);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
 
-        SecurePart securePart =
+        final SecurePart securePart =
                new SecurePart(new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element);
         properties.addEncryptionPart(securePart);
 
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, StandardCharsets.UTF_8.name());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
 
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
@@ -1679,7 +1679,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 1);
 
         // Decrypt using DOM API
-        Document doc =
+        final Document doc =
             decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, transportKey, document);
 
         // Check the CreditCard decrypted ok
@@ -1691,51 +1691,51 @@ public class EncryptionCreationTest {
      * Generate a secret key
      */
     private SecretKey generateDESSecretKey() throws Exception {
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
-        DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
-        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
+        final DESedeKeySpec keySpec = new DESedeKeySpec(bits192);
+        final SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
         return keyFactory.generateSecret(keySpec);
     }
 
     @Test
     public void testEncryptionIdToEncrypt() throws Exception {
-        SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
+        final SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
         securePart.setIdToSecure("abc");
         testEncryptionIdToEncrypt(securePart);
     }
 
     @Test
     public void testEncryptionIdToSign() throws Exception {
-        SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
+        final SecurePart securePart = new SecurePart(SecurePart.Modifier.Element);
         securePart.setIdToSign("abc");
         testEncryptionIdToEncrypt(securePart);
     }
 
     private void testEncryptionIdToEncrypt(SecurePart securePart) throws Exception {
-        String xml = "<?xml version='1.0'?>\n" +
+        final String xml = "<?xml version='1.0'?>\n" +
                 "<Root>\n" +
                 "  <Branch attr1='abc'/>\n" +
                 "</Root>\n";
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setIdAttributeNS(new QName("attr1"));
         properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
         properties.addEncryptionPart(securePart);
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
-        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey transportKey = new SecretKeySpec(bits192, "AES");
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
         properties.setEncryptionTransportKey(transportKey);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
-        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+        final InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
-        byte[] encryptedData = encryptedOut.toByteArray();
+        final byte[] encryptedData = encryptedOut.toByteArray();
 //        System.out.println(new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8));
-        Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
-        NodeList encryptedElements = document.getElementsByTagNameNS(
+        final Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
+        final NodeList encryptedElements = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
         );
@@ -1744,33 +1744,33 @@ public class EncryptionCreationTest {
 
     @Test
     public void testEncryptionIdToSecureSupersedesName() throws Exception {
-        String xml = "<?xml version='1.0'?>\n" +
+        final String xml = "<?xml version='1.0'?>\n" +
                 "<Root>\n" +
                 "  <Branch1 attr1='abc'/>\n" +
                 "  <Branch2 attr1='def'/>\n" +
                 "</Root>\n";
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setIdAttributeNS(new QName("attr1"));
         properties.setActions(Collections.singletonList(XMLSecurityConstants.ENCRYPT));
-        SecurePart securePart = new SecurePart(new QName("Branch1"), SecurePart.Modifier.Element);
+        final SecurePart securePart = new SecurePart(new QName("Branch1"), SecurePart.Modifier.Element);
         securePart.setIdToSecure("def");
         properties.addEncryptionPart(securePart);
-        byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
-        SecretKey transportKey = new SecretKeySpec(bits192, "AES");
+        final byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
+        final SecretKey transportKey = new SecretKeySpec(bits192, "AES");
         properties.setEncryptionKeyTransportAlgorithm("http://www.w3.org/2001/04/xmlenc#kw-aes192");
         properties.setEncryptionTransportKey(transportKey);
         properties.setEncryptionSymAlgorithm("http://www.w3.org/2001/04/xmlenc#aes128-cbc");
-        OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
-        ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
-        XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
-        InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
-        XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+        final OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+        final ByteArrayOutputStream encryptedOut = new ByteArrayOutputStream();
+        final XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(encryptedOut, StandardCharsets.UTF_8.name());
+        final InputStream sourceDocument = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        final XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
         XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
         xmlStreamWriter.close();
-        byte[] encryptedData = encryptedOut.toByteArray();
+        final byte[] encryptedData = encryptedOut.toByteArray();
 //        System.out.println(new String(encryptedOut.toByteArray(), StandardCharsets.UTF_8));
-        Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
-        NodeList encryptedElements = document.getElementsByTagNameNS(
+        final Document document = XMLUtils.read(new ByteArrayInputStream(encryptedData), false);
+        final NodeList encryptedElements = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
         );
@@ -1788,17 +1788,17 @@ public class EncryptionCreationTest {
         Key wrappingKey,
         Document document
     ) throws Exception {
-        XMLCipher cipher = XMLCipher.getInstance(algorithm);
+        final XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.DECRYPT_MODE, secretKey);
         if (wrappingKey != null) {
             cipher.setKEK(wrappingKey);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Element ee = (Element)nodeList.item(0);
+        final Element ee = (Element)nodeList.item(0);
         return cipher.doFinal(document, ee);
     }
 

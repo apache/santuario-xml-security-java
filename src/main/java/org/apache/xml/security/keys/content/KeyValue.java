@@ -95,22 +95,22 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
         addReturnToSelf();
 
         if (pk instanceof java.security.interfaces.DSAPublicKey) {
-            DSAKeyValue dsa = new DSAKeyValue(getDocument(), pk);
+            final DSAKeyValue dsa = new DSAKeyValue(getDocument(), pk);
 
             appendSelf(dsa);
             addReturnToSelf();
         } else if (pk instanceof java.security.interfaces.RSAPublicKey) {
-            RSAKeyValue rsa = new RSAKeyValue(getDocument(), pk);
+            final RSAKeyValue rsa = new RSAKeyValue(getDocument(), pk);
 
             appendSelf(rsa);
             addReturnToSelf();
         } else if (pk instanceof java.security.interfaces.ECPublicKey) {
-            ECKeyValue ec = new ECKeyValue(getDocument(), pk);
+            final ECKeyValue ec = new ECKeyValue(getDocument(), pk);
 
             appendSelf(ec);
             addReturnToSelf();
         } else {
-            String error = "The given PublicKey type " + pk + " is not supported. Only DSAPublicKey and "
+            final String error = "The given PublicKey type " + pk + " is not supported. Only DSAPublicKey and "
                 + "RSAPublicKey and ECPublicKey types are currently supported";
             throw new IllegalArgumentException(error);
         }
@@ -134,21 +134,21 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
      * @throws XMLSecurityException
      */
     public PublicKey getPublicKey() throws XMLSecurityException {
-        Element rsa =
+        final Element rsa =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_RSAKEYVALUE, 0);
 
         if (rsa != null) {
-            RSAKeyValue kv = new RSAKeyValue(rsa, this.baseURI);
+            final RSAKeyValue kv = new RSAKeyValue(rsa, this.baseURI);
             return kv.getPublicKey();
         }
 
-        Element dsa =
+        final Element dsa =
             XMLUtils.selectDsNode(
                 getFirstChild(), Constants._TAG_DSAKEYVALUE, 0);
 
         if (dsa != null) {
-            DSAKeyValue kv = new DSAKeyValue(dsa, this.baseURI);
+            final DSAKeyValue kv = new DSAKeyValue(dsa, this.baseURI);
             return kv.getPublicKey();
         }
 

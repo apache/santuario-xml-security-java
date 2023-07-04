@@ -79,27 +79,27 @@ public class SignatureReferenceTest {
 
     @Test
     public void testSigningVerifyingReference() throws Throwable {
-        Document doc = getOriginalDocument();
-        XMLSignature signature = signDocument(doc);
+        final Document doc = getOriginalDocument();
+        final XMLSignature signature = signDocument(doc);
 
-        PublicKey pubKey = getPublicKey(XmlSecTestEnvironment.getTestKeyStore());
+        final PublicKey pubKey = getPublicKey(XmlSecTestEnvironment.getTestKeyStore());
         assertTrue(signature.checkSignatureValue(pubKey));
 
         // Check the reference(s)
-        SignedInfo signedInfo = signature.getSignedInfo();
+        final SignedInfo signedInfo = signature.getSignedInfo();
         assertTrue(signedInfo.getLength() == 1);
-        Reference reference = signedInfo.item(0);
-        ReferenceData referenceData = reference.getReferenceData();
+        final Reference reference = signedInfo.item(0);
+        final ReferenceData referenceData = reference.getReferenceData();
         assertNotNull(referenceData);
         assertTrue(referenceData instanceof ReferenceNodeSetData);
 
         // Test the cached Element
-        Element referenceElement =
+        final Element referenceElement =
             (Element)((ReferenceNodeSetData)referenceData).iterator().next();
         assertNotNull(referenceElement);
         assertEquals("root", referenceElement.getLocalName());
 
-        Element originalElement =
+        final Element originalElement =
             (Element) doc.getElementsByTagNameNS("http://ns.example.org/", "root").item(0);
         assertNotNull(originalElement);
         assertEquals(referenceElement, originalElement);
@@ -108,32 +108,32 @@ public class SignatureReferenceTest {
     // See SANTUARIO-465
     @Test
     public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
-        Document doc = TestUtils.newDocument();
-        Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
+        final Document doc = TestUtils.newDocument();
+        final Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
         referenceElement.setAttributeNS(null, "URI", "#_12345");
 
         // No DigestMethod child
         try {
             new WrappedReference(referenceElement, "_54321", null);
             fail("Failure expected on no Reference DigestMethod child element");
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             // ex.printStackTrace();
             // expected
         }
 
         // No DigestValue child
         try {
-            Element digestMethod = doc.createElementNS(Constants.SignatureSpecNS, "DigestMethod");
+            final Element digestMethod = doc.createElementNS(Constants.SignatureSpecNS, "DigestMethod");
             digestMethod.setAttributeNS(null, "Algorithm", DigestMethod.SHA1);
             referenceElement.appendChild(digestMethod);
 
             new WrappedReference(referenceElement, "_54321", null);
             fail("Failure expected on no Reference DigestValue child element");
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             // expected
         }
 
-        Element digestValue = doc.createElementNS(Constants.SignatureSpecNS, "DigestValue");
+        final Element digestValue = doc.createElementNS(Constants.SignatureSpecNS, "DigestValue");
         digestValue.setTextContent("abcabc");
         referenceElement.appendChild(digestValue);
 
@@ -143,23 +143,23 @@ public class SignatureReferenceTest {
     @Test
     public void testManifestReferences() throws Throwable {
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xPath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xPath = xpf.newXPath();
         xPath.setNamespaceContext(new DSNamespaceContext());
 
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
             this.getClass().getClassLoader().getResourceAsStream(
                     "at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
-        String expression = "//dsig:Signature[1]";
-        Element sigElement =
+        final String expression = "//dsig:Signature[1]";
+        final Element sigElement =
             (Element) xPath.evaluate(expression, document, XPathConstants.NODE);
 
         XMLSignature signatureToVerify = new XMLSignature(sigElement, "");
 
-        KeyInfo ki = signatureToVerify.getKeyInfo();
-        PublicKey publicKey = ki.getPublicKey();
+        final KeyInfo ki = signatureToVerify.getKeyInfo();
+        final PublicKey publicKey = ki.getPublicKey();
 
         boolean signResult = signatureToVerify.checkSignatureValue(publicKey);
         assertTrue(signResult);
@@ -189,9 +189,9 @@ public class SignatureReferenceTest {
 
 
     private PublicKey getPublicKey(KeyStore keyStore) throws Exception {
-        Enumeration<String> aliases = keyStore.aliases();
+        final Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
+            final String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
                 return keyStore.getCertificate(alias).getPublicKey();
             }
@@ -200,9 +200,9 @@ public class SignatureReferenceTest {
     }
 
     private PrivateKey getPrivateKey(KeyStore keyStore) throws Exception {
-        Enumeration<String> aliases = keyStore.aliases();
+        final Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
+            final String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
                 return (PrivateKey) keyStore.getKey(alias, XmlSecTestEnvironment.TEST_KS_PASSWORD.toCharArray());
             }
@@ -211,9 +211,9 @@ public class SignatureReferenceTest {
     }
 
     private Document getOriginalDocument() throws Throwable {
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
-        Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
+        final Element rootElement = doc.createElementNS("http://ns.example.org/", "root");
         rootElement.appendChild(doc.createTextNode("Hello World!"));
         doc.appendChild(rootElement);
 
@@ -221,17 +221,17 @@ public class SignatureReferenceTest {
     }
 
     private XMLSignature signDocument(Document doc) throws Throwable {
-        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
-        Element root = doc.getDocumentElement();
+        final XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        final Element root = doc.getDocumentElement();
         root.appendChild(sig.getElement());
 
         sig.getSignedInfo().addResourceResolver(new ResolverXPointer());
 
-        Transforms transforms = new Transforms(doc);
+        final Transforms transforms = new Transforms(doc);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
-        KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
+        final KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
         sig.addKeyInfo(getPublicKey(keyStore));
         sig.sign(getPrivateKey(keyStore));
 
@@ -249,7 +249,7 @@ public class SignatureReferenceTest {
         @Override
         public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
             throws ResourceResolverException {
-            XMLSignatureInput result = new XMLSignatureInput("xyz");
+            final XMLSignatureInput result = new XMLSignatureInput("xyz");
 
             result.setSourceURI(context.uriToResolve);
 

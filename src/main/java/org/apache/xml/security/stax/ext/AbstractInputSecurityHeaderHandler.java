@@ -42,10 +42,10 @@ public abstract class AbstractInputSecurityHeaderHandler implements XMLSecurityH
     protected <T> T parseStructure(final Deque<XMLSecEvent> eventDeque, final int index,
                                    final XMLSecurityProperties securityProperties) throws XMLSecurityException {
         try {
-            Unmarshaller unmarshaller = XMLSecurityConstants.getJaxbUnmarshaller(securityProperties.isDisableSchemaValidation());
+            final Unmarshaller unmarshaller = XMLSecurityConstants.getJaxbUnmarshaller(securityProperties.isDisableSchemaValidation());
             return (T) unmarshaller.unmarshal(new XMLSecurityEventReader(eventDeque, index));
 
-        } catch (JAXBException e) {
+        } catch (final JAXBException e) {
             if (e.getCause() != null && e.getCause() instanceof Exception) {
                 throw new XMLSecurityException((Exception)e.getCause());
             }
@@ -54,12 +54,12 @@ public abstract class AbstractInputSecurityHeaderHandler implements XMLSecurityH
     }
 
     protected List<QName> getElementPath(Deque<XMLSecEvent> eventDeque) throws XMLSecurityException {
-        XMLSecEvent xmlSecEvent = eventDeque.peek();
+        final XMLSecEvent xmlSecEvent = eventDeque.peek();
         return xmlSecEvent.getElementPath();
     }
 
     protected XMLSecEvent getResponsibleStartXMLEvent(Deque<XMLSecEvent> eventDeque, int index) {
-        Iterator<XMLSecEvent> xmlSecEventIterator = eventDeque.descendingIterator();
+        final Iterator<XMLSecEvent> xmlSecEventIterator = eventDeque.descendingIterator();
         int curIdx = 0;
         while (curIdx++ < index) {
             xmlSecEventIterator.next();
@@ -68,9 +68,9 @@ public abstract class AbstractInputSecurityHeaderHandler implements XMLSecurityH
     }
 
     protected List<XMLSecEvent> getResponsibleXMLSecEvents(Deque<XMLSecEvent> xmlSecEvents, int index) {
-        List<XMLSecEvent> xmlSecEventList = new ArrayList<>();
+        final List<XMLSecEvent> xmlSecEventList = new ArrayList<>();
 
-        Iterator<XMLSecEvent> xmlSecEventIterator = xmlSecEvents.descendingIterator();
+        final Iterator<XMLSecEvent> xmlSecEventIterator = xmlSecEvents.descendingIterator();
         int curIdx = 0;
         while (curIdx++ < index && xmlSecEventIterator.hasNext()) {
             xmlSecEventIterator.next();

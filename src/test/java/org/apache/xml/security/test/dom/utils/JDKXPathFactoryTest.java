@@ -82,52 +82,52 @@ public class JDKXPathFactoryTest {
     public void testXPathSignature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
-        Element root = doc.createElementNS("", "RootElement");
+        final Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
         // Sign
-        XMLSignature sig =
+        final XMLSignature sig =
                 new XMLSignature(doc, null, XMLSignature.ALGO_ID_SIGNATURE_RSA);
         root.appendChild(sig.getElement());
 
-        ObjectContainer object = new ObjectContainer(doc);
+        final ObjectContainer object = new ObjectContainer(doc);
         object.setId("object-1");
         object.setMimeType("text/plain");
         object.setEncoding("http://www.w3.org/2000/09/xmldsig#base64");
         object.appendChild(doc.createTextNode("SSBhbSB0aGUgdGV4dC4="));
         sig.appendObject(object);
 
-        Transforms transforms = new Transforms(doc);
-        XPathContainer xpathC = new XPathContainer(doc);
+        final Transforms transforms = new Transforms(doc);
+        final XPathContainer xpathC = new XPathContainer(doc);
         xpathC.setXPath("ancestor-or-self::dsig-xpath:Object");
         xpathC.setXPathNamespaceContext("dsig-xpath", Transforms.TRANSFORM_XPATH);
 
-        Element node = xpathC.getElement();
+        final Element node = xpathC.getElement();
         transforms.addTransform(Transforms.TRANSFORM_XPATH, node);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
 
         sig.sign(kp.getPrivate());
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLUtils.outputDOMc14nWithComments(doc, bos);
-        String signedDoc = new String(bos.toByteArray());
+        final String signedDoc = new String(bos.toByteArray());
 
         // Now Verify
         try (InputStream is = new ByteArrayInputStream(signedDoc.getBytes())) {
             doc = XMLUtils.read(is, false);
         }
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        final XMLSignature signature = new XMLSignature(sigElement, "");
         assertTrue(signature.checkSignatureValue(kp.getPublic()));
     }
 

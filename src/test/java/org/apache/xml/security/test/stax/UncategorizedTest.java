@@ -39,21 +39,21 @@ public class UncategorizedTest {
 
     @Test
     public void testConfigurationLoadFromUrl() throws Exception {
-        URL url =
+        final URL url =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/32_input.xml");
         try {
             Init.init(url.toURI(), this.getClass());
             fail();
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             assertTrue(e.getMessage().contains("Cannot find the declaration of element 'doc'."));
         }
     }
 
     @Test
     public void testDuplicateActions() throws Exception {
-        XMLSecurityProperties properties = new XMLSecurityProperties();
-        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
+        final List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);
         properties.setActions(actions);
 
@@ -67,7 +67,7 @@ public class UncategorizedTest {
         try {
             XMLSec.getOutboundXMLSec(properties);
             fail();
-        } catch (XMLSecurityConfigurationException ex) {
+        } catch (final XMLSecurityConfigurationException ex) {
             assertTrue(ex.getMessage().contains("Duplicate Actions are not allowed"));
         }
     }

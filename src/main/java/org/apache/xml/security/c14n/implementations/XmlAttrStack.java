@@ -62,7 +62,7 @@ class XmlAttrStack {
         cur = null;
         while (lastlevel >= currentLevel) {
             levels.remove(levels.size() - 1);
-            int newSize = levels.size();
+            final int newSize = levels.size();
             if (newSize == 0) {
                 lastlevel = 0;
                 return;
@@ -105,18 +105,18 @@ class XmlAttrStack {
             return;
         }
 
-        Map<String, Attr> loa = new HashMap<>();
+        final Map<String, Attr> loa = new HashMap<>();
         if (c14n11) {
-            List<Attr> baseAttrs = new ArrayList<>();
+            final List<Attr> baseAttrs = new ArrayList<>();
             boolean successiveOmitted = true;
             for (; size >= 0; size--) {
                 e = levels.get(size);
                 if (e.rendered) {
                     successiveOmitted = false;
                 }
-                Iterator<Attr> it = e.nodes.iterator();
+                final Iterator<Attr> it = e.nodes.iterator();
                 while (it.hasNext() && successiveOmitted) {
-                    Attr n = it.next();
+                    final Attr n = it.next();
                     if ("base".equals(n.getLocalName()) && !e.rendered) {
                         baseAttrs.add(n);
                     } else if (!loa.containsKey(n.getName())) {
@@ -127,21 +127,21 @@ class XmlAttrStack {
             if (!baseAttrs.isEmpty()) {
                 String base = null;
                 Attr baseAttr = null;
-                for (Attr n : col) {
+                for (final Attr n : col) {
                     if ("base".equals(n.getLocalName())) {
                         base = n.getValue();
                         baseAttr = n;
                         break;
                     }
                 }
-                for (Attr n : baseAttrs) {
+                for (final Attr n : baseAttrs) {
                     if (base == null) {
                         base = n.getValue();
                         baseAttr = n;
                     } else {
                         try {
                             base = joinURI(n.getValue(), base);
-                        } catch (URISyntaxException ue) {
+                        } catch (final URISyntaxException ue) {
                             LOG.debug(ue.getMessage(), ue);
                         }
                     }
@@ -154,7 +154,7 @@ class XmlAttrStack {
         } else {
             for (; size >= 0; size--) {
                 e = levels.get(size);
-                for (Attr n : e.nodes) {
+                for (final Attr n : e.nodes) {
                     if (!loa.containsKey(n.getName())) {
                         loa.put(n.getName(), n);
                     }
@@ -177,18 +177,18 @@ class XmlAttrStack {
             if (baseURI.endsWith("..")) {
                 baseURI = baseURI + "/";
             }
-            URI base = new URI(baseURI);
+            final URI base = new URI(baseURI);
             bscheme = base.getScheme();
             bauthority = base.getAuthority();
             bpath = base.getPath();
             bquery = base.getQuery();
         }
 
-        URI r = new URI(relativeURI);
+        final URI r = new URI(relativeURI);
         String rscheme = r.getScheme();
-        String rauthority = r.getAuthority();
-        String rpath = r.getPath();
-        String rquery = r.getQuery();
+        final String rauthority = r.getAuthority();
+        final String rpath = r.getPath();
+        final String rquery = r.getQuery();
 
         String tscheme, tauthority, tpath, tquery;
         if (rscheme != null && rscheme.equals(bscheme)) {
@@ -219,7 +219,7 @@ class XmlAttrStack {
                         if (bauthority != null && bpath.length() == 0) {
                             tpath = "/" + rpath;
                         } else {
-                            int last = bpath.lastIndexOf('/');
+                            final int last = bpath.lastIndexOf('/');
                             if (last == -1) {
                                 tpath = rpath;
                             } else {
@@ -306,7 +306,7 @@ class XmlAttrStack {
                 } else if (output.toString().endsWith("..")) {
                     output.append("/..");
                 } else {
-                    int index = output.lastIndexOf("/");
+                    final int index = output.lastIndexOf("/");
                     if (index == -1) {
                         output = new StringBuilder();
                         if (input.charAt(0) == '/') {
@@ -327,7 +327,7 @@ class XmlAttrStack {
                 } else if (output.toString().endsWith("..")) {
                     output.append("/..");
                 } else {
-                    int index = output.lastIndexOf("/");
+                    final int index = output.lastIndexOf("/");
                     if (index == -1) {
                         output = new StringBuilder();
                         if (input.charAt(0) == '/') {

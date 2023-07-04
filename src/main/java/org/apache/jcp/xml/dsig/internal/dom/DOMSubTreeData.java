@@ -112,7 +112,7 @@ public class DOMSubTreeData implements NodeSetData {
          * @return a set of nodes (minus any comment nodes)
          */
         private List<Node> dereferenceSameDocumentURI(Node node) {
-            List<Node> nodes = new ArrayList<>();
+            final List<Node> nodes = new ArrayList<>();
             if (node != null) {
                 nodeSetMinusCommentNodes(node, nodes, null);
             }
@@ -134,7 +134,7 @@ public class DOMSubTreeData implements NodeSetData {
         {
             switch (node.getNodeType()) {
                 case Node.ELEMENT_NODE :
-                    NamedNodeMap attrs = node.getAttributes();
+                    final NamedNodeMap attrs = node.getAttributes();
                     if (attrs != null) {
                         for (int i = 0, len = attrs.getLength(); i < len; i++) {
                             nodeSet.add(attrs.item(i));

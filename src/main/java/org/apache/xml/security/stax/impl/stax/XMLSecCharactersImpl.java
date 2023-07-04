@@ -112,7 +112,7 @@ public class XMLSecCharactersImpl extends XMLSecEventBaseImpl implements XMLSecC
             } else {
                 writeEncoded(writer, getText());
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }
@@ -123,7 +123,7 @@ public class XMLSecCharactersImpl extends XMLSecEventBaseImpl implements XMLSecC
         int i = 0;
         int idx = 0;
         while (i < length) {
-            char c = text[i];
+            final char c = text[i];
             switch (c) {
                 case '<':
                     writer.write(text, idx, i - idx);

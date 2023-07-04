@@ -41,13 +41,13 @@ public class Santuario561Test {
 
     @Test
     public void transformC14NWithDigestTest() throws Exception {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        byte[] digest = md.digest("Hello world!".getBytes());
-        XMLSignatureInput inputPrecomputed = new XMLSignatureInput(Base64.getEncoder().encodeToString(digest));
+        final MessageDigest md = MessageDigest.getInstance("SHA-256");
+        final byte[] digest = md.digest("Hello world!".getBytes());
+        final XMLSignatureInput inputPrecomputed = new XMLSignatureInput(Base64.getEncoder().encodeToString(digest));
 
-        MockTransformC14N mockTransformC14N = new MockTransformC14N();
+        final MockTransformC14N mockTransformC14N = new MockTransformC14N();
 
-        XMLSignatureInput xmlSignatureOutput =
+        final XMLSignatureInput xmlSignatureOutput =
                 mockTransformC14N.enginePerformTransform(inputPrecomputed, null, null, null, false);
         assertNull(xmlSignatureOutput.getBytes());
     }

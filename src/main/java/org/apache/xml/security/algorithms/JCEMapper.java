@@ -344,7 +344,7 @@ public class JCEMapper {
      * @return the JCE standard name corresponding to the given URI
      */
     public static String translateURItoJCEID(String algorithmURI) {
-        Algorithm algorithm = getAlgorithm(algorithmURI);
+        final Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.jceName;
         }
@@ -357,7 +357,7 @@ public class JCEMapper {
      * @return the class name that implements this algorithm
      */
     public static String getAlgorithmClassFromURI(String algorithmURI) {
-        Algorithm algorithm = getAlgorithm(algorithmURI);
+        final Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.algorithmClass;
         }
@@ -371,7 +371,7 @@ public class JCEMapper {
      * @return The length of the key used in the algorithm
      */
     public static int getKeyLengthFromURI(String algorithmURI) {
-        Algorithm algorithm = getAlgorithm(algorithmURI);
+        final Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.keyLength;
         }
@@ -379,7 +379,7 @@ public class JCEMapper {
     }
 
     public static int getIVLengthFromURI(String algorithmURI) {
-        Algorithm algorithm = getAlgorithm(algorithmURI);
+        final Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.ivLength;
         }
@@ -393,7 +393,7 @@ public class JCEMapper {
      * @return The KeyAlgorithm for the given URI.
      */
     public static String getJCEKeyAlgorithmFromURI(String algorithmURI) {
-        Algorithm algorithm = getAlgorithm(algorithmURI);
+        final Algorithm algorithm = getAlgorithm(algorithmURI);
          if (algorithm != null) {
              return algorithm.requiredKey;
          }
@@ -407,7 +407,7 @@ public class JCEMapper {
      * @return The JCEProvider for the given URI.
      */
     public static String getJCEProviderFromURI(String algorithmURI) {
-        Algorithm algorithm = getAlgorithm(algorithmURI);
+        final Algorithm algorithm = getAlgorithm(algorithmURI);
         if (algorithm != null) {
             return algorithm.jceProvider;
         }

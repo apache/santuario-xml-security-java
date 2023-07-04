@@ -51,18 +51,18 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     @Test
     public void testHMACSHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2000/09/xmldsig#hmac-sha1";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -73,8 +73,8 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -83,11 +83,11 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -96,18 +96,18 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     @Test
     public void testHMACSHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -118,8 +118,8 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -128,11 +128,11 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -141,18 +141,18 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     @Test
     public void testHMACSHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -163,8 +163,8 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -173,11 +173,11 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -186,18 +186,18 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     @Test
     public void testHMACSHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -208,8 +208,8 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -218,11 +218,11 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -231,18 +231,18 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     @Test
     public void testHMACSHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -253,8 +253,8 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -263,11 +263,11 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -278,18 +278,18 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        final Document document = XMLUtils.read(sourceDocument, false);
 
         // Set the key up
-        byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
-        String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
-        SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
+        final byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
+        final String signatureAlgorithm = "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160";
+        final SecretKey key = new SecretKeySpec(hmacKey, signatureAlgorithm);
 
         // Sign using DOM
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
         signUsingDOM(
@@ -300,8 +300,8 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         // XMLUtils.outputDOM(document, System.out);
 
         // Convert Document to a Stream Reader
-        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
         XMLStreamReader xmlStreamReader = null;
@@ -310,11 +310,11 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
         }
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(key);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);

@@ -69,14 +69,14 @@ public class TransformBase64Decode extends TransformIdentity {
 
     @Override
     public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-        int eventType = xmlSecEvent.getEventType();
+        final int eventType = xmlSecEvent.getEventType();
         if (XMLStreamConstants.CHARACTERS == eventType) {
             if (getOutputStream() != null) {
                 //we have an output stream
                 //encoding shouldn't matter here, because the data is Base64 encoded and is therefore in the ASCII range.
                 try {
                     getOutputStream().write(xmlSecEvent.asCharacters().getData().getBytes());
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     throw new XMLStreamException(e);
                 }
             } else {
@@ -100,7 +100,7 @@ public class TransformBase64Decode extends TransformIdentity {
                                 }
                                 try {
                                     base64OutputStream.write((byte[]) object);
-                                } catch (IOException e) {
+                                } catch (final IOException e) {
                                     throw new XMLStreamException(e);
                                 }
                             }
@@ -109,12 +109,12 @@ public class TransformBase64Decode extends TransformIdentity {
                             public void doFinal() throws XMLStreamException {
                                 try {
                                     base64OutputStream.close();
-                                } catch (IOException e) {
+                                } catch (final IOException e) {
                                     throw new XMLStreamException(e);
                                 }
 
                                 try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
-                                    XMLEventReaderInputProcessor xmlEventReaderInputProcessor
+                                    final XMLEventReaderInputProcessor xmlEventReaderInputProcessor
                                     = new XMLEventReaderInputProcessor(null,
                                                                        getXmlInputFactory().createXMLStreamReader(is)
                                         );
@@ -143,7 +143,7 @@ public class TransformBase64Decode extends TransformIdentity {
                                 }
                                 try {
                                     base64OutputStream.write((byte[]) object);
-                                } catch (IOException e) {
+                                } catch (final IOException e) {
                                     throw new XMLStreamException(e);
                                 }
                             }
@@ -152,13 +152,13 @@ public class TransformBase64Decode extends TransformIdentity {
                             public void doFinal() throws XMLStreamException {
                                 try {
                                     base64OutputStream.close();
-                                } catch (IOException e) {
+                                } catch (final IOException e) {
                                     throw new XMLStreamException(e);
                                 }
                                 try (InputStream is = new UnsyncByteArrayInputStream(byteArrayOutputStream.toByteArray())) {
                                     getTransformer().transform(is);
                                     getTransformer().doFinal();
-                                } catch (IOException ex) {
+                                } catch (final IOException ex) {
                                     throw new XMLStreamException(ex);
                                 }
                             }
@@ -186,7 +186,7 @@ public class TransformBase64Decode extends TransformIdentity {
         if (getOutputStream() != null) {
             try {
                 getOutputStream().close();
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw new XMLStreamException(e);
             }
         }

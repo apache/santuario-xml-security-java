@@ -67,50 +67,50 @@ public class CreateSignatureXalanTest {
     public void testXFilter2Signature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
-        Element root = doc.createElementNS("", "RootElement");
+        final Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
         // Sign
-        XMLSignature sig = new XMLSignature(doc, null, XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        final XMLSignature sig = new XMLSignature(doc, null, XMLSignature.ALGO_ID_SIGNATURE_DSA);
         root.appendChild(sig.getElement());
 
-        Transforms transforms = new Transforms(doc);
-        String filter = "here()/ancestor::ds.Signature/parent::node()/descendant-or-self::*";
-        XPath2FilterContainer xpathC = XPath2FilterContainer.newInstanceIntersect(doc, filter);
+        final Transforms transforms = new Transforms(doc);
+        final String filter = "here()/ancestor::ds.Signature/parent::node()/descendant-or-self::*";
+        final XPath2FilterContainer xpathC = XPath2FilterContainer.newInstanceIntersect(doc, filter);
         xpathC.setXPathNamespaceContext("dsig-xpath", Transforms.TRANSFORM_XPATH2FILTER);
 
-        Element node = xpathC.getElement();
+        final Element node = xpathC.getElement();
         transforms.addTransform(Transforms.TRANSFORM_XPATH2FILTER, node);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
 
-        KeyStore ks = KeyStore.getInstance("JKS");
+        final KeyStore ks = KeyStore.getInstance("JKS");
         try (FileInputStream fis = new FileInputStream(
             resolveFile("src/test/resources/org/apache/xml/security/samples/input/keystore.jks"))) {
             ks.load(fis, "xmlsecurity".toCharArray());
         }
-        PrivateKey privateKey = (PrivateKey) ks.getKey("test", "xmlsecurity".toCharArray());
+        final PrivateKey privateKey = (PrivateKey) ks.getKey("test", "xmlsecurity".toCharArray());
 
         sig.sign(privateKey);
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLUtils.outputDOMc14nWithComments(doc, bos);
-        String signedDoc = new String(bos.toByteArray());
+        final String signedDoc = new String(bos.toByteArray());
 
         // Now Verify
         try (InputStream is = new ByteArrayInputStream(signedDoc.getBytes())) {
             doc = XMLUtils.read(is, false);
         }
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        final XMLSignature signature = new XMLSignature(sigElement, "");
         assertTrue(signature.checkSignatureValue(ks.getCertificate("test").getPublicKey()));
     }
 }

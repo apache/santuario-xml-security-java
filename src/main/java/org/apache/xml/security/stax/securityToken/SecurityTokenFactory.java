@@ -36,7 +36,7 @@ public abstract class SecurityTokenFactory {
 
     public static synchronized SecurityTokenFactory getInstance() throws XMLSecurityException {
         if (instance == null) {
-            String stf = ConfigurationProperties.getProperty("securityTokenFactory");
+            final String stf = ConfigurationProperties.getProperty("securityTokenFactory");
             if (stf == null) {
                 throw new XMLSecurityException("algorithm.ClassDoesNotExist",
                                                new Object[] {"null"});
@@ -48,6 +48,7 @@ public abstract class SecurityTokenFactory {
 
             try {
                 @SuppressWarnings("unchecked")
+                final
                 Class<SecurityTokenFactory> securityTokenFactoryClass =
                         (Class<SecurityTokenFactory>) ClassLoaderUtils.loadClass(stf, callingClass);
                 instance = JavaUtils.newInstanceWithEmptyConstructor(securityTokenFactoryClass);

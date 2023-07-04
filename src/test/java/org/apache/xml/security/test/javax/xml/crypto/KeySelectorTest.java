@@ -76,17 +76,17 @@ public class KeySelectorTest {
 
     @Test
     public void testselect() throws Exception {
-        KeyInfoFactory factory = KeyInfoFactory.getInstance
+        final KeyInfoFactory factory = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        X509Data obj = factory.newX509Data(Collections.singletonList("CN=foo"));
-        KeyInfo info = factory.newKeyInfo(Collections.singletonList(obj));
+        final X509Data obj = factory.newX509Data(Collections.singletonList("CN=foo"));
+        final KeyInfo info = factory.newKeyInfo(Collections.singletonList(obj));
         //@@@@@what about other types of X509Data, i.e. subject name String,
         // X509IssuerSerial objects, etc?
-        XMLSignatureFactory dsigFac = XMLSignatureFactory.getInstance
+        final XMLSignatureFactory dsigFac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        SignatureMethod sm1 =
+        final SignatureMethod sm1 =
             dsigFac.newSignatureMethod(SignatureMethod.DSA_SHA1, null);
-        SignatureMethod sm2 =
+        final SignatureMethod sm2 =
             dsigFac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
 
         assertTrue(compareKey(key, selector1.select

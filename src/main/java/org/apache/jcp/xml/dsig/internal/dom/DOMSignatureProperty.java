@@ -96,7 +96,7 @@ public final class DOMSignatureProperty extends DOMStructure
         if (target == null) {
             throw new MarshalException("target cannot be null");
         }
-        Attr attr = propElem.getAttributeNodeNS(null, "Id");
+        final Attr attr = propElem.getAttributeNodeNS(null, "Id");
         if (attr != null) {
             id = attr.getValue();
             propElem.setIdAttributeNode(attr, true);
@@ -104,7 +104,7 @@ public final class DOMSignatureProperty extends DOMStructure
             id = null;
         }
 
-        List<XMLStructure> newContent = new ArrayList<>();
+        final List<XMLStructure> newContent = new ArrayList<>();
         Node firstChild = propElem.getFirstChild();
         while (firstChild != null) {
             newContent.add(new javax.xml.crypto.dom.DOMStructure(firstChild));
@@ -136,8 +136,8 @@ public final class DOMSignatureProperty extends DOMStructure
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
-        Element propElem = DOMUtils.createElement(ownerDoc, "SignatureProperty",
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Element propElem = DOMUtils.createElement(ownerDoc, "SignatureProperty",
                                                   XMLSignature.XMLNS, dsPrefix);
 
         // set attributes
@@ -145,7 +145,7 @@ public final class DOMSignatureProperty extends DOMStructure
         DOMUtils.setAttribute(propElem, "Target", target);
 
         // create and append any elements and mixed content
-        for (XMLStructure property : content) {
+        for (final XMLStructure property : content) {
             DOMUtils.appendChild(propElem,
                 ((javax.xml.crypto.dom.DOMStructure)property).getNode());
         }
@@ -162,12 +162,13 @@ public final class DOMSignatureProperty extends DOMStructure
         if (!(o instanceof SignatureProperty)) {
             return false;
         }
-        SignatureProperty osp = (SignatureProperty)o;
+        final SignatureProperty osp = (SignatureProperty)o;
 
-        boolean idsEqual = id == null ? osp.getId() == null
+        final boolean idsEqual = id == null ? osp.getId() == null
                                        : id.equals(osp.getId());
 
         @SuppressWarnings("unchecked")
+        final
         List<XMLStructure> ospContent = osp.getContent();
         return equalsContent(content, ospContent) &&
                 target.equals(osp.getTarget()) && idsEqual;

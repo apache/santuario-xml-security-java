@@ -46,40 +46,40 @@ public class WrappingAttackTest extends InteropTestBase {
 
     @Test
     public void testWrappingAttack() throws Exception {
-        boolean success = readAndVerifySignature("manifestSignatureWrapping.xml");
+        final boolean success = readAndVerifySignature("manifestSignatureWrapping.xml");
         assertTrue(success);
         try {
             readAndVerifySignatureAndSetManifest("manifestSignatureWrapping.xml");
             fail("Failure expected when secure validation is enabled");
-        } catch (XMLSignatureException ex) {
+        } catch (final XMLSignatureException ex) {
             assertTrue(ex.getMessage().contains("no XMLSignatureInput"));
         }
     }
 
 
     private boolean readAndVerifySignature(String file) throws Exception {
-        File f = resolveFile("src", "test", "resources", "at", "iaik", "ixsil", "coreFeatures", "signatures", file);
-        org.w3c.dom.Document doc = XMLUtils.read(f, false);
+        final File f = resolveFile("src", "test", "resources", "at", "iaik", "ixsil", "coreFeatures", "signatures", file);
+        final org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+        final Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
             .item(0);
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
+        final XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
 
 
     private boolean readAndVerifySignatureAndSetManifest(String file) throws Exception {
-        File f = resolveFile("src", "test", "resources", "at", "iaik", "ixsil", "coreFeatures", "signatures", file);
+        final File f = resolveFile("src", "test", "resources", "at", "iaik", "ixsil", "coreFeatures", "signatures", file);
 
-        org.w3c.dom.Document doc = XMLUtils.read(f, false);
+        final org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+        final Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
             .item(0);
 
-        Element manifestElement = (Element) doc.getElementsByTagName("Manifest").item(0);
+        final Element manifestElement = (Element) doc.getElementsByTagName("Manifest").item(0);
         manifestElement.setIdAttribute("Id", true);
 
-        XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), true);
+        final XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), true);
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
 

@@ -54,9 +54,9 @@ public class DEREncodedKeyValueResolver extends KeyResolverSpi {
     protected PublicKey engineResolvePublicKey(Element element, String baseURI, StorageResolver storage, boolean secureValidation)
         throws KeyResolverException {
         try {
-            DEREncodedKeyValue derKeyValue = new DEREncodedKeyValue(element, baseURI);
+            final DEREncodedKeyValue derKeyValue = new DEREncodedKeyValue(element, baseURI);
             return derKeyValue.getPublicKey();
-        } catch (XMLSecurityException e) {
+        } catch (final XMLSecurityException e) {
             LOG.debug("XMLSecurityException", e);
         }
 

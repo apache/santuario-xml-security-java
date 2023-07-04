@@ -89,23 +89,23 @@ public final class DOMManifest extends DOMStructure implements Manifest {
     {
         this.id = DOMUtils.getIdAttributeValue(manElem, "Id");
 
-        boolean secVal = Utils.secureValidation(context);
+        final boolean secVal = Utils.secureValidation(context);
 
         Element refElem = DOMUtils.getFirstChildElement(manElem, "Reference", XMLSignature.XMLNS);
-        List<Reference> refs = new ArrayList<>();
+        final List<Reference> refs = new ArrayList<>();
         refs.add(new DOMReference(refElem, context, provider));
 
         refElem = DOMUtils.getNextSiblingElement(refElem);
         while (refElem != null) {
-            String localName = refElem.getLocalName();
-            String namespace = refElem.getNamespaceURI();
+            final String localName = refElem.getLocalName();
+            final String namespace = refElem.getNamespaceURI();
             if (!"Reference".equals(localName) || !XMLSignature.XMLNS.equals(namespace)) {
                 throw new MarshalException("Invalid element name: " +
                                            namespace + ":" + localName + ", expected Reference");
             }
             refs.add(new DOMReference(refElem, context, provider));
             if (secVal && refs.size() > DOMSignedInfo.MAXIMUM_REFERENCE_COUNT) {
-                String error = "A maximum of " + DOMSignedInfo.MAXIMUM_REFERENCE_COUNT + " "
+                final String error = "A maximum of " + DOMSignedInfo.MAXIMUM_REFERENCE_COUNT + " "
                     + "references per Manifest are allowed with secure validation";
                 throw new MarshalException(error);
             }
@@ -133,14 +133,14 @@ public final class DOMManifest extends DOMStructure implements Manifest {
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        Document ownerDoc = DOMUtils.getOwnerDocument(parent);
-        Element manElem = DOMUtils.createElement(ownerDoc, "Manifest",
+        final Document ownerDoc = DOMUtils.getOwnerDocument(parent);
+        final Element manElem = DOMUtils.createElement(ownerDoc, "Manifest",
                                                  XMLSignature.XMLNS, dsPrefix);
 
         DOMUtils.setAttributeID(manElem, "Id", id);
 
         // add references
-        for (Reference ref : references) {
+        for (final Reference ref : references) {
             ((DOMReference)ref).marshal(manElem, dsPrefix, context);
         }
         parent.appendChild(manElem);
@@ -155,9 +155,9 @@ public final class DOMManifest extends DOMStructure implements Manifest {
         if (!(o instanceof Manifest)) {
             return false;
         }
-        Manifest oman = (Manifest)o;
+        final Manifest oman = (Manifest)o;
 
-        boolean idsEqual = id == null ? oman.getId() == null
+        final boolean idsEqual = id == null ? oman.getId() == null
                                        : id.equals(oman.getId());
 
         return idsEqual && references.equals(oman.getReferences());

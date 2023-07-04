@@ -56,8 +56,8 @@ public class BaltimoreIaik2Test {
 
     @Test
     public void testSignature() throws Exception {
-        String file = "signature.xml";
-        boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
+        final String file = "signature.xml";
+        final boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 

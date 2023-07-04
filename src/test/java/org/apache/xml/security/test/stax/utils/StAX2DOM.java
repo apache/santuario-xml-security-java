@@ -39,7 +39,7 @@ public class StAX2DOM {
         //skip possible text at the beginning of a document and go directly to the root tag
         while (xmlStreamReader.hasNext() && xmlStreamReader.next() != XMLStreamConstants.START_ELEMENT) {       //NOPMD
         }
-        Document document = org.apache.xml.security.test.dom.TestUtils.newDocument();
+        final Document document = org.apache.xml.security.test.dom.TestUtils.newDocument();
         StAX2DOM.readDocElements(document, document, xmlStreamReader, false, false);
         xmlStreamReader.close();
         return document;
@@ -105,7 +105,7 @@ public class StAX2DOM {
                                XMLStreamReader reader,
                                boolean recordLoc) {
         if (recordLoc) {
-            Location loc = reader.getLocation();
+            final Location loc = reader.getLocation();
             if (loc != null && (loc.getColumnNumber() != 0 || loc.getLineNumber() != 0)) {
                 try {
                     final int charOffset = loc.getCharacterOffset();
@@ -113,7 +113,7 @@ public class StAX2DOM {
                     final int linNum = loc.getLineNumber();
                     final String pubId = loc.getPublicId() == null ? doc.getDocumentURI() : loc.getPublicId();
                     final String sysId = loc.getSystemId() == null ? doc.getDocumentURI() : loc.getSystemId();
-                    Location loc2 = new Location() {
+                    final Location loc2 = new Location() {
                         @Override
                         public int getCharacterOffset() {
                             return charOffset;
@@ -147,7 +147,7 @@ public class StAX2DOM {
                             }
                         }
                     });
-                } catch (Exception ex) {
+                } catch (final Exception ex) {
                     //possibly not DOM level 3, won't be able to record this then
                     return false;
                 }
@@ -178,20 +178,20 @@ public class StAX2DOM {
         recordLocation = addLocation(doc, e, reader, recordLocation);
 
         for (int ns = 0; ns < reader.getNamespaceCount(); ns++) {
-            String uri = reader.getNamespaceURI(ns);
-            String prefix = reader.getNamespacePrefix(ns);
+            final String uri = reader.getNamespaceURI(ns);
+            final String prefix = reader.getNamespacePrefix(ns);
 
             declare(e, uri, prefix);
         }
 
         for (int att = 0; att < reader.getAttributeCount(); att++) {
             String name = reader.getAttributeLocalName(att);
-            String prefix = reader.getAttributePrefix(att);
+            final String prefix = reader.getAttributePrefix(att);
             if (prefix != null && prefix.length() > 0) {
                 name = prefix + ":" + name;
             }
 
-            Attr attr = doc.createAttributeNS(reader.getAttributeNamespace(att), name);
+            final Attr attr = doc.createAttributeNS(reader.getAttributeNamespace(att), name);
             attr.setValue(reader.getAttributeValue(att));
             e.setAttributeNode(attr);
         }
@@ -214,7 +214,7 @@ public class StAX2DOM {
         } else {
             qualname = "xmlns";
         }
-        Attr attr = node.getOwnerDocument().createAttributeNS(XML_NS, qualname);
+        final Attr attr = node.getOwnerDocument().createAttributeNS(XML_NS, qualname);
         attr.setValue(uri);
         node.setAttributeNodeNS(attr);
     }

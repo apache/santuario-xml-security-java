@@ -54,12 +54,12 @@ public class TransformBase64DecodeTest {
     @Test
     public void test1() throws Exception {
         // base64 encoded
-        String s1 =
+        final String s1 =
             "VGhlIFVSSSBvZiB0aGUgdHJhbnNmb3JtIGlzIGh0dHA6Ly93d3cudzMub3JnLzIwMDAvMDkveG1s\n"
             + "ZHNpZyNiYXNlNjQ=";
 
-        Document doc = TransformBase64DecodeTest.createDocument();
-        Transforms t = new Transforms(doc);
+        final Document doc = TransformBase64DecodeTest.createDocument();
+        final Transforms t = new Transforms(doc);
         doc.appendChild(t.getElement());
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
@@ -67,8 +67,8 @@ public class TransformBase64DecodeTest {
         try (InputStream is = new ByteArrayInputStream(s1.getBytes())) {
             in = new XMLSignatureInput(is);
         }
-        XMLSignatureInput out = t.performTransforms(in);
-        String result = new String(out.getBytes());
+        final XMLSignatureInput out = t.performTransforms(in);
+        final String result = new String(out.getBytes());
 
         assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
@@ -76,11 +76,11 @@ public class TransformBase64DecodeTest {
     @Test
     public void test2() throws Exception {
         // base64 encoded twice
-        String s2 =
+        final String s2 =
             "VkdobElGVlNTU0J2WmlCMGFHVWdkSEpoYm5ObWIzSnRJR2x6SUdoMGRIQTZMeTkzZDNjdWR6TXVi\n"
             + "M0puTHpJd01EQXZNRGt2ZUcxcwpaSE5wWnlOaVlYTmxOalE9";
-        Document doc = TransformBase64DecodeTest.createDocument();
-        Transforms t = new Transforms(doc);
+        final Document doc = TransformBase64DecodeTest.createDocument();
+        final Transforms t = new Transforms(doc);
         doc.appendChild(t.getElement());
 
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
@@ -89,8 +89,8 @@ public class TransformBase64DecodeTest {
         try (InputStream is = new ByteArrayInputStream(s2.getBytes())) {
             in = new XMLSignatureInput(is);
         }
-        XMLSignatureInput out = t.performTransforms(t.performTransforms(in));
-        String result = new String(out.getBytes());
+        final XMLSignatureInput out = t.performTransforms(t.performTransforms(in));
+        final String result = new String(out.getBytes());
 
         assertEquals(result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64");
     }
@@ -98,7 +98,7 @@ public class TransformBase64DecodeTest {
     @Test
     public void test3() throws Exception {
         //J-
-        String input = ""
+        final String input = ""
             + "<Object xmlns:signature='http://www.w3.org/2000/09/xmldsig#'>\n"
             + "<signature:Base64>\n"
             + "VGhlIFVSSSBvZiB0aGU gdHJhbn<RealText>Nmb  3JtIGlzIG<test/>h0dHA6</RealText>Ly93d3cudzMub3JnLzIwMDAvMDkveG1s\n"
@@ -114,23 +114,23 @@ public class TransformBase64DecodeTest {
         }
         //XMLUtils.circumventBug2650(doc);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Base64";
-        Node base64Node =
+        final String expression = "//ds:Base64";
+        final Node base64Node =
             (Node) xpath.evaluate(expression, doc, XPathConstants.NODE);
 
-        XMLSignatureInput xmlinput = new XMLSignatureInput(base64Node);
+        final XMLSignatureInput xmlinput = new XMLSignatureInput(base64Node);
 
-        Document doc2 = TransformBase64DecodeTest.createDocument();
-        Transforms t = new Transforms(doc2);
+        final Document doc2 = TransformBase64DecodeTest.createDocument();
+        final Transforms t = new Transforms(doc2);
         doc2.appendChild(t.getElement());
         t.addTransform(Transforms.TRANSFORM_BASE64_DECODE);
 
-        XMLSignatureInput out = t.performTransforms(xmlinput);
-        String result = new String(out.getBytes());
+        final XMLSignatureInput out = t.performTransforms(xmlinput);
+        final String result = new String(out.getBytes());
 
         assertEquals(
             result, "The URI of the transform is http://www.w3.org/2000/09/xmldsig#base64",
@@ -139,7 +139,7 @@ public class TransformBase64DecodeTest {
     }
 
     private static Document createDocument() throws ParserConfigurationException {
-        Document doc = TestUtils.newDocument();
+        final Document doc = TestUtils.newDocument();
 
         if (doc == null) {
             throw new RuntimeException("Could not create a Document");

@@ -38,7 +38,7 @@ public class Xpath2TransformationTest {
 
     @Test
     public void testXpath2Transform() throws Exception {
-        String sig="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+        final String sig="<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
         "<edoc:EDOC xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:edoc=\"http://www.imtf.com/hypersuite/edoc/2.0/\" sysid=\"CC9CC230-C0A8024E01A3CA10-AC154F78\">\r\n" +
         "   <edoc:Version>2.0</edoc:Version>\r\n" +
         "   <edoc:Object edocVersion=\"2.0\">\r\n" +
@@ -106,7 +106,7 @@ public class Xpath2TransformationTest {
         "</ds:KeyInfo>\r\n" +
         "</ds:Signature></edoc:SignatureBlock></edoc:EDOC>";
 
-        String correctC14n="<edoc:Object xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:edoc=\"http://www.imtf.com/hypersuite/edoc/2.0/\" edocVersion=\"2.0\">\n" +
+        final String correctC14n="<edoc:Object xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:edoc=\"http://www.imtf.com/hypersuite/edoc/2.0/\" edocVersion=\"2.0\">\n" +
         "      <edoc:ObjectMetadata>\n" +
         "         <edoc:ObjectType>Record</edoc:ObjectType>\n" +
         "         <edoc:ObjectCreationDate>2004-12-13T14:27:35</edoc:ObjectCreationDate>\n" +
@@ -135,18 +135,18 @@ public class Xpath2TransformationTest {
         try (ByteArrayInputStream is = new ByteArrayInputStream(sig.getBytes())) {
             doc = XMLUtils.read(is, false);
         }
-        Element sigElement =
+        final Element sigElement =
             (Element) doc.getElementsByTagNameNS(
                 Constants.SignatureSpecNS, Constants._TAG_SIGNATURE).item(0);
-        XMLSignature sign = new XMLSignature(sigElement, "");
-        boolean verify =
+        final XMLSignature sign = new XMLSignature(sigElement, "");
+        final boolean verify =
             sign.checkSignatureValue(sign.getKeyInfo().getPublicKey());
         if (!verify) {
             for (int i = 0; i < sign.getSignedInfo().getLength(); i++) {
-                boolean refVerify =
+                final boolean refVerify =
                     sign.getSignedInfo().getVerificationResult(i);
                 if (!refVerify) {
-                    byte[] contentBytes =
+                    final byte[] contentBytes =
                         sign.getSignedInfo().item(i).getContentsAfterTransformation().getBytes();
                     assertEquals(
                         correctC14n,

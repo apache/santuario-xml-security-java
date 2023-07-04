@@ -113,7 +113,7 @@ public final class Base64 {
             throw new IllegalArgumentException(I18n.translate("utils.Base64.IllegalBitlength"));
         }
 
-        byte[] bigBytes = big.toByteArray();
+        final byte[] bigBytes = big.toByteArray();
 
         if (big.bitLength() % 8 != 0
             && big.bitLength() / 8 + 1 == bitlen / 8) {
@@ -130,8 +130,8 @@ public final class Base64 {
             bigLen--;    // valid length of the string
         }
 
-        int startDst = bitlen / 8 - bigLen;    //pad with leading nulls
-        byte[] resizedBytes = new byte[bitlen / 8];
+        final int startDst = bitlen / 8 - bigLen;    //pad with leading nulls
+        final byte[] resizedBytes = new byte[bitlen / 8];
 
         System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, bigLen);
 
@@ -145,7 +145,7 @@ public final class Base64 {
      * @return String with Base64 encoding
      */
     public static String encode(BigInteger big) {
-        byte[] bytes = XMLUtils.getBytes(big, big.bitLength());
+        final byte[] bytes = XMLUtils.getBytes(big, big.bitLength());
         return XMLUtils.encodeToString(bytes);
     }
 
@@ -169,7 +169,7 @@ public final class Base64 {
             throw new IllegalArgumentException(I18n.translate("utils.Base64.IllegalBitlength"));
         }
 
-        byte[] bigBytes = big.toByteArray();
+        final byte[] bigBytes = big.toByteArray();
 
         if (big.bitLength() % 8 != 0
             && big.bitLength() / 8 + 1 == bitlen / 8) {
@@ -186,8 +186,8 @@ public final class Base64 {
             bigLen--;    // valid length of the string
         }
 
-        int startDst = bitlen / 8 - bigLen;    //pad with leading nulls
-        byte[] resizedBytes = new byte[bitlen / 8];
+        final int startDst = bitlen / 8 - bigLen;    //pad with leading nulls
+        final byte[] resizedBytes = new byte[bitlen / 8];
 
         System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, bigLen);
 
@@ -232,8 +232,8 @@ public final class Base64 {
             encodedInt = "\n" + encodedInt + "\n";
         }
 
-        Document doc = element.getOwnerDocument();
-        Text text = doc.createTextNode(encodedInt);
+        final Document doc = element.getOwnerDocument();
+        final Text text = doc.createTextNode(encodedInt);
 
         element.appendChild(text);
     }
@@ -252,11 +252,11 @@ public final class Base64 {
     public static byte[] decode(Element element) throws Base64DecodingException {
 
         Node sibling = element.getFirstChild();
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
 
         while (sibling != null) {
             if (sibling.getNodeType() == Node.TEXT_NODE) {
-                Text t = (Text) sibling;
+                final Text t = (Text) sibling;
 
                 sb.append(t.getData());
             }
@@ -276,8 +276,8 @@ public final class Base64 {
      *
      */
     public static Element encodeToElement(Document doc, String localName, byte[] bytes) {
-        Element el = XMLUtils.createElementInSignatureSpace(doc, localName);
-        Text text = doc.createTextNode(encode(bytes));
+        final Element el = XMLUtils.createElementInSignatureSpace(doc, localName);
+        final Text text = doc.createTextNode(encode(bytes));
 
         el.appendChild(text);
 
@@ -323,11 +323,11 @@ public final class Base64 {
         throws IOException, Base64DecodingException {
 
         byte[] retBytes = null;
-        UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream();
+        final UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream();
         try {
             String line;
             while (null != (line = reader.readLine())) {
-                byte[] bytes = decode(line);
+                final byte[] bytes = decode(line);
                 baos.write(bytes);
             }
             retBytes = baos.toByteArray();
@@ -369,16 +369,16 @@ public final class Base64 {
             return null;
         }
 
-        long lengthDataBits = ((long) binaryData.length) * ((long) EIGHTBIT);
+        final long lengthDataBits = ((long) binaryData.length) * ((long) EIGHTBIT);
         if (lengthDataBits == 0L) {
             return "";
         }
 
-        long fewerThan24bits = lengthDataBits % (TWENTYFOURBITGROUP);
-        int numberTriplets = (int) (lengthDataBits / TWENTYFOURBITGROUP);
-        int numberQuartet = fewerThan24bits != 0L ? numberTriplets + 1 : numberTriplets;
-        int quartesPerLine = length / 4;
-        int numberLines = (numberQuartet - 1) / quartesPerLine;
+        final long fewerThan24bits = lengthDataBits % (TWENTYFOURBITGROUP);
+        final int numberTriplets = (int) (lengthDataBits / TWENTYFOURBITGROUP);
+        final int numberQuartet = fewerThan24bits != 0L ? numberTriplets + 1 : numberTriplets;
+        final int quartesPerLine = length / 4;
+        final int numberLines = (numberQuartet - 1) / quartesPerLine;
         char[] encodedData = null;
 
         encodedData = new char[numberQuartet * 4 + numberLines * 2];
@@ -397,10 +397,10 @@ public final class Base64 {
                 l = (byte)(b2 & 0x0f);
                 k = (byte)(b1 & 0x03);
 
-                byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2): (byte)((b1) >> 2 ^ 0xc0);
+                final byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2): (byte)((b1) >> 2 ^ 0xc0);
 
-                byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
-                byte val3 = ((b3 & SIGN) == 0) ? (byte)(b3 >> 6) : (byte)((b3) >> 6 ^ 0xfc);
+                final byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
+                final byte val3 = ((b3 & SIGN) == 0) ? (byte)(b3 >> 6) : (byte)((b3) >> 6 ^ 0xfc);
 
 
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
@@ -422,10 +422,10 @@ public final class Base64 {
             l = (byte)(b2 & 0x0f);
             k = (byte)(b1 & 0x03);
 
-            byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2) : (byte)((b1) >> 2 ^ 0xc0);
+            final byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2) : (byte)((b1) >> 2 ^ 0xc0);
 
-            byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
-            byte val3 = ((b3 & SIGN) == 0) ? (byte)(b3 >> 6) : (byte)((b3) >> 6 ^ 0xfc);
+            final byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
+            final byte val3 = ((b3 & SIGN) == 0) ? (byte)(b3 >> 6) : (byte)((b3) >> 6 ^ 0xfc);
 
 
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
@@ -438,7 +438,7 @@ public final class Base64 {
         if (fewerThan24bits == EIGHTBIT) {
             b1 = binaryData[dataIndex];
             k = (byte) (b1 &0x03);
-            byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2):(byte)((b1) >> 2 ^ 0xc0);
+            final byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2):(byte)((b1) >> 2 ^ 0xc0);
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[k << 4];
             encodedData[encodedIndex++] = PAD;
@@ -449,8 +449,8 @@ public final class Base64 {
             l = ( byte ) (b2 & 0x0f);
             k = ( byte ) (b1 & 0x03);
 
-            byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2) : (byte)((b1) >> 2 ^ 0xc0);
-            byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
+            final byte val1 = ((b1 & SIGN) == 0) ? (byte)(b1 >> 2) : (byte)((b1) >> 2 ^ 0xc0);
+            final byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
 
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
@@ -474,17 +474,17 @@ public final class Base64 {
         if (encoded == null) {
             return null;
         }
-        byte[] bytes = new byte[encoded.length()];
-        int len = getBytesInternal(encoded, bytes);
+        final byte[] bytes = new byte[encoded.length()];
+        final int len = getBytesInternal(encoded, bytes);
         return decodeInternal(bytes, len);
     }
 
     protected static int getBytesInternal(String s, byte[] result) {
-        int length = s.length();
+        final int length = s.length();
 
         int newSize = 0;
         for (int i = 0; i < length; i++) {
-            byte dataS = (byte)s.charAt(i);
+            final byte dataS = (byte)s.charAt(i);
             if (!isWhiteSpace(dataS)) {
                 result[newSize++] = dataS;
             }
@@ -504,7 +504,7 @@ public final class Base64 {
             //should be divisible by four
         }
 
-        int numberQuadruple = len / FOURBYTE;
+        final int numberQuadruple = len / FOURBYTE;
 
         if (numberQuadruple == 0) {
             return new byte[0];
@@ -589,8 +589,8 @@ public final class Base64 {
      */
     public static void decode(String base64Data, OutputStream os)
         throws Base64DecodingException, IOException {
-        byte[] bytes = new byte[base64Data.length()];
-        int len = getBytesInternal(base64Data, bytes);
+        final byte[] bytes = new byte[base64Data.length()];
+        final int len = getBytesInternal(base64Data, bytes);
         decode(bytes, os, len);
     }
 
@@ -619,7 +619,7 @@ public final class Base64 {
             //should be divisible by four
         }
 
-        int numberQuadruple = len / FOURBYTE;
+        final int numberQuadruple = len / FOURBYTE;
 
         if (numberQuadruple == 0) {
             return;
@@ -696,11 +696,11 @@ public final class Base64 {
         byte b1 = 0, b2 = 0, b3 = 0, b4 = 0;
 
         int index = 0;
-        byte[] data = new byte[4];
+        final byte[] data = new byte[4];
         int read;
         //the begin
         while ((read = is.read()) > 0) {
-            byte readed = (byte)read;
+            final byte readed = (byte)read;
             if (isWhiteSpace(readed)) {
                 continue;
             }
@@ -731,7 +731,7 @@ public final class Base64 {
             os.write((byte)(b3 << 6 | b4));
         }
 
-        byte d1 = data[0], d2 = data[1], d3 = data[2], d4 = data[3];
+        final byte d1 = data[0], d2 = data[1], d3 = data[2], d4 = data[3];
         b1 = base64Alphabet[d1];
         b2 = base64Alphabet[d2];
         b3 = base64Alphabet[d3];
@@ -774,9 +774,9 @@ public final class Base64 {
 
         // count characters that's not whitespace
         int newSize = 0;
-        int len = data.length;
+        final int len = data.length;
         for (int i = 0; i < len; i++) {
-            byte dataS = data[i];
+            final byte dataS = data[i];
             if (!isWhiteSpace(dataS)) {
                 data[newSize++] = dataS;
             }

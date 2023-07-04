@@ -55,12 +55,12 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     }
 
     public SignatureEDDSA(Provider provider) throws XMLSignatureException {
-        String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
+        final String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
         LOG.debug("Created SignatureEDDSA using {}", algorithmID);
 
         try {
             if (provider == null) {
-                String providerId = JCEMapper.getProviderId();
+                final String providerId = JCEMapper.getProviderId();
                 if (providerId == null) {
                     this.signatureAlgorithm = Signature.getInstance(algorithmID);
 
@@ -73,7 +73,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
             }
 
         } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
-            Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
+            final Object[] exArgs = { algorithmID, ex.getLocalizedMessage() };
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -84,7 +84,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
         throws XMLSignatureException {
         try {
             this.signatureAlgorithm.setParameter(params);
-        } catch (InvalidAlgorithmParameterException ex) {
+        } catch (final InvalidAlgorithmParameterException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -99,7 +99,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
             }
 
             return this.signatureAlgorithm.verify(signature);
-        } catch (SignatureException  ex) {
+        } catch (final SignatureException  ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -115,7 +115,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     protected byte[] engineSign() throws XMLSignatureException {
         try {
             return this.signatureAlgorithm.sign();
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -139,7 +139,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -149,7 +149,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -159,7 +159,7 @@ public abstract class SignatureEDDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }

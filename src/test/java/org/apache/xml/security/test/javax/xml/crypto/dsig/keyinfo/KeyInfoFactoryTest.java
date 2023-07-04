@@ -64,12 +64,12 @@ public class KeyInfoFactoryTest {
         try {
             KeyInfoFactory.getInstance("non-existent");
             fail("Should throw NoSuchMechanismException if no impl found");
-        } catch (NoSuchMechanismException ex) {}
+        } catch (final NoSuchMechanismException ex) {}
 
         try {
             KeyInfoFactory.getInstance(null);
             fail("Should raise a NPE for null xmltype");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
     }
 
     @Test
@@ -83,14 +83,14 @@ public class KeyInfoFactoryTest {
         try {
             factory.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(factory.isFeatureSupported("not supported"));
     }
 
     @Test
     public void testnewKeyInfo() {
-        String id = "keyId";
+        final String id = "keyId";
         // test newKeyInfo(List, String)
         KeyInfo ki = factory.newKeyInfo
             (Collections.singletonList(factory.newKeyName("foo")), id);
@@ -98,7 +98,7 @@ public class KeyInfoFactoryTest {
         try {
             ki = factory.newKeyInfo(null, id);
             fail("Should raise a NPE for null key info types");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
     }
 
     @Test
@@ -109,13 +109,13 @@ public class KeyInfoFactoryTest {
         try {
             kn = factory.newKeyName(null);
             fail("Should raise a NPE for null key name");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
     }
 
     @Test
     public void testnewKeyValue() {
         // test newKeyValue(PublicKey pk)
-        PublicKey myPubKey = new PublicKey() {
+        final PublicKey myPubKey = new PublicKey() {
             private static final long serialVersionUID = 2756606866185189114L;
 
                 @Override
@@ -132,32 +132,32 @@ public class KeyInfoFactoryTest {
                 }
             };
         try {
-            KeyValue kv = factory.newKeyValue(myPubKey);
+            final KeyValue kv = factory.newKeyValue(myPubKey);
             assertEquals(myPubKey, kv.getPublicKey());
             fail("Should throw a KeyException");
-        } catch (KeyException ke) { }
+        } catch (final KeyException ke) { }
 
         try {
             factory.newKeyValue(null);
             fail("Should raise a NPE for null key");
-        } catch (KeyException ke) {
+        } catch (final KeyException ke) {
             fail("Should raise a NPE for null key");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
     }
 
     @Test
     public void testnewPGPKeyId() {
-        byte[] valid_id = {
+        final byte[] valid_id = {
             0x01, 0x02, 0x03, 0x04,
             0x05, 0x06, 0x07, 0x08
         };
-        byte[] invalid_id = {
+        final byte[] invalid_id = {
             0x01, 0x02, 0x03, 0x04,
             0x05, 0x06, 0x07, 0x08,
             0x09
         };
-        byte[] valid_packet = { (byte)0xc6, (byte)0x01, (byte)0x00 };
-        byte[] invalid_packet = { (byte)0xc8, (byte)0x01, (byte)0x00 };
+        final byte[] valid_packet = { (byte)0xc6, (byte)0x01, (byte)0x00 };
+        final byte[] invalid_packet = { (byte)0xc8, (byte)0x01, (byte)0x00 };
 
         // test newPGPData(byte[])
         PGPData pd = factory.newPGPData(valid_id);
@@ -165,7 +165,7 @@ public class KeyInfoFactoryTest {
         try {
             pd = factory.newPGPData(invalid_id);
             fail("Should throw IAE for invalid key id values");
-        } catch (IllegalArgumentException ex) {}
+        } catch (final IllegalArgumentException ex) {}
 
         // test newPGPData(byte[], byte[], List)
         pd = factory.newPGPData(valid_id, valid_packet, null);
@@ -174,15 +174,15 @@ public class KeyInfoFactoryTest {
         try {
             pd = factory.newPGPData(invalid_id, valid_packet, null);
             fail("Should throw IAE for invalid key id values");
-        } catch (IllegalArgumentException ex) {}
+        } catch (final IllegalArgumentException ex) {}
         try {
             pd = factory.newPGPData(valid_id, invalid_packet, null);
             fail("Should throw IAE for invalid key packet values");
-        } catch (IllegalArgumentException ex) {}
+        } catch (final IllegalArgumentException ex) {}
         try {
             pd = factory.newPGPData(invalid_id, invalid_packet, null);
             fail("Should throw IAE for invalid key id and packet values");
-        } catch (IllegalArgumentException ex) {}
+        } catch (final IllegalArgumentException ex) {}
 
         // test newPGPData(byte[], List)
         pd = factory.newPGPData(valid_packet, null);
@@ -190,7 +190,7 @@ public class KeyInfoFactoryTest {
         try {
             pd = factory.newPGPData(invalid_packet, null);
             fail("Should throw IAE for invalid key packet values");
-        } catch (IllegalArgumentException ex) {}
+        } catch (final IllegalArgumentException ex) {}
     }
 
     @Test
@@ -203,19 +203,19 @@ public class KeyInfoFactoryTest {
         try {
             rm = factory.newRetrievalMethod(null);
             fail("Should raise a NPE for null URI");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         // test RetrievalMethod(String, String, List)
         try {
             rm = factory.newRetrievalMethod(null, null, null);
             fail("Should raise a NPE for null URI");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
-        String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
+        final String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
         try {
             rm = factory.newRetrievalMethod(null, type, null);
             fail("Should raise a NPE for null URI");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         rm = factory.newRetrievalMethod(uri, type, null);
         assertEquals(uri, rm.getURI());
@@ -225,14 +225,14 @@ public class KeyInfoFactoryTest {
     @Test
     public void testnewX509Data() {
         // test newX509Data(List)
-        X509Data x509 =
+        final X509Data x509 =
             factory.newX509Data(Collections.singletonList("cn=foo"));
         assertNotNull(x509);
     }
 
     @Test
     public void testnewX509IssuerSerial() {
-        String name = "CN=valeriep";
+        final String name = "CN=valeriep";
         // test newX509IssuerSerial(String, BigInteger)
         X509IssuerSerial x509is = factory.newX509IssuerSerial(name,
                                                               BigInteger.ONE);
@@ -241,29 +241,29 @@ public class KeyInfoFactoryTest {
         try {
             x509is = factory.newX509IssuerSerial(null, BigInteger.ZERO);
             fail("Should raise an NPE for null issuer names");
-        } catch (NullPointerException ex) {
-        } catch (IllegalArgumentException ex2) {
+        } catch (final NullPointerException ex) {
+        } catch (final IllegalArgumentException ex2) {
             fail("Should throw NPE instead of IAE for null issuer names");
         }
         try {
             x509is = factory.newX509IssuerSerial(name, null);
             fail("Should raise an NPE for null serial numbers");
-        } catch (NullPointerException ex) {
-        } catch (IllegalArgumentException ex2) {
+        } catch (final NullPointerException ex) {
+        } catch (final IllegalArgumentException ex2) {
             fail("Should throw NPE instead of IAE for null serial numbers");
         }
         try {
             x509is = factory.newX509IssuerSerial(null, null);
             fail("Should raise an NPE for null issuer names/serial numbers");
-        } catch (NullPointerException ex) {
-        } catch (IllegalArgumentException ex2) {
+        } catch (final NullPointerException ex) {
+        } catch (final IllegalArgumentException ex2) {
             fail("Should throw NPE instead of IAE for null issuer " +
                  "names/serial numbers");
         }
         try {
             x509is = factory.newX509IssuerSerial("valeriep", BigInteger.ZERO);
             fail("Should throw IAE for invalid issuer names");
-        } catch (IllegalArgumentException ex) {}
+        } catch (final IllegalArgumentException ex) {}
     }
 
 }

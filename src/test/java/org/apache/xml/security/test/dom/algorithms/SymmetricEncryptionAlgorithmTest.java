@@ -68,13 +68,13 @@ public class SymmetricEncryptionAlgorithmTest {
         if (Security.getProvider("BC") == null) {
             Constructor<?> cons = null;
             try {
-                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                final Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
                 cons = c.getConstructor(new Class[] {});
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 //ignore
             }
             if (cons != null) {
-                Provider provider = (Provider)cons.newInstance();
+                final Provider provider = (Provider)cons.newInstance();
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
@@ -89,20 +89,20 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES128() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_128;
+        final String encryptionAlgorithm = XMLCipher.AES_128;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -121,20 +121,20 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES128_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_128_GCM;
+        final String encryptionAlgorithm = XMLCipher.AES_128_GCM;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -153,20 +153,20 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES192() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_192;
+        final String encryptionAlgorithm = XMLCipher.AES_192;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -185,20 +185,20 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES192_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_192_GCM;
+        final String encryptionAlgorithm = XMLCipher.AES_192_GCM;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -217,20 +217,20 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_256;
+        final String encryptionAlgorithm = XMLCipher.AES_256;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -249,20 +249,20 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testAES256_GCM() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        final KeyGenerator keygen = KeyGenerator.getInstance("AES");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.AES_256_GCM;
+        final String encryptionAlgorithm = XMLCipher.AES_256_GCM;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -281,19 +281,19 @@ public class SymmetricEncryptionAlgorithmTest {
     @Test
     public void testTRIPLE_DES() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("DESede");
-        SecretKey key = keygen.generateKey();
+        final KeyGenerator keygen = KeyGenerator.getInstance("DESede");
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.TRIPLEDES;
+        final String encryptionAlgorithm = XMLCipher.TRIPLEDES;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -314,20 +314,20 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("SEED");
+        final KeyGenerator keygen = KeyGenerator.getInstance("SEED");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.SEED_128;
+        final String encryptionAlgorithm = XMLCipher.SEED_128;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -348,20 +348,20 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(128);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
+        final String encryptionAlgorithm = XMLCipher.CAMELLIA_128;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -382,20 +382,20 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(192);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
+        final String encryptionAlgorithm = XMLCipher.CAMELLIA_192;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -416,20 +416,20 @@ public class SymmetricEncryptionAlgorithmTest {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
                         "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
         Document document = XMLUtils.read(sourceDocument, false);
 
         // Set up the Key
-        KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
+        final KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
         keygen.init(256);
-        SecretKey key = keygen.generateKey();
+        final SecretKey key = keygen.generateKey();
 
-        List<String> localNames = new ArrayList<>();
+        final List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");
 
-        String encryptionAlgorithm = XMLCipher.CAMELLIA_256;
+        final String encryptionAlgorithm = XMLCipher.CAMELLIA_256;
 
         encrypt(encryptionAlgorithm, document, localNames, key);
 
@@ -451,23 +451,23 @@ public class SymmetricEncryptionAlgorithmTest {
         List<String> localNames,
         Key encryptingKey
     ) throws Exception {
-        XMLCipher cipher = XMLCipher.getInstance(algorithm);
+        final XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.ENCRYPT_MODE, encryptingKey);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        for (String localName : localNames) {
-            String expression = "//*[local-name()='" + localName + "']";
-            Element elementToEncrypt =
+        for (final String localName : localNames) {
+            final String expression = "//*[local-name()='" + localName + "']";
+            final Element elementToEncrypt =
                     (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
             assertNotNull(elementToEncrypt);
 
             document = cipher.doFinal(document, elementToEncrypt, false);
         }
 
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
@@ -479,14 +479,14 @@ public class SymmetricEncryptionAlgorithmTest {
         Document document,
         Key key
     ) throws Exception {
-        XMLCipher cipher = XMLCipher.getInstance(algorithm);
+        final XMLCipher cipher = XMLCipher.getInstance(algorithm);
         cipher.init(XMLCipher.DECRYPT_MODE, key);
 
-        NodeList nodeList = document.getElementsByTagNameNS(
+        final NodeList nodeList = document.getElementsByTagNameNS(
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getNamespaceURI(),
                 XMLSecurityConstants.TAG_xenc_EncryptedData.getLocalPart()
             );
-        Element ee = (Element)nodeList.item(0);
+        final Element ee = (Element)nodeList.item(0);
         return cipher.doFinal(document, ee);
     }
 

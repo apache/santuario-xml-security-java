@@ -25,7 +25,7 @@ import java.util.UUID;
 public class IDGenerator {
 
     public static String generateID(String prefix) {
-        String id = UUID.randomUUID().toString();
+        final String id = UUID.randomUUID().toString();
         if (prefix != null) {
             return prefix + id;
         } else {

@@ -76,7 +76,7 @@ public class XMLSecEndElementImpl extends XMLSecEventBaseImpl implements XMLSecE
             }
             writer.write(getName().getLocalPart());
             writer.write('>');
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new XMLStreamException(e);
         }
     }

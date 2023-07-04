@@ -41,10 +41,10 @@ public class Canonicalizer11 extends CanonicalizerBase {
 
         List<XMLSecAttribute> utilizedAttributes = Collections.emptyList();
 
-        List<XMLSecAttribute> visibleAttributes = new ArrayList<>();
+        final List<XMLSecAttribute> visibleAttributes = new ArrayList<>();
         xmlSecStartElement.getAttributesFromCurrentScope(visibleAttributes);
         for (int i = 0; i < visibleAttributes.size(); i++) {
-            XMLSecAttribute comparableAttribute = visibleAttributes.get(i);
+            final XMLSecAttribute comparableAttribute = visibleAttributes.get(i);
             final QName comparableAttributeName = comparableAttribute.getName();
             //xml:id attributes must be handled like other attributes: emit but dont inherit
             if (!XML.equals(comparableAttributeName.getPrefix())) {
@@ -64,9 +64,9 @@ public class Canonicalizer11 extends CanonicalizerBase {
             outputStack.peek().add(comparableAttribute);
         }
 
-        List<XMLSecAttribute> elementAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
+        final List<XMLSecAttribute> elementAttributes = xmlSecStartElement.getOnElementDeclaredAttributes();
         for (int i = 0; i < elementAttributes.size(); i++) {
-            XMLSecAttribute comparableAttribute = elementAttributes.get(i);
+            final XMLSecAttribute comparableAttribute = elementAttributes.get(i);
             //attributes with xml prefix are already processed in the for loop above
             //xml:id attributes must be handled like other attributes: emit but dont inherit
             final QName attributeName = comparableAttribute.getName();

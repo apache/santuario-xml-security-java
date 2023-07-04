@@ -110,7 +110,7 @@ public class RetrievalMethod extends SignatureElementProxy implements KeyInfoCon
      */
     public Transforms getTransforms() throws XMLSecurityException {
         try {
-            Element transformsElem =
+            final Element transformsElem =
                 XMLUtils.selectDsNode(
                     getFirstChild(), Constants._TAG_TRANSFORMS, 0);
 
@@ -119,7 +119,7 @@ public class RetrievalMethod extends SignatureElementProxy implements KeyInfoCon
             }
 
             return null;
-        } catch (XMLSignatureException ex) {
+        } catch (final XMLSignatureException ex) {
             throw new XMLSecurityException(ex);
         }
     }

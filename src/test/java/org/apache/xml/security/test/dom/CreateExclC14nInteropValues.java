@@ -50,19 +50,19 @@ public class CreateExclC14nInteropValues {
 
         org.apache.xml.security.Init.init();
 
-        Document doc = TestUtils.newDocument();
-        String directory = "data/org/apache/xml/security/c14n/outExcl/";
-        File signatureFile = new File(directory + "apacheSignature.xml");
-        XMLSignature xmlSignature = new XMLSignature(doc,
+        final Document doc = TestUtils.newDocument();
+        final String directory = "data/org/apache/xml/security/c14n/outExcl/";
+        final File signatureFile = new File(directory + "apacheSignature.xml");
+        final XMLSignature xmlSignature = new XMLSignature(doc,
                                                      signatureFile.toURI().toURL().toString(),
                                                      XMLSignature.ALGO_ID_MAC_HMAC_SHA1);
 
         doc.appendChild(xmlSignature.getElement());
         {
             // ref 0
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath(
                 "self::Parent or (parent::Parent and not(self::Child)) or self::GrandChild or parent::GrandChild");
@@ -73,9 +73,9 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 1
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath(
                 "self::Parent or (parent::Parent and not(self::Child)) or self::GrandChild or parent::GrandChild");
@@ -87,9 +87,9 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 2
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPathNamespaceContext("xmlns:default", "http://example.org");
                 xc.setXPath(
@@ -101,9 +101,9 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 3
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPathNamespaceContext("xmlns:default", "http://example.org");
                 xc.setXPath(
@@ -116,9 +116,9 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 4
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPathNamespaceContext("xmlns:default",
                 "http://example.org/default");
@@ -133,9 +133,9 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 5
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPathNamespaceContext("xmlns:default",
                 "http://example.org/default");
@@ -150,9 +150,9 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 6
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPathNamespaceContext("xmlns:ns1", "http://example.org/ns1");
                 xc.setXPath(
@@ -164,9 +164,9 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 7
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPathNamespaceContext("xmlns:ns1", "http://example.org/ns1");
                 xc.setXPath(
@@ -174,7 +174,7 @@ public class CreateExclC14nInteropValues {
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
             }
             {
-                InclusiveNamespaces incNS = new InclusiveNamespaces(doc, "ns2");
+                final InclusiveNamespaces incNS = new InclusiveNamespaces(doc, "ns2");
 
                 tf.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS,
                                 incNS.getElement());
@@ -184,12 +184,12 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 8
-            ObjectContainer obj = new ObjectContainer(doc);
-            String id = "object1";
+            final ObjectContainer obj = new ObjectContainer(doc);
+            final String id = "object1";
 
             obj.setId(id);
 
-            String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
+            final String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='uk'>" + "\n"
             + "<included                 >" + "\n" + "</included>"
@@ -207,9 +207,9 @@ public class CreateExclC14nInteropValues {
             xmlSignature.appendObject(obj);
 
             // ref apache_8
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -219,12 +219,12 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 9
-            ObjectContainer obj = new ObjectContainer(doc);
-            String id = "object2";
+            final ObjectContainer obj = new ObjectContainer(doc);
+            final String id = "object2";
 
             obj.setId(id);
 
-            String xmlStr = "" + "<included    xml:lang='uk'>" + "\n"
+            final String xmlStr = "" + "<included    xml:lang='uk'>" + "\n"
             + "<notIncluded xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='uk'>" + "\n"
             + "<included                 >" + "\n" + "</included>"
@@ -242,9 +242,9 @@ public class CreateExclC14nInteropValues {
             xmlSignature.appendObject(obj);
 
             // ref apache_8
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -254,12 +254,12 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 10
-            ObjectContainer obj = new ObjectContainer(doc);
-            String id = "object3";
+            final ObjectContainer obj = new ObjectContainer(doc);
+            final String id = "object3";
 
             obj.setId(id);
 
-            String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
+            final String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='uk'>" + "\n"
             + "<included xml:lang='de'>" + "\n" + "</included>"
@@ -277,9 +277,9 @@ public class CreateExclC14nInteropValues {
             xmlSignature.appendObject(obj);
 
             // ref apache_8
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -290,12 +290,12 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 11
-            ObjectContainer obj = new ObjectContainer(doc);
-            String id = "object4";
+            final ObjectContainer obj = new ObjectContainer(doc);
+            final String id = "object4";
 
             obj.setId(id);
 
-            String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
+            final String xmlStr = "" + "<included    xml:lang='de'>" + "\n"
             + "<included xml:lang='de'>" + "\n"
             + "<notIncluded xml:lang='uk'>" + "\n"
             + "<included                 >" + "\n" + "</included>"
@@ -312,9 +312,9 @@ public class CreateExclC14nInteropValues {
             obj.getElement().appendChild(doc.createTextNode("\n"));
             xmlSignature.appendObject(obj);
 
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -325,12 +325,12 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 12
-            ObjectContainer obj = new ObjectContainer(doc);
-            String id = "object5";
+            final ObjectContainer obj = new ObjectContainer(doc);
+            final String id = "object5";
 
             obj.setId(id);
 
-            String xmlStr = "" + "<included                         xml:lang='de'>"
+            final String xmlStr = "" + "<included                         xml:lang='de'>"
             + "\n"
             + "<included xml:lang='de'>"
             + "\n"
@@ -349,9 +349,9 @@ public class CreateExclC14nInteropValues {
             obj.getElement().appendChild(doc.createTextNode("\n"));
             xmlSignature.appendObject(obj);
 
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -362,12 +362,12 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 13
-            ObjectContainer obj = new ObjectContainer(doc);
-            String id = "object6";
+            final ObjectContainer obj = new ObjectContainer(doc);
+            final String id = "object6";
 
             obj.setId(id);
 
-            String xmlStr = "" + "<included   xml:space='preserve'  xml:lang='de'>"
+            final String xmlStr = "" + "<included   xml:space='preserve'  xml:lang='de'>"
             + "\n"
             + "<included xml:lang='de'>"
             + "\n"
@@ -386,9 +386,9 @@ public class CreateExclC14nInteropValues {
             obj.getElement().appendChild(doc.createTextNode("\n"));
             xmlSignature.appendObject(obj);
 
-            Transforms tf = new Transforms(doc);
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -399,10 +399,10 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 13b
-            String id = "object6";
-            Transforms tf = new Transforms(doc);
+            final String id = "object6";
+            final Transforms tf = new Transforms(doc);
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -413,11 +413,11 @@ public class CreateExclC14nInteropValues {
 
         {
             // ref 13c
-            String id = "object6";
-            Transforms tf = new Transforms(doc);
+            final String id = "object6";
+            final Transforms tf = new Transforms(doc);
 
             {
-                XPathContainer xc = new XPathContainer(doc);
+                final XPathContainer xc = new XPathContainer(doc);
 
                 xc.setXPath("self::node()[local-name()='included']");
                 tf.addTransform(Transforms.TRANSFORM_XPATH, xc.getElement());
@@ -428,30 +428,30 @@ public class CreateExclC14nInteropValues {
             // xmlSignature.addDocument("#" + id, tf, org.apache.xml.security.algorithms.MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1, "ref13c", null);
         }
 
-        String secretKey = "secret";
+        final String secretKey = "secret";
 
         xmlSignature.getKeyInfo().addKeyName("The UTF-8 octets of \"" + secretKey
                                              + "\" are used for signing ("
                                              + secretKey.length() + " octets)");
         xmlSignature.sign(xmlSignature.createSecretKey(secretKey.getBytes()));
 
-        FileOutputStream fos = new FileOutputStream(signatureFile);
+        final FileOutputStream fos = new FileOutputStream(signatureFile);
 
         XMLUtils.outputDOM(doc, fos);
         fos.close();
 
-        int length = xmlSignature.getSignedInfo().getLength();
+        final int length = xmlSignature.getSignedInfo().getLength();
 
         for (int i = 0; i < length; i++) {
-            String fname = directory + "c14n-" + i + "-apache.xml";
+            final String fname = directory + "c14n-" + i + "-apache.xml";
 
             System.out.println(fname);
             JavaUtils.writeBytesToFilename(fname, xmlSignature.getSignedInfo().getReferencedContentAfterTransformsItem(i).getBytes());
         }
 
-        XMLSignature s = new XMLSignature(doc.getDocumentElement(),
+        final XMLSignature s = new XMLSignature(doc.getDocumentElement(),
                                           signatureFile.toURI().toURL().toString());
-        boolean verify =
+        final boolean verify =
             s.checkSignatureValue(s.createSecretKey("secret".getBytes()));
 
         System.out.println("verify=" + verify);

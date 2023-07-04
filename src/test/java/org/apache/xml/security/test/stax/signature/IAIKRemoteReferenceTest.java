@@ -98,7 +98,7 @@ public class IAIKRemoteReferenceTest {
     @Test
     public void test_transforms_signatures_base64DecodeSignature() throws Exception {
         // Set up the Key
-        Key publicKey = getPublicKey("RSA");
+        final Key publicKey = getPublicKey("RSA");
 
         final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(
@@ -109,11 +109,11 @@ public class IAIKRemoteReferenceTest {
                 );
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(publicKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -127,7 +127,7 @@ public class IAIKRemoteReferenceTest {
     @Test
     public void test_transforms_signatures_c14nSignature() throws Exception {
         // Set up the Key
-        Key publicKey = getPublicKey("RSA");
+        final Key publicKey = getPublicKey("RSA");
 
         final XMLStreamReader xmlStreamReader =
                 xmlInputFactory.createXMLStreamReader(
@@ -138,11 +138,11 @@ public class IAIKRemoteReferenceTest {
                 );
 
         // Verify signature
-        XMLSecurityProperties properties = new XMLSecurityProperties();
+        final XMLSecurityProperties properties = new XMLSecurityProperties();
         properties.setSignatureVerificationKey(publicKey);
-        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
-        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
-        XMLStreamReader securityStreamReader =
+        final InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        final TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        final XMLStreamReader securityStreamReader =
             inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         StAX2DOM.readDoc(securityStreamReader);
@@ -154,7 +154,7 @@ public class IAIKRemoteReferenceTest {
 
     private static PublicKey getPublicKey(String algo)
             throws InvalidKeySpecException, NoSuchAlgorithmException {
-        KeyFactory kf = KeyFactory.getInstance(algo);
+        final KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec = null;
         if ("DSA".equalsIgnoreCase(algo)) {
             kspec = new DSAPublicKeySpec(new BigInteger(DSA_Y),
@@ -178,31 +178,31 @@ public class IAIKRemoteReferenceTest {
         if (SecurityTokenConstants.KeyIdentifier_KeyValue.equals(keyIdentifier)) { //NOPMD
 
         } else if (SecurityTokenConstants.KeyIdentifier_NoKeyInfo.equals(keyIdentifier)) {
-            DefaultTokenSecurityEvent tokenEvent =
+            final DefaultTokenSecurityEvent tokenEvent =
                 (DefaultTokenSecurityEvent)securityEventListener.getSecurityEvent(SecurityEventConstants.DefaultToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
         } else if (SecurityTokenConstants.KeyIdentifier_KeyName.equals(keyIdentifier)) {
-            KeyNameTokenSecurityEvent tokenEvent =
+            final KeyNameTokenSecurityEvent tokenEvent =
                 (KeyNameTokenSecurityEvent)securityEventListener.getSecurityEvent(SecurityEventConstants.KeyNameToken);
             assertNotNull(tokenEvent);
-            Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
+            final Key processedKey = tokenEvent.getSecurityToken().getSecretKey().values().iterator().next();
             assertEquals(processedKey, key);
             assertNotNull(((KeyNameSecurityToken)tokenEvent.getSecurityToken()).getKeyName());
         } else {
-            X509TokenSecurityEvent tokenEvent =
+            final X509TokenSecurityEvent tokenEvent =
                 (X509TokenSecurityEvent)securityEventListener.getSecurityEvent(SecurityEventConstants.X509Token);
             assertNotNull(tokenEvent);
-            X509SecurityToken x509SecurityToken =
+            final X509SecurityToken x509SecurityToken =
                 (X509SecurityToken)tokenEvent.getSecurityToken();
             assertNotNull(x509SecurityToken);
             if (SecurityTokenConstants.KeyIdentifier_X509SubjectName.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, key);
                 assertNotNull(((X509SubjectNameSecurityToken)x509SecurityToken).getSubjectName());
             } else if (SecurityTokenConstants.KeyIdentifier_IssuerSerial.equals(keyIdentifier)) {
-                Key processedKey = x509SecurityToken.getPublicKey();
+                final Key processedKey = x509SecurityToken.getPublicKey();
                 assertEquals(processedKey, key);
                 assertNotNull(((X509IssuerSerialSecurityToken)x509SecurityToken).getIssuerName());
                 assertNotNull(((X509IssuerSerialSecurityToken)x509SecurityToken).getSerialNumber());

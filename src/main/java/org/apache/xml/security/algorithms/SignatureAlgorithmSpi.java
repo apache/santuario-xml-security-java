@@ -181,15 +181,15 @@ public abstract class SignatureAlgorithmSpi {
             if (publicKey != null) {
                 supplied = publicKey.getClass().getName();
             }
-            String needed = PublicKey.class.getName();
-            Object[] exArgs = { supplied, needed };
+            final String needed = PublicKey.class.getName();
+            final Object[] exArgs = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
 
         try {
             signatureAlgorithm.initVerify((PublicKey) publicKey);
-        } catch (InvalidKeyException ex) {
+        } catch (final InvalidKeyException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -201,8 +201,8 @@ public abstract class SignatureAlgorithmSpi {
             if (privateKey != null) {
                 supplied = privateKey.getClass().getName();
             }
-            String needed = PrivateKey.class.getName();
-            Object[] exArgs = { supplied, needed };
+            final String needed = PrivateKey.class.getName();
+            final Object[] exArgs = { supplied, needed };
 
             throw new XMLSignatureException("algorithms.WrongKeyForThisOperation", exArgs);
         }
@@ -213,7 +213,7 @@ public abstract class SignatureAlgorithmSpi {
             } else {
                 signatureAlgorithm.initSign((PrivateKey) privateKey, secureRandom);
             }
-        } catch (InvalidKeyException ex) {
+        } catch (final InvalidKeyException ex) {
             throw new XMLSignatureException(ex);
         }
     }

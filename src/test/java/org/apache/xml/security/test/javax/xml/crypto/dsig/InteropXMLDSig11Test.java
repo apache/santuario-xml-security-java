@@ -53,7 +53,7 @@ public class InteropXMLDSig11Test {
         // check if EC is supported
         try {
             KeyFactory.getInstance("EC");
-        } catch (NoSuchAlgorithmException nsae) {
+        } catch (final NoSuchAlgorithmException nsae) {
             ecSupport = false;
         }
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
@@ -195,17 +195,17 @@ public class InteropXMLDSig11Test {
     }
 
     private void test_xmldsig11(String test, String vendor) throws Exception {
-        String file = vendor + File.separator + test + ".xml";
+        final String file = vendor + File.separator + test + ".xml";
         // System.out.println("Validating " + file);
-        boolean coreValidity = validator.validate(file, kvks);
+        final boolean coreValidity = validator.validate(file, kvks);
         assertTrue(coreValidity, file + " failed core validation");
     }
 
     private void test_xmldsig11(String test, KeySelector ks, String vendor)
         throws Exception {
-        String file = vendor + File.separator + test + ".xml";
+        final String file = vendor + File.separator + test + ".xml";
         // System.out.println("Validating " + file);
-        boolean coreValidity = validator.validate(file, ks);
+        final boolean coreValidity = validator.validate(file, ks);
         assertTrue(coreValidity, file + " failed core validation");
     }
 }

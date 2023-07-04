@@ -46,21 +46,21 @@ public class XMLSecurityEventWriterTest {
 
     @Test
     public void testConformness() throws Exception {
-        XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
-        StringWriter secStringWriter = new StringWriter();
-        XMLStreamWriter secXmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(secStringWriter);
-        XMLSecurityEventWriter xmlSecurityEventWriter = new XMLSecurityEventWriter(secXmlStreamWriter);
+        final XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+        final StringWriter secStringWriter = new StringWriter();
+        final XMLStreamWriter secXmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(secStringWriter);
+        final XMLSecurityEventWriter xmlSecurityEventWriter = new XMLSecurityEventWriter(secXmlStreamWriter);
 
-        StringWriter stdStringWriter = new StringWriter();
-        XMLEventWriter stdXmlEventWriter = xmlOutputFactory.createXMLEventWriter(stdStringWriter);
+        final StringWriter stdStringWriter = new StringWriter();
+        final XMLEventWriter stdXmlEventWriter = xmlOutputFactory.createXMLEventWriter(stdStringWriter);
 
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        XMLStreamReader xmlStreamReader =
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        final XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
                     "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
 
         while (xmlStreamReader.hasNext()) {
-            XMLEvent xmlEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
+            final XMLEvent xmlEvent = XMLSecEventFactory.allocate(xmlStreamReader, null);
             xmlSecurityEventWriter.add(xmlEvent);
             stdXmlEventWriter.add(xmlEvent);
             xmlStreamReader.next();
@@ -74,9 +74,9 @@ public class XMLSecurityEventWriterTest {
     //@see WSS-437
     @Test
     public void testNamespaces() throws Exception {
-        StringWriter stringWriter = new StringWriter();
-        XMLStreamWriter xmlStreamWriter = XMLSecurityConstants.xmlOutputFactory.createXMLStreamWriter(stringWriter);
-        XMLEventWriter xmlEventWriter = new XMLSecurityEventWriter(xmlStreamWriter);
+        final StringWriter stringWriter = new StringWriter();
+        final XMLStreamWriter xmlStreamWriter = XMLSecurityConstants.xmlOutputFactory.createXMLStreamWriter(stringWriter);
+        final XMLEventWriter xmlEventWriter = new XMLSecurityEventWriter(xmlStreamWriter);
         xmlEventWriter.add(new XMLSecStartElementImpl(new QName("http://ns1", "a", "ns1"), null, null));
         xmlEventWriter.add(XMLSecNamespaceImpl.getInstance("ns1", "http://ns1"));
         xmlEventWriter.add(new XMLSecStartElementImpl(new QName("http://ns2", "b", ""), null, null));

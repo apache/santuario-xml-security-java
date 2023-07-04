@@ -64,40 +64,40 @@ public class PhaosXMLDSig3Test {
 
     @Test
     public void test_signature_dsa_detached() throws Exception {
-        String file = "signature-dsa-detached.xml";
+        final String file = "signature-dsa-detached.xml";
 
-        DOMValidateContext vc = validator.getValidateContext
+        final DOMValidateContext vc = validator.getValidateContext
         (file, new KeySelectors.RawX509KeySelector());
         vc.setProperty("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
         vc.setURIDereferencer(ud);
 
-        boolean coreValidity = validator.validate(vc);
+        final boolean coreValidity = validator.validate(vc);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_dsa_enveloped() throws Exception {
-        String file = "signature-dsa-enveloped.xml";
+        final String file = "signature-dsa-enveloped.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_dsa_enveloping() throws Exception {
-        String file = "signature-dsa-enveloping.xml";
+        final String file = "signature-dsa-enveloping.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_dsa_manifest() throws Exception {
-        String file = "signature-dsa-manifest.xml";
+        final String file = "signature-dsa-manifest.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
@@ -105,14 +105,14 @@ public class PhaosXMLDSig3Test {
     @Test
     public void test_signature_hmac_sha1_40_c14n_comments_detached()
     throws Exception {
-        String file = "signature-hmac-sha1-40-c14n-comments-detached.xml";
+        final String file = "signature-hmac-sha1-40-c14n-comments-detached.xml";
 
-        KeySelector ks = new KeySelectors.SecretKeySelector
+        final KeySelector ks = new KeySelectors.SecretKeySelector
             ("test".getBytes(StandardCharsets.US_ASCII) );
         try {
             validator.validate(file, ks);
             fail("Expected HMACOutputLength Exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             //System.out.println(xse.getMessage());
             // pass
         }
@@ -121,14 +121,14 @@ public class PhaosXMLDSig3Test {
     @Test
     public void test_signature_hmac_sha1_40_exclusive_c14n_comments_detached()
     throws Exception {
-        String file = "signature-hmac-sha1-40-exclusive-c14n-comments-detached.xml";
+        final String file = "signature-hmac-sha1-40-exclusive-c14n-comments-detached.xml";
 
-        KeySelector ks = new KeySelectors.SecretKeySelector
+        final KeySelector ks = new KeySelectors.SecretKeySelector
             ("test".getBytes(StandardCharsets.US_ASCII) );
         try {
             validator.validate(file, ks);
             fail("Expected HMACOutputLength Exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             //System.out.println(xse.getMessage());
             // pass
         }
@@ -137,60 +137,60 @@ public class PhaosXMLDSig3Test {
     @Test
     public void test_signature_hmac_sha1_exclusive_c14n_comments_detached()
     throws Exception {
-        String file = "signature-hmac-sha1-exclusive-c14n-comments-detached.xml";
+        final String file = "signature-hmac-sha1-exclusive-c14n-comments-detached.xml";
 
-        KeySelector ks = new KeySelectors.SecretKeySelector
+        final KeySelector ks = new KeySelectors.SecretKeySelector
             ("test".getBytes(StandardCharsets.US_ASCII) );
-        boolean coreValidity = validator.validate(file, ks, ud);
+        final boolean coreValidity = validator.validate(file, ks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_hmac_sha1_exclusive_c14n_enveloped()
     throws Exception {
-        String file = "signature-hmac-sha1-exclusive-c14n-enveloped.xml";
+        final String file = "signature-hmac-sha1-exclusive-c14n-enveloped.xml";
 
-        KeySelector ks = new KeySelectors.SecretKeySelector
+        final KeySelector ks = new KeySelectors.SecretKeySelector
             ("test".getBytes(StandardCharsets.US_ASCII) );
-        boolean coreValidity = validator.validate(file, ks);
+        final boolean coreValidity = validator.validate(file, ks);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_detached_b64_transform() throws Exception {
-        String file = "signature-rsa-detached-b64-transform.xml";
+        final String file = "signature-rsa-detached-b64-transform.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_detached_xpath_transform() throws Exception {
-        String file = "signature-rsa-detached-xpath-transform.xml";
+        final String file = "signature-rsa-detached-xpath-transform.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_detached_xslt_transform_bad_rm() throws Exception {
-        String file = "signature-rsa-detached-xslt-transform-bad-retrieval-method.xml";
+        final String file = "signature-rsa-detached-xslt-transform-bad-retrieval-method.xml";
 
         try {
             validator.validate(file,
                                new KeySelectors.CollectionKeySelector(base));
             fail("Should throw XMLSignatureException for using DSA key with " +
             "RSA algorithm");
-        } catch (XMLSignatureException xse) {}
+        } catch (final XMLSignatureException xse) {}
     }
 
     @Test
     public void test_signature_rsa_detached_xslt_transform_rm() throws Exception {
-        String file = "signature-rsa-detached-xslt-transform-retrieval-method.xml";
+        final String file = "signature-rsa-detached-xslt-transform-retrieval-method.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file,
                                new KeySelectors.CollectionKeySelector(base));
         assertTrue(coreValidity, "Signature failed core validation");
@@ -198,111 +198,111 @@ public class PhaosXMLDSig3Test {
 
     @Test
     public void test_signature_rsa_detached_xslt_transform() throws Exception {
-        String file = "signature-rsa-detached-xslt-transform.xml";
+        final String file = "signature-rsa-detached-xslt-transform.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_detached() throws Exception {
-        String file = "signature-rsa-detached.xml";
+        final String file = "signature-rsa-detached.xml";
 
-        DOMValidateContext vc = validator.getValidateContext
+        final DOMValidateContext vc = validator.getValidateContext
             (file, new KeySelectors.RawX509KeySelector());
         vc.setProperty("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
         vc.setURIDereferencer(ud);
-        boolean coreValidity = validator.validate(vc);
+        final boolean coreValidity = validator.validate(vc);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_enveloped_bad_digest_val() throws Exception {
-        String file = "signature-rsa-enveloped-bad-digest-val.xml";
+        final String file = "signature-rsa-enveloped-bad-digest-val.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertFalse(coreValidity, "Signature should fail core validation");
     }
 
     @Test
     public void test_signature_rsa_enveloped() throws Exception {
-        String file = "signature-rsa-enveloped.xml";
+        final String file = "signature-rsa-enveloped.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_enveloping() throws Exception {
-        String file = "signature-rsa-enveloping.xml";
+        final String file = "signature-rsa-enveloping.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_manifest_x509_data_cert_chain() throws Exception {
-        String file = "signature-rsa-manifest-x509-data-cert-chain.xml";
+        final String file = "signature-rsa-manifest-x509-data-cert-chain.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_manifest_x509_data_cert() throws Exception {
-        String file = "signature-rsa-manifest-x509-data-cert.xml";
+        final String file = "signature-rsa-manifest-x509-data-cert.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_manifest_x509_data_issuer_serial() throws Exception {
-        String file = "signature-rsa-manifest-x509-data-issuer-serial.xml";
+        final String file = "signature-rsa-manifest-x509-data-issuer-serial.xml";
 
-        boolean coreValidity = validator.validate(file,
+        final boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_manifest_x509_data_ski() throws Exception {
-        String file = "signature-rsa-manifest-x509-data-ski.xml";
+        final String file = "signature-rsa-manifest-x509-data-ski.xml";
 
-        boolean coreValidity = validator.validate(file,
+        final boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_manifest_x509_data_subject_name() throws Exception {
-        String file = "signature-rsa-manifest-x509-data-subject-name.xml";
+        final String file = "signature-rsa-manifest-x509-data-subject-name.xml";
 
-        boolean coreValidity = validator.validate(file,
+        final boolean coreValidity = validator.validate(file,
                                                   new KeySelectors.CollectionKeySelector(base));
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_manifest_x509_data() throws Exception {
-        String file = "signature-rsa-manifest-x509-data.xml";
+        final String file = "signature-rsa-manifest-x509-data.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.RawX509KeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signature_rsa_manifest() throws Exception {
-        String file = "signature-rsa-manifest.xml";
+        final String file = "signature-rsa-manifest.xml";
 
-        boolean coreValidity =
+        final boolean coreValidity =
             validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }

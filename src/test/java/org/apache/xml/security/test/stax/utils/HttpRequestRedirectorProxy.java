@@ -51,12 +51,12 @@ public class HttpRequestRedirectorProxy {
 
         while (true) {
             try {
-                ServerSocket ss = new ServerSocket(port);
+                final ServerSocket ss = new ServerSocket(port);
                 ss.setReuseAddress(true);
                 //ok no exception so the port must be free
                 ss.close();
                 break;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 port++;
             }
         }
@@ -67,7 +67,7 @@ public class HttpRequestRedirectorProxy {
         resourceHandler.setResourceBase(".");
         httpServer.setHandler(resourceHandler);*/
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        final ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
         httpServer.setHandler(context);
         context.addServlet(new ServletHolder(new TestingHttpProxyServlet()), "/*");
@@ -94,15 +94,15 @@ public class HttpRequestRedirectorProxy {
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-            String requestLine = req.getRequestURL().toString();
-            String file = requestLine.substring(requestLine.lastIndexOf('/'));
-            for (String path : paths) {
-                String filePath = path + file;
+            final String requestLine = req.getRequestURL().toString();
+            final String file = requestLine.substring(requestLine.lastIndexOf('/'));
+            for (final String path : paths) {
+                final String filePath = path + file;
                 try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filePath)) {
                     if (inputStream == null) {
                         continue;
                     }
-                    String mime = mimeTypes.getMimeByExtension(req.getPathInfo());
+                    final String mime = mimeTypes.getMimeByExtension(req.getPathInfo());
                     if (mime != null) {
                         resp.setContentType(mime);
                     }

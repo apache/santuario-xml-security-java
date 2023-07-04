@@ -48,26 +48,26 @@ public class X509DataTest {
     public void testAddX509SubjectName() throws Exception {
         Init.init();
 
-        Document doc = TestUtils.newDocument();
-        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        final Document doc = TestUtils.newDocument();
+        final XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
 
         doc.appendChild(sig.getElement());
         sig.addDocument("");
 
         //Add in the KeyInfo for the certificate that we used the private key of
-        X509Certificate cert =getCertificate();
+        final X509Certificate cert =getCertificate();
         sig.addKeyInfo(cert);
         sig.addKeyInfo(cert.getPublicKey());
 
         // Add these three lines
-        org.apache.xml.security.keys.KeyInfo ki = sig.getKeyInfo();
+        final org.apache.xml.security.keys.KeyInfo ki = sig.getKeyInfo();
         ki.itemX509Data(0).addSubjectName(cert.getSubjectX500Principal().getName());
         ki.itemX509Data(0).addIssuerSerial(cert.getIssuerX500Principal().getName(), cert.getSerialNumber());
 
         sig.sign(getPrivateKey());
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
         XMLUtils.outputDOM(doc, os);
-        XMLSignature newSig = getSignature(os.toByteArray());
+        final XMLSignature newSig = getSignature(os.toByteArray());
 
         assertNotNull(newSig.getKeyInfo().itemX509Data(0));
         assertEquals(cert.getSubjectX500Principal().getName(),
@@ -82,7 +82,7 @@ public class X509DataTest {
         try (InputStream is = new ByteArrayInputStream(s)) {
             doc = XMLUtils.read(is, false);
         }
-        Element el = (Element)doc.getFirstChild();
+        final Element el = (Element)doc.getFirstChild();
         return new XMLSignature(el, "");
     }
 
@@ -90,7 +90,7 @@ public class X509DataTest {
         if (ks != null) {
             return ks;
         }
-        String keystoreFile = "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
+        final String keystoreFile = "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
         ks = KeyStore.getInstance("JKS");
         try (FileInputStream fis = new FileInputStream(XmlSecTestEnvironment.resolveFile(keystoreFile))) {
             ks.load(fis, "xmlsecurity".toCharArray());
@@ -99,16 +99,16 @@ public class X509DataTest {
     }
 
     private X509Certificate getCertificate() throws Exception {
-        String certificateAlias = "test";
-        X509Certificate cert =
+        final String certificateAlias = "test";
+        final X509Certificate cert =
             (X509Certificate) getKeyStore().getCertificate(certificateAlias);
         return cert;
     }
 
     private PrivateKey getPrivateKey() throws Exception {
-        String privateKeyAlias = "test";
-        String privateKeyPass = "xmlsecurity";
-        PrivateKey privateKey =
+        final String privateKeyAlias = "test";
+        final String privateKeyPass = "xmlsecurity";
+        final PrivateKey privateKey =
             (PrivateKey) getKeyStore().getKey(privateKeyAlias, privateKeyPass.toCharArray());
         return privateKey;
     }

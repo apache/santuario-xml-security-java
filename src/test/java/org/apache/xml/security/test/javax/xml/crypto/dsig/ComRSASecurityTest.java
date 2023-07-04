@@ -45,25 +45,25 @@ public class ComRSASecurityTest {
     }
 
     public ComRSASecurityTest() {
-        File base = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "com", "rsasecurity", "bdournaee");
+        final File base = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "com", "rsasecurity", "bdournaee");
         validator = new SignatureValidator(base);
     }
 
 
     @Test
     public void test_certj201_enveloping() throws Exception {
-        String file = "certj201_enveloping.xml";
+        final String file = "certj201_enveloping.xml";
 
-        boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
+        final boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
 
     @Test
     public void test_certj201_enveloped() throws Exception {
-        String file = "certj201_enveloped.xml";
+        final String file = "certj201_enveloped.xml";
 
-        boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
+        final boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 

@@ -43,12 +43,12 @@ public final class TransformerAlgorithmMapper {
 
     protected static synchronized void init(TransformAlgorithmsType transformAlgorithms,
             Class<?> callingClass) throws Exception {
-        List<TransformAlgorithmType> algorithms = transformAlgorithms.getTransformAlgorithm();
+        final List<TransformAlgorithmType> algorithms = transformAlgorithms.getTransformAlgorithm();
         algorithmsClassMapInOut = new HashMap<>();
         algorithmsClassMapIn = new HashMap<>();
         algorithmsClassMapOut = new HashMap<>();
 
-        for (TransformAlgorithmType algorithmType : algorithms) {
+        for (final TransformAlgorithmType algorithmType : algorithms) {
             if (algorithmType.getINOUT() == null) {
                 algorithmsClassMapInOut.put(algorithmType.getURI(),
                         ClassLoaderUtils.loadClass(algorithmType.getJAVACLASS(), callingClass));

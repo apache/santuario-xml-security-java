@@ -57,7 +57,7 @@ public class TransformSerializer extends AbstractSerializer {
             try {
                 transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
                 transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-            } catch (IllegalArgumentException ex) {
+            } catch (final IllegalArgumentException ex) {
                 // ignore
             }
         }
@@ -71,7 +71,7 @@ public class TransformSerializer extends AbstractSerializer {
      */
     @Override
     public Node deserialize(byte[] source, Node ctx) throws XMLEncryptionException, IOException {
-        byte[] fragment = createContext(source, ctx);
+        final byte[] fragment = createContext(source, ctx);
         try (InputStream is = new ByteArrayInputStream(fragment)) {
             return deserialize(ctx, new StreamSource(is));
         }
@@ -92,24 +92,24 @@ public class TransformSerializer extends AbstractSerializer {
                 contextDocument = ctx.getOwnerDocument();
             }
 
-            Transformer transformer = transformerFactory.newTransformer();
+            final Transformer transformer = transformerFactory.newTransformer();
 
-            DOMResult res = new DOMResult();
+            final DOMResult res = new DOMResult();
 
-            Node placeholder = contextDocument.createDocumentFragment();
+            final Node placeholder = contextDocument.createDocumentFragment();
             res.setNode(placeholder);
 
             transformer.transform(source, res);
 
             // Skip dummy element
-            Node dummyChild = placeholder.getFirstChild();
+            final Node dummyChild = placeholder.getFirstChild();
             Node child = dummyChild.getFirstChild();
 
             if (child != null && child.getNextSibling() == null) {
                 return child;
             }
 
-            DocumentFragment docfrag = contextDocument.createDocumentFragment();
+            final DocumentFragment docfrag = contextDocument.createDocumentFragment();
             while (child != null) {
                 dummyChild.removeChild(child);
                 docfrag.appendChild(child);
@@ -117,7 +117,7 @@ public class TransformSerializer extends AbstractSerializer {
             }
 
             return docfrag;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new XMLEncryptionException(e);
         }
     }

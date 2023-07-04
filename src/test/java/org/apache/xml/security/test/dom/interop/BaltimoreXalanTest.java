@@ -71,14 +71,14 @@ public class BaltimoreXalanTest extends InteropTestBase {
     @Test
     public void test_sixteen_external_dsa() throws Exception {
 
-        File file = new File(merlinsDir16, "signature.xml");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
+        final File file = new File(merlinsDir16, "signature.xml");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(file, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + file);
             throw ex;
         }
@@ -101,14 +101,14 @@ public class BaltimoreXalanTest extends InteropTestBase {
     @Test
     public void test_sixteen_bad_signature() throws Exception {
 
-        File filename = new File(merlinsDir16 + "/bad-signature.xml");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
+        final File filename = new File(merlinsDir16 + "/bad-signature.xml");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }
@@ -129,14 +129,14 @@ public class BaltimoreXalanTest extends InteropTestBase {
     @Test
     public void test_twenty_three_external_dsa_2() throws Exception {
 
-        File filename = new File(merlinsDir23, "signature.xml");
-        ResourceResolverSpi resolver = new OfflineResolver();
-        boolean followManifests = false;
+        final File filename = new File(merlinsDir23, "signature.xml");
+        final ResourceResolverSpi resolver = new OfflineResolver();
+        final boolean followManifests = false;
         boolean verify = false;
 
         try {
             verify = this.verify(filename, resolver, followManifests);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             LOG.error("Verification crashed for " + filename);
             throw ex;
         }

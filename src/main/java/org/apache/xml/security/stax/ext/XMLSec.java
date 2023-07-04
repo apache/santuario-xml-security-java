@@ -45,7 +45,7 @@ public class XMLSec {
 
     static {
         try {
-            URL resource = ClassLoaderUtils.getResource("security-config.xml", XMLSec.class);
+            final URL resource = ClassLoaderUtils.getResource("security-config.xml", XMLSec.class);
             if (resource == null) {
                 throw new RuntimeException("security-config.xml not found in classpath");
             }
@@ -63,7 +63,7 @@ public class XMLSec {
                         )
                 );
 
-                Schema schema = XMLSecurityUtils.loadXMLSecuritySchemas();
+                final Schema schema = XMLSecurityUtils.loadXMLSecuritySchemas();
                 XMLSecurityConstants.setJaxbSchemas(schema);
             } catch (JAXBException | SAXException e) {
                 throw new RuntimeException(e);
@@ -142,7 +142,7 @@ public class XMLSec {
             throw new XMLSecurityConfigurationException("stax.idgenerationdisablewithmultipleparts");
         }
 
-        for (XMLSecurityConstants.Action action : securityProperties.getActions()) {
+        for (final XMLSecurityConstants.Action action : securityProperties.getActions()) {
             if (XMLSecurityConstants.SIGNATURE.equals(action)) {
                 if (securityProperties.getSignatureAlgorithm() == null) {
                     if (securityProperties.getSignatureKey() instanceof RSAPrivateKey) {

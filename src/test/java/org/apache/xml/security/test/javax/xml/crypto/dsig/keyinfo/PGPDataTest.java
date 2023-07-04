@@ -62,18 +62,19 @@ public class PGPDataTest {
     @SuppressWarnings("rawtypes")
     @Test
     public void testgetExternalElements() {
-        PGPData[] pds = {
+        final PGPData[] pds = {
             fac.newPGPData(values[0]),
             fac.newPGPData(values[0], values[1], null),
             fac.newPGPData(values[1], null)
         };
-        for (PGPData pd : pds) {
+        for (final PGPData pd : pds) {
             @SuppressWarnings("unchecked")
+            final
             List<XMLStructure> li = pd.getExternalElements();
             assertNotNull(li);
             if (!li.isEmpty()) {
-                Object[] types = li.toArray();
-                for (Object type : types) {
+                final Object[] types = li.toArray();
+                for (final Object type : types) {
                     if (!(type instanceof XMLStructure)) {
                         fail("PGP element has the wrong type");
                     }
@@ -82,11 +83,11 @@ public class PGPDataTest {
         }
         try {
             // use raw List type to test for invalid entries
-            List invalidData = new ArrayList();
+            final List invalidData = new ArrayList();
             addEntryToRawList(invalidData, new Object());
             fac.newPGPData(values[0], invalidData);
             fail("Added PGP element of wrong type");
-        } catch (ClassCastException ex) {
+        } catch (final ClassCastException ex) {
             // expected
         }
     }
@@ -139,7 +140,7 @@ public class PGPDataTest {
             try {
                 pd.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
-            } catch (NullPointerException npe) {}
+            } catch (final NullPointerException npe) {}
 
             assertFalse(pd.isFeatureSupported("not supported"));
         }

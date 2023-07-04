@@ -60,64 +60,64 @@ public class Baltimore18Test {
 
     @Test
     public void testSignatureKeyname() throws Exception {
-        String file = "signature-keyname.xml";
+        final String file = "signature-keyname.xml";
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean coreValidity = validator.validate(file, cks, ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void testSignatureRetrievalmethodRawx509crt() throws Exception {
-        String file = "signature-retrievalmethod-rawx509crt.xml";
+        final String file = "signature-retrievalmethod-rawx509crt.xml";
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean coreValidity = validator.validate(file, cks, ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void testSignatureX509CrtCrl() throws Exception {
-        String file = "signature-x509-crt-crl.xml";
+        final String file = "signature-x509-crt-crl.xml";
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean coreValidity = validator.validate(file, cks, ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void testSignatureX509Crt() throws Exception {
-        String file = "signature-x509-crt.xml";
+        final String file = "signature-x509-crt.xml";
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean coreValidity = validator.validate(file, cks, ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void testSignatureX509Is() throws Exception {
-        String file = "signature-x509-is.xml";
+        final String file = "signature-x509-is.xml";
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean coreValidity = validator.validate(file, cks, ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void testSignatureX509Ski() throws Exception {
-        String file = "signature-x509-ski.xml";
+        final String file = "signature-x509-ski.xml";
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean coreValidity = validator.validate(file, cks, ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void testSignatureX509Sn() throws Exception {
-        String file = "signature-x509-sn.xml";
+        final String file = "signature-x509-sn.xml";
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean coreValidity = validator.validate(file, cks, ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean coreValidity = validator.validate(file, cks, ud);
         assertTrue(coreValidity, "Signature failed core validation");
     }
 

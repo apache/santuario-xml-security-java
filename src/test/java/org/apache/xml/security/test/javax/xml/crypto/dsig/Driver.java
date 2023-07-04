@@ -32,15 +32,15 @@ public class Driver {
 
     public void dsig() throws Exception {
 
-        XMLSignatureFactory fac = XMLSignatureFactory.getInstance
+        final XMLSignatureFactory fac = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        long start = System.currentTimeMillis();
+        final long start = System.currentTimeMillis();
         for (int i = 0; i < 100; i++) {
             fac.newCanonicalizationMethod
                 (CanonicalizationMethod.EXCLUSIVE, (C14NMethodParameterSpec) null);
         }
-        long end = System.currentTimeMillis();
-        long elapsed = end - start;
+        final long end = System.currentTimeMillis();
+        final long elapsed = end - start;
         LOG.debug("Elapsed: {}", elapsed);
         LOG.debug("dsig succeeded");
     }

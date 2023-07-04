@@ -61,10 +61,10 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
     @Test
     public void testEd22519() throws Exception {
 
-        KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
+        final KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
 
-        PrivateKey privateKey =
+        final PrivateKey privateKey =
                 (PrivateKey) keyStore.getKey("Ed25519", EDDSA_KS_PASSWORD.toCharArray());
 
         doVerify(doSign(privateKey, (X509Certificate) keyStore.getCertificate("Ed25519"), null, XMLSignature.ALGO_ID_SIGNATURE_EDDSA_ED25519));
@@ -91,10 +91,10 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
     @Test
     public void testEd448() throws Exception {
 
-        KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
+        final KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
 
-        PrivateKey privateKey =
+        final PrivateKey privateKey =
                 (PrivateKey) keyStore.getKey("Ed448", EDDSA_KS_PASSWORD.toCharArray());
 
         doVerify(doSign(privateKey, (X509Certificate) keyStore.getCertificate("Ed448"), null, XMLSignature.ALGO_ID_SIGNATURE_EDDSA_ED448));
@@ -102,27 +102,27 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
 
 
     private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey, String signAlgorithm) throws Exception {
-        org.w3c.dom.Document doc = TestUtils.newDocument();
+        final org.w3c.dom.Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
-        Element root = doc.createElementNS("", "RootElement");
+        final Element root = doc.createElementNS("", "RootElement");
 
         doc.appendChild(root);
         root.appendChild(doc.createTextNode("Some simple text\n"));
 
-        Element canonElem =
+        final Element canonElem =
                 XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
         canonElem.setAttributeNS(
                 null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
         );
 
-        SignatureAlgorithm signatureAlgorithm =
+        final SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, signAlgorithm);
-        XMLSignature sig =
+        final XMLSignature sig =
                 new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
 
         root.appendChild(sig.getElement());
         doc.appendChild(doc.createComment(" Comment after "));
-        Transforms transforms = new Transforms(doc);
+        final Transforms transforms = new Transforms(doc);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
@@ -134,7 +134,7 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
         }
         sig.sign(privateKey);
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         XMLUtils.outputDOMc14nWithComments(doc, bos);
         return bos.toByteArray();
@@ -147,24 +147,24 @@ public class EDDSASignatureTest extends EdDSATestAbstract {
     }
 
     private void doVerify(InputStream is) throws Exception {
-        org.w3c.dom.Document doc = XMLUtils.read(is, false);
+        final org.w3c.dom.Document doc = XMLUtils.read(is, false);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
                 (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
-        XMLSignature signature = new XMLSignature(sigElement, "");
+        final XMLSignature signature = new XMLSignature(sigElement, "");
 
         signature.addResourceResolver(new XPointerResourceResolver(sigElement));
 
-        KeyInfo ki = signature.getKeyInfo();
+        final KeyInfo ki = signature.getKeyInfo();
         if (ki == null) {
             throw new RuntimeException("No keyinfo");
         }
-        X509Certificate cert = signature.getKeyInfo().getX509Certificate();
+        final X509Certificate cert = signature.getKeyInfo().getX509Certificate();
         if (cert != null) {
             Assertions.assertTrue(signature.checkSignatureValue(cert));
         } else {

@@ -81,7 +81,7 @@ public class CreatePhaosXMLDSig3Test {
         try {
             test_create_hmac_sha1_exclusive_c14n_comments_detached(true);
             fail("Expected HMACOutputLength Exception");
-        } catch (XMLSignatureException xse) {
+        } catch (final XMLSignatureException xse) {
             System.out.println(xse.getMessage());
             // pass
         }
@@ -91,7 +91,7 @@ public class CreatePhaosXMLDSig3Test {
         throws Exception {
 
         // create reference
-        Reference ref = fac.newReference
+        final Reference ref = fac.newReference
             ("http://www.ietf.org/rfc/rfc3161.txt",
              fac.newDigestMethod(DigestMethod.SHA1, null));
 
@@ -101,7 +101,7 @@ public class CreatePhaosXMLDSig3Test {
             spec = new HMACParameterSpec(40);
         }
 
-        SignedInfo si = fac.newSignedInfo(
+        final SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod
                 (CanonicalizationMethod.EXCLUSIVE_WITH_COMMENTS,
                  (C14NMethodParameterSpec) null),
@@ -109,24 +109,24 @@ public class CreatePhaosXMLDSig3Test {
             Collections.singletonList(ref));
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature(si, null);
+        final XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = TestUtils.newDocument();
-        DOMSignContext dsc = new DOMSignContext
+        final Document doc = TestUtils.newDocument();
+        final DOMSignContext dsc = new DOMSignContext
             (new KeySelectors.SecretKeySelector
              ("test".getBytes(StandardCharsets.US_ASCII)), doc);
         dsc.putNamespacePrefix(XMLSignature.XMLNS, "dsig");
-        URIDereferencer ud = new LocalHttpCacheURIDereferencer();
+        final URIDereferencer ud = new LocalHttpCacheURIDereferencer();
         dsc.setURIDereferencer(ud);
 
         sig.sign(dsc);
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.SecretKeySelector
              ("test".getBytes(StandardCharsets.US_ASCII)), doc);
         dvc.setURIDereferencer(ud);
 
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
 
@@ -137,32 +137,32 @@ public class CreatePhaosXMLDSig3Test {
     public void test_create_hmac_sha1_exclusive_c14n_enveloped() throws Exception {
 
         // create reference
-        Reference ref = fac.newReference("",
+        final Reference ref = fac.newReference("",
             fac.newDigestMethod(DigestMethod.SHA1, null),
             Collections.singletonList(fac.newTransform(Transform.ENVELOPED,
             (TransformParameterSpec) null)),
             null, null);
 
         // create SignedInfo
-        SignedInfo si = fac.newSignedInfo(
+        final SignedInfo si = fac.newSignedInfo(
             fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE,
                 (C14NMethodParameterSpec) null),
             fac.newSignatureMethod(SignatureMethod.HMAC_SHA1, null),
             Collections.singletonList(ref));
 
         // create XMLSignature
-        XMLSignature sig = fac.newXMLSignature(si, null);
+        final XMLSignature sig = fac.newXMLSignature(si, null);
 
-        Document doc = TestUtils.newDocument();
-        Element player = doc.createElementNS(null, "player");
+        final Document doc = TestUtils.newDocument();
+        final Element player = doc.createElementNS(null, "player");
         player.setAttributeNS(null, "bats", "left");
         player.setAttributeNS(null, "id", "10012");
         player.setAttributeNS(null, "throws", "right");
-        Element name = doc.createElementNS(null, "name");
+        final Element name = doc.createElementNS(null, "name");
         name.appendChild(doc.createTextNode("Alfonso Soriano"));
-        Element position = doc.createElementNS(null, "position");
+        final Element position = doc.createElementNS(null, "position");
         position.appendChild(doc.createTextNode("2B"));
-        Element team = doc.createElementNS(null, "team");
+        final Element team = doc.createElementNS(null, "team");
         team.appendChild(doc.createTextNode("New York Yankees"));
         player.appendChild(doc.createComment(" Here's a comment "));
         player.appendChild(name);
@@ -170,18 +170,18 @@ public class CreatePhaosXMLDSig3Test {
         player.appendChild(team);
         doc.appendChild(player);
 
-        DOMSignContext dsc = new DOMSignContext
+        final DOMSignContext dsc = new DOMSignContext
             (new KeySelectors.SecretKeySelector
              ("test".getBytes(StandardCharsets.US_ASCII)), player);
         dsc.putNamespacePrefix(XMLSignature.XMLNS, "dsig");
 
         sig.sign(dsc);
 
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (new KeySelectors.SecretKeySelector
              ("test".getBytes(StandardCharsets.US_ASCII)), player.getLastChild());
 
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         assertEquals(sig, sig2);
 

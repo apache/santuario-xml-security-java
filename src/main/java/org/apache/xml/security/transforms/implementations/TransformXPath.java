@@ -77,26 +77,26 @@ public class TransformXPath extends TransformSpi {
              * The evaluation of this expression includes all of the document's nodes
              * (including comments) in the node-set representing the octet stream.
              */
-            Element xpathElement =
+            final Element xpathElement =
                 XMLUtils.selectDsNode(
                     transformElement.getFirstChild(), Constants._TAG_XPATH, 0);
 
             if (xpathElement == null) {
-                Object[] exArgs = { "ds:XPath", "Transform" };
+                final Object[] exArgs = { "ds:XPath", "Transform" };
 
                 throw new TransformationException("xml.WrongContent", exArgs);
             }
-            Node xpathnode = xpathElement.getFirstChild();
+            final Node xpathnode = xpathElement.getFirstChild();
             if (xpathnode == null) {
                 throw new DOMException(
                     DOMException.HIERARCHY_REQUEST_ERR, "Text must be in ds:Xpath"
                 );
             }
-            String str = XMLUtils.getStrFromNode(xpathnode);
+            final String str = XMLUtils.getStrFromNode(xpathnode);
             input.setNeedsToBeExpanded(needsCircumvent(str));
 
-            XPathFactory xpathFactory = getXPathFactory();
-            XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
+            final XPathFactory xpathFactory = getXPathFactory();
+            final XPathAPI xpathAPIInstance = xpathFactory.newXPathAPI();
             input.addNodeFilter(new XPathNodeFilter(xpathElement, xpathnode, str, xpathAPIInstance));
             input.setNodeSet(true);
             return input;
@@ -137,12 +137,12 @@ public class TransformXPath extends TransformSpi {
         @Override
         public int isNodeInclude(Node currentNode) throws TransformationException {
             try {
-                boolean include = xPathAPI.evaluate(currentNode, xpathnode, str, xpathElement);
+                final boolean include = xPathAPI.evaluate(currentNode, xpathnode, str, xpathElement);
                 if (include) {
                     return 1;
                 }
                 return 0;
-            } catch (TransformerException ex) {
+            } catch (final TransformerException ex) {
                 throw new TransformationException(ex);
             }
         }

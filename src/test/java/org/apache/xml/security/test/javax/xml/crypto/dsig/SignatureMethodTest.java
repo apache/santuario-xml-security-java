@@ -57,12 +57,12 @@ public class SignatureMethodTest {
     @Test
     public void testisFeatureSupported() throws Exception {
         SignatureMethod sm;
-        for (String algo : SIG_ALGOS) {
+        for (final String algo : SIG_ALGOS) {
             sm = factory.newSignatureMethod(algo, null);
             try {
                 sm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
-            } catch (NullPointerException npe) {}
+            } catch (final NullPointerException npe) {}
 
             assertFalse(sm.isFeatureSupported("not supported"));
         }
@@ -74,7 +74,7 @@ public class SignatureMethodTest {
         // (String algorithm, AlgorithmParameterSpec params)
         // for generating SignatureMethod objects
         SignatureMethod sm;
-        for (String algo : SIG_ALGOS) {
+        for (final String algo : SIG_ALGOS) {
             sm = factory.newSignatureMethod(algo, null);
             assertEquals(sm.getAlgorithm(), algo);
 
@@ -83,8 +83,8 @@ public class SignatureMethodTest {
                 sm = factory.newSignatureMethod
                     (algo, new TestUtils.MyOwnSignatureMethodParameterSpec());
                 fail("Should raise an IAPE for invalid parameters");
-            } catch (InvalidAlgorithmParameterException iape) {
-            } catch (Exception ex) {
+            } catch (final InvalidAlgorithmParameterException iape) {
+            } catch (final Exception ex) {
                 fail("Should raise an IAPE instead of " + ex);
             }
         }
@@ -92,14 +92,14 @@ public class SignatureMethodTest {
         try {
             sm = factory.newSignatureMethod("non-existent", null);
             fail("Should raise an NSAE for non-existent algos");
-        } catch (NoSuchAlgorithmException nsae) {
+        } catch (final NoSuchAlgorithmException nsae) {
             //
         }
 
         try {
             sm = factory.newSignatureMethod(null, null);
             fail("Should raise a NPE for null algo");
-        } catch (NullPointerException npe) {
+        } catch (final NullPointerException npe) {
             //
         }
     }

@@ -122,12 +122,13 @@ public class KeySelectors {
             }
             // search for X509Data in keyinfo
             @SuppressWarnings("unchecked")
+            final
             Iterator<XMLStructure> iter = keyInfo.getContent().iterator();
             while (iter.hasNext()) {
-                XMLStructure kiType = iter.next();
+                final XMLStructure kiType = iter.next();
                 if (kiType instanceof X509Data) {
-                    X509Data xd = (X509Data) kiType;
-                    Object[] entries = xd.getContent().toArray();
+                    final X509Data xd = (X509Data) kiType;
+                    final Object[] entries = xd.getContent().toArray();
                     X509CRL crl = null;
                     // Looking for CRL before finding certificates
                     for (int i = 0; i < entries.length && crl == null; i++) {
@@ -135,9 +136,9 @@ public class KeySelectors {
                             crl = (X509CRL) entries[i];
                         }
                     }
-                    Iterator<?> xi = xd.getContent().iterator();
+                    final Iterator<?> xi = xd.getContent().iterator();
                     while (xi.hasNext()) {
-                        Object o = xi.next();
+                        final Object o = xi.next();
                         // skip non-X509Certificate entries
                         if (o instanceof X509Certificate) {
                             if (purpose != KeySelector.Purpose.VERIFY &&
@@ -173,14 +174,15 @@ public class KeySelectors {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
             @SuppressWarnings("unchecked")
+            final
             List<XMLStructure> list = keyInfo.getContent();
 
-            for (XMLStructure xmlStructure : list) {
+            for (final XMLStructure xmlStructure : list) {
                 if (xmlStructure instanceof KeyValue) {
                     PublicKey pk = null;
                     try {
                         pk = ((KeyValue)xmlStructure).getPublicKey();
-                    } catch (KeyException ke) {
+                    } catch (final KeyException ke) {
                         throw new KeySelectorException(ke);
                     }
                     return new SimpleKSResult(pk);
@@ -208,23 +210,23 @@ public class KeySelectors {
         public CollectionKeySelector(File dir) throws CertificateException {
             certDir = dir;
             certFac = CertificateFactory.getInstance("X509");
-            File[] files = new File(certDir, "certs").listFiles();
+            final File[] files = new File(certDir, "certs").listFiles();
             if (files != null) {
-                for (File file : files) {
+                for (final File file : files) {
                     FileInputStream fis = null;
                     try {
                         fis = new FileInputStream(file);
-                        X509Certificate cert = (X509Certificate)certFac.generateCertificate(fis);
+                        final X509Certificate cert = (X509Certificate)certFac.generateCertificate(fis);
                         if (cert != null) {
                             certs.add(cert);
                         }
-                    } catch (Exception ex) {
+                    } catch (final Exception ex) {
                         // ignore non-cert files
                     } finally {
                         if (fis != null) {
                             try {
                                 fis.close();
-                            } catch (IOException e) {
+                            } catch (final IOException e) {
                                 // ignore
                             }
                         }
@@ -236,19 +238,19 @@ public class KeySelectors {
         public List<X509Certificate> match(
             int matchType, Object value, List<X509Certificate> pool
         ) {
-            List<X509Certificate> matchResult = new ArrayList<>();
+            final List<X509Certificate> matchResult = new ArrayList<>();
 
-            for (X509Certificate c : pool) {
+            for (final X509Certificate c : pool) {
 
                 switch (matchType) {
                 case MATCH_SUBJECT:
-                    Principal p1 = new javax.security.auth.x500.X500Principal((String)value);
+                    final Principal p1 = new javax.security.auth.x500.X500Principal((String)value);
                     if (c.getSubjectX500Principal().equals(p1)) {
                         matchResult.add(c);
                     }
                     break;
                 case MATCH_ISSUER:
-                    Principal p2 = new javax.security.auth.x500.X500Principal((String)value);
+                    final Principal p2 = new javax.security.auth.x500.X500Principal((String)value);
                     if (c.getIssuerX500Principal().equals(p2)) {
                         matchResult.add(c);
                     }
@@ -260,9 +262,9 @@ public class KeySelectors {
 
                     break;
                 case MATCH_SUBJECT_KEY_ID:
-                    byte[] extension = c.getExtensionValue("2.5.29.14");
+                    final byte[] extension = c.getExtensionValue("2.5.29.14");
                     if (extension != null) {
-                        byte[] extVal = new byte[extension.length - 4];
+                        final byte[] extVal = new byte[extension.length - 4];
                         System.arraycopy(extension, 4, extVal, 0, extVal.length);
 
                         if (Arrays.equals(extVal, (byte[]) value)) {
@@ -290,27 +292,28 @@ public class KeySelectors {
                 throw new KeySelectorException("Null KeyInfo object!");
             }
             @SuppressWarnings("unchecked")
+            final
             Iterator<XMLStructure> iter = keyInfo.getContent().iterator();
             while (iter.hasNext()) {
-                XMLStructure xmlStructure = iter.next();
+                final XMLStructure xmlStructure = iter.next();
                 try {
                     if (xmlStructure instanceof KeyName) {
-                        String name = ((KeyName)xmlStructure).getName();
+                        final String name = ((KeyName)xmlStructure).getName();
                         PublicKey pk = null;
                         try {
                             // Lookup the public key using the key name 'Xxx',
                             // i.e. the public key is in "certs/xxx.crt".
-                            File certFile = new File(new File(certDir, "certs"),
+                            final File certFile = new File(new File(certDir, "certs"),
                                 name.toLowerCase()+".crt");
-                            X509Certificate cert = (X509Certificate)
+                            final X509Certificate cert = (X509Certificate)
                                 certFac.generateCertificate
                                 (new FileInputStream(certFile));
                             pk = cert.getPublicKey();
-                        } catch (FileNotFoundException e) {
+                        } catch (final FileNotFoundException e) {
                             // assume KeyName contains subject DN and search
                             // collection of certs for match
-                            List<X509Certificate> result = match(MATCH_SUBJECT, name, certs);
-                            int numOfMatches = result == null ? 0 : result.size();
+                            final List<X509Certificate> result = match(MATCH_SUBJECT, name, certs);
+                            final int numOfMatches = result == null ? 0 : result.size();
                             if (numOfMatches != 1) {
                                 throw new KeySelectorException
                                     ((numOfMatches == 0 ? "No":"More than one") +
@@ -322,11 +325,11 @@ public class KeySelectors {
                     } else if (xmlStructure instanceof RetrievalMethod) {
                         // Lookup the public key using the retrieval method.
                         // NOTE: only X509Certificate type is supported.
-                        RetrievalMethod rm = (RetrievalMethod) xmlStructure;
-                        String type = rm.getType();
+                        final RetrievalMethod rm = (RetrievalMethod) xmlStructure;
+                        final String type = rm.getType();
                         if (type.equals(X509Data.RAW_X509_CERTIFICATE_TYPE)) {
-                            String uri = rm.getURI();
-                            X509Certificate cert = (X509Certificate)
+                            final String uri = rm.getURI();
+                            final X509Certificate cert = (X509Certificate)
                                 certFac.generateCertificate
                                 (new FileInputStream(new File(certDir, uri)));
                             return new SimpleKSResult(cert.getPublicKey());
@@ -335,15 +338,15 @@ public class KeySelectors {
                                 ("Unsupported RetrievalMethod type");
                         }
                     } else if (xmlStructure instanceof X509Data) {
-                        List<?> content = ((X509Data)xmlStructure).getContent();
-                        int size = content.size();
+                        final List<?> content = ((X509Data)xmlStructure).getContent();
+                        final int size = content.size();
                         List<X509Certificate> result = null;
                         // Lookup the public key using the information
                         // specified in X509Data element, i.e. searching
                         // over the collection of certificate files under
                         // "certs" subdirectory and return those match.
                         for (int k = 0; k < size; k++) {
-                            Object obj = content.get(k);
+                            final Object obj = content.get(k);
                             if (obj instanceof String) {
                                 result = match(MATCH_SUBJECT, obj, certs);
                             } else if (obj instanceof byte[]) {
@@ -351,7 +354,7 @@ public class KeySelectors {
                             } else if (obj instanceof X509Certificate) {
                                 result = match(MATCH_CERTIFICATE, obj, certs);
                             } else if (obj instanceof X509IssuerSerial) {
-                                X509IssuerSerial is = (X509IssuerSerial) obj;
+                                final X509IssuerSerial is = (X509IssuerSerial) obj;
                                 result = match(MATCH_SERIAL,
                                                is.getSerialNumber(), certs);
                                 result = match(MATCH_ISSUER,
@@ -360,7 +363,7 @@ public class KeySelectors {
                                 throw new KeySelectorException("Unsupported X509Data: " + obj);
                             }
                         }
-                        int numOfMatches = result == null ? 0 : result.size();
+                        final int numOfMatches = result == null ? 0 : result.size();
                         if (numOfMatches != 1) {
                             throw new KeySelectorException
                                 ((numOfMatches == 0 ? "No" : "More than one") +
@@ -369,7 +372,7 @@ public class KeySelectors {
                         }
                         return new SimpleKSResult(result.get(0).getPublicKey());
                     }
-                } catch (Exception ex) {
+                } catch (final Exception ex) {
                     throw new KeySelectorException(ex);
                 }
             }
@@ -383,9 +386,9 @@ public class KeySelectors {
         private static int numBytesPerRow = 6;
 
         private static String getHex(byte value) {
-            int low = value & 0x0f;
-            int high = (value >> 4) & 0x0f;
-            char[] res = new char[2];
+            final int low = value & 0x0f;
+            final int high = (value >> 4) & 0x0f;
+            final char[] res = new char[2];
             res[0] = mapping.charAt(high);
             res[1] = mapping.charAt(low);
             return new String(res);
@@ -393,7 +396,7 @@ public class KeySelectors {
 
         public static String dumpArray(byte[] in) {
             int numDumped = 0;
-            StringBuilder buf = new StringBuilder(512);
+            final StringBuilder buf = new StringBuilder(512);
             buf.append('{');
             for (int i = 0;i < (in.length / numBytesPerRow); i++) {
                 for (int j=0; j < (numBytesPerRow); j++) {

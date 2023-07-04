@@ -49,14 +49,14 @@ public class OctetStreamDataTest {
         try {
             osdata = new OctetStreamData(null);
             fail("Should raise a NPE for null input stream");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
         try {
             osdata = new OctetStreamData(null, "uri", "mimeType");
             fail("Should raise a NPE for null input stream");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
-        int len = 300;
-        byte[] in = new byte[len];
+        final int len = 300;
+        final byte[] in = new byte[len];
         new Random().nextBytes(in);
 
         try (ByteArrayInputStream bais = new ByteArrayInputStream(in)) {
@@ -72,8 +72,8 @@ public class OctetStreamDataTest {
             assertNull(osdata.getURI());
             assertNull(osdata.getMimeType());
 
-            String uri="testUri";
-            String mimeType="test";
+            final String uri="testUri";
+            final String mimeType="test";
             osdata = new OctetStreamData(bais, uri, mimeType);
             assertNotNull(osdata);
             assertEquals(osdata.getOctetStream(), bais);

@@ -34,11 +34,11 @@ public class TrimmerOutputStreamTest {
 
     @Test
     public void testWriteSingleBytes() throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 
-        byte[] TEST_STRBytes = ("<a>" + TEST_STR + "</a>").getBytes();
-        for (byte test_STRByte : TEST_STRBytes) {
+        final byte[] TEST_STRBytes = ("<a>" + TEST_STR + "</a>").getBytes();
+        for (final byte test_STRByte : TEST_STRBytes) {
             trimmerOutputStream.write(test_STRByte);
         }
         trimmerOutputStream.close();
@@ -49,16 +49,16 @@ public class TrimmerOutputStreamTest {
 
     @Test
     public void testWriteRandomByteSizes() throws Exception {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 
-        StringBuilder stringBuffer = new StringBuilder("<a>");
+        final StringBuilder stringBuffer = new StringBuilder("<a>");
         for (int i = 0; i < 100; i++) {
             stringBuffer.append(TEST_STR);
         }
         stringBuffer.append("</a>");
 
-        byte[] TEST_STRBytes = stringBuffer.toString().getBytes();
+        final byte[] TEST_STRBytes = stringBuffer.toString().getBytes();
 
         int written = 0;
         int count = 0;

@@ -68,7 +68,7 @@ public class EnvelopingSignatureTest {
     }
 
     public EnvelopingSignatureTest() throws NoSuchAlgorithmException {
-        KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
+        final KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
         fac = XMLSignatureFactory.getInstance("DOM",
@@ -81,52 +81,52 @@ public class EnvelopingSignatureTest {
     @Test
     public void enveloping() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
+        final InputStream sourceDocument =
             this.getClass().getClassLoader().getResourceAsStream(
                 "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = dbf.newDocumentBuilder().parse(sourceDocument);
+        final Document document = dbf.newDocumentBuilder().parse(sourceDocument);
 
-        DigestMethod digestMethod = fac.newDigestMethod(DigestMethod.SHA1, null);
-        Reference reference = fac.newReference("#data", digestMethod);
+        final DigestMethod digestMethod = fac.newDigestMethod(DigestMethod.SHA1, null);
+        final Reference reference = fac.newReference("#data", digestMethod);
 
         // Create a KeyInfo and add the KeyValue to it
-        KeyValue kv = kif.newKeyValue(rsaKeyPair.getPublic());
-        KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
+        final KeyValue kv = kif.newKeyValue(rsaKeyPair.getPublic());
+        final KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
 
-        CanonicalizationMethod canonicalizationMethod =
+        final CanonicalizationMethod canonicalizationMethod =
             fac.newCanonicalizationMethod(CanonicalizationMethod.EXCLUSIVE, (C14NMethodParameterSpec) null);
-        SignatureMethod signatureMethod = fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
-        SignedInfo si = fac.newSignedInfo(canonicalizationMethod, signatureMethod,
+        final SignatureMethod signatureMethod = fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
+        final SignedInfo si = fac.newSignedInfo(canonicalizationMethod, signatureMethod,
                                           Collections.singletonList(reference));
 
         // Add the document element as the Object to sign.
-        XMLStructure structure = new DOMStructure(document.getDocumentElement());
-        XMLObject object = fac.newXMLObject(Collections.singletonList(structure), "data", null, "UTF-8");
+        final XMLStructure structure = new DOMStructure(document.getDocumentElement());
+        final XMLObject object = fac.newXMLObject(Collections.singletonList(structure), "data", null, "UTF-8");
 
         // Perform the signature
-        XMLSignature signature = fac.newXMLSignature(si,
+        final XMLSignature signature = fac.newXMLSignature(si,
                                                      ki,
                                                      Collections.singletonList(object),
                                                      null, null);
 
-        DOMSignContext signContext = new DOMSignContext(rsaKeyPair.getPrivate(), document);
+        final DOMSignContext signContext = new DOMSignContext(rsaKeyPair.getPrivate(), document);
         signature.sign(signContext);
 
         assertEquals("Signature", document.getDocumentElement().getLocalName());
 
         // Check that the PurchaseOrder is now under Object
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
-        String expression = "//*[local-name()='PurchaseOrder']";
-        Element signedElement =
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
+        final String expression = "//*[local-name()='PurchaseOrder']";
+        final Element signedElement =
             (Element) xpath.evaluate(expression, document, XPathConstants.NODE);
         assertNotNull(signedElement);
         assertEquals("Object", signedElement.getParentNode().getLocalName());
 
         // validate signature
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (rsaKeyPair.getPublic(), document.getDocumentElement());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         if (!signature.equals(sig2)) {
             throw new Exception
@@ -140,43 +140,43 @@ public class EnvelopingSignatureTest {
     @Test
     public void enveloping_dom_level1() throws Exception {
         // create reference
-        DigestMethod sha256 = fac.newDigestMethod(DigestMethod.SHA256, null);
-        Reference ref = fac.newReference("#object", sha256);
+        final DigestMethod sha256 = fac.newDigestMethod(DigestMethod.SHA256, null);
+        final Reference ref = fac.newReference("#object", sha256);
 
         // create SignedInfo
-        CanonicalizationMethod withoutComments =
+        final CanonicalizationMethod withoutComments =
             fac.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE,
                 (C14NMethodParameterSpec) null);
-        SignatureMethod rsaSha256 =
+        final SignatureMethod rsaSha256 =
             fac.newSignatureMethod(SignatureMethod.RSA_SHA1, null);
-        SignedInfo si = fac.newSignedInfo(withoutComments, rsaSha256,
+        final SignedInfo si = fac.newSignedInfo(withoutComments, rsaSha256,
             Collections.singletonList(ref));
 
         // create object using DOM Level 1 methods
-        Document doc = dbf.newDocumentBuilder().newDocument();
-        Element child = doc.createElement("Child");
+        final Document doc = dbf.newDocumentBuilder().newDocument();
+        final Element child = doc.createElement("Child");
         child.setAttribute("Version", "1.0");
         child.setAttribute("Id", "child");
         child.setIdAttribute("Id", true);
         child.appendChild(doc.createComment("Comment"));
-        XMLObject obj = fac.newXMLObject(
+        final XMLObject obj = fac.newXMLObject(
             Collections.singletonList(new DOMStructure(child)),
             "object", null, "UTF-8");
 
         // Create a KeyInfo and add the KeyValue to it
-        KeyValue kv = kif.newKeyValue(rsaKeyPair.getPublic());
-        KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
+        final KeyValue kv = kif.newKeyValue(rsaKeyPair.getPublic());
+        final KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
         // Perform the signature
-        XMLSignature sig = fac.newXMLSignature(si, ki,
+        final XMLSignature sig = fac.newXMLSignature(si, ki,
                                                Collections.singletonList(obj),
                                                "signature", null);
-        DOMSignContext dsc = new DOMSignContext(rsaKeyPair.getPrivate(), doc);
+        final DOMSignContext dsc = new DOMSignContext(rsaKeyPair.getPrivate(), doc);
         sig.sign(dsc);
 
         // validate signature
-        DOMValidateContext dvc = new DOMValidateContext
+        final DOMValidateContext dvc = new DOMValidateContext
             (rsaKeyPair.getPublic(), doc.getDocumentElement());
-        XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
+        final XMLSignature sig2 = fac.unmarshalXMLSignature(dvc);
 
         if (!sig.equals(sig2)) {
             throw new Exception

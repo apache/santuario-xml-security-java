@@ -52,12 +52,12 @@ public class X509DataTest {
 
     @Test
     public void testgetTypes() {
-        X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
-        List<?> li = x509.getContent();
+        final X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
+        final List<?> li = x509.getContent();
         assertNotNull(li);
         if (!li.isEmpty()) {
-            Object[] content = li.toArray();
-            for (Object element : content) {
+            final Object[] content = li.toArray();
+            for (final Object element : content) {
                 if (!(element instanceof String) &&
                     !(element instanceof byte[]) &&
                     !(element instanceof X509Certificate) &&
@@ -72,18 +72,18 @@ public class X509DataTest {
     @Test
     public void testConstructor() {
         // test newX509Data()
-        X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
+        final X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         assertNotNull(x509);
     }
 
     @Test
     public void testisFeatureSupported() {
 
-        X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
+        final X509Data x509 = fac.newX509Data(Collections.singletonList("cn=foo"));
         try {
             x509.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         assertFalse(x509.isFeatureSupported("not supported"));
     }

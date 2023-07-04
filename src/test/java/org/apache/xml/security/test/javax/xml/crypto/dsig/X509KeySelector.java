@@ -146,7 +146,7 @@ public class X509KeySelector extends KeySelector {
         KeySelector.Purpose purpose, AlgorithmMethod method,
         XMLCryptoContext context) throws KeySelectorException {
 
-        SignatureMethod sm = (SignatureMethod) method;
+        final SignatureMethod sm = (SignatureMethod) method;
 
         try {
             // return null if keyinfo is null or keystore is empty
@@ -156,40 +156,41 @@ public class X509KeySelector extends KeySelector {
 
             // Iterate through KeyInfo types
             @SuppressWarnings("unchecked")
+            final
             Iterator<XMLStructure> i = keyInfo.getContent().iterator();
             while (i.hasNext()) {
-                XMLStructure kiType = i.next();
+                final XMLStructure kiType = i.next();
                 // check X509Data
                 if (kiType instanceof X509Data) {
-                    X509Data xd = (X509Data) kiType;
-                    KeySelectorResult ksr = x509DataSelect(xd, sm);
+                    final X509Data xd = (X509Data) kiType;
+                    final KeySelectorResult ksr = x509DataSelect(xd, sm);
                     if (ksr != null) {
                         return ksr;
                     }
                 // check KeyName
                 } else if (kiType instanceof KeyName) {
-                    KeyName kn = (KeyName) kiType;
-                    Certificate cert = ks.getCertificate(kn.getName());
+                    final KeyName kn = (KeyName) kiType;
+                    final Certificate cert = ks.getCertificate(kn.getName());
                     if (cert != null && algEquals(sm.getAlgorithm(),
                         cert.getPublicKey().getAlgorithm())) {
                         return new SimpleKeySelectorResult(cert.getPublicKey());
                     }
                 // check RetrievalMethod
                 } else if (kiType instanceof RetrievalMethod) {
-                    RetrievalMethod rm = (RetrievalMethod) kiType;
+                    final RetrievalMethod rm = (RetrievalMethod) kiType;
                     try {
                         KeySelectorResult ksr = null;
                         if (rm.getType().equals
                             (X509Data.RAW_X509_CERTIFICATE_TYPE)) {
-                            OctetStreamData data = (OctetStreamData)
+                            final OctetStreamData data = (OctetStreamData)
                                 rm.dereference(context);
-                            CertificateFactory cf =
+                            final CertificateFactory cf =
                                 CertificateFactory.getInstance("X.509");
-                            X509Certificate cert = (X509Certificate)
+                            final X509Certificate cert = (X509Certificate)
                                 cf.generateCertificate(data.getOctetStream());
                             ksr = certSelect(cert, sm);
                         } else if (rm.getType().equals(X509Data.TYPE)) {
-                            X509Data xd = (X509Data) ((DOMRetrievalMethod) rm).
+                            final X509Data xd = (X509Data) ((DOMRetrievalMethod) rm).
                                 dereferenceAsXMLStructure(context);
                             ksr = x509DataSelect(xd, sm);
                         } else {
@@ -199,12 +200,12 @@ public class X509KeySelector extends KeySelector {
                         if (ksr != null) {
                             return ksr;
                         }
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         throw new KeySelectorException(e);
                     }
                 }
             }
-        } catch (KeyStoreException kse) {
+        } catch (final KeyStoreException kse) {
             // throw exception if keystore is uninitialized
             throw new KeySelectorException(kse);
         }
@@ -222,10 +223,10 @@ public class X509KeySelector extends KeySelector {
      */
     private KeySelectorResult keyStoreSelect(CertSelector cs)
         throws KeyStoreException {
-        Enumeration<String> aliases = ks.aliases();
+        final Enumeration<String> aliases = ks.aliases();
         while (aliases.hasMoreElements()) {
-            String alias = aliases.nextElement();
-            Certificate cert = ks.getCertificate(alias);
+            final String alias = aliases.nextElement();
+            final Certificate cert = ks.getCertificate(alias);
             if (cert != null && cs.match(cert)) {
                 return new SimpleKeySelectorResult(cert.getPublicKey());
             }
@@ -244,13 +245,13 @@ public class X509KeySelector extends KeySelector {
     private KeySelectorResult certSelect(X509Certificate xcert,
         SignatureMethod sm) throws KeyStoreException {
         // skip non-signer certs
-        boolean[] keyUsage = xcert.getKeyUsage();
+        final boolean[] keyUsage = xcert.getKeyUsage();
         if (keyUsage != null && !keyUsage[0]) {
             return null;
         }
-        String alias = ks.getCertificateAlias(xcert);
+        final String alias = ks.getCertificateAlias(xcert);
         if (alias != null) {
-            PublicKey pk = ks.getCertificate(alias).getPublicKey();
+            final PublicKey pk = ks.getCertificate(alias).getPublicKey();
             // make sure algorithm is compatible with method
             if (algEquals(sm.getAlgorithm(), pk.getAlgorithm())) {
                 return new SimpleKeySelectorResult(pk);
@@ -305,21 +306,21 @@ public class X509KeySelector extends KeySelector {
         throws KeyStoreException, KeySelectorException {
 
         // convert signature algorithm to compatible public-key alg OID
-        String algOID = getPKAlgorithmOID(sm.getAlgorithm());
-        X509CertSelector subjectcs = new X509CertSelector();
+        final String algOID = getPKAlgorithmOID(sm.getAlgorithm());
+        final X509CertSelector subjectcs = new X509CertSelector();
         try {
             subjectcs.setSubjectPublicKeyAlgID(algOID);
-        } catch (IOException ioe) {
+        } catch (final IOException ioe) {
             throw new KeySelectorException(ioe);
         }
-        Collection<X509Certificate> certs = new ArrayList<>();
+        final Collection<X509Certificate> certs = new ArrayList<>();
 
-        Iterator<?> xi = xd.getContent().iterator();
+        final Iterator<?> xi = xd.getContent().iterator();
         while (xi.hasNext()) {
-            Object o = xi.next();
+            final Object o = xi.next();
             // check X509IssuerSerial
             if (o instanceof X509IssuerSerial) {
-                X509IssuerSerial xis = (X509IssuerSerial) o;
+                final X509IssuerSerial xis = (X509IssuerSerial) o;
                 try {
                     subjectcs.setSerialNumber(xis.getSerialNumber());
                     String issuer = new X500Principal(xis.getIssuerName()).getName();
@@ -329,12 +330,12 @@ public class X509KeySelector extends KeySelector {
                             (issuer.toCharArray(), 0, issuer.length()-1);
                     }
                     subjectcs.setIssuer(issuer);
-                } catch (IOException ioe) {
+                } catch (final IOException ioe) {
                     throw new KeySelectorException(ioe);
                 }
             // check X509SubjectName
             } else if (o instanceof String) {
-                String sn = (String) o;
+                final String sn = (String) o;
                 try {
                     String subject = new X500Principal(sn).getName();
                     // strip off newline
@@ -343,14 +344,14 @@ public class X509KeySelector extends KeySelector {
                             (subject.toCharArray(), 0, subject.length()-1);
                     }
                     subjectcs.setSubject(subject);
-                } catch (IOException ioe) {
+                } catch (final IOException ioe) {
                     throw new KeySelectorException(ioe);
                 }
             // check X509SKI
             } else if (o instanceof byte[]) {
-                byte[] ski = (byte[]) o;
+                final byte[] ski = (byte[]) o;
                 // DER-encode ski - required by X509CertSelector
-                byte[] encodedSki = new byte[ski.length+2];
+                final byte[] encodedSki = new byte[ski.length+2];
                 encodedSki[0] = 0x04; // OCTET STRING tag value
                 encodedSki[1] = (byte) ski.length; // length
                 System.arraycopy(ski, 0, encodedSki, 2, ski.length);
@@ -364,12 +365,12 @@ public class X509KeySelector extends KeySelector {
                 continue;
             }
         }
-        KeySelectorResult ksr = keyStoreSelect(subjectcs);
+        final KeySelectorResult ksr = keyStoreSelect(subjectcs);
         if (ksr != null) {
             return ksr;
         }
         if (!certs.isEmpty() && !trusted) {
-            for (X509Certificate cert : certs) {
+            for (final X509Certificate cert : certs) {
                 if (subjectcs.match(cert)) {
                     return new SimpleKeySelectorResult(cert.getPublicKey());
                 }

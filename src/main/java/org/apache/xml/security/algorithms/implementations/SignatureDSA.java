@@ -71,12 +71,12 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     }
 
     public SignatureDSA(Provider provider) throws XMLSignatureException {
-        String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
+        final String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
         LOG.debug("Created SignatureDSA using {}", algorithmID);
 
         try {
             if (provider == null) {
-                String providerId = JCEMapper.getProviderId();
+                final String providerId = JCEMapper.getProviderId();
                 if (providerId == null) {
                     this.signatureAlgorithm = Signature.getInstance(algorithmID);
 
@@ -89,7 +89,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
             }
 
         } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
-            Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
+            final Object[] exArgs = {algorithmID, ex.getLocalizedMessage()};
             throw new XMLSignatureException("algorithms.NoSuchAlgorithm", exArgs);
         }
     }
@@ -102,7 +102,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
         throws XMLSignatureException {
         try {
             this.signatureAlgorithm.setParameter(params);
-        } catch (InvalidAlgorithmParameterException ex) {
+        } catch (final InvalidAlgorithmParameterException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -118,7 +118,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
                 LOG.debug("Called DSA.verify() on " + XMLUtils.encodeToString(signature));
             }
 
-            byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature, size / 8);
+            final byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature, size / 8);
 
             return this.signatureAlgorithm.verify(jcebytes);
         } catch (SignatureException | IOException ex) {
@@ -141,7 +141,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     @Override
     protected byte[] engineSign() throws XMLSignatureException {
         try {
-            byte[] jcebytes = this.signatureAlgorithm.sign();
+            final byte[] jcebytes = this.signatureAlgorithm.sign();
 
             return JavaUtils.convertDsaASN1toXMLDSIG(jcebytes, size / 8);
         } catch (IOException | SignatureException ex) {
@@ -174,7 +174,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -186,7 +186,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }
@@ -198,7 +198,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
-        } catch (SignatureException ex) {
+        } catch (final SignatureException ex) {
             throw new XMLSignatureException(ex);
         }
     }

@@ -45,15 +45,15 @@ public class JSRForbiddenRefCountTest {
 
     @Test
     public void testReferenceCount() throws Exception {
-        Element signedInfoElement =
+        final Element signedInfoElement =
             getSignedInfoElement("src/test/resources/interop/c14n/Y4", "signature-manifest.xml");
 
-        InternalDOMCryptoContext context = new InternalDOMCryptoContext();
+        final InternalDOMCryptoContext context = new InternalDOMCryptoContext();
 
         try {
             new DOMSignedInfo(signedInfoElement, context, null);
-        } catch (MarshalException ex) {
-            String error =
+        } catch (final MarshalException ex) {
+            final String error =
                 "A maximum of 30 references per Manifest are allowed with secure validation";
             assertTrue(ex.getMessage().contains(error));
         }
@@ -67,8 +67,8 @@ public class JSRForbiddenRefCountTest {
     }
 
     private Element getSignedInfoElement(String directory, String file) throws Exception {
-        File f = new File(XmlSecTestEnvironment.resolveFile(directory), file);
-        org.w3c.dom.Document doc = XMLUtils.read(f, false);
+        final File f = new File(XmlSecTestEnvironment.resolveFile(directory), file);
+        final org.w3c.dom.Document doc = XMLUtils.read(f, false);
         return (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNEDINFO).item(0);
     }
 

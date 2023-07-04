@@ -143,30 +143,30 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             return;
         }
         // result will contain the attrs which have to be output
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        final SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         if (element.hasAttributes()) {
-            NamedNodeMap attrs = element.getAttributes();
-            int attrsLength = attrs.getLength();
+            final NamedNodeMap attrs = element.getAttributes();
+            final int attrsLength = attrs.getLength();
 
             for (int i = 0; i < attrsLength; i++) {
-                Attr attribute = (Attr) attrs.item(i);
-                String NUri = attribute.getNamespaceURI();
-                String NName = attribute.getLocalName();
-                String NValue = attribute.getValue();
+                final Attr attribute = (Attr) attrs.item(i);
+                final String NUri = attribute.getNamespaceURI();
+                final String NName = attribute.getLocalName();
+                final String NValue = attribute.getValue();
 
                 if (!XMLNS_URI.equals(NUri)) {
                     //It's not a namespace attr node. Add to the result and continue.
                     result.add(attribute);
                 } else if (!(XML.equals(NName) && XML_LANG_URI.equals(NValue))) {
                     //The default mapping for xml must not be output.
-                    Node n = ns.addMappingAndRender(NName, NValue, attribute);
+                    final Node n = ns.addMappingAndRender(NName, NValue, attribute);
 
                     if (n != null) {
                         //Render the ns definition
                         result.add((Attr)n);
                         if (C14nHelper.namespaceIsRelative(attribute)) {
-                            Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                            final Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                             throw new CanonicalizationException(
                                 "c14n.Canonicalizer.RelativeNamespace", exArgs
                             );
@@ -186,7 +186,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         }
 
         //we output all Attrs which are available
-        for (Attr attr : result) {
+        for (final Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
         }
     }
@@ -210,18 +210,18 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         throws CanonicalizationException, DOMException, IOException {
         // result will contain the attrs which have to be output
         xmlattrStack.push(ns.getLevel());
-        boolean isRealVisible = isVisibleDO(element, ns.getLevel()) == 1;
-        SortedSet<Attr> result = new TreeSet<>(COMPARE);
+        final boolean isRealVisible = isVisibleDO(element, ns.getLevel()) == 1;
+        final SortedSet<Attr> result = new TreeSet<>(COMPARE);
 
         if (element.hasAttributes()) {
-            NamedNodeMap attrs = element.getAttributes();
-            int attrsLength = attrs.getLength();
+            final NamedNodeMap attrs = element.getAttributes();
+            final int attrsLength = attrs.getLength();
 
             for (int i = 0; i < attrsLength; i++) {
-                Attr attribute = (Attr) attrs.item(i);
-                String NUri = attribute.getNamespaceURI();
-                String NName = attribute.getLocalName();
-                String NValue = attribute.getValue();
+                final Attr attribute = (Attr) attrs.item(i);
+                final String NUri = attribute.getNamespaceURI();
+                final String NName = attribute.getLocalName();
+                final String NValue = attribute.getValue();
 
                 if (!XMLNS_URI.equals(NUri)) {
                     //A non namespace definition node.
@@ -247,11 +247,11 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
                     if (isVisible(attribute))  {
                         if (isRealVisible || !ns.removeMappingIfRender(NName)) {
                             //The xpath select this node output it if needed.
-                            Node n = ns.addMappingAndRender(NName, NValue, attribute);
+                            final Node n = ns.addMappingAndRender(NName, NValue, attribute);
                             if (n != null) {
                                 result.add((Attr)n);
                                 if (C14nHelper.namespaceIsRelative(attribute)) {
-                                    Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
+                                    final Object[] exArgs = { element.getTagName(), NName, attribute.getNodeValue() };
                                     throw new CanonicalizationException(
                                         "c14n.Canonicalizer.RelativeNamespace", exArgs
                                     );
@@ -270,7 +270,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         }
         if (isRealVisible) {
             //The element is visible, handle the xmlns definition
-            Attr xmlns = element.getAttributeNodeNS(XMLNS_URI, XMLNS);
+            final Attr xmlns = element.getAttributeNodeNS(XMLNS_URI, XMLNS);
             Node n = null;
             if (xmlns == null) {
                 //No xmlns def just get the already defined.
@@ -291,7 +291,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         }
 
         //we output all Attrs which are available
-        for (Attr attr : result) {
+        for (final Attr attr : result) {
             outputAttrToWriter(attr.getNodeName(), attr.getNodeValue(), writer, cache);
         }
     }
@@ -317,12 +317,12 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             return;
         }
         xmlattrStack.push(-1);
-        NamedNodeMap attrs = e.getAttributes();
-        int attrsLength = attrs.getLength();
+        final NamedNodeMap attrs = e.getAttributes();
+        final int attrsLength = attrs.getLength();
         for (int i = 0; i < attrsLength; i++) {
-            Attr attribute = (Attr) attrs.item(i);
-            String NName = attribute.getLocalName();
-            String NValue = attribute.getNodeValue();
+            final Attr attribute = (Attr) attrs.item(i);
+            final String NName = attribute.getLocalName();
+            final String NValue = attribute.getNodeValue();
 
             if (XMLNS_URI.equals(attribute.getNamespaceURI())) {
                 if (!XML.equals(NName) || !XML_LANG_URI.equals(NValue)) {
@@ -335,7 +335,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         }
         if (e.getNamespaceURI() != null) {
             String NName = e.getPrefix();
-            String NValue = e.getNamespaceURI();
+            final String NValue = e.getNamespaceURI();
             String Name;
             if (NName == null || NName.isEmpty()) {
                 NName = "xmlns";
@@ -343,7 +343,7 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
             } else {
                 Name = "xmlns:" + NName;
             }
-            Attr n = e.getOwnerDocument().createAttributeNS("http://www.w3.org/2000/xmlns/", Name);
+            final Attr n = e.getOwnerDocument().createAttributeNS("http://www.w3.org/2000/xmlns/", Name);
             n.setValue(NValue);
             ns.addMapping(NName, NValue, n);
         }

@@ -64,11 +64,11 @@ public class UnknownAlgoSignatureTest {
     }
 
     public UnknownAlgoSignatureTest() throws Exception {
-        KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
+        final KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
         try (FileInputStream fis = new FileInputStream(resolveFile(KEYSTORE_FILE))) {
             keyStore.load(fis, null);
         }
-        X509Certificate cert = (X509Certificate) keyStore.getCertificate(CERT_ALIAS);
+        final X509Certificate cert = (X509Certificate) keyStore.getCertificate(CERT_ALIAS);
         publicKey = cert.getPublicKey();
     }
 
@@ -82,7 +82,7 @@ public class UnknownAlgoSignatureTest {
         try {
             assertTrue(checkSignature("signature-bad-c14n-algo.xml"));
             fail("Exception not caught");
-        } catch (XMLSignatureException e) {
+        } catch (final XMLSignatureException e) {
             // succeed
         }
     }
@@ -92,7 +92,7 @@ public class UnknownAlgoSignatureTest {
         try {
             assertTrue(checkSignature("signature-bad-sig-algo.xml"));
             fail("Exception not caught");
-        } catch (XMLSignatureException e) {
+        } catch (final XMLSignatureException e) {
             // succeed
         }
     }
@@ -102,31 +102,31 @@ public class UnknownAlgoSignatureTest {
         try {
             assertTrue(checkReferences("signature-bad-transform-algo.xml"));
             fail("Exception not caught");
-        } catch (XMLSignatureException e) {
+        } catch (final XMLSignatureException e) {
             // succeed
         }
     }
 
     protected boolean checkSignature(String fileName) throws Exception {
-        XMLSignature signature = unmarshalXMLSignature(fileName);
+        final XMLSignature signature = unmarshalXMLSignature(fileName);
         return signature.checkSignatureValue(publicKey);
     }
 
     protected boolean checkReferences(String fileName) throws Exception {
-        XMLSignature signature = unmarshalXMLSignature(fileName);
+        final XMLSignature signature = unmarshalXMLSignature(fileName);
         return signature.getSignedInfo().verify(false);
     }
 
     private XMLSignature unmarshalXMLSignature(String fileName) throws Exception {
-        File file = XmlSecTestEnvironment.resolveFile(SIGNATURE_SOURCE_PATH, fileName);
-        Document doc = getDocument(file);
+        final File file = XmlSecTestEnvironment.resolveFile(SIGNATURE_SOURCE_PATH, fileName);
+        final Document doc = getDocument(file);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xpath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xpath = xpf.newXPath();
         xpath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         return new XMLSignature(sigElement, file.toURI().toURL().toString());
     }
 

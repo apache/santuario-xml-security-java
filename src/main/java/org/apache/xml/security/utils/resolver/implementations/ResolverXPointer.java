@@ -57,18 +57,18 @@ public class ResolverXPointer extends ResourceResolverSpi {
         throws ResourceResolverException {
 
         Node resultNode = null;
-        Document doc = context.attr.getOwnerElement().getOwnerDocument();
+        final Document doc = context.attr.getOwnerElement().getOwnerDocument();
 
         if (isXPointerSlash(context.uriToResolve)) {
             resultNode = doc;
         } else if (isXPointerId(context.uriToResolve)) {
-            String id = getXPointerId(context.uriToResolve);
+            final String id = getXPointerId(context.uriToResolve);
             resultNode = doc.getElementById(id);
 
             if (context.secureValidation) {
-                Element start = context.attr.getOwnerDocument().getDocumentElement();
+                final Element start = context.attr.getOwnerDocument().getDocumentElement();
                 if (!XMLUtils.protectAgainstWrappingAttack(start, id)) {
-                    Object[] exArgs = { id };
+                    final Object[] exArgs = { id };
                     throw new ResourceResolverException(
                         "signature.Verification.MultipleIDs", exArgs, context.uriToResolve, context.baseUri
                     );
@@ -76,7 +76,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             }
 
             if (resultNode == null) {
-                Object[] exArgs = { id };
+                final Object[] exArgs = { id };
 
                 throw new ResourceResolverException(
                     "signature.Verification.MissingID", exArgs, context.uriToResolve, context.baseUri
@@ -84,7 +84,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             }
         }
 
-        XMLSignatureInput result = new XMLSignatureInput(resultNode);
+        final XMLSignatureInput result = new XMLSignatureInput(resultNode);
         result.setSecureValidation(context.secureValidation);
 
         result.setMIMEType("text/xml");
@@ -123,9 +123,9 @@ public class ResolverXPointer extends ResourceResolverSpi {
      */
     private static boolean isXPointerId(String uri) {
         if (uri != null && uri.startsWith(XP) && uri.endsWith("))")) {
-            String idPlusDelim = uri.substring(XP_LENGTH, uri.length() - 2);
+            final String idPlusDelim = uri.substring(XP_LENGTH, uri.length() - 2);
 
-            int idLen = idPlusDelim.length() -1;
+            final int idLen = idPlusDelim.length() -1;
             if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'
                 || idPlusDelim.charAt(0) == '\'' && idPlusDelim.charAt(idLen) == '\'') {
                 LOG.debug("Id = {}", idPlusDelim.substring(1, idLen));
@@ -144,9 +144,9 @@ public class ResolverXPointer extends ResourceResolverSpi {
      */
     private static String getXPointerId(String uri) {
         if (uri.startsWith(XP) && uri.endsWith("))")) {
-            String idPlusDelim = uri.substring(XP_LENGTH, uri.length() - 2);
+            final String idPlusDelim = uri.substring(XP_LENGTH, uri.length() - 2);
 
-            int idLen = idPlusDelim.length() -1;
+            final int idLen = idPlusDelim.length() -1;
             if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'
                 || idPlusDelim.charAt(0) == '\'' && idPlusDelim.charAt(idLen) == '\'') {
                 return idPlusDelim.substring(1, idLen);

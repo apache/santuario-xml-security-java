@@ -58,7 +58,7 @@ public final class JavaUtils {
 
         try (InputStream inputStream = Files.newInputStream(Paths.get(fileName));
             UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
-            byte[] buf = new byte[1024];
+            final byte[] buf = new byte[1024];
             int len;
 
             while ((len = inputStream.read(buf)) > 0) {
@@ -81,7 +81,7 @@ public final class JavaUtils {
         if (filename != null && bytes != null) {
             try (OutputStream outputStream = Files.newOutputStream(Paths.get(filename))) {
                 outputStream.write(bytes);
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 LOG.debug(ex.getMessage(), ex);
             }
         } else {
@@ -101,7 +101,7 @@ public final class JavaUtils {
      */
     public static byte[] getBytesFromStream(InputStream inputStream) throws IOException {
         try (UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
-            byte[] buf = new byte[4 * 1024];
+            final byte[] buf = new byte[4 * 1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
@@ -131,18 +131,18 @@ public final class JavaUtils {
             throw new IOException("Invalid ASN.1 format of DSA signature");
         }
 
-        byte rLength = asn1Bytes[3];
+        final byte rLength = asn1Bytes[3];
         int i;
         for (i = rLength; i > 0 && asn1Bytes[4 + rLength - i] == 0; i--); //NOPMD
 
-        byte sLength = asn1Bytes[5 + rLength];
+        final byte sLength = asn1Bytes[5 + rLength];
         int j;
         for (j = sLength; j > 0 && asn1Bytes[6 + rLength + sLength - j] == 0; j--); //NOPMD
 
         if (i > size || asn1Bytes[4 + rLength] != 2 || j > size) {
             throw new IOException("Invalid ASN.1 format of DSA signature");
         } else {
-            byte[] xmldsigBytes = new byte[size * 2];
+            final byte[] xmldsigBytes = new byte[size * 2];
             System.arraycopy(asn1Bytes, 4 + rLength - i, xmldsigBytes,
                              size - i, i);
             System.arraycopy(asn1Bytes, 6 + rLength + sLength - j,
@@ -167,7 +167,7 @@ public final class JavaUtils {
     public static byte[] convertDsaXMLDSIGtoASN1(byte[] xmldsigBytes, int size)
         throws IOException
     {
-        int totalSize = size * 2;
+        final int totalSize = size * 2;
         if (xmldsigBytes.length != totalSize) {
             throw new IOException("Invalid XMLDSIG format of DSA signature");
         }
@@ -188,7 +188,7 @@ public final class JavaUtils {
             l++;
         }
 
-        byte[] asn1Bytes = new byte[6 + j + l];
+        final byte[] asn1Bytes = new byte[6 + j + l];
         asn1Bytes[0] = 48;
         asn1Bytes[1] = (byte)(4 + j + l);
         asn1Bytes[2] = 2;
@@ -214,7 +214,7 @@ public final class JavaUtils {
      *    {@code SecurityPermission}
      */
     public static void checkRegisterPermission() {
-        SecurityManager sm = System.getSecurityManager();
+        final SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             sm.checkPermission(REGISTER_PERMISSION);
         }

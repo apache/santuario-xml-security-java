@@ -51,7 +51,7 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
             return null;
         }
         Element dsaKeyElement = null;
-        boolean isKeyValue =
+        final boolean isKeyValue =
             XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYVALUE);
         if (isKeyValue) {
             dsaKeyElement =
@@ -67,11 +67,11 @@ public class DSAKeyValueResolver extends KeyResolverSpi {
         }
 
         try {
-            DSAKeyValue dsaKeyValue = new DSAKeyValue(dsaKeyElement, baseURI);
-            PublicKey pk = dsaKeyValue.getPublicKey();
+            final DSAKeyValue dsaKeyValue = new DSAKeyValue(dsaKeyElement, baseURI);
+            final PublicKey pk = dsaKeyValue.getPublicKey();
 
             return pk;
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.debug(ex.getMessage(), ex);
             //do nothing
         }

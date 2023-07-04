@@ -65,14 +65,14 @@ public class XmlSecTest {
 
     private void checkXmlSignatureSoftwareStack(boolean cert) throws Exception {
         Init.init();
-        Document testDocument = TestUtils.newDocument();
+        final Document testDocument = TestUtils.newDocument();
 
-        Element rootElement =
+        final Element rootElement =
             testDocument.createElementNS("urn:namespace", "tns:document");
         rootElement.setAttributeNS
             (Constants.NamespaceSpecNS, "xmlns:tns", "urn:namespace");
         testDocument.appendChild(rootElement);
-        Element childElement =
+        final Element childElement =
             testDocument.createElementNS("urn:childnamespace", "t:child");
         childElement.setAttributeNS
             (Constants.NamespaceSpecNS, "xmlns:t", "urn:childnamespace");
@@ -83,29 +83,29 @@ public class XmlSecTest {
         PublicKey publicKey = null;
         X509Certificate signingCert = null;
         if (cert) {
-            KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
+            final KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
             signingCert = (X509Certificate) ks.getCertificate("mullan");
             publicKey = signingCert.getPublicKey();
             privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());
         } else {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
+            final KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
             kpg.initialize(1024);
-            KeyPair keyPair = kpg.generateKeyPair();
+            final KeyPair keyPair = kpg.generateKeyPair();
             publicKey = keyPair.getPublic();
             privateKey = keyPair.getPrivate();
         }
 
-        XMLSignature signature =
+        final XMLSignature signature =
             new XMLSignature(
                 testDocument, "", XMLSignature.ALGO_ID_SIGNATURE_DSA,
                 Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS
             );
 
-        Element signatureElement = signature.getElement();
+        final Element signatureElement = signature.getElement();
         rootElement.appendChild(signatureElement);
 
-        Transforms transforms = new Transforms(testDocument);
-        XPathContainer xpath = new XPathContainer(testDocument);
+        final Transforms transforms = new Transforms(testDocument);
+        final XPathContainer xpath = new XPathContainer(testDocument);
         xpath.setXPathNamespaceContext("ds", Constants.SignatureSpecNS);
         xpath.setXPath("not(ancestor-or-self::ds:Signature)");
         transforms.addTransform(Transforms.TRANSFORM_XPATH, xpath.getElementPlusReturns());
@@ -118,24 +118,24 @@ public class XmlSecTest {
             signature.addKeyInfo(publicKey);
         }
 
-        Element nsElement = testDocument.createElementNS(null, "nsElement");
+        final Element nsElement = testDocument.createElementNS(null, "nsElement");
         nsElement.setAttributeNS(
             Constants.NamespaceSpecNS, "xmlns:ds", Constants.SignatureSpecNS
         );
 
         signature.sign(privateKey);
 
-        XPathFactory xpf = XPathFactory.newInstance();
-        XPath xPath = xpf.newXPath();
+        final XPathFactory xpf = XPathFactory.newInstance();
+        final XPath xPath = xpf.newXPath();
         xPath.setNamespaceContext(new DSNamespaceContext());
 
-        String expression = "//ds:Signature[1]";
-        Element sigElement =
+        final String expression = "//ds:Signature[1]";
+        final Element sigElement =
             (Element) xPath.evaluate(expression, testDocument, XPathConstants.NODE);
 
-        XMLSignature signatureToVerify = new XMLSignature(sigElement, "");
+        final XMLSignature signatureToVerify = new XMLSignature(sigElement, "");
 
-        boolean signResult = signatureToVerify.checkSignatureValue(publicKey);
+        final boolean signResult = signatureToVerify.checkSignatureValue(publicKey);
 
         assertTrue(signResult);
     }

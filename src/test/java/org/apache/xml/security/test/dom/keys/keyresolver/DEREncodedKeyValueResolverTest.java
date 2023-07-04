@@ -49,28 +49,28 @@ public class DEREncodedKeyValueResolverTest {
 
     @Test
     public void testRSAPublicKey() throws Exception {
-        Document doc = loadXML("DEREncodedKeyValue-RSA.xml");
-        Element element = doc.getDocumentElement();
+        final Document doc = loadXML("DEREncodedKeyValue-RSA.xml");
+        final Element element = doc.getDocumentElement();
 
-        KeyInfo keyInfo = new KeyInfo(element, "");
+        final KeyInfo keyInfo = new KeyInfo(element, "");
         assertEquals(rsaKeyControl, keyInfo.getPublicKey());
     }
 
     @Test
     public void testDSAPublicKey() throws Exception {
-        Document doc = loadXML("DEREncodedKeyValue-DSA.xml");
-        Element element = doc.getDocumentElement();
+        final Document doc = loadXML("DEREncodedKeyValue-DSA.xml");
+        final Element element = doc.getDocumentElement();
 
-        KeyInfo keyInfo = new KeyInfo(element, "");
+        final KeyInfo keyInfo = new KeyInfo(element, "");
         assertEquals(dsaKeyControl, keyInfo.getPublicKey());
     }
 
     @Test
     public void testECPublicKey() throws Exception {
-        Document doc = loadXML("DEREncodedKeyValue-EC.xml");
-        Element element = doc.getDocumentElement();
+        final Document doc = loadXML("DEREncodedKeyValue-EC.xml");
+        final Element element = doc.getDocumentElement();
 
-        KeyInfo keyInfo = new KeyInfo(element, "");
+        final KeyInfo keyInfo = new KeyInfo(element, "");
         assertEquals(ecKeyControl, keyInfo.getPublicKey());
     }
 }

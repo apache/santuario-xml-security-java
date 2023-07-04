@@ -49,19 +49,19 @@ public class RetrievalMethodTest {
 
     @Test
     public void testgetURI() {
-        RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
+        final RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNotNull(rm.getURI());
     }
 
     @Test
     public void testgetTransforms() {
-        RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
+        final RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNotNull(rm.getTransforms());
     }
 
     @Test
     public void testgetType() {
-        RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
+        final RetrievalMethod rm = fac.newRetrievalMethod("#X509Data");
         assertNull(rm.getType());
     }
 
@@ -75,13 +75,13 @@ public class RetrievalMethodTest {
         try {
             rm = fac.newRetrievalMethod(null);
             fail("Should raise a NullPointerException");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         // test RetrievalMethod(String, String, Transform[])
         try {
             rm = fac.newRetrievalMethod(null, null, null);
             fail("Should raise a NullPointerException");
-        } catch (NullPointerException npe) {}
+        } catch (final NullPointerException npe) {}
 
         final String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
         rm = fac.newRetrievalMethod(uri, type, null);
@@ -91,8 +91,8 @@ public class RetrievalMethodTest {
 
     @Test
     public void testisFeatureSupported() throws Exception {
-        String uri = "#X509CertChain";
-        String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
+        final String uri = "#X509CertChain";
+        final String type = "http://www.w3.org/2000/09/xmldsig#X509Data";
         RetrievalMethod rm = null;
         for (int i = 0; i < 2; i++) {
             if (i == 0) {
@@ -103,7 +103,7 @@ public class RetrievalMethodTest {
             try {
                 rm.isFeatureSupported(null);
                 fail("Should raise a NPE for null feature");
-            } catch (NullPointerException npe) {}
+            } catch (final NullPointerException npe) {}
 
             assertFalse(rm.isFeatureSupported("not supported"));
         }

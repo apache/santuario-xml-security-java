@@ -101,7 +101,7 @@ public class XMLSecurityUtils {
      * @return The XMLEvent type as string representation
      */
     public static String getXMLEventAsString(XMLSecEvent xmlSecEvent) {
-        int eventType = xmlSecEvent.getEventType();
+        final int eventType = xmlSecEvent.getEventType();
 
         switch (eventType) {
             case XMLSecEvent.START_ELEMENT:
@@ -134,6 +134,7 @@ public class XMLSecurityUtils {
             XMLSecurityConstants.DIRECTION direction) throws XMLSecurityException {
 
         @SuppressWarnings("unchecked")
+        final
         Class<Transformer> transformerClass = (Class<Transformer>) TransformerAlgorithmMapper.getTransformerClass(algorithm, direction);
         Transformer childTransformer = null;
 
@@ -155,9 +156,9 @@ public class XMLSecurityUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T getQNameType(List<Object> objects, QName qName) {
-        for (Object o : objects) {
+        for (final Object o : objects) {
             if (o instanceof JAXBElement) {
-                JAXBElement<?> jaxbElement = (JAXBElement<?>) o;
+                final JAXBElement<?> jaxbElement = (JAXBElement<?>) o;
                 if (jaxbElement.getName().equals(qName)) {
                     return (T) jaxbElement.getValue();
                 }
@@ -178,8 +179,8 @@ public class XMLSecurityUtils {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
 
-        X509Certificate x509Certificate = x509Certificates[0];
-        PublicKey publicKey = x509Certificate.getPublicKey();
+        final X509Certificate x509Certificate = x509Certificates[0];
+        final PublicKey publicKey = x509Certificate.getPublicKey();
         createKeyValueTokenStructure(abstractOutputProcessor, outputProcessorChain, publicKey);
     }
 
@@ -192,12 +193,12 @@ public class XMLSecurityUtils {
             throw new XMLSecurityException("stax.signature.publicKeyOrCertificateMissing");
         }
 
-        String algorithm = publicKey.getAlgorithm();
+        final String algorithm = publicKey.getAlgorithm();
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyValue, true, null);
 
         if ("RSA".equals(algorithm)) {
-            RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
+            final RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_RSAKeyValue, false, null);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Modulus, false, null);
             abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(rsaPublicKey.getModulus().toByteArray()));
@@ -207,8 +208,8 @@ public class XMLSecurityUtils {
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_Exponent);
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_RSAKeyValue);
         } else if ("DSA".equals(algorithm)) {
-            DSAPublicKey dsaPublicKey = (DSAPublicKey) publicKey;
-            BigInteger j = dsaPublicKey.getParams().getP().subtract(BigInteger.ONE).divide(dsaPublicKey.getParams().getQ());
+            final DSAPublicKey dsaPublicKey = (DSAPublicKey) publicKey;
+            final BigInteger j = dsaPublicKey.getParams().getP().subtract(BigInteger.ONE).divide(dsaPublicKey.getParams().getQ());
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_DSAKeyValue, false, null);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_P, false, null);
             abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(dsaPublicKey.getParams().getP().toByteArray()));
@@ -227,9 +228,9 @@ public class XMLSecurityUtils {
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_J);
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_DSAKeyValue);
         } else if ("EC".equals(algorithm)) {
-            ECPublicKey ecPublicKey = (ECPublicKey) publicKey;
+            final ECPublicKey ecPublicKey = (ECPublicKey) publicKey;
 
-            List<XMLSecAttribute> attributes = new ArrayList<>(1);
+            final List<XMLSecAttribute> attributes = new ArrayList<>(1);
             attributes.add(abstractOutputProcessor.createAttribute(XMLSecurityConstants.ATT_NULL_URI, "urn:oid:" + ECDSAUtils.getOIDFromPublicKey(ecPublicKey)));
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_ECKeyValue, true, null);
             abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_NamedCurve, false, attributes);
@@ -260,7 +261,7 @@ public class XMLSecurityUtils {
         }
 
         // SKI can only be used for a V3 certificate
-        int version = x509Certificates[0].getVersion();
+        final int version = x509Certificates[0].getVersion();
         if (version != 3) {
             throw new XMLSecurityException("certificate.noSki.lowVersion",
                                            new Object[]{version});
@@ -271,7 +272,7 @@ public class XMLSecurityUtils {
         }
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI, false, null);
-        byte[] data = XMLX509SKI.getSKIBytesFromCert(x509Certificates[0]);
+        final byte[] data = XMLX509SKI.getSKIBytesFromCert(x509Certificates[0]);
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(data));
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SKI);
 
@@ -305,7 +306,7 @@ public class XMLSecurityUtils {
         byte[] data;
         try {
             data = x509Certificates[0].getEncoded();
-        } catch (CertificateEncodingException e) {
+        } catch (final CertificateEncodingException e) {
             throw new XMLSecurityException(e);
         }
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(data));
@@ -338,7 +339,7 @@ public class XMLSecurityUtils {
         }
 
         abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SubjectName, false, null);
-        String subjectName = x509Certificates[0].getSubjectX500Principal().getName();
+        final String subjectName = x509Certificates[0].getSubjectX500Principal().getName();
         abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, subjectName);
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_X509SubjectName);
 
@@ -382,7 +383,7 @@ public class XMLSecurityUtils {
     public static TokenSecurityEvent<? extends InboundSecurityToken> createTokenSecurityEvent(
             final InboundSecurityToken inboundSecurityToken, String correlationID) throws XMLSecurityException {
 
-        SecurityTokenConstants.TokenType tokenType = inboundSecurityToken.getTokenType();
+        final SecurityTokenConstants.TokenType tokenType = inboundSecurityToken.getTokenType();
 
         TokenSecurityEvent tokenSecurityEvent = null;
         if (SecurityTokenConstants.X509V1Token.equals(tokenType)
@@ -412,19 +413,19 @@ public class XMLSecurityUtils {
         if (xmlSecStartElement == null) {
             return Collections.emptySet();
         }
-        Set<String> prefixes = new TreeSet<>();
+        final Set<String> prefixes = new TreeSet<>();
 
-        XMLSecStartElement parentXMXmlSecStartElement = xmlSecStartElement.getParentXMLSecStartElement();
+        final XMLSecStartElement parentXMXmlSecStartElement = xmlSecStartElement.getParentXMLSecStartElement();
         if (parentXMXmlSecStartElement != null) {
-            List<XMLSecNamespace> onElementDeclaredNamespaces = parentXMXmlSecStartElement.getOnElementDeclaredNamespaces();
+            final List<XMLSecNamespace> onElementDeclaredNamespaces = parentXMXmlSecStartElement.getOnElementDeclaredNamespaces();
             List<XMLSecNamespace> xmlSecNamespaces = new ArrayList<>();
             parentXMXmlSecStartElement.getNamespacesFromCurrentScope(xmlSecNamespaces);
             xmlSecNamespaces = xmlSecNamespaces.subList(0, xmlSecNamespaces.size() - onElementDeclaredNamespaces.size());
 
             //reverse iteration -> From current element namespaces to parent namespaces
             for (int i = xmlSecNamespaces.size() - 1; i >= 0; i--) {
-                XMLSecNamespace xmlSecNamespace = xmlSecNamespaces.get(i);
-                String prefix = xmlSecNamespace.getPrefix();
+                final XMLSecNamespace xmlSecNamespace = xmlSecNamespaces.get(i);
+                final String prefix = xmlSecNamespace.getPrefix();
                 if (prefix == null || prefix.isEmpty()) {
                     prefixes.add("#default");
                 } else {
@@ -433,8 +434,8 @@ public class XMLSecurityUtils {
             }
 
             if (excludeVisible) {
-                for (XMLSecNamespace xmlSecNamespace : onElementDeclaredNamespaces) {
-                    String prefix = xmlSecNamespace.getPrefix();
+                for (final XMLSecNamespace xmlSecNamespace : onElementDeclaredNamespaces) {
+                    final String prefix = xmlSecNamespace.getPrefix();
                     if (prefix == null || prefix.isEmpty()) {
                         prefixes.remove("#default");
                     } else {
@@ -453,7 +454,7 @@ public class XMLSecurityUtils {
 
     public static void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
         int read = 0;
-        byte[] buf = new byte[4096];
+        final byte[] buf = new byte[4096];
         while ((read = inputStream.read(buf)) != -1) {
             outputStream.write(buf, 0, read);
         }
@@ -467,11 +468,11 @@ public class XMLSecurityUtils {
         int size = 0;
         try {
             size = JCEMapper.getKeyLengthFromURI(symEncAlgo) / 8;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // ignore - some unknown (to JCEMapper) encryption algorithm
             size = 0;
         }
-        String keyAlgorithm = JCEMapper.getJCEKeyAlgorithmFromURI(symEncAlgo);
+        final String keyAlgorithm = JCEMapper.getJCEKeyAlgorithmFromURI(symEncAlgo);
         SecretKeySpec keySpec;
         if (size > 0 && !symEncAlgo.endsWith("gcm") && !symEncAlgo.contains("hmac-")) {
             keySpec =
@@ -491,38 +492,38 @@ public class XMLSecurityUtils {
     }
 
     public static Schema loadXMLSecuritySchemas() throws SAXException {
-        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        final SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         schemaFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
         schemaFactory.setResourceResolver(new LSResourceResolver() {
             @Override
             public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
                 if ("http://www.w3.org/2001/XMLSchema.dtd".equals(systemId)) {
-                    ConcreteLSInput concreteLSInput = new ConcreteLSInput();
+                    final ConcreteLSInput concreteLSInput = new ConcreteLSInput();
                     concreteLSInput.setByteStream(
                             ClassLoaderUtils.getResourceAsStream("bindings/schemas/XMLSchema.dtd", XMLSecurityConstants.class));
                     return concreteLSInput;
                 } else if ("XMLSchema.dtd".equals(systemId)) {
-                    ConcreteLSInput concreteLSInput = new ConcreteLSInput();
+                    final ConcreteLSInput concreteLSInput = new ConcreteLSInput();
                     concreteLSInput.setByteStream(
                             ClassLoaderUtils.getResourceAsStream("bindings/schemas/XMLSchema.dtd", XMLSecurityConstants.class));
                     return concreteLSInput;
                 } else if ("datatypes.dtd".equals(systemId)) {
-                    ConcreteLSInput concreteLSInput = new ConcreteLSInput();
+                    final ConcreteLSInput concreteLSInput = new ConcreteLSInput();
                     concreteLSInput.setByteStream(
                             ClassLoaderUtils.getResourceAsStream("bindings/schemas/datatypes.dtd", XMLSecurityConstants.class));
                     return concreteLSInput;
                 } else if ("http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd".equals(systemId)) {
-                    ConcreteLSInput concreteLSInput = new ConcreteLSInput();
+                    final ConcreteLSInput concreteLSInput = new ConcreteLSInput();
                     concreteLSInput.setByteStream(
                             ClassLoaderUtils.getResourceAsStream("bindings/schemas/xmldsig-core-schema.xsd", XMLSecurityConstants.class));
                     return concreteLSInput;
                 } else if ("http://www.w3.org/2001/xml.xsd".equals(systemId)) {
-                    ConcreteLSInput concreteLSInput = new ConcreteLSInput();
+                    final ConcreteLSInput concreteLSInput = new ConcreteLSInput();
                     concreteLSInput.setByteStream(
                             ClassLoaderUtils.getResourceAsStream("bindings/schemas/xml.xsd", XMLSecurityConstants.class));
                     return concreteLSInput;
                 } else if ("rsa-pss.xsd".equals(systemId)) {
-                    ConcreteLSInput concreteLSInput = new ConcreteLSInput();
+                    final ConcreteLSInput concreteLSInput = new ConcreteLSInput();
                     concreteLSInput.setByteStream(
                             ClassLoaderUtils.getResourceAsStream("bindings/schemas/rsa-pss.xsd", XMLSecurityConstants.class));
                     return concreteLSInput;
@@ -530,7 +531,7 @@ public class XMLSecurityUtils {
                 return null;
             }
         });
-        Schema schema = schemaFactory.newSchema(
+        final Schema schema = schemaFactory.newSchema(
                 new Source[]{
                         new StreamSource(ClassLoaderUtils.getResourceAsStream("bindings/schemas/exc-c14n.xsd", XMLSecurityConstants.class)),
                         new StreamSource(ClassLoaderUtils.getResourceAsStream("bindings/schemas/xmldsig-core-schema.xsd", XMLSecurityConstants.class)),

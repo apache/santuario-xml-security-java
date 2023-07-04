@@ -48,7 +48,7 @@ public final class XmlSecTestEnvironment {
       * @throws IOException
       */
      public static KeyStore getTestKeyStore() throws GeneralSecurityException, IOException {
-         KeyStore ks = KeyStore.getInstance("JKS");
+         final KeyStore ks = KeyStore.getInstance("JKS");
          try (FileInputStream fis = new FileInputStream(resolveFile("src/test/resources/test.jks"))) {
              ks.load(fis, TEST_KS_PASSWORD.toCharArray());
          }

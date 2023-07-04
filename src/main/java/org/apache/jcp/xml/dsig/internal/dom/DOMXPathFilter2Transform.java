@@ -74,18 +74,18 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
         super.init(parent, context);
         try {
             unmarshalParams(DOMUtils.getFirstChildElement(transformElem));
-        } catch (MarshalException me) {
+        } catch (final MarshalException me) {
             throw new InvalidAlgorithmParameterException(me);
         }
     }
 
     private void unmarshalParams(Element curXPathElem) throws MarshalException
     {
-        List<XPathType> list = new ArrayList<>();
+        final List<XPathType> list = new ArrayList<>();
         Element currentElement = curXPathElem;
         while (currentElement != null) {
-            String xPath = currentElement.getFirstChild().getNodeValue();
-            String filterVal = DOMUtils.getAttributeValue(currentElement,
+            final String xPath = currentElement.getFirstChild().getNodeValue();
+            final String filterVal = DOMUtils.getAttributeValue(currentElement,
                                                           "Filter");
             if (filterVal == null) {
                 throw new MarshalException("filter cannot be null");
@@ -101,14 +101,14 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
                 throw new MarshalException("Unknown XPathType filter type" +
                                            filterVal);
             }
-            NamedNodeMap attributes = currentElement.getAttributes();
+            final NamedNodeMap attributes = currentElement.getAttributes();
             if (attributes != null) {
-                int length = attributes.getLength();
-                Map<String, String> namespaceMap =
+                final int length = attributes.getLength();
+                final Map<String, String> namespaceMap =
                     new HashMap<>((int) Math.ceil(length / 0.75));
                 for (int i = 0; i < length; i++) {
-                    Attr attr = (Attr)attributes.item(i);
-                    String prefix = attr.getPrefix();
+                    final Attr attr = (Attr)attributes.item(i);
+                    final String prefix = attr.getPrefix();
                     if (prefix != null && "xmlns".equals(prefix)) {
                         namespaceMap.put(attr.getLocalName(), attr.getValue());
                     }
@@ -128,15 +128,16 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
         throws MarshalException
     {
         super.marshalParams(parent, context);
-        XPathFilter2ParameterSpec xp =
+        final XPathFilter2ParameterSpec xp =
             (XPathFilter2ParameterSpec)getParameterSpec();
-        String prefix = DOMUtils.getNSPrefix(context, Transform.XPATH2);
-        String qname = prefix == null || prefix.length() == 0
+        final String prefix = DOMUtils.getNSPrefix(context, Transform.XPATH2);
+        final String qname = prefix == null || prefix.length() == 0
                        ? "xmlns" : "xmlns:" + prefix;
         @SuppressWarnings("unchecked")
+        final
         List<XPathType> xpathList = xp.getXPathList();
-        for (XPathType xpathType : xpathList) {
-            Element elem = DOMUtils.createElement(ownerDoc, "XPath",
+        for (final XPathType xpathType : xpathList) {
+            final Element elem = DOMUtils.createElement(ownerDoc, "XPath",
                                                   Transform.XPATH2, prefix);
             elem.appendChild
                 (ownerDoc.createTextNode(xpathType.getExpression()));
@@ -147,9 +148,10 @@ public final class DOMXPathFilter2Transform extends ApacheTransform {
 
             // add namespace attributes, if necessary
             @SuppressWarnings("unchecked")
+            final
             Set<Map.Entry<String, String>> entries =
                 xpathType.getNamespaceMap().entrySet();
-            for (Map.Entry<String, String> entry : entries) {
+            for (final Map.Entry<String, String> entry : entries) {
                 elem.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:" +
                                     entry.getKey(),
                                     entry.getValue());

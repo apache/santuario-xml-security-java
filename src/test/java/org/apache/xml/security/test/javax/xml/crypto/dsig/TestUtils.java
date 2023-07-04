@@ -118,7 +118,7 @@ public class TestUtils {
         DBF.setNamespaceAware(true);
         try {
             DBF.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        } catch (ParserConfigurationException e) {
+        } catch (final ParserConfigurationException e) {
             // Ignore: DocumentBuilderFactory is required to support the secure processing feature
             e.printStackTrace();             // NOPMD
         }
@@ -139,7 +139,7 @@ public class TestUtils {
 
     public static PublicKey getPublicKey(String algo, int keysize)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
-        KeyFactory kf = KeyFactory.getInstance(algo);
+        final KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
         if ("DSA".equalsIgnoreCase(algo)) {
             if (keysize == 1024) {
@@ -170,9 +170,9 @@ public class TestUtils {
 
     public static void validateSecurityOrEncryptionElement(Node toValidate) throws SAXException, IOException {
         XMLSec.init();
-        Schema schema = XMLSecurityConstants.getJaxbSchemas();
-        Validator validator = schema.newValidator();
-        DOMSource source = new DOMSource(toValidate);
+        final Schema schema = XMLSecurityConstants.getJaxbSchemas();
+        final Validator validator = schema.newValidator();
+        final DOMSource source = new DOMSource(toValidate);
         validator.validate(source);
     }
 
@@ -189,7 +189,7 @@ public class TestUtils {
 
     public static PrivateKey getPrivateKey(String algo, int keysize)
         throws InvalidKeySpecException, NoSuchAlgorithmException {
-        KeyFactory kf = KeyFactory.getInstance(algo);
+        final KeyFactory kf = KeyFactory.getInstance(algo);
         KeySpec kspec;
         if ("DSA".equalsIgnoreCase(algo)) {
             if (keysize == 1024) {
@@ -232,7 +232,7 @@ public class TestUtils {
     public static Document newDocument() {
         try {
             return DBF.newDocumentBuilder().newDocument();
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             return null;
         }
     }
@@ -250,13 +250,13 @@ public class TestUtils {
                                                        String tag)
         throws Exception {
         if ("dom".equalsIgnoreCase(type)) {
-            Document doc = XMLUtils.read(new FileInputStream(input), false);
+            final Document doc = XMLUtils.read(new FileInputStream(input), false);
             if (tag == null) {
                 return new DOMValidateContext
                     (TestUtils.getPublicKey("RSA", 2048),
                      doc.getDocumentElement());
             } else {
-                NodeList list = doc.getElementsByTagName(tag);
+                final NodeList list = doc.getElementsByTagName(tag);
                 return new DOMValidateContext
                     (TestUtils.getPublicKey("RSA", 2048), list.item(0));
             }
@@ -277,11 +277,11 @@ public class TestUtils {
         static {
             try {
                 MD = MessageDigest.getInstance("SHA");
-                XMLSignatureFactory factory = XMLSignatureFactory.getInstance
+                final XMLSignatureFactory factory = XMLSignatureFactory.getInstance
                     ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
                 DIG_METHOD =
                     factory.newDigestMethod(DigestMethod.SHA1, null);
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 // should never be thrown
             }
         }
@@ -296,7 +296,7 @@ public class TestUtils {
         @Override
         public byte[] getDigestValue() {
             if (digest == null) {
-                byte[] inBytes = id.getBytes();
+                final byte[] inBytes = id.getBytes();
                 digest = new byte[20];
                 if (status) {
                     digest = MD.digest(inBytes);
@@ -417,10 +417,10 @@ public class TestUtils {
     }
 
     public static void dumpDocument(Document doc, String outName) throws Exception {
-        DOMSource source = new DOMSource(doc);
-        File path = new File(System.getProperty("test.dir"), outName);
-        Result result = new StreamResult(new FileOutputStream(path));
-        Transformer trans = TransformerFactory.newInstance().newTransformer();
+        final DOMSource source = new DOMSource(doc);
+        final File path = new File(System.getProperty("test.dir"), outName);
+        final Result result = new StreamResult(new FileOutputStream(path));
+        final Transformer trans = TransformerFactory.newInstance().newTransformer();
         trans.setOutputProperty(OutputKeys.INDENT, "yes");
         trans.transform(source, result);
     }

@@ -63,23 +63,23 @@ public class SecureXSLTTest {
 
     private void testSignature(File signatureFile) throws Exception {
 
-        XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
-        File f = new File("doc.xml");
+        final XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
+        final File f = new File("doc.xml");
 
-        Document doc = XMLUtils.read(new FileInputStream(signatureFile), false);
+        final Document doc = XMLUtils.read(new FileInputStream(signatureFile), false);
 
-        NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+        final NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Cannot find Signature element");
         }
 
-        DOMValidateContext valContext = new DOMValidateContext
+        final DOMValidateContext valContext = new DOMValidateContext
             (new KeySelectors.KeyValueKeySelector(), nl.item(0));
         // enable reference caching in your validation context
         valContext.setProperty("javax.xml.crypto.dsig.cacheReference", Boolean.TRUE);
 
         try {
-            XMLSignature sig = fac.unmarshalXMLSignature(valContext);
+            final XMLSignature sig = fac.unmarshalXMLSignature(valContext);
             assertFalse(sig.validate(valContext));
             sig.getSignedInfo().getReferences().get(0);
         } finally {

@@ -45,9 +45,9 @@ public final class Utils {
         throws IOException
     {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            byte[] buf = new byte[1024];
+            final byte[] buf = new byte[1024];
             while (true) {
-                int read = is.read(buf);
+                final int read = is.read(buf);
                 if (read == -1) { // EOF
                     break;
                 }
@@ -68,13 +68,13 @@ public final class Utils {
      * @return the Set of Nodes
      */
     static Set<Node> toNodeSet(Iterator<Node> i) {
-        Set<Node> nodeSet = new HashSet<>();
+        final Set<Node> nodeSet = new HashSet<>();
         while (i.hasNext()) {
-            Node n = i.next();
+            final Node n = i.next();
             nodeSet.add(n);
             // insert attributes nodes to comply with XPath
             if (n.getNodeType() == Node.ELEMENT_NODE) {
-                NamedNodeMap nnm = n.getAttributes();
+                final NamedNodeMap nnm = n.getAttributes();
                 for (int j = 0, length = nnm.getLength(); j < length; j++) {
                     nodeSet.add(nnm.item(j));
                 }
@@ -92,8 +92,8 @@ public final class Utils {
         }
         String id = uri.substring(1);
         if (id.startsWith("xpointer(id(")) {
-            int i1 = id.indexOf('\'');
-            int i2 = id.indexOf('\'', i1+1);
+            final int i1 = id.indexOf('\'');
+            final int i2 = id.indexOf('\'', i1+1);
             if (i1 >= 0 && i2 >= 0) {
                 id = id.substring(i1 + 1, i2);
             }
@@ -111,7 +111,7 @@ public final class Utils {
     static boolean secureValidation(XMLCryptoContext xc) {
         boolean secureValidation = true;
         if (xc != null) {
-	    Boolean value = (Boolean)xc.getProperty("org.apache.jcp.xml.dsig.secureValidation");
+	    final Boolean value = (Boolean)xc.getProperty("org.apache.jcp.xml.dsig.secureValidation");
             if (value != null) {
                 secureValidation = value;
             }

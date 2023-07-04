@@ -41,9 +41,9 @@ public class RetrievalMethodResolverTest {
 
     @Test
     public void testReferenceToSameRetrievalMethod() throws Exception {
-        String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod1.xml";
-        Document doc = XMLUtils.read(resolveFile(filename), false);
-        KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
+        final String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod1.xml";
+        final Document doc = XMLUtils.read(resolveFile(filename), false);
+        final KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
 
         // Check neither of these give a StackOverflowError.
         keyInfo.getPublicKey();
@@ -52,9 +52,9 @@ public class RetrievalMethodResolverTest {
 
     @Test
     public void testLoopBetweenRetrievalMethods() throws Exception {
-        String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod2.xml";
-        Document doc = XMLUtils.read(resolveFile(filename), false);
-        KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
+        final String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod2.xml";
+        final Document doc = XMLUtils.read(resolveFile(filename), false);
+        final KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
 
         // Check neither of these give a StackOverflowError.
         keyInfo.getPublicKey();

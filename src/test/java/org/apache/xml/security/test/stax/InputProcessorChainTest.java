@@ -97,17 +97,17 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
-        AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor1);
 
-        AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor2);
 
-        AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor3);
 
@@ -118,33 +118,33 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorPhase2() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
-        AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor1);
 
-        AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
         };
         inputProcessor2.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor2);
 
-        AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
         };
         inputProcessor3.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor3);
 
-        AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
         };
         inputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor4);
 
-        AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
         };
         inputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor5);
 
-        AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor6);
 
@@ -158,35 +158,35 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorBefore1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
-        AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor1);
 
-        AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
         };
         inputProcessor2.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor2);
 
-        AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
         };
         inputProcessor3.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor3);
 
-        AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
         };
         inputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         inputProcessor4.addBeforeProcessor(inputProcessor3.getClass().getName());
         inputProcessorChain.addProcessor(inputProcessor4);
 
-        AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
         };
         inputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         inputProcessor5.addBeforeProcessor(inputProcessor2.getClass().getName());
         inputProcessorChain.addProcessor(inputProcessor5);
 
-        AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
         };
         inputProcessor6.addBeforeProcessor(inputProcessor1.getClass().getName());
         inputProcessorChain.addProcessor(inputProcessor6);
@@ -201,35 +201,35 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorAfter1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
-        AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor1);
 
-        AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
         };
         inputProcessor2.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor2);
 
-        AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
         };
         inputProcessor3.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         inputProcessorChain.addProcessor(inputProcessor3);
 
-        AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
         };
         inputProcessor4.setPhase(XMLSecurityConstants.Phase.POSTPROCESSING);
         inputProcessor4.addAfterProcessor(inputProcessor3.getClass().getName());
         inputProcessorChain.addProcessor(inputProcessor4);
 
-        AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
         };
         inputProcessor5.setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         inputProcessor5.addAfterProcessor(inputProcessor2.getClass().getName());
         inputProcessorChain.addProcessor(inputProcessor5);
 
-        AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
         };
         inputProcessor6.addAfterProcessor(inputProcessor1.getClass().getName());
         inputProcessorChain.addProcessor(inputProcessor6);
@@ -244,31 +244,31 @@ public class InputProcessorChainTest {
 
     @Test
     public void testAddProcessorBeforeAndAfter1() {
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
-        AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor1);
 
-        AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor2 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor2);
 
-        AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor3 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor3);
 
-        AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor4 = new AbstractInputProcessor() {
         };
         inputProcessorChain.addProcessor(inputProcessor4);
 
-        AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor5 = new AbstractInputProcessor() {
         };
         inputProcessor5.addBeforeProcessor("");
         inputProcessor5.addAfterProcessor(inputProcessor3.getClass().getName());
         inputProcessorChain.addProcessor(inputProcessor5);
 
-        AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
+        final AbstractInputProcessor inputProcessor6 = new AbstractInputProcessor() {
         };
         inputProcessor6.addBeforeProcessor(inputProcessor5.getClass().getName());
         inputProcessor6.addAfterProcessor("");

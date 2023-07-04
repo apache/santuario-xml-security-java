@@ -45,16 +45,16 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         throws ResourceResolverException {
         try {
             // calculate new URI
-            URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
+            final URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
 
-            InputStream inputStream = Files.newInputStream(Paths.get(uriNew));  //NOPMD
-            XMLSignatureInput result = new XMLSignatureInput(inputStream);
+            final InputStream inputStream = Files.newInputStream(Paths.get(uriNew));  //NOPMD
+            final XMLSignatureInput result = new XMLSignatureInput(inputStream);
             result.setSecureValidation(context.secureValidation);
 
             result.setSourceURI(uriNew.toString());
 
             return result;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
         }
     }
@@ -80,7 +80,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
                 LOG.debug("I state that I can resolve {}", context.uriToResolve);
                 return true;
             }
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOG.debug(e.getMessage(), e);
         }
 

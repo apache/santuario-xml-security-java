@@ -31,7 +31,7 @@ public class RFC2253Parser {
      */
     public static String rfc2253toXMLdsig(String dn) {
         // Transform from RFC1779 to RFC2253
-        String normalized = normalize(dn, true);
+        final String normalized = normalize(dn, true);
 
         return rfctoXML(normalized);
     }
@@ -44,7 +44,7 @@ public class RFC2253Parser {
      */
     public static String xmldsigtoRFC2253(String dn) {
         // Transform from RFC1779 to RFC2253
-        String normalized = normalize(dn, false);
+        final String normalized = normalize(dn, false);
 
         return xmltoRFC(normalized);
     }
@@ -73,8 +73,8 @@ public class RFC2253Parser {
         }
 
         try {
-            String DN = semicolonToComma(dn);
-            StringBuilder sb = new StringBuilder();
+            final String DN = semicolonToComma(dn);
+            final StringBuilder sb = new StringBuilder();
             int i = 0;
             int l = 0;
             int k;
@@ -94,7 +94,7 @@ public class RFC2253Parser {
             sb.append(parseRDN(trim(DN.substring(i)), toXml));
 
             return sb.toString();
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             return dn;
         }
     }
@@ -108,7 +108,7 @@ public class RFC2253Parser {
      * @throws IOException
      */
     static String parseRDN(String str, boolean toXml) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         int i = 0;
         int l = 0;
         int k;
@@ -138,12 +138,12 @@ public class RFC2253Parser {
      * @throws IOException
      */
     static String parseATAV(String str, boolean toXml) throws IOException {
-        int i = str.indexOf('=');
+        final int i = str.indexOf('=');
 
         if (i == -1 || i > 0 && str.charAt(i - 1) == '\\') {
             return str;
         }
-        String attrType = normalizeAT(str.substring(0, i));
+        final String attrType = normalizeAT(str.substring(0, i));
         // only normalize if value is a String
         String attrValue = null;
         if (attrType.charAt(0) >= '0' && attrType.charAt(0) <= '9') {
@@ -185,7 +185,7 @@ public class RFC2253Parser {
         String value = trim(str);
 
         if (value.startsWith("\"")) {
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             try (StringReader sr = new StringReader(value.substring(1, value.length() - 1))) {
                 int i = 0;
                 char c;
@@ -227,10 +227,10 @@ public class RFC2253Parser {
      */
     static String rfctoXML(String string) {
         try {
-            String s = changeLess32toXML(string);
+            final String s = changeLess32toXML(string);
 
             return changeWStoXML(s);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return string;
         }
     }
@@ -243,10 +243,10 @@ public class RFC2253Parser {
      */
     static String xmltoRFC(String string) {
         try {
-            String s = changeLess32toRFC(string);
+            final String s = changeLess32toRFC(string);
 
             return changeWStoRFC(s);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return string;
         }
     }
@@ -259,7 +259,7 @@ public class RFC2253Parser {
      * @throws IOException
      */
     static String changeLess32toRFC(String string) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         int i = 0;
         char c;
 
@@ -270,8 +270,8 @@ public class RFC2253Parser {
                 if (c == '\\') {
                     sb.append(c);
 
-                    char c1 = (char) sr.read();
-                    char c2 = (char) sr.read();
+                    final char c1 = (char) sr.read();
+                    final char c2 = (char) sr.read();
 
                     //65 (A) 97 (a)
                     if ((c1 >= 48 && c1 <= 57 || c1 >= 65 && c1 <= 70 || c1 >= 97 && c1 <= 102)
@@ -279,10 +279,10 @@ public class RFC2253Parser {
                             || c2 >= 65 && c2 <= 70
                             || c2 >= 97 && c2 <= 102)) {
                         try {
-                            char ch = (char) Byte.parseByte("" + c1 + c2, 16);
+                            final char ch = (char) Byte.parseByte("" + c1 + c2, 16);
 
                             sb.append(ch);
-                        } catch (NumberFormatException ex) {
+                        } catch (final NumberFormatException ex) {
                             throw new IOException(ex);
                         }
                     } else {
@@ -306,7 +306,7 @@ public class RFC2253Parser {
      * @throws IOException
      */
     static String changeLess32toXML(String string) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         int i = 0;
 
         try (StringReader sr = new StringReader(string)) {
@@ -331,7 +331,7 @@ public class RFC2253Parser {
      * @throws IOException
      */
     static String changeWStoXML(String string) throws IOException {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         int i = 0;
         char c;
 
@@ -340,12 +340,12 @@ public class RFC2253Parser {
                 c = (char) i;
 
                 if (c == '\\') {
-                    char c1 = (char) sr.read();
+                    final char c1 = (char) sr.read();
 
                     if (c1 == ' ') {
                         sb.append('\\');
 
-                        String s = "20";
+                        final String s = "20";
 
                         sb.append(s);
                     } else {
@@ -368,7 +368,7 @@ public class RFC2253Parser {
      * @return normalized string
      */
     static String changeWStoRFC(String string) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         int i = 0;
         int k;
 
@@ -413,7 +413,7 @@ public class RFC2253Parser {
      * @return normalized string
      */
     static String removeWSandReplace(String str, String symbol, String replace) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         int i = 0;
         int l = 0;
         int k;
@@ -465,7 +465,7 @@ public class RFC2253Parser {
     static String trim(String str) {
 
         String trimmed = str.trim();
-        int i = str.indexOf(trimmed) + trimmed.length();
+        final int i = str.indexOf(trimmed) + trimmed.length();
 
         if (str.length() > i && trimmed.endsWith("\\")
             && !trimmed.endsWith("\\\\") && str.charAt(i) == ' ') {

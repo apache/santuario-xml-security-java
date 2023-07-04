@@ -43,7 +43,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
         super.write(arg0);
         try {
             sig.update((byte)arg0);
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new RuntimeException(e);
         }
     }
@@ -53,7 +53,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
         super.write(arg0, arg1, arg2);
         try {
             sig.update(arg0, arg1, arg2);
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new RuntimeException(e);
         }
     }

@@ -121,9 +121,9 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
             throw new IllegalArgumentException("correlationID must not be null");
         }
         testAndSetInvocation();
-        Key key = getKey(algorithmURI, algorithmUsage, correlationID);
+        final Key key = getKey(algorithmURI, algorithmUsage, correlationID);
         if (key != null && this.inboundSecurityContext != null) {
-            AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
+            final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
             algorithmSuiteSecurityEvent.setAlgorithmURI(algorithmURI);
             algorithmSuiteSecurityEvent.setAlgorithmUsage(algorithmUsage);
             algorithmSuiteSecurityEvent.setCorrelationID(correlationID);
@@ -161,9 +161,9 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
             throw new IllegalArgumentException("correlationID must not be null");
         }
         testAndSetInvocation();
-        PublicKey publicKey = getPubKey(algorithmURI, algorithmUsage, correlationID);
+        final PublicKey publicKey = getPubKey(algorithmURI, algorithmUsage, correlationID);
         if (publicKey != null && this.inboundSecurityContext != null) {
-            AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
+            final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
             algorithmSuiteSecurityEvent.setAlgorithmURI(algorithmURI);
             algorithmSuiteSecurityEvent.setAlgorithmUsage(algorithmUsage);
             algorithmSuiteSecurityEvent.setCorrelationID(correlationID);

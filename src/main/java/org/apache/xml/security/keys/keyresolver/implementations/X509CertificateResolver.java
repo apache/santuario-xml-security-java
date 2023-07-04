@@ -53,7 +53,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
 
-        X509Certificate cert =
+        final X509Certificate cert =
             this.engineResolveX509Certificate(element, baseURI, storage, secureValidation);
 
         if (cert != null) {
@@ -70,10 +70,10 @@ public class X509CertificateResolver extends KeyResolverSpi {
     ) throws KeyResolverException {
 
         try {
-            Element[] els =
+            final Element[] els =
                 XMLUtils.selectDsNodes(element.getFirstChild(), Constants._TAG_X509CERTIFICATE);
             if (els == null || els.length == 0) {
-                Element el =
+                final Element el =
                     XMLUtils.selectDsNode(element.getFirstChild(), Constants._TAG_X509DATA, 0);
                 if (el != null) {
                     return engineResolveX509Certificate(el, baseURI, storage, secureValidation);
@@ -82,15 +82,15 @@ public class X509CertificateResolver extends KeyResolverSpi {
             }
 
             // populate Object array
-            for (Element el : els) {
-                XMLX509Certificate xmlCert = new XMLX509Certificate(el, baseURI);
-                X509Certificate cert = xmlCert.getX509Certificate();
+            for (final Element el : els) {
+                final XMLX509Certificate xmlCert = new XMLX509Certificate(el, baseURI);
+                final X509Certificate cert = xmlCert.getX509Certificate();
                 if (cert != null) {
                     return cert;
                 }
             }
             return null;
-        } catch (XMLSecurityException ex) {
+        } catch (final XMLSecurityException ex) {
             LOG.debug("Security Exception", ex);
             throw new KeyResolverException(ex);
         }

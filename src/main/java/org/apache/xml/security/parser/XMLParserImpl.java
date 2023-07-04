@@ -60,13 +60,13 @@ public class XMLParserImpl implements XMLParser {
             }
             // If the ClassLoader is null then just create a DocumentBuilder and use it
             if (loader == null) {
-                DocumentBuilder documentBuilder = createDocumentBuilder(disallowDocTypeDeclarations);
+                final DocumentBuilder documentBuilder = createDocumentBuilder(disallowDocTypeDeclarations);
                 return documentBuilder.parse(inputStream);
             }
 
-            Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disallowDocTypeDeclarations, loader);
-            DocumentBuilder documentBuilder = getDocumentBuilder(disallowDocTypeDeclarations, queue);
-            Document doc = documentBuilder.parse(inputStream);
+            final Queue<DocumentBuilder> queue = getDocumentBuilderQueue(disallowDocTypeDeclarations, loader);
+            final DocumentBuilder documentBuilder = getDocumentBuilder(disallowDocTypeDeclarations, queue);
+            final Document doc = documentBuilder.parse(inputStream);
             repoolDocumentBuilder(documentBuilder, queue);
             return doc;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
@@ -75,7 +75,7 @@ public class XMLParserImpl implements XMLParser {
     }
 
     private static Queue<DocumentBuilder> getDocumentBuilderQueue(boolean disallowDocTypeDeclarations, ClassLoader loader) throws ParserConfigurationException {
-        Map<ClassLoader, Queue<DocumentBuilder>> docBuilderCache =
+        final Map<ClassLoader, Queue<DocumentBuilder>> docBuilderCache =
                 disallowDocTypeDeclarations ? DOCUMENT_BUILDERS_DISALLOW_DOCTYPE : DOCUMENT_BUILDERS;
         Queue<DocumentBuilder> queue = docBuilderCache.get(loader);
         if (queue == null) {
@@ -95,7 +95,7 @@ public class XMLParserImpl implements XMLParser {
     }
 
     private static DocumentBuilder createDocumentBuilder(boolean disallowDocTypeDeclarations) throws ParserConfigurationException {
-        DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
         f.setNamespaceAware(true);
         f.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, true);
         f.setFeature("http://apache.org/xml/features/disallow-doctype-decl", disallowDocTypeDeclarations);

@@ -68,27 +68,27 @@ public class IaikCoreFeaturesTest {
 
     @Test
     public void test_anonymousReferenceSignature() throws Exception {
-        String file = "anonymousReferenceSignature.xml";
+        final String file = "anonymousReferenceSignature.xml";
 
-        boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector(),
+        final boolean coreValidity = validator.validate(file, new KeySelectors.KeyValueKeySelector(),
             new NullURIDereferencer(base));
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_manifestSignature() throws Exception {
-        String file = "manifestSignature.xml";
+        final String file = "manifestSignature.xml";
 
-        boolean coreValidity = validator.validate
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector());
         assertTrue(coreValidity, "Signature failed core validation");
     }
 
     @Test
     public void test_signatureTypesSignature() throws Exception {
-        String file = "signatureTypesSignature.xml";
+        final String file = "signatureTypesSignature.xml";
 
-        boolean coreValidity = validator.validate
+        final boolean coreValidity = validator.validate
             (file, new KeySelectors.KeyValueKeySelector(),
                     new OfflineDereferencer(), false);
         assertTrue(coreValidity, "Signature failed core validation");
@@ -99,7 +99,7 @@ public class IaikCoreFeaturesTest {
         private final OctetStreamData osd;
 
         NullURIDereferencer(Path base) throws Exception {
-            File content = resolveFile(base, "coreFeatures", "samples", "anonymousReferenceContent.xml");
+            final File content = resolveFile(base, "coreFeatures", "samples", "anonymousReferenceContent.xml");
             osd = new OctetStreamData(new FileInputStream(content));
         }
 
@@ -128,11 +128,11 @@ public class IaikCoreFeaturesTest {
         public Data dereference(URIReference uriReference, XMLCryptoContext context) throws URIReferenceException {
             try {
                 if ("http://www.w3.org/TR/2000/REC-xml-20001006".equals(uriReference.getURI())) {
-                    File content = new File(w3cRec, "REC-xml-20001006");
+                    final File content = new File(w3cRec, "REC-xml-20001006");
                     return new OctetStreamData(new FileInputStream(content));
                 }
                 return defaultDereferencer.dereference(uriReference, context);
-            } catch (java.io.FileNotFoundException ex) {
+            } catch (final java.io.FileNotFoundException ex) {
                 throw new URIReferenceException(ex.getMessage(), ex);
             }
         }

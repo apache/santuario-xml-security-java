@@ -41,19 +41,19 @@ public class IVSplittingOutputStreamTest {
     @Test
     public void testWriteBytes() throws Exception {
 
-        int ivSize = 16;
+        final int ivSize = 16;
 
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(128);
-        SecretKey secretKey = keyGenerator.generateKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+        final SecretKey secretKey = keyGenerator.generateKey();
+        final Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
-        ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        final IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
+        final ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
-        byte[] testBytes = TEST_STR.getBytes();
-        for (byte testByte : testBytes) {
+        final byte[] testBytes = TEST_STR.getBytes();
+        for (final byte testByte : testBytes) {
             replaceableOuputStream.write(testByte);
         }
         replaceableOuputStream.close();
@@ -67,16 +67,16 @@ public class IVSplittingOutputStreamTest {
     @Test
     public void testWriteBytesArray() throws Exception {
 
-        int ivSize = 16;
+        final int ivSize = 16;
 
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(128);
-        SecretKey secretKey = keyGenerator.generateKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+        final SecretKey secretKey = keyGenerator.generateKey();
+        final Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
-        ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        final IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
+        final ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
         replaceableOuputStream.write(TEST_STR.getBytes());
         replaceableOuputStream.close();
@@ -90,19 +90,19 @@ public class IVSplittingOutputStreamTest {
     @Test
     public void testWriteBytesArrayIVLength() throws Exception {
 
-        int ivSize = 16;
+        final int ivSize = 16;
 
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(128);
-        SecretKey secretKey = keyGenerator.generateKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+        final SecretKey secretKey = keyGenerator.generateKey();
+        final Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
-        ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        final IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
+        final ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
 
-        byte[] testBytes = TEST_STR.getBytes();
+        final byte[] testBytes = TEST_STR.getBytes();
         for (int i = 0; i < testBytes.length - ivSize; i += ivSize) {
             replaceableOuputStream.write(testBytes, i, ivSize);
         }
@@ -119,19 +119,19 @@ public class IVSplittingOutputStreamTest {
     @Test
     public void testWriteBytesArrayIVLength2() throws Exception {
 
-        int ivSize = 16;
+        final int ivSize = 16;
 
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(128);
-        SecretKey secretKey = keyGenerator.generateKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+        final SecretKey secretKey = keyGenerator.generateKey();
+        final Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
-        ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        final IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
+        final ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
 
-        byte[] testBytes = TEST_STR.getBytes();
+        final byte[] testBytes = TEST_STR.getBytes();
         replaceableOuputStream.write(testBytes, 0, testBytes.length - ivSize);
         //write last part
         replaceableOuputStream.write(testBytes, testBytes.length - ivSize, ivSize);
@@ -146,19 +146,19 @@ public class IVSplittingOutputStreamTest {
     @Test
     public void testWriteBytesArrayWithOffset() throws Exception {
 
-        int ivSize = 16;
+        final int ivSize = 16;
 
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        final KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(128);
-        SecretKey secretKey = keyGenerator.generateKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+        final SecretKey secretKey = keyGenerator.generateKey();
+        final Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
-        ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        final IVSplittingOutputStream ivSplittingOutputStream = new IVSplittingOutputStream(byteArrayOutputStream, cipher, secretKey, ivSize);
+        final ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);
         ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
 
-        byte[] testBytes = TEST_STR.getBytes();
+        final byte[] testBytes = TEST_STR.getBytes();
         for (int i = 0; i < testBytes.length - 4; i += 4) {
             replaceableOuputStream.write(testBytes, i, 4);
         }

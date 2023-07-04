@@ -50,18 +50,18 @@ public class StorageResolverTest {
             return;
         }
 
-        File inputDir = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "samples", "input");
-        KeyStore ks = KeyStore.getInstance("JKS");
+        final File inputDir = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "samples", "input");
+        final KeyStore ks = KeyStore.getInstance("JKS");
         try (FileInputStream inStream = new FileInputStream(new File(inputDir, "keystore.jks"))) {
             ks.load(inStream, "xmlsecurity".toCharArray());
         }
 
-        KeyStore ks2 = KeyStore.getInstance("JCEKS");
+        final KeyStore ks2 = KeyStore.getInstance("JCEKS");
         try (FileInputStream inStream2 = new FileInputStream(new File(inputDir, "keystore2.jks"))) {
             ks2.load(inStream2, "xmlsecurity".toCharArray());
         }
 
-        StorageResolver storage = new StorageResolver(ks);
+        final StorageResolver storage = new StorageResolver(ks);
         storage.add(ks2);
 
         Iterator<?> iter = storage.getIterator();
@@ -77,8 +77,8 @@ public class StorageResolverTest {
         iter2 = storage.getIterator();
 
         while (iter.hasNext()) {
-            X509Certificate cert = (X509Certificate) iter.next();
-            X509Certificate cert2 = (X509Certificate) iter2.next();
+            final X509Certificate cert = (X509Certificate) iter.next();
+            final X509Certificate cert2 = (X509Certificate) iter2.next();
             if (!cert.equals(cert2)) {
                 fail("StorageResolver iterators are not independent");
             }
@@ -91,7 +91,7 @@ public class StorageResolverTest {
         iter.hasNext(); // hasNext() is idempotent
 
         while (iter.hasNext()) {
-            X509Certificate cert = (X509Certificate) iter.next();
+            final X509Certificate cert = (X509Certificate) iter.next();
             cert.getSubjectX500Principal().getName();
             count++;
         }
@@ -103,7 +103,7 @@ public class StorageResolverTest {
         try {
             iter.next();
             fail("Expecting NoSuchElementException");
-        } catch (NoSuchElementException e) {
+        } catch (final NoSuchElementException e) {
             //
         }
     }

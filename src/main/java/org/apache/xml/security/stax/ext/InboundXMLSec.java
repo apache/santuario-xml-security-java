@@ -56,7 +56,7 @@ public class InboundXMLSec {
             xmlInputFactory.setProperty("org.codehaus.stax2.internNames", true);
             xmlInputFactory.setProperty("org.codehaus.stax2.internNsUris", true);
             xmlInputFactory.setProperty("org.codehaus.stax2.preserveLocation", false);
-        } catch (IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             LOG.debug(e.getMessage(), e);
             //ignore
         }
@@ -120,20 +120,20 @@ public class InboundXMLSec {
 
         inboundSecurityContext.put(XMLSecurityConstants.XMLINPUTFACTORY, xmlInputFactory);
 
-        DocumentContextImpl documentContext = new DocumentContextImpl();
+        final DocumentContextImpl documentContext = new DocumentContextImpl();
         documentContext.setEncoding(xmlStreamReader.getEncoding() != null ? xmlStreamReader.getEncoding() : java.nio.charset.StandardCharsets.UTF_8.name());
         //woodstox 3.2.9 returns null when used with a DOMSource
-        Location location = xmlStreamReader.getLocation();
+        final Location location = xmlStreamReader.getLocation();
         if (location != null) {
             documentContext.setBaseURI(location.getSystemId());
         }
 
-        InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(inboundSecurityContext, documentContext);
+        final InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(inboundSecurityContext, documentContext);
         inputProcessorChain.addProcessor(new XMLEventReaderInputProcessor(securityProperties, xmlStreamReader));
 
-        List<InputProcessor> additionalInputProcessors = securityProperties.getInputProcessorList();
+        final List<InputProcessor> additionalInputProcessors = securityProperties.getInputProcessorList();
         if (!additionalInputProcessors.isEmpty()) {
-            for (InputProcessor inputProcessor : additionalInputProcessors) {
+            for (final InputProcessor inputProcessor : additionalInputProcessors) {
                 inputProcessorChain.addProcessor(inputProcessor);
             }
         }
@@ -141,7 +141,7 @@ public class InboundXMLSec {
         inputProcessorChain.addProcessor(new XMLSecurityInputProcessor(securityProperties));
 
         if (LOG.isTraceEnabled()) {
-            LogInputProcessor logInputProcessor = new LogInputProcessor(securityProperties);
+            final LogInputProcessor logInputProcessor = new LogInputProcessor(securityProperties);
             logInputProcessor.addAfterProcessor(XMLSecurityInputProcessor.class.getName());
             inputProcessorChain.addProcessor(logInputProcessor);
         }

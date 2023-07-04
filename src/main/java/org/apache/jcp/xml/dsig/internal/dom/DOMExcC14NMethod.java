@@ -66,7 +66,7 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         throws InvalidAlgorithmParameterException
     {
         super.init(parent, context);
-        Element paramsElem = DOMUtils.getFirstChildElement(transformElem);
+        final Element paramsElem = DOMUtils.getFirstChildElement(transformElem);
         if (paramsElem == null) {
             this.params = null;
             this.inclusiveNamespaces = null;
@@ -76,11 +76,11 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
     }
 
     private void unmarshalParams(Element paramsElem) {
-        String prefixListAttr = paramsElem.getAttributeNS(null, "PrefixList");
+        final String prefixListAttr = paramsElem.getAttributeNS(null, "PrefixList");
         this.inclusiveNamespaces = prefixListAttr;
         int begin = 0;
         int end = prefixListAttr.indexOf(' ');
-        List<String> prefixList = new ArrayList<>();
+        final List<String> prefixList = new ArrayList<>();
         while (end != -1) {
             prefixList.add(prefixListAttr.substring(begin, end));
             begin = end + 1;
@@ -102,14 +102,14 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         throws MarshalException
     {
         super.marshalParams(parent, context);
-        AlgorithmParameterSpec spec = getParameterSpec();
+        final AlgorithmParameterSpec spec = getParameterSpec();
         if (spec == null) {
             return;
         }
 
-        String prefix = DOMUtils.getNSPrefix(context,
+        final String prefix = DOMUtils.getNSPrefix(context,
                                              CanonicalizationMethod.EXCLUSIVE);
-        Element eElem = DOMUtils.createElement(ownerDoc,
+        final Element eElem = DOMUtils.createElement(ownerDoc,
                                                "InclusiveNamespaces",
                                                CanonicalizationMethod.EXCLUSIVE,
                                                prefix);
@@ -122,9 +122,9 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
                                    CanonicalizationMethod.EXCLUSIVE);
         }
 
-        ExcC14NParameterSpec params = (ExcC14NParameterSpec)spec;
-        StringBuilder prefixListAttr = new StringBuilder("");
-        List<String> prefixList = getParameterSpecPrefixList(params);
+        final ExcC14NParameterSpec params = (ExcC14NParameterSpec)spec;
+        final StringBuilder prefixListAttr = new StringBuilder("");
+        final List<String> prefixList = getParameterSpecPrefixList(params);
         for (int i = 0, size = prefixList.size(); i < size; i++) {
             prefixListAttr.append(prefixList.get(i));
             if (i < size - 1) {
@@ -148,12 +148,12 @@ public final class DOMExcC14NMethod extends ApacheCanonicalizer {
         // you to omit comments, even if the Transform says otherwise -
         // this is to be compliant with section 4.3.3.3 of W3C Rec.
         if (data instanceof DOMSubTreeData) {
-            DOMSubTreeData subTree = (DOMSubTreeData)data;
+            final DOMSubTreeData subTree = (DOMSubTreeData)data;
             if (subTree.excludeComments()) {
                 try {
                     canonicalizer = Canonicalizer.getInstance
                         (CanonicalizationMethod.EXCLUSIVE);
-                } catch (InvalidCanonicalizerException ice) {
+                } catch (final InvalidCanonicalizerException ice) {
                     throw new TransformException
                         ("Couldn't find Canonicalizer for: " +
                          CanonicalizationMethod.EXCLUSIVE + ": " +

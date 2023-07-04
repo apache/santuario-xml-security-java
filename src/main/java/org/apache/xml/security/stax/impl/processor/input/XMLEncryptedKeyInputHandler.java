@@ -124,7 +124,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             return key;
                         }
 
-                        String algoFamily = JCEAlgorithmMapper.getJCEKeyAlgorithmFromURI(algorithmURI);
+                        final String algoFamily = JCEAlgorithmMapper.getJCEKeyAlgorithmFromURI(algorithmURI);
                         key = new SecretKeySpec(getSecret(this, correlationID, algorithmURI), algoFamily);
                         setSecretKey(algorithmURI, key);
                         return key;
@@ -147,7 +147,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         if (wrappingSecurityToken != null) {
                             return this.wrappingSecurityToken;
                         }
-                        KeyInfoType keyInfoType = encryptedKeyType.getKeyInfo();
+                        final KeyInfoType keyInfoType = encryptedKeyType.getKeyInfo();
                         this.wrappingSecurityToken = SecurityTokenFactory.getInstance().getSecurityToken(
                                 keyInfoType,
                                 SecurityTokenConstants.KeyUsage_Decryption,
@@ -166,12 +166,12 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             return this.decryptedKey;
                         }
 
-                        String algorithmURI = encryptedKeyType.getEncryptionMethod().getAlgorithm();
+                        final String algorithmURI = encryptedKeyType.getEncryptionMethod().getAlgorithm();
                         if (algorithmURI == null) {
                             throw new XMLSecurityException("stax.encryption.noEncAlgo");
                         }
-                        String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
-                        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
+                        final String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
+                        final String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
                         if (jceName == null) {
                             throw new XMLSecurityException("algorithms.NoSuchMap",
                                                            new Object[] {algorithmURI});
@@ -200,7 +200,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                         XMLSecurityUtils.getQNameType(encryptedKeyType.getEncryptionMethod().getContent(), XMLSecurityConstants.TAG_dsig_DigestMethod);
                                 String jceDigestAlgorithm = "SHA-1";
                                 if (digestMethodType != null) {
-                                    AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
+                                    final AlgorithmSuiteSecurityEvent algorithmSuiteSecurityEvent = new AlgorithmSuiteSecurityEvent();
                                     algorithmSuiteSecurityEvent.setAlgorithmURI(digestMethodType.getAlgorithm());
                                     algorithmSuiteSecurityEvent.setAlgorithmUsage(XMLSecurityConstants.EncDig);
                                     algorithmSuiteSecurityEvent.setCorrelationID(correlationID);
@@ -220,10 +220,10 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                 final MGFType mgfType =
                                         XMLSecurityUtils.getQNameType(encryptedKeyType.getEncryptionMethod().getContent(), XMLSecurityConstants.TAG_xenc11_MGF);
                                 if (mgfType != null) {
-                                    String jceMGFAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(mgfType.getAlgorithm());
+                                    final String jceMGFAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(mgfType.getAlgorithm());
                                     mgfParameterSpec = new MGF1ParameterSpec(jceMGFAlgorithm);
                                 }
-                                OAEPParameterSpec oaepParameterSpec = new OAEPParameterSpec(jceDigestAlgorithm, "MGF1", mgfParameterSpec, pSource);
+                                final OAEPParameterSpec oaepParameterSpec = new OAEPParameterSpec(jceDigestAlgorithm, "MGF1", mgfParameterSpec, pSource);
                                 cipher.init(Cipher.UNWRAP_MODE, wrappingSecurityToken.getSecretKey(algorithmURI, algorithmUsage, correlationID), oaepParameterSpec);
                             } else {
                                 cipher.init(Cipher.UNWRAP_MODE, wrappingSecurityToken.getSecretKey(algorithmURI, algorithmUsage, correlationID));
@@ -239,23 +239,23 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             throw new XMLSecurityException(e);
                         }
 
-                        byte[] encryptedBytes = getEncryptedBytes(encryptedKeyType.getCipherData().getCipherValue());
-                        byte[] sha1Bytes = generateDigest(encryptedBytes);
-                        String sha1Identifier = XMLUtils.encodeToString(sha1Bytes);
+                        final byte[] encryptedBytes = getEncryptedBytes(encryptedKeyType.getCipherData().getCipherValue());
+                        final byte[] sha1Bytes = generateDigest(encryptedBytes);
+                        final String sha1Identifier = XMLUtils.encodeToString(sha1Bytes);
                         super.setSha1Identifier(sha1Identifier);
 
                         try {
-                            Key key = cipher.unwrap(encryptedBytes,
+                            final Key key = cipher.unwrap(encryptedBytes,
                                     jceName,
                                     Cipher.SECRET_KEY);
                             return this.decryptedKey = key.getEncoded();
-                        } catch (IllegalStateException e) {
+                        } catch (final IllegalStateException e) {
                             throw new XMLSecurityException(e);
-                        } catch (Exception e) {
+                        } catch (final Exception e) {
                             LOG.warn("Unwrapping of the encrypted key failed with error: " + e.getMessage() + ". " +
                                     "Generating a faked one to mitigate timing attacks.");
 
-                            int keyLength = JCEAlgorithmMapper.getKeyLengthFromURI(symmetricAlgorithmURI);
+                            final int keyLength = JCEAlgorithmMapper.getKeyLengthFromURI(symmetricAlgorithmURI);
                             this.decryptedKey = XMLSecurityConstants.generateBytes(keyLength / 8);
                             return this.decryptedKey;
                         }
@@ -268,15 +268,15 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
 
             private byte[] getEncryptedBytes(CipherValueType cipherValue) throws XMLSecurityException {
 
-                StringBuilder sb = new StringBuilder();
+                final StringBuilder sb = new StringBuilder();
 
-                for (Object obj : cipherValue.getContent()) {
+                for (final Object obj : cipherValue.getContent()) {
                     if (obj instanceof String) {
                         sb.append((String)obj);
                     } else if (obj instanceof JAXBElement<?>) {
-                        JAXBElement<?> element = (JAXBElement<?>)obj;
+                        final JAXBElement<?> element = (JAXBElement<?>)obj;
                         if (XMLSecurityConstants.TAG_XOP_INCLUDE.equals(element.getName())) {
-                            Include include = (Include)element.getValue();
+                            final Include include = (Include)element.getValue();
                             if (include != null && include.getHref() != null && include.getHref().startsWith("cid:")) {
                                 return getBytesFromAttachment(include.getHref(), securityProperties);
                             }
@@ -297,7 +297,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
         inboundSecurityContext.registerSecurityTokenProvider(encryptedKeyType.getId(), securityTokenProvider);
 
         //fire a tokenSecurityEvent
-        EncryptedKeyTokenSecurityEvent tokenSecurityEvent = new EncryptedKeyTokenSecurityEvent();
+        final EncryptedKeyTokenSecurityEvent tokenSecurityEvent = new EncryptedKeyTokenSecurityEvent();
         tokenSecurityEvent.setSecurityToken(securityTokenProvider.getSecurityToken());
         tokenSecurityEvent.setCorrelationID(encryptedKeyType.getId());
         inboundSecurityContext.registerSecurityEvent(tokenSecurityEvent);
@@ -311,7 +311,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
     private byte[] generateDigest(byte[] inputBytes) throws XMLSecurityException {
         try {
             return MessageDigest.getInstance("SHA-1").digest(inputBytes);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (final NoSuchAlgorithmException e) {
             throw new XMLSecurityException(e);
         }
     }

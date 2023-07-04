@@ -80,13 +80,13 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
         addReturnToSelf();
 
         if (key instanceof DSAPublicKey) {
-            DSAParams params = ((DSAPublicKey) key).getParams();
+            final DSAParams params = ((DSAPublicKey) key).getParams();
             this.addBigIntegerElement(params.getP(), Constants._TAG_P);
             this.addBigIntegerElement(params.getQ(), Constants._TAG_Q);
             this.addBigIntegerElement(params.getG(), Constants._TAG_G);
             this.addBigIntegerElement(((DSAPublicKey) key).getY(), Constants._TAG_Y);
         } else {
-            Object[] exArgs = { Constants._TAG_DSAKEYVALUE, key.getClass().getName() };
+            final Object[] exArgs = { Constants._TAG_DSAKEYVALUE, key.getClass().getName() };
 
             throw new IllegalArgumentException(I18n.translate("KeyValue.IllegalArgument", exArgs));
         }
@@ -96,7 +96,7 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
     @Override
     public PublicKey getPublicKey() throws XMLSecurityException {
         try {
-            DSAPublicKeySpec pkspec =
+            final DSAPublicKeySpec pkspec =
                 new DSAPublicKeySpec(
                     this.getBigIntegerFromChildElement(
                         Constants._TAG_Y, Constants.SignatureSpecNS
@@ -111,7 +111,7 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
                         Constants._TAG_G, Constants.SignatureSpecNS
                     )
                 );
-            KeyFactory dsaFactory = KeyFactory.getInstance("DSA");
+            final KeyFactory dsaFactory = KeyFactory.getInstance("DSA");
 
             return dsaFactory.generatePublic(pkspec);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {

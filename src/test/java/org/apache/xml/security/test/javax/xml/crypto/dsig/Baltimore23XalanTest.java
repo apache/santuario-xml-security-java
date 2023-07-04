@@ -79,13 +79,13 @@ public class Baltimore23XalanTest {
             return;
         }
 
-        String file = "signature.xml";
-        File keystore = XmlSecTestEnvironment.resolveFile(dir.toPath(), "certs", "xmldsig.jks");
-        KeyStore ks = KeyStore.getInstance("JKS");
+        final String file = "signature.xml";
+        final File keystore = XmlSecTestEnvironment.resolveFile(dir.toPath(), "certs", "xmldsig.jks");
+        final KeyStore ks = KeyStore.getInstance("JKS");
         ks.load(new FileInputStream(keystore), "changeit".toCharArray());
 
-        SignatureValidator validator = new SignatureValidator(dir);
-        boolean cv = validator.validate(file, new X509KeySelector(ks, false), ud);
+        final SignatureValidator validator = new SignatureValidator(dir);
+        final boolean cv = validator.validate(file, new X509KeySelector(ks, false), ud);
         assertTrue(cv, "Signature failed core validation");
     }
 

@@ -59,41 +59,41 @@ public class Bug45961Test {
 
     @Test
     public void testBug() throws Exception {
-        Document document = getSignedDocument();
-        NodeList list =
+        final Document document = getSignedDocument();
+        final NodeList list =
             document.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE);
-        Element element = (Element) list.item(0);
-        XMLSignature signature = new XMLSignature(element, null);
-        KeyInfo keyInfo = signature.getKeyInfo();
-        X509Certificate certificate = keyInfo.getX509Certificate();
+        final Element element = (Element) list.item(0);
+        final XMLSignature signature = new XMLSignature(element, null);
+        final KeyInfo keyInfo = signature.getKeyInfo();
+        final X509Certificate certificate = keyInfo.getX509Certificate();
         assertNotNull(certificate);
         try {
             signature.checkSignatureValue(certificate);
-        } catch (XMLSignatureException e) {
+        } catch (final XMLSignatureException e) {
             fail(e.getMessage());
         }
     }
 
     private Document getSignedDocument() throws Exception {
-        KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
-        PrivateKey privateKey = (PrivateKey) ks.getKey(ALIAS, PASSWORD);
-        X509Certificate signingCert = (X509Certificate) ks
+        final KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
+        final PrivateKey privateKey = (PrivateKey) ks.getKey(ALIAS, PASSWORD);
+        final X509Certificate signingCert = (X509Certificate) ks
         .getCertificate(ALIAS);
 
-        Document document = TestUtils.newDocument();
+        final Document document = TestUtils.newDocument();
 
-        XMLSignature signature = new XMLSignature(document, null,
+        final XMLSignature signature = new XMLSignature(document, null,
                                                   XMLSignature.ALGO_ID_SIGNATURE_DSA,
                                                   MOCK_CANONICALIZATION_METHOD);
 
-        Element root = document.createElementNS("", "RootElement");
+        final Element root = document.createElementNS("", "RootElement");
         root.appendChild(document.createTextNode("Some simple test\n"));
         root.appendChild(signature.getElement());
         document.appendChild(root);
 
         //		document.appendChild(signature.getElement());
 
-        Element root2 = document.createElementNS("", "RootElement");
+        final Element root2 = document.createElementNS("", "RootElement");
         root2.appendChild(document.createTextNode("Some simple test\n"));
         object = new ObjectContainer(document);
         object.appendChild(root2);
@@ -109,7 +109,7 @@ public class Bug45961Test {
     }
 
     private Transforms getTransforms(Document document) throws Exception {
-        Transforms transforms = new Transforms(document);
+        final Transforms transforms = new Transforms(document);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         return transforms;
     }

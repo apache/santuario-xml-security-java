@@ -54,10 +54,10 @@ public class XMLX509IssuerSerialTest {
 
     @Test
     public void testEqualsHashcode() throws Exception {
-        XMLX509IssuerSerial is1 = new XMLX509IssuerSerial(doc, "1234", 0);
+        final XMLX509IssuerSerial is1 = new XMLX509IssuerSerial(doc, "1234", 0);
         assertEquals("1234", is1.getIssuerName());
 
-        XMLX509IssuerSerial is2 = new XMLX509IssuerSerial(doc, "1234", 0);
+        final XMLX509IssuerSerial is2 = new XMLX509IssuerSerial(doc, "1234", 0);
         assertEquals("1234", is2.getIssuerName());
 
         assertEquals(is1, is2);

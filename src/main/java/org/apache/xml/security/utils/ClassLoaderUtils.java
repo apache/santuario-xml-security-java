@@ -78,7 +78,7 @@ public final class ClassLoaderUtils {
         }
 
         if (url == null) {
-            ClassLoader cl = callingClass.getClassLoader();
+            final ClassLoader cl = callingClass.getClassLoader();
 
             if (cl != null) {
                 url = cl.getResource(resourceName);
@@ -112,7 +112,7 @@ public final class ClassLoaderUtils {
         if (resourceName == null) {
             throw new NullPointerException();
         }
-        List<URL> ret = new ArrayList<>();
+        final List<URL> ret = new ArrayList<>();
         Enumeration<URL> urls = new Enumeration<URL>() {
             @Override
             public boolean hasMoreElements() {
@@ -126,7 +126,7 @@ public final class ClassLoaderUtils {
         };
         try {
             urls = Thread.currentThread().getContextClassLoader().getResources(resourceName);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOG.debug(e.getMessage(), e);
             //ignore
         }
@@ -137,7 +137,7 @@ public final class ClassLoaderUtils {
                     Thread.currentThread().getContextClassLoader().getResources(
                         resourceName.substring(1)
                     );
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOG.debug(e.getMessage(), e);
                 // ignore
             }
@@ -150,7 +150,7 @@ public final class ClassLoaderUtils {
         if (!urls.hasMoreElements()) {
             try {
                 urls = cluClassloader.getResources(resourceName);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOG.debug(e.getMessage(), e);
                 // ignore
             }
@@ -159,19 +159,19 @@ public final class ClassLoaderUtils {
             //certain classloaders need it without the leading /
             try {
                 urls = cluClassloader.getResources(resourceName.substring(1));
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LOG.debug(e.getMessage(), e);
                 // ignore
             }
         }
 
         if (!urls.hasMoreElements()) {
-            ClassLoader cl = callingClass.getClassLoader();
+            final ClassLoader cl = callingClass.getClassLoader();
 
             if (cl != null) {
                 try {
                     urls = cl.getResources(resourceName);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOG.debug(e.getMessage(), e);
                     // ignore
                 }
@@ -179,7 +179,7 @@ public final class ClassLoaderUtils {
         }
 
         if (!urls.hasMoreElements()) {
-            URL url = callingClass.getResource(resourceName);
+            final URL url = callingClass.getResource(resourceName);
             if (url != null) {
                 ret.add(url);
             }
@@ -204,11 +204,11 @@ public final class ClassLoaderUtils {
      * @param callingClass The Class object of the calling object
      */
     public static InputStream getResourceAsStream(String resourceName, Class<?> callingClass) {
-        URL url = getResource(resourceName, callingClass);
+        final URL url = getResource(resourceName, callingClass);
 
         try {
             return (url != null) ? url.openStream() : null;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOG.debug(e.getMessage(), e);
             return null;
         }
@@ -231,12 +231,12 @@ public final class ClassLoaderUtils {
     public static Class<?> loadClass(String className, Class<?> callingClass)
         throws ClassNotFoundException {
         try {
-            ClassLoader cl = Thread.currentThread().getContextClassLoader();
+            final ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
             if (cl != null) {
                 return cl.loadClass(className);
             }
-        } catch (ClassNotFoundException e) {
+        } catch (final ClassNotFoundException e) {
             LOG.debug(e.getMessage(), e);
             //ignore
         }
@@ -247,12 +247,12 @@ public final class ClassLoaderUtils {
         throws ClassNotFoundException {
         try {
             return Class.forName(className);
-        } catch (ClassNotFoundException ex) {
+        } catch (final ClassNotFoundException ex) {
             try {
                 if (ClassLoaderUtils.class.getClassLoader() != null) {
                     return ClassLoaderUtils.class.getClassLoader().loadClass(className);
                 }
-            } catch (ClassNotFoundException exc) {
+            } catch (final ClassNotFoundException exc) {
                 if (callingClass != null && callingClass.getClassLoader() != null) {
                     return callingClass.getClassLoader().loadClass(className);
                 }

@@ -54,21 +54,21 @@ public class TransformC14N extends TransformSpi {
         String baseURI, boolean secureValidation
     ) throws CanonicalizationException {
 
-        Canonicalizer20010315 c14n = getCanonicalizer();
+        final Canonicalizer20010315 c14n = getCanonicalizer();
 
         if (os == null && (input.isOctetStream() || input.isElement() || input.isNodeSet())) {
             try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
                 c14n.engineCanonicalize(input, writer, secureValidation);
                 writer.flush();
-                XMLSignatureInput output = new XMLSignatureInput(writer.toByteArray());
+                final XMLSignatureInput output = new XMLSignatureInput(writer.toByteArray());
                 output.setSecureValidation(secureValidation);
                 return output;
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 throw new CanonicalizationException("empty", new Object[] {ex.getMessage()});
             }
         } else {
             c14n.engineCanonicalize(input, os, secureValidation);
-            XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+            final XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(os);
             return output;

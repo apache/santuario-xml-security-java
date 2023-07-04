@@ -44,7 +44,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
     public void write(byte[] arg0)  {
         try {
             sa.update(arg0);
-        } catch (XMLSignatureException e) {
+        } catch (final XMLSignatureException e) {
             throw new RuntimeException("" + e);
         }
     }
@@ -54,7 +54,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
     public void write(int arg0) {
         try {
             sa.update((byte)arg0);
-        } catch (XMLSignatureException e) {
+        } catch (final XMLSignatureException e) {
             throw new RuntimeException("" + e);
         }
     }
@@ -64,7 +64,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
     public void write(byte[] arg0, int arg1, int arg2) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Canonicalized SignedInfo:");
-            StringBuilder sb = new StringBuilder(arg2);
+            final StringBuilder sb = new StringBuilder(arg2);
             for (int i = arg1; i < (arg1 + arg2); i++) {
                 sb.append((char)arg0[i]);
             }
@@ -72,7 +72,7 @@ public class SignerOutputStream extends ByteArrayOutputStream {
         }
         try {
             sa.update(arg0, arg1, arg2);
-        } catch (XMLSignatureException e) {
+        } catch (final XMLSignatureException e) {
             throw new RuntimeException("" + e);
         }
     }

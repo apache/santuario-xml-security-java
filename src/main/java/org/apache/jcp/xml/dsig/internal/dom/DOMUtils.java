@@ -72,7 +72,7 @@ public final class DOMUtils {
      * @return The string for the qName, for example, "xsd:element".
      */
     public static String getQNameString(String prefix, String localName) {
-        String qName = prefix == null || prefix.length() == 0
+        final String qName = prefix == null || prefix.length() == 0
                 ? localName : prefix + ":" + localName;
 
         return qName;
@@ -91,7 +91,7 @@ public final class DOMUtils {
     public static Element createElement(Document doc, String tag,
                                         String nsURI, String prefix)
     {
-        String qName = (prefix == null || prefix.length() == 0)
+        final String qName = (prefix == null || prefix.length() == 0)
                        ? tag : prefix + ":" + tag;
         return doc.createElementNS(nsURI, qName);
     }
@@ -169,8 +169,8 @@ public final class DOMUtils {
         if (elem == null) {
             throw new MarshalException("Missing " + localName + " element");
         }
-        String name = elem.getLocalName();
-        String namespace = elem.getNamespaceURI();
+        final String name = elem.getLocalName();
+        final String namespace = elem.getNamespaceURI();
         if (!name.equals(localName) || namespace == null && namespaceURI != null
             || namespace != null && !namespace.equals(namespaceURI)) {
             throw new MarshalException("Invalid element name: " +
@@ -245,7 +245,7 @@ public final class DOMUtils {
      * @return the attribute value (may be null if unspecified)
      */
     public static String getAttributeValue(Element elem, String name) {
-        Attr attr = elem.getAttributeNodeNS(null, name);
+        final Attr attr = elem.getAttributeNodeNS(null, name);
         return (attr == null) ? null : attr.getValue();
     }
 
@@ -264,7 +264,7 @@ public final class DOMUtils {
      * @return the attribute value (may be null if unspecified)
      */
     public static <N> String getIdAttributeValue(Element elem, String name) {
-        Attr attr = elem.getAttributeNodeNS(null, name);
+        final Attr attr = elem.getAttributeNodeNS(null, name);
         if (attr != null && !attr.isId()) {
             elem.setIdAttributeNode(attr, true);
         }
@@ -307,7 +307,7 @@ public final class DOMUtils {
     public static void removeAllChildren(Node node) {
         Node firstChild = node.getFirstChild();
         while (firstChild != null) {
-            Node nodeToRemove = firstChild;
+            final Node nodeToRemove = firstChild;
             firstChild = firstChild.getNextSibling();
             node.removeChild(nodeToRemove);
         }
@@ -326,7 +326,7 @@ public final class DOMUtils {
      * if necessary.
      */
     public static void appendChild(Node parent, Node child) {
-        Document ownerDoc = getOwnerDocument(parent);
+        final Document ownerDoc = getOwnerDocument(parent);
         if (child.getOwnerDocument() != ownerDoc) {
             parent.appendChild(ownerDoc.importNode(child, true));
         } else {
@@ -366,16 +366,18 @@ public final class DOMUtils {
                                        XPathFilter2ParameterSpec spec2)
     {
         @SuppressWarnings("unchecked")
+        final
         List<XPathType> types = spec1.getXPathList();
         @SuppressWarnings("unchecked")
+        final
         List<XPathType> otypes = spec2.getXPathList();
-        int size = types.size();
+        final int size = types.size();
         if (size != otypes.size()) {
             return false;
         }
         for (int i = 0; i < size; i++) {
-            XPathType type = types.get(i);
-            XPathType otype = otypes.get(i);
+            final XPathType type = types.get(i);
+            final XPathType otype = otypes.get(i);
             if (!type.getExpression().equals(otype.getExpression()) ||
                 !type.getNamespaceMap().equals(otype.getNamespaceMap()) ||
                 type.getFilter() != otype.getFilter()) {
@@ -402,14 +404,14 @@ public final class DOMUtils {
                                        XSLTTransformParameterSpec spec2)
     {
 
-        XMLStructure ostylesheet = spec2.getStylesheet();
+        final XMLStructure ostylesheet = spec2.getStylesheet();
         if (!(ostylesheet instanceof javax.xml.crypto.dom.DOMStructure)) {
             return false;
         }
-        Node ostylesheetElem =
+        final Node ostylesheetElem =
             ((javax.xml.crypto.dom.DOMStructure) ostylesheet).getNode();
-        XMLStructure stylesheet = spec1.getStylesheet();
-        Node stylesheetElem =
+        final XMLStructure stylesheet = spec1.getStylesheet();
+        final Node stylesheetElem =
             ((javax.xml.crypto.dom.DOMStructure) stylesheet).getNode();
         return nodesEqual(stylesheetElem, ostylesheetElem);
     }

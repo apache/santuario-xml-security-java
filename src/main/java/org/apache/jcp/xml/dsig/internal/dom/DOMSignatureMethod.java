@@ -135,13 +135,13 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
      * @param smElem a SignatureMethod element
      */
     DOMSignatureMethod(Element smElem) throws MarshalException {
-        Element paramsElem = DOMUtils.getFirstChildElement(smElem);
+        final Element paramsElem = DOMUtils.getFirstChildElement(smElem);
         if (paramsElem != null) {
             params = unmarshalParams(paramsElem);
         }
         try {
             checkParams(params);
-        } catch (InvalidAlgorithmParameterException iape) {
+        } catch (final InvalidAlgorithmParameterException iape) {
             throw new MarshalException(iape);
         }
     }
@@ -175,7 +175,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
     abstract byte[] preVerifyFormat(Key key, byte[] sig) throws IOException;
 
     static SignatureMethod unmarshal(Element smElem) throws MarshalException {
-        String alg = DOMUtils.getAttributeValue(smElem, "Algorithm");
+        final String alg = DOMUtils.getAttributeValue(smElem, "Algorithm");
         if (alg.equals(SignatureMethod.RSA_SHA1)) {
             return new SHA1withRSA(smElem);
         } else if (alg.equals(RSA_SHA224)) {
@@ -275,10 +275,10 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             throw new InvalidKeyException("key must be PublicKey");
         }
         if (signature == null) {
-            Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
+            final Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
             try {
                 signature = getSignature(p);
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
             }
         }
@@ -293,7 +293,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             ((DOMSignedInfo)si).canonicalize(context, outputStream);
             // Do any necessary format conversions
             s = preVerifyFormat(key, sig);
-        } catch (IOException ioe) {
+        } catch (final IOException ioe) {
             throw new XMLSignatureException(ioe);
         }
         return signature.verify(s);
@@ -311,10 +311,10 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             throw new InvalidKeyException("key must be PrivateKey");
         }
         if (signature == null) {
-            Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
+            final Provider p = (Provider)context.getProperty(DOM_SIGNATURE_PROVIDER);
             try {
                 signature = getSignature(p);
-            } catch (NoSuchAlgorithmException nsae) {
+            } catch (final NoSuchAlgorithmException nsae) {
                 throw new XMLSignatureException(nsae);
             }
         }
@@ -405,8 +405,8 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
                 return (p == null)
                     ? Signature.getInstance(getJCAAlgorithm())
                     : Signature.getInstance(getJCAAlgorithm(), p);
-            } catch (NoSuchAlgorithmException nsae) {
-                Signature s = (p == null)
+            } catch (final NoSuchAlgorithmException nsae) {
+                final Signature s = (p == null)
                     ? Signature.getInstance(getJCAFallbackAlgorithm())
                     : Signature.getInstance(getJCAFallbackAlgorithm(), p);
                 asn1 = true;
@@ -432,7 +432,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             // If signature is in ASN.1 (i.e., if the fallback algorithm
             // was used), convert the signature to the P1363 format
             if (asn1) {
-                int size = ((DSAKey) key).getParams().getQ().bitLength();
+                final int size = ((DSAKey) key).getParams().getQ().bitLength();
                 return JavaUtils.convertDsaASN1toXMLDSIG(sig, size / 8);
             } else {
                 return sig;
@@ -445,7 +445,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             // algorithm will be used to verify the sig), convert the signature
             // to the ASN.1 format
             if (asn1) {
-                int size = ((DSAKey) key).getParams().getQ().bitLength();
+                final int size = ((DSAKey) key).getParams().getQ().bitLength();
                 return JavaUtils.convertDsaXMLDSIGtoASN1(sig, size / 8);
             } else {
                 return sig;
@@ -472,7 +472,7 @@ public abstract class DOMSignatureMethod extends AbstractDOMSignatureMethod {
             if (asn1) {
                 int rawLen = -1;
                 if (key instanceof ECPrivateKey) {
-                    ECPrivateKey ecKey = (ECPrivateKey)key;
+                    final ECPrivateKey ecKey = (ECPrivateKey)key;
                     rawLen = (ecKey.getParams().getCurve().getField().getFieldSize() + 7) / 8;
                 }
                 return SignatureECDSA.convertASN1toXMLDSIG(sig, rawLen);

@@ -58,7 +58,7 @@ public class ResourceResolver {
     @SuppressWarnings("unchecked")
     public static void register(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
-        Class<ResourceResolverSpi> resourceResolverClass =
+        final Class<ResourceResolverSpi> resourceResolverClass =
             (Class<ResourceResolverSpi>)
             ClassLoaderUtils.loadClass(className, ResourceResolver.class);
         register(JavaUtils.newInstanceWithEmptyConstructor(resourceResolverClass), false);
@@ -77,7 +77,7 @@ public class ResourceResolver {
     @SuppressWarnings("unchecked")
     public static void registerAtStart(String className) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
-        Class<ResourceResolverSpi> resourceResolverClass =
+        final Class<ResourceResolverSpi> resourceResolverClass =
             (Class<ResourceResolverSpi>)
             ClassLoaderUtils.loadClass(className, ResourceResolver.class);
         register(JavaUtils.newInstanceWithEmptyConstructor(resourceResolverClass), true);
@@ -114,9 +114,9 @@ public class ResourceResolver {
         throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         JavaUtils.checkRegisterPermission();
 
-        List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>(classNames.size());
-        for (String className : classNames) {
-            ResourceResolverSpi resourceResolverSpi = (ResourceResolverSpi)
+        final List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>(classNames.size());
+        for (final String className : classNames) {
+            final ResourceResolverSpi resourceResolverSpi = (ResourceResolverSpi)
                 JavaUtils.newInstanceWithEmptyConstructor(ClassLoaderUtils.loadClass(className, ResourceResolver.class));
             resourceResolversToAdd.add(resourceResolverSpi);
         }
@@ -129,7 +129,7 @@ public class ResourceResolver {
     public static void registerDefaultResolvers() {
         // Add a guard so that we don't repeatedly add the default resolvers
         if (defaultResolversAdded.compareAndSet(false, true)) {
-            List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>();
+            final List<ResourceResolverSpi> resourceResolversToAdd = new ArrayList<>();
             resourceResolversToAdd.add(new ResolverFragment());
             resourceResolversToAdd.add(new ResolverXPointer());
 
@@ -147,7 +147,7 @@ public class ResourceResolver {
      */
     public static XMLSignatureInput resolve(ResourceResolverContext context)
         throws ResourceResolverException {
-        for (ResourceResolverSpi resolver : resolverList) {
+        for (final ResourceResolverSpi resolver : resolverList) {
             LOG.debug("check resolvability by class {}", resolver.getClass().getName());
 
             if (resolver.engineCanResolveURI(context)) {
@@ -155,7 +155,7 @@ public class ResourceResolver {
             }
         }
 
-        Object[] exArgs = { context.uriToResolve != null
+        final Object[] exArgs = { context.uriToResolve != null
                 ? context.uriToResolve : "null", context.baseUri };
 
         throw new ResourceResolverException("utils.resolver.noClass", exArgs, context.uriToResolve, context.baseUri);
@@ -180,8 +180,8 @@ public class ResourceResolver {
 
         // first check the individual Resolvers
         if (individualResolvers != null) {
-            for (ResourceResolverSpi resolver : individualResolvers) {
-                String currentClass = resolver.getClass().getName();
+            for (final ResourceResolverSpi resolver : individualResolvers) {
+                final String currentClass = resolver.getClass().getName();
                 LOG.debug("check resolvability by class {}", currentClass);
 
                 if (resolver.engineCanResolveURI(context)) {

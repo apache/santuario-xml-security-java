@@ -76,7 +76,7 @@ public class XMLSignatureEdDSATest extends EdDSATestAbstract {
             "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448,ed448",
     })
     public void createEdDSASignatureTest(String signatureAlgorithm, String alias) throws Exception {
-        byte[] buff = doSign(signatureAlgorithm, alias);
+        final byte[] buff = doSign(signatureAlgorithm, alias);
         Assertions.assertNotNull(buff);
         assertValidSignature(buff);
     }
@@ -84,70 +84,70 @@ public class XMLSignatureEdDSATest extends EdDSATestAbstract {
     public byte[] doSign(String signatureMethod, String alias) throws Exception {
 
         // create test xml document to sign
-        String signedElementId = "element-id-01";
-        String signedElementName = "SignedElement";
-        org.w3c.dom.Document doc = TestUtils.newDocument();
-        Element root = doc.createElement("RootElement");
-        Element signedElement = doc.createElement(signedElementName);
+        final String signedElementId = "element-id-01";
+        final String signedElementName = "SignedElement";
+        final org.w3c.dom.Document doc = TestUtils.newDocument();
+        final Element root = doc.createElement("RootElement");
+        final Element signedElement = doc.createElement(signedElementName);
         signedElement.setAttribute("id", signedElementId);
         signedElement.appendChild(doc.createTextNode("Some data to sign"));
         doc.appendChild(root);
         root.appendChild(signedElement);
 
         // get private key and the certificate from the truststore
-        KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
+        final KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
-        X509Certificate certificate = (X509Certificate) keyStore.getCertificate(alias);
-        PrivateKey privateKey =
+        final X509Certificate certificate = (X509Certificate) keyStore.getCertificate(alias);
+        final PrivateKey privateKey =
                 (PrivateKey) keyStore.getKey(alias, EDDSA_KS_PASSWORD.toCharArray());
 
         // prepare xml signature data
-        Element canonElem =
+        final Element canonElem =
                 XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_CANONICALIZATIONMETHOD);
         canonElem.setAttributeNS(
                 null, Constants._ATT_ALGORITHM, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS
         );
 
         //Create XML Signature Factory
-        XMLSignatureFactory xmlSigFactory = XMLSignatureFactory.getInstance("DOM");
-        DOMSignContext domSignCtx = new DOMSignContext(privateKey, doc.getDocumentElement());
+        final XMLSignatureFactory xmlSigFactory = XMLSignatureFactory.getInstance("DOM");
+        final DOMSignContext domSignCtx = new DOMSignContext(privateKey, doc.getDocumentElement());
         domSignCtx.setIdAttributeNS(signedElement, null, "id");
         // reference(s), SignedInfo and KeyInfo
-        Reference ref = xmlSigFactory.newReference("#" + signedElementId, xmlSigFactory.newDigestMethod(DigestMethod.SHA256, null),
+        final Reference ref = xmlSigFactory.newReference("#" + signedElementId, xmlSigFactory.newDigestMethod(DigestMethod.SHA256, null),
                 Collections.singletonList(xmlSigFactory.newTransform(Transform.ENVELOPED,
                         (TransformParameterSpec) null)), null, null);
-        SignedInfo signedInfo = xmlSigFactory.newSignedInfo(
+        final SignedInfo signedInfo = xmlSigFactory.newSignedInfo(
                 xmlSigFactory.newCanonicalizationMethod(CanonicalizationMethod.INCLUSIVE,
                         (C14NMethodParameterSpec) null),
                 xmlSigFactory.newSignatureMethod(signatureMethod, null),
                 Collections.singletonList(ref));
-        KeyInfo keyInfo = createKeyInfo(xmlSigFactory, certificate);
+        final KeyInfo keyInfo = createKeyInfo(xmlSigFactory, certificate);
         //Create the XML Signature
-        XMLSignature xmlSignature = xmlSigFactory.newXMLSignature(signedInfo, keyInfo);
+        final XMLSignature xmlSignature = xmlSigFactory.newXMLSignature(signedInfo, keyInfo);
         //Sign the document
         xmlSignature.sign(domSignCtx);
         // serialize the xml to byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream bos = new ByteArrayOutputStream();
         XMLUtils.outputDOMc14nWithComments(doc, bos);
         return bos.toByteArray();
     }
 
     private KeyInfo createKeyInfo(XMLSignatureFactory fac, X509Certificate cert) {
         // Create the KeyInfo containing the X509Data.
-        KeyInfoFactory kif = fac.getKeyInfoFactory();
-        List<Object> x509Content = new ArrayList();
+        final KeyInfoFactory kif = fac.getKeyInfoFactory();
+        final List<Object> x509Content = new ArrayList();
         x509Content.add(cert.getSubjectX500Principal().getName());
         x509Content.add(cert);
-        X509Data xd = kif.newX509Data(x509Content);
+        final X509Data xd = kif.newX509Data(x509Content);
         return kif.newKeyInfo(Collections.singletonList(xd));
     }
 
     private void assertValidSignature(byte[] signedXml) throws Exception {
         try (InputStream is = new ByteArrayInputStream(signedXml)) {
-            DOMValidateContext vc = testInstance.getValidateContext(is, new KeySelectors.RawX509KeySelector(), false);
+            final DOMValidateContext vc = testInstance.getValidateContext(is, new KeySelectors.RawX509KeySelector(), false);
             updateIdReferences(vc, "SignedElement", "id");
 
-            boolean coreValidity = testInstance.validate(vc);
+            final boolean coreValidity = testInstance.validate(vc);
             // assert expected result
             assertTrue(coreValidity);
         }

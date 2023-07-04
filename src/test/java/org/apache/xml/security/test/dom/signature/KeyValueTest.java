@@ -44,15 +44,15 @@ public class KeyValueTest {
 
     @Test
     public void testDSAPublicKey() throws Exception {
-        String path =
+        final String path =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml";
-        File f = XmlSecTestEnvironment.resolveFile(path);
-        Document doc = XMLUtils.read(f, false);
-        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
-        XMLSignature sig = new XMLSignature((Element) nl.item(0), f.toURI().toURL().toString());
-        KeyInfo ki = sig.getKeyInfo();
-        KeyValue kv = ki.itemKeyValue(0);
-        PublicKey pk = kv.getPublicKey();
+        final File f = XmlSecTestEnvironment.resolveFile(path);
+        final Document doc = XMLUtils.read(f, false);
+        final NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
+        final XMLSignature sig = new XMLSignature((Element) nl.item(0), f.toURI().toURL().toString());
+        final KeyInfo ki = sig.getKeyInfo();
+        final KeyValue kv = ki.itemKeyValue(0);
+        final PublicKey pk = kv.getPublicKey();
         assertNotNull(pk);
     }
 
