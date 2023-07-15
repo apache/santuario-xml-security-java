@@ -55,6 +55,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.Attribute;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.binding.xmldsig.KeyInfoType;
 import org.apache.xml.security.binding.xmlenc.EncryptedDataType;
 import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
@@ -63,7 +64,6 @@ import org.apache.xml.security.binding.xmlenc.ReferenceType;
 import org.apache.xml.security.binding.xop.Include;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.ConfigurationProperties;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.AbstractInputProcessor;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
@@ -234,7 +234,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 handleSecurityToken(inboundSecurityToken, inputProcessorChain.getSecurityContext(), encryptedDataType);
 
                 final String algorithmURI = encryptedDataType.getEncryptionMethod().getAlgorithm();
-                final int ivLength = JCEAlgorithmMapper.getIVLengthFromURI(algorithmURI) / 8;
+                final int ivLength = JCEMapper.getIVLengthFromURI(algorithmURI) / 8;
                 Cipher symCipher = getCipher(algorithmURI);
 
                 if (encryptedDataType.getCipherData().getCipherReference() != null) {
@@ -437,8 +437,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     private Cipher getCipher(String algorithmURI) throws XMLSecurityException {
         Cipher symCipher;
         try {
-            String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
-            String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
+            String jceName = JCEMapper.translateURItoJCEID(algorithmURI);
+            String jceProvider = JCEMapper.getJCEProviderFromURI(algorithmURI);
             if (jceName == null) {
                 throw new XMLSecurityException("algorithms.NoSuchMap",
                                                new Object[] {algorithmURI});

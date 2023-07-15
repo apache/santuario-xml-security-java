@@ -41,6 +41,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -104,25 +105,25 @@ public class XMLSecurityUtils {
         int eventType = xmlSecEvent.getEventType();
 
         switch (eventType) {
-            case XMLSecEvent.START_ELEMENT:
+            case XMLStreamConstants.START_ELEMENT:
                 return "START_ELEMENT";
-            case XMLSecEvent.END_ELEMENT:
+            case XMLStreamConstants.END_ELEMENT:
                 return "END_ELEMENT";
-            case XMLSecEvent.PROCESSING_INSTRUCTION:
+            case XMLStreamConstants.PROCESSING_INSTRUCTION:
                 return "PROCESSING_INSTRUCTION";
-            case XMLSecEvent.CHARACTERS:
+            case XMLStreamConstants.CHARACTERS:
                 return "CHARACTERS";
-            case XMLSecEvent.COMMENT:
+            case XMLStreamConstants.COMMENT:
                 return "COMMENT";
-            case XMLSecEvent.START_DOCUMENT:
+            case XMLStreamConstants.START_DOCUMENT:
                 return "START_DOCUMENT";
-            case XMLSecEvent.END_DOCUMENT:
+            case XMLStreamConstants.END_DOCUMENT:
                 return "END_DOCUMENT";
-            case XMLSecEvent.ATTRIBUTE:
+            case XMLStreamConstants.ATTRIBUTE:
                 return "ATTRIBUTE";
-            case XMLSecEvent.DTD:
+            case XMLStreamConstants.DTD:
                 return "DTD";
-            case XMLSecEvent.NAMESPACE:
+            case XMLStreamConstants.NAMESPACE:
                 return "NAMESPACE";
             default:
                 throw new IllegalArgumentException("Illegal XMLSecEvent received: " + eventType);
