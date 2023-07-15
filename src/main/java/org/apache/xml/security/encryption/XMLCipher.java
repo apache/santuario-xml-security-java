@@ -26,6 +26,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -75,8 +76,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * <code>XMLCipher</code> encrypts and decrypts the contents of
@@ -288,7 +287,7 @@ public final class XMLCipher {
 
     private boolean secureValidation = true;
 
-    private final String digestAlg;
+    private String digestAlg;
 
     /** List of internal KeyResolvers for DECRYPT and UNWRAP modes. */
     private List<KeyResolverSpi> internalKeyResolvers;
@@ -1119,7 +1118,7 @@ public final class XMLCipher {
                 serializedOctets = serializer.serializeToByteArray(element);
             }
             if (LOG.isLoggable(Level.DEBUG)) {
-                LOG.log(Level.DEBUG, "Serialized octets:\n" + new String(serializedOctets, UTF_8));
+                LOG.log(Level.DEBUG, "Serialized octets:\n" + new String(serializedOctets, StandardCharsets.UTF_8));
             }
         }
 
@@ -1675,7 +1674,7 @@ public final class XMLCipher {
         byte[] octets = decryptToByteArray(element);
 
         if (LOG.isLoggable(Level.DEBUG)) {
-            LOG.log(Level.DEBUG, "Decrypted octets:\n" + new String(octets, UTF_8));
+            LOG.log(Level.DEBUG, "Decrypted octets:\n" + new String(octets, StandardCharsets.UTF_8));
         }
 
         Node sourceParent = element.getParentNode();
@@ -2377,7 +2376,7 @@ public final class XMLCipher {
                     EncryptionConstants._TAG_OAEPPARAMS).item(0);
             if (null != oaepParamsElement) {
                 String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
-                result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(UTF_8)));
+                result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
             }
 
             Element digestElement =
@@ -2513,10 +2512,10 @@ public final class XMLCipher {
 
         private class AgreementMethodImpl implements AgreementMethod {
             private byte[] kaNonce;
-            private final List<Element> agreementMethodInformation;
+            private List<Element> agreementMethodInformation;
             private KeyInfo originatorKeyInfo;
             private KeyInfo recipientKeyInfo;
-            private final String algorithmURI;
+            private String algorithmURI;
 
             /**
              * @param algorithm
@@ -2668,9 +2667,9 @@ public final class XMLCipher {
         }
 
         private class CipherReferenceImpl implements CipherReference {
-            private final String referenceURI;
+            private String referenceURI;
             private Transforms referenceTransforms;
-            private final Attr referenceNode;
+            private Attr referenceNode;
 
             /**
              * @param uri
@@ -2923,7 +2922,7 @@ public final class XMLCipher {
             private String encoding;
             private EncryptionMethod encryptionMethod;
             private KeyInfo keyInfo;
-            private final CipherData cipherData;
+            private CipherData cipherData;
             private EncryptionProperties encryptionProperties;
 
             /**
@@ -3077,10 +3076,10 @@ public final class XMLCipher {
         }
 
         private class EncryptionMethodImpl implements EncryptionMethod {
-            private final String algorithm;
+            private String algorithm;
             private int keySize = Integer.MIN_VALUE;
             private byte[] oaepParams;
-            private final List<Element> encryptionMethodInformation;
+            private List<Element> encryptionMethodInformation;
             private String digestAlgorithm;
             private String mgfAlgorithm;
 
@@ -3227,7 +3226,7 @@ public final class XMLCipher {
 
         private class EncryptionPropertiesImpl implements EncryptionProperties {
             private String id;
-            private final List<EncryptionProperty> encryptionProperties;
+            private List<EncryptionProperty> encryptionProperties;
 
             /**
              * Constructor.
@@ -3286,8 +3285,8 @@ public final class XMLCipher {
         private class EncryptionPropertyImpl implements EncryptionProperty {
             private String target;
             private String id;
-            private final Map<String, String> attributeMap = new HashMap<>();
-            private final List<Element> encryptionInformation;
+            private Map<String, String> attributeMap = new HashMap<>();
+            private List<Element> encryptionInformation;
 
             /**
              * Constructor.
@@ -3464,7 +3463,7 @@ public final class XMLCipher {
 
         private class ReferenceListImpl implements ReferenceList {
             private Class<?> sentry;
-            private final List<Reference> references;
+            private List<Reference> references;
 
             /**
              * Constructor.
@@ -3550,7 +3549,7 @@ public final class XMLCipher {
              */
             private abstract class ReferenceImpl implements Reference {
                 private String uri;
-                private final List<Element> referenceInformation;
+                private List<Element> referenceInformation;
 
                 ReferenceImpl(String uri) {
                     this.uri = uri;
@@ -3652,7 +3651,7 @@ public final class XMLCipher {
                     javax.xml.transform.TransformerFactory.newInstance();
             transformerFactory.newTransformer().transform(
                     new javax.xml.transform.stream.StreamSource(
-                            new java.io.ByteArrayInputStream(xml.getBytes(UTF_8))), domResult);
+                            new java.io.ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))), domResult);
 
             boolean result = false;
             if (domResult.getNode().getFirstChild().getFirstChild().hasAttributes()

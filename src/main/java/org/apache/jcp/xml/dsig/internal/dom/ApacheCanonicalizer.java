@@ -139,11 +139,11 @@ public abstract class ApacheCanonicalizer extends TransformService {
                 XMLSignatureInput in =
                     ((ApacheData)data).getXMLSignatureInput();
                 if (in.isElement()) {
-                    if (inclusiveNamespaces == null) {
-                        canonicalizer.canonicalizeSubtree(in.getSubNode(), writer);
+                    if (inclusiveNamespaces != null) {
+                        canonicalizer.canonicalizeSubtree(in.getSubNode(), inclusiveNamespaces, writer);
                         return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                     } else {
-                        canonicalizer.canonicalizeSubtree(in.getSubNode(), inclusiveNamespaces, writer);
+                        canonicalizer.canonicalizeSubtree(in.getSubNode(), writer);
                         return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                     }
                 } else if (in.isNodeSet()) {
@@ -153,18 +153,19 @@ public abstract class ApacheCanonicalizer extends TransformService {
                     return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 }
             } else if (data instanceof DOMSubTreeData) {
-                DOMSubTreeData subTree = (DOMSubTreeData) data;
-                if (inclusiveNamespaces == null) {
-                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), writer);
+                DOMSubTreeData subTree = (DOMSubTreeData)data;
+                if (inclusiveNamespaces != null) {
+                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), inclusiveNamespaces, writer);
                     return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 } else {
-                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), inclusiveNamespaces, writer);
+                    canonicalizer.canonicalizeSubtree(subTree.getRoot(), writer);
                     return new OctetStreamData(new ByteArrayInputStream(getC14nBytes(writer, isByteArrayOutputStream)));
                 }
             } else if (data instanceof NodeSetData) {
+                NodeSetData nsd = (NodeSetData)data;
                 // convert Iterator to Set
                 @SuppressWarnings("unchecked")
-                Set<Node> ns = Utils.toNodeSet(((NodeSetData<Node>)data).iterator());
+                Set<Node> ns = Utils.toNodeSet(nsd.iterator());
                 nodeSet = ns;
                 LOG.log(Level.DEBUG, "Canonicalizing {0} nodes", nodeSet.size());
             } else {

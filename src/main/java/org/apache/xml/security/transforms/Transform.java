@@ -322,15 +322,21 @@ public final class Transform extends SignatureElementProxy {
         XMLSignatureInput input, OutputStream os, boolean secureValidation
     ) throws IOException, CanonicalizationException,
         InvalidCanonicalizerException, TransformationException {
+        XMLSignatureInput result = null;
+
         try {
-            return transformSpi.enginePerformTransform(input, os, getElement(), baseURI, secureValidation);
+            result = transformSpi.enginePerformTransform(input, os, getElement(), baseURI, secureValidation);
         } catch (ParserConfigurationException ex) {
-            Object[] exArgs = {this.getURI(), "ParserConfigurationException"};
-            throw new CanonicalizationException(ex, "signature.Transform.ErrorDuringTransform", exArgs);
+            Object[] exArgs = { this.getURI(), "ParserConfigurationException" };
+            throw new CanonicalizationException(
+                ex, "signature.Transform.ErrorDuringTransform", exArgs);
         } catch (SAXException ex) {
-            Object[] exArgs = {this.getURI(), "SAXException"};
-            throw new CanonicalizationException(ex, "signature.Transform.ErrorDuringTransform", exArgs);
+            Object[] exArgs = { this.getURI(), "SAXException" };
+            throw new CanonicalizationException(
+                ex, "signature.Transform.ErrorDuringTransform", exArgs);
         }
+
+        return result;
     }
 
     /** {@inheritDoc} */

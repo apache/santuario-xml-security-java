@@ -49,7 +49,7 @@ public class XMLCipherInput {
     private static final Logger LOG = System.getLogger(XMLCipherInput.class.getName());
 
     /** The data we are working with */
-    private final CipherData cipherData;
+    private CipherData cipherData;
 
     private boolean secureValidation = true;
 

@@ -114,7 +114,7 @@ public final class ClassLoaderUtils {
             throw new NullPointerException();
         }
         List<URL> ret = new ArrayList<>();
-        Enumeration<URL> urls = new Enumeration<>() {
+        Enumeration<URL> urls = new Enumeration<URL>() {
             @Override
             public boolean hasMoreElements() {
                 return false;

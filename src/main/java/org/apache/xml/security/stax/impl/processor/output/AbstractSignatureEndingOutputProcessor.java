@@ -67,7 +67,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
 
     private static final transient Logger LOG = System.getLogger(AbstractSignatureEndingOutputProcessor.class.getName());
 
-    private final List<SignaturePartDef> signaturePartDefList;
+    private List<SignaturePartDef> signaturePartDefList;
 
     public AbstractSignatureEndingOutputProcessor(AbstractSignatureOutputProcessor signatureOutputProcessor)
             throws XMLSecurityException {
@@ -287,9 +287,9 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
         private Transformer transformer;
         private byte[] signatureValue;
         private String inclusiveNamespacePrefixes;
-        private final SignatureAlgorithm signatureAlgorithm;
-        private final XMLSecStartElement xmlSecStartElement;
-        private final String signatureId;
+        private SignatureAlgorithm signatureAlgorithm;
+        private XMLSecStartElement xmlSecStartElement;
+        private String signatureId;
 
         public SignedInfoProcessor(SignatureAlgorithm signatureAlgorithm, String signatureId, XMLSecStartElement xmlSecStartElement)
                 throws XMLSecurityException {

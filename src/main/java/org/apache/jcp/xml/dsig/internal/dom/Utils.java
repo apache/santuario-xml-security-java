@@ -38,9 +38,7 @@ import org.w3c.dom.Node;
  */
 public final class Utils {
 
-    private Utils() {
-    }
-
+    private Utils() {}
 
     public static byte[] readBytesFromStream(InputStream is) throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {

@@ -613,7 +613,7 @@ public class Reference extends SignatureElementProxy {
                 referenceData = new ReferenceNodeSetData() {
                     @Override
                     public Iterator<Node> iterator() {
-                        return new Iterator<>() {
+                        return new Iterator<Node>() {
 
                             final Iterator<Node> sIterator = s.iterator();
 
@@ -639,11 +639,13 @@ public class Reference extends SignatureElementProxy {
                 LOG.log(Level.WARNING, "cannot cache dereferenced data", e);
             }
         } else if (input.isElement()) {
-            referenceData = new ReferenceSubTreeData(input.getSubNode(), input.isExcludeComments());
+            referenceData = new ReferenceSubTreeData
+                (input.getSubNode(), input.isExcludeComments());
         } else if (input.hasUnprocessedInput()) {
             try {
-                referenceData = new ReferenceOctetStreamData(input.getUnprocessedInput(), input.getSourceURI(),
-                    input.getMIMEType());
+                referenceData = new ReferenceOctetStreamData
+                    (input.getUnprocessedInput(), input.getSourceURI(),
+                        input.getMIMEType());
             } catch (IOException ioe) {
                 LOG.log(Level.WARNING, "cannot cache dereferenced data.", ioe);
             }

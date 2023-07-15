@@ -41,7 +41,7 @@ public class InputProcessorChainImpl implements InputProcessorChain {
 
     private static final Logger LOG = System.getLogger(InputProcessorChainImpl.class.getName());
 
-    private final List<InputProcessor> inputProcessors;
+    private List<InputProcessor> inputProcessors;
     private int startPos;
     private int curPos;
 

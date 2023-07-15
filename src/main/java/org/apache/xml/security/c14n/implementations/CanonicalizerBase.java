@@ -145,10 +145,10 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
 
                 circumventBugIfNeeded(input);
 
-                if (input.getSubNode() == null) {
-                    engineCanonicalizeXPathNodeSet(input.getNodeSet(), writer);
-                } else {
+                if (input.getSubNode() != null) {
                     engineCanonicalizeXPathNodeSetInternal(input.getSubNode(), writer);
+                } else {
+                    engineCanonicalizeXPathNodeSet(input.getNodeSet(), writer);
                 }
             }
         } catch (XMLParserException | IOException ex) {

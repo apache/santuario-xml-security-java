@@ -42,8 +42,14 @@ import javax.xml.crypto.dsig.CanonicalizationMethod;
 import javax.xml.crypto.dsig.Transform;
 
 /**
+ * The XMLDSig RI Provider.
+ *
+ */
+
+/**
  * Defines the XMLDSigRI provider.
  */
+
 public final class XMLDSigRI extends Provider {
 
     static final long serialVersionUID = -5049765099299494554L;

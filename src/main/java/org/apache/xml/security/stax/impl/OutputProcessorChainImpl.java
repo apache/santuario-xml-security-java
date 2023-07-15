@@ -42,7 +42,7 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
 
     private static final Logger LOG = System.getLogger(OutputProcessorChainImpl.class.getName());
 
-    private final List<OutputProcessor> outputProcessors;
+    private List<OutputProcessor> outputProcessors;
     private int startPos;
     private int curPos;
     private XMLSecStartElement parentXmlSecStartElement;

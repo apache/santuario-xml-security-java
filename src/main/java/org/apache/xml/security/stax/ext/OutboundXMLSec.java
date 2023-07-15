@@ -213,7 +213,7 @@ public class OutboundXMLSec {
         }
 
         final SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider =
-                new SecurityTokenProvider<>() {
+                new SecurityTokenProvider<OutboundSecurityToken>() {
 
             @Override
             public OutboundSecurityToken getSecurityToken() throws XMLSecurityException {
@@ -274,7 +274,7 @@ public class OutboundXMLSec {
         securityToken.setKeyWrappingToken(transportSecurityToken);
 
         final SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider =
-                new SecurityTokenProvider<>() {
+                new SecurityTokenProvider<OutboundSecurityToken>() {
 
             @Override
             public OutboundSecurityToken getSecurityToken() throws XMLSecurityException {

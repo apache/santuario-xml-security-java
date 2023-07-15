@@ -95,10 +95,10 @@ public class ResolverFragment extends ResourceResolverSpi {
         result.setSecureValidation(context.secureValidation);
         result.setExcludeComments(true);
         result.setMIMEType("text/xml");
-        if (context.baseUri == null || context.baseUri.isEmpty()) {
-            result.setSourceURI(context.uriToResolve);
-        } else {
+        if (context.baseUri != null && context.baseUri.length() > 0) {
             result.setSourceURI(context.baseUri.concat(context.uriToResolve));
+        } else {
+            result.setSourceURI(context.uriToResolve);
         }
         return result;
     }

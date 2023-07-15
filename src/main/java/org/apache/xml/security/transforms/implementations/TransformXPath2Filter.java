@@ -85,10 +85,10 @@ public class TransformXPath2Filter extends TransformSpi {
             }
 
             Document inputDoc = null;
-            if (input.getSubNode() == null) {
-                inputDoc = XMLUtils.getOwnerDocument(input.getNodeSet());
-            } else {
+            if (input.getSubNode() != null) {
                 inputDoc = XMLUtils.getOwnerDocument(input.getSubNode());
+            } else {
+                inputDoc = XMLUtils.getOwnerDocument(input.getNodeSet());
             }
 
             XPathFactory xpathFactory = getXPathFactory();

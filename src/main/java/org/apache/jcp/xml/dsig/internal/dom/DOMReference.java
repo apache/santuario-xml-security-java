@@ -92,11 +92,9 @@ public final class DOMReference extends DOMStructure
 
    /**
     * Look up useC14N11 system property. If true, an explicit C14N11 transform
-    * will be added if necessary when generating the signature.
-    * See section 3.1.1 of
-    * <a href="https://www.w3.org/TR/xmldsig-core/#sec-ReferenceGeneration"
-    * >XmlDSig-Core Reference Generation</a>
-    * <p>
+    * will be added if necessary when generating the signature. See section
+    * 3.1.1 of http://www.w3.org/2007/xmlsec/Drafts/xmldsig-core/ for more info.
+    *
     * If true, overrides the same property if set in the XMLSignContext.
     */
     private static boolean useC14N11 =
@@ -123,7 +121,7 @@ public final class DOMReference extends DOMStructure
     private Data derefData;
     private InputStream dis;
     private MessageDigest md;
-    private final Provider provider;
+    private Provider provider;
 
     /**
      * Creates a <code>Reference</code> from the specified parameters.
@@ -481,7 +479,7 @@ public final class DOMReference extends DOMStructure
         }
         Data data = dereferencedData;
         XMLSignatureInput xi = null;
-        try (OutputStream os = new UnsyncBufferedOutputStream(dos)) {
+        try (OutputStream os = new UnsyncBufferedOutputStream(dos)) { //NOPMD
             for (int i = 0, size = transforms.size(); i < size; i++) {
                 DOMTransform transform = (DOMTransform)transforms.get(i);
                 if (i < size - 1) {

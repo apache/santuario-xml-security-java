@@ -101,10 +101,10 @@ public final class DOMURIDereferencer implements URIDereferencer {
                 }
 
                 result.setMIMEType("text/xml");
-                if (baseURI == null || baseURI.isEmpty()) {
-                    result.setSourceURI(uriAttr.getNodeValue());
-                } else {
+                if (baseURI != null && baseURI.length() > 0) {
                     result.setSourceURI(baseURI.concat(uriAttr.getNodeValue()));
+                } else {
+                    result.setSourceURI(uriAttr.getNodeValue());
                 }
                 return new ApacheNodeSetData(result);
             }

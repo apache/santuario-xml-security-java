@@ -282,8 +282,8 @@ public class KeyResolver {
      * Iterate over the KeyResolverSpi instances
      */
     static class ResolverIterator implements Iterator<KeyResolverSpi> {
-        private final List<KeyResolverSpi> res;
-        private final Iterator<KeyResolverSpi> it;
+        private List<KeyResolverSpi> res;
+        private Iterator<KeyResolverSpi> it;
 
         public ResolverIterator(List<KeyResolverSpi> list) {
             res = list;

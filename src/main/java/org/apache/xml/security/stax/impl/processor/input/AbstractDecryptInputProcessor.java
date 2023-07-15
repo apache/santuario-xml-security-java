@@ -344,8 +344,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 XMLStreamReader xmlStreamReader =
                         inputProcessorChain.getSecurityContext().<XMLInputFactory>get(
                                 XMLSecurityConstants.XMLINPUTFACTORY).createXMLStreamReader(
-                                new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream),
-                                StandardCharsets.UTF_8.name());
+                                new MultiInputStream(prologInputStream, decryptInputStream, epilogInputStream), StandardCharsets.UTF_8.name());
 
                 //forward to wrapper element
                 forwardToWrapperElement(xmlStreamReader);
@@ -620,7 +619,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         private boolean encryptedHeader = false;
         private final InboundSecurityToken inboundSecurityToken;
         private boolean rootElementProcessed;
-        private final EncryptedDataType encryptedDataType;
+        private EncryptedDataType encryptedDataType;
         private Thread decryptionThread;
 
         public AbstractDecryptedEventReaderInputProcessor(

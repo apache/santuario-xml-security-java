@@ -342,11 +342,11 @@ public abstract class Canonicalizer20010315Excl extends CanonicalizerBase {
         if (!input.isNeedsToBeExpanded() || inclusiveNSSet.isEmpty()) {
             return;
         }
-        Document doc;
-        if (input.getSubNode() == null) {
-            doc = XMLUtils.getOwnerDocument(input.getNodeSet());
-        } else {
+        Document doc = null;
+        if (input.getSubNode() != null) {
             doc = XMLUtils.getOwnerDocument(input.getSubNode());
+        } else {
+            doc = XMLUtils.getOwnerDocument(input.getNodeSet());
         }
         XMLUtils.circumventBug2650(doc);
     }

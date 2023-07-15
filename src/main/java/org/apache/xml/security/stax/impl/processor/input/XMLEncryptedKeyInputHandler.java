@@ -99,7 +99,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
         final InboundSecurityContext inboundSecurityContext = inputProcessorChain.getSecurityContext();
 
         final SecurityTokenProvider<InboundSecurityToken> securityTokenProvider =
-                new SecurityTokenProvider<>() {
+                new SecurityTokenProvider<InboundSecurityToken>() {
 
             private AbstractInboundSecurityToken securityToken;
 

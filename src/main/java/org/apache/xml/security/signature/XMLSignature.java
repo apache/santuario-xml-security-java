@@ -226,7 +226,7 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     private boolean followManifestsDuringValidation = false;
 
-    private final Element signatureValueElement;
+    private Element signatureValueElement;
 
     private static final int MODE_SIGN = 0;
     private static final int MODE_VERIFY = 1;

@@ -88,7 +88,9 @@ public class TransformXPath extends TransformSpi {
             }
             Node xpathnode = xpathElement.getFirstChild();
             if (xpathnode == null) {
-                throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Text must be in ds:Xpath");
+                throw new DOMException(
+                    DOMException.HIERARCHY_REQUEST_ERR, "Text must be in ds:Xpath"
+                );
             }
             String str = XMLUtils.getStrFromNode(xpathnode);
             input.setNeedsToBeExpanded(needsCircumvent(str));
