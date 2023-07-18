@@ -18,15 +18,19 @@
  */
 package org.apache.xml.security.stax.ext;
 
+import java.util.Objects;
 
 /**
+ * Two comparable types are compared by their name.
+ *
+ * @param <T> Compatible class type.
 */
-public abstract class ComparableType<T extends ComparableType> implements Comparable<T> {
+public abstract class ComparableType<T extends ComparableType<T>> implements Comparable<T> {
 
-    private String name;
+    private final String name;
 
     public ComparableType(String name) {
-        this.name = name;
+        this.name = Objects.requireNonNull(name, "name");
     }
 
     public String getName() {
