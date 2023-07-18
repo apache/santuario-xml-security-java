@@ -35,6 +35,7 @@ import javax.crypto.spec.PSource;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.JAXBElement;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.binding.xmldsig.DigestMethodType;
 import org.apache.xml.security.binding.xmldsig.KeyInfoType;
 import org.apache.xml.security.binding.xmlenc.CipherValueType;
@@ -42,7 +43,6 @@ import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
 import org.apache.xml.security.binding.xmlenc11.MGFType;
 import org.apache.xml.security.binding.xop.Include;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.AbstractInputSecurityHeaderHandler;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
@@ -123,7 +123,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             return key;
                         }
 
-                        String algoFamily = JCEAlgorithmMapper.getJCEKeyAlgorithmFromURI(algorithmURI);
+                        String algoFamily = JCEMapper.getJCEKeyAlgorithmFromURI(algorithmURI);
                         key = new SecretKeySpec(getSecret(this, correlationID, algorithmURI), algoFamily);
                         setSecretKey(algorithmURI, key);
                         return key;
@@ -169,8 +169,8 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         if (algorithmURI == null) {
                             throw new XMLSecurityException("stax.encryption.noEncAlgo");
                         }
-                        String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
-                        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
+                        String jceName = JCEMapper.translateURItoJCEID(algorithmURI);
+                        String jceProvider = JCEMapper.getJCEProviderFromURI(algorithmURI);
                         if (jceName == null) {
                             throw new XMLSecurityException("algorithms.NoSuchMap",
                                                            new Object[] {algorithmURI});
@@ -205,7 +205,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                     algorithmSuiteSecurityEvent.setCorrelationID(correlationID);
                                     inboundSecurityContext.registerSecurityEvent(algorithmSuiteSecurityEvent);
 
-                                    jceDigestAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(digestMethodType.getAlgorithm());
+                                    jceDigestAlgorithm = JCEMapper.translateURItoJCEID(digestMethodType.getAlgorithm());
                                 }
 
                                 PSource.PSpecified pSource = PSource.PSpecified.DEFAULT;
@@ -219,7 +219,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                 final MGFType mgfType =
                                         XMLSecurityUtils.getQNameType(encryptedKeyType.getEncryptionMethod().getContent(), XMLSecurityConstants.TAG_xenc11_MGF);
                                 if (mgfType != null) {
-                                    String jceMGFAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(mgfType.getAlgorithm());
+                                    String jceMGFAlgorithm = JCEMapper.translateURItoJCEID(mgfType.getAlgorithm());
                                     mgfParameterSpec = new MGF1ParameterSpec(jceMGFAlgorithm);
                                 }
                                 OAEPParameterSpec oaepParameterSpec = new OAEPParameterSpec(jceDigestAlgorithm, "MGF1", mgfParameterSpec, pSource);
@@ -254,7 +254,7 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             LOG.warn("Unwrapping of the encrypted key failed with error: " + e.getMessage() + ". " +
                                     "Generating a faked one to mitigate timing attacks.");
 
-                            int keyLength = JCEAlgorithmMapper.getKeyLengthFromURI(symmetricAlgorithmURI);
+                            int keyLength = JCEMapper.getKeyLengthFromURI(symmetricAlgorithmURI);
                             this.decryptedKey = XMLSecurityConstants.generateBytes(keyLength / 8);
                             return this.decryptedKey;
                         }

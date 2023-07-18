@@ -156,7 +156,7 @@ public class XIncludeHandler extends DefaultHandler {
                 DOMResult domResult = new DOMResult();
                 try {
                     XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-                    SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+                    SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) TransformerFactory.newInstance();
                     saxTransformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
                     try {
                         saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");

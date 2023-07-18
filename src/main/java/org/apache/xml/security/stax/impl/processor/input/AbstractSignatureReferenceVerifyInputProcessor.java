@@ -38,13 +38,13 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.binding.excc14n.InclusiveNamespaces;
 import org.apache.xml.security.binding.xmldsig.ReferenceType;
 import org.apache.xml.security.binding.xmldsig.SignatureType;
 import org.apache.xml.security.binding.xmldsig.TransformType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.ConfigurationProperties;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.config.ResourceResolverMapper;
 import org.apache.xml.security.stax.ext.AbstractInputProcessor;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
@@ -297,8 +297,8 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
             throws XMLSecurityException {
 
         String digestMethodAlgorithm = referenceType.getDigestMethod().getAlgorithm();
-        String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestMethodAlgorithm);
-        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestMethodAlgorithm);
+        String jceName = JCEMapper.translateURItoJCEID(digestMethodAlgorithm);
+        String jceProvider = JCEMapper.getJCEProviderFromURI(digestMethodAlgorithm);
         if (jceName == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {digestMethodAlgorithm});

@@ -37,8 +37,8 @@ import javax.crypto.spec.PSource;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
@@ -189,7 +189,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                         createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_CipherValue, false, null);
 
                         //encrypt the symmetric session key with the public key from the receiver:
-                        String jceid = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportAlgorithm);
+                        String jceid = JCEMapper.translateURItoJCEID(encryptionKeyTransportAlgorithm);
                         if (jceid == null) {
                             throw new XMLSecurityException("algorithms.NoSuchMap",
                                                            new Object[] {encryptionKeyTransportAlgorithm});
@@ -204,7 +204,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
                                 String jceDigestAlgorithm = "SHA-1";
                                 if (encryptionKeyTransportDigestAlgorithm != null) {
-                                    jceDigestAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportDigestAlgorithm);
+                                    jceDigestAlgorithm = JCEMapper.translateURItoJCEID(encryptionKeyTransportDigestAlgorithm);
                                 }
 
                                 PSource.PSpecified pSource = PSource.PSpecified.DEFAULT;
@@ -215,7 +215,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
                                 MGF1ParameterSpec mgfParameterSpec = new MGF1ParameterSpec("SHA-1");
                                 if (encryptionKeyTransportMGFAlgorithm != null) {
-                                    String jceMGFAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportMGFAlgorithm);
+                                    String jceMGFAlgorithm = JCEMapper.translateURItoJCEID(encryptionKeyTransportMGFAlgorithm);
                                     mgfParameterSpec = new MGF1ParameterSpec(jceMGFAlgorithm);
                                 }
                                 algorithmParameterSpec = new OAEPParameterSpec(jceDigestAlgorithm, "MGF1", mgfParameterSpec, pSource);
