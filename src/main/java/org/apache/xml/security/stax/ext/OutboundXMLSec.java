@@ -29,8 +29,8 @@ import java.util.List;
 import javax.crypto.KeyGenerator;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.impl.DocumentContextImpl;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
@@ -245,7 +245,7 @@ public class OutboundXMLSec {
             }
             // If none is configured then generate one
             String keyAlgorithm =
-                JCEAlgorithmMapper.getJCEKeyAlgorithmFromURI(securityProperties.getEncryptionSymAlgorithm());
+                JCEMapper.getJCEKeyAlgorithmFromURI(securityProperties.getEncryptionSymAlgorithm());
             KeyGenerator keyGen;
             try {
                 keyGen = KeyGenerator.getInstance(keyAlgorithm);
@@ -256,7 +256,7 @@ public class OutboundXMLSec {
             //whereas bouncy castle expects the block size of 128 or 192 bits
             if (keyAlgorithm.contains("AES")) {
                 int keyLength =
-                    JCEAlgorithmMapper.getKeyLengthFromURI(securityProperties.getEncryptionSymAlgorithm());
+                    JCEMapper.getKeyLengthFromURI(securityProperties.getEncryptionSymAlgorithm());
                 keyGen.init(keyLength);
             }
 
