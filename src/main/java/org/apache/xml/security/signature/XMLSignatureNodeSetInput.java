@@ -63,6 +63,6 @@ public class XMLSignatureNodeSetInput extends XMLSignatureInput {
         if (output == getOutputStream()) {
             return;
         }
-        canonize(output, c14n11);
+        canonicalize(output, c14n11);
     }
 }

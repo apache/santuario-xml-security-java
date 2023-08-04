@@ -81,7 +81,7 @@ public class XMLSignatureStreamInput extends XMLSignatureInput implements AutoCl
                 close();
             }
         }
-        canonize(output, c14n11);
+        canonicalize(output, c14n11);
     }
 
     @Override

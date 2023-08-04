@@ -249,7 +249,7 @@ public abstract class XMLSignatureInput {
         }
         if (isElement() || isNodeSet()) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            canonize(baos, false);
+            canonicalize(baos, false);
             return baos.toByteArray();
         }
         return null;
@@ -451,14 +451,14 @@ public abstract class XMLSignatureInput {
 
 
     /**
-     * Canonizes this object to the output stream.
+     * Canonicalizes this object to the output stream.
      *
      * @param c14n11
      * @param output
      * @throws CanonicalizationException
      * @throws IOException
      */
-    protected void canonize(OutputStream output, boolean c14n11) throws CanonicalizationException, IOException {
+    protected void canonicalize(OutputStream output, boolean c14n11) throws CanonicalizationException, IOException {
         final CanonicalizerBase c14nizer;
         if (c14n11) {
             c14nizer = new Canonicalizer11_OmitComments();
