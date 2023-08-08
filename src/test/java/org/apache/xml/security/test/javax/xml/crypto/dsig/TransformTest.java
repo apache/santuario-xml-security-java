@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.Transform
  *
  */
-public class TransformTest {
+class TransformTest {
 
     XMLSignatureFactory factory;
 
@@ -70,7 +70,7 @@ public class TransformTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
         Transform tm;
         for (String algo : TRANSFORM_ALGOS) {
             TransformParameterSpec params = null;
@@ -95,7 +95,7 @@ public class TransformTest {
     }
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         // test newTransform(String algorithm,
         //                   AlgorithmParameterSpec params)
         // for generating Transform objects

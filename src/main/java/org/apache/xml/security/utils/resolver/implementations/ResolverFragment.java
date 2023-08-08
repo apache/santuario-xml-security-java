@@ -18,7 +18,11 @@
  */
 package org.apache.xml.security.utils.resolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -36,8 +40,7 @@ import org.w3c.dom.Node;
  */
 public class ResolverFragment extends ResourceResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ResolverFragment.class);
+    private static final Logger LOG = System.getLogger(ResolverFragment.class.getName());
 
     /**
      * {@inheritDoc}
@@ -54,7 +57,7 @@ public class ResolverFragment extends ResourceResolverSpi {
              * Identifies the node-set (minus any comment nodes) of the XML
              * resource containing the signature
              */
-            LOG.debug("ResolverFragment with empty URI (means complete document)");
+            LOG.log(Level.DEBUG, "ResolverFragment with empty URI (means complete document)");
             selectedElem = doc;
         } else {
             /*
@@ -83,15 +86,14 @@ public class ResolverFragment extends ResourceResolverSpi {
                     );
                 }
             }
-            LOG.debug(
-                "Try to catch an Element with ID {} and Element was {}", id, selectedElem
+            LOG.log(Level.DEBUG,
+                "Try to catch an Element with ID {0} and Element was {1}", id, selectedElem
             );
         }
 
-        XMLSignatureInput result = new XMLSignatureInput(selectedElem);
+        XMLSignatureInput result = new XMLSignatureNodeInput(selectedElem);
         result.setSecureValidation(context.secureValidation);
         result.setExcludeComments(true);
-
         result.setMIMEType("text/xml");
         if (context.baseUri != null && context.baseUri.length() > 0) {
             result.setSourceURI(context.baseUri.concat(context.uriToResolve));
@@ -109,17 +111,17 @@ public class ResolverFragment extends ResourceResolverSpi {
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
         if (context.uriToResolve == null) {
-            LOG.debug("Quick fail for null uri");
+            LOG.log(Level.DEBUG, "Quick fail for null uri");
             return false;
         }
 
         if (context.uriToResolve.isEmpty() ||
             context.uriToResolve.charAt(0) == '#' && !context.uriToResolve.startsWith("#xpointer(")
         ) {
-            LOG.debug("State I can resolve reference: \"{}\"", context.uriToResolve);
+            LOG.log(Level.DEBUG, "State I can resolve reference: \"{0}\"", context.uriToResolve);
             return true;
         }
-        LOG.debug("Do not seem to be able to resolve reference: \"{}\"", context.uriToResolve);
+        LOG.log(Level.DEBUG, "Do not seem to be able to resolve reference: \"{0}\"", context.uriToResolve);
         return false;
     }
 

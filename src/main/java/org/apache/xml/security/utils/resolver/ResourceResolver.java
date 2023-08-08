@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.utils.resolver;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -37,8 +39,7 @@ import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
  */
 public class ResourceResolver {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ResourceResolver.class);
+    private static final Logger LOG = System.getLogger(ResourceResolver.class.getName());
 
     /** these are the system-wide resolvers */
     private static final List<ResourceResolverSpi> resolverList = new CopyOnWriteArrayList<>();
@@ -97,7 +98,7 @@ public class ResourceResolver {
         } else {
             resolverList.add(resourceResolverSpi);
         }
-        LOG.debug("Registered resolver: {}", resourceResolverSpi.toString());
+        LOG.log(Level.DEBUG, "Registered resolver: {0}", resourceResolverSpi.toString());
     }
 
     /**
@@ -148,7 +149,7 @@ public class ResourceResolver {
     public static XMLSignatureInput resolve(ResourceResolverContext context)
         throws ResourceResolverException {
         for (ResourceResolverSpi resolver : resolverList) {
-            LOG.debug("check resolvability by class {}", resolver.getClass().getName());
+            LOG.log(Level.DEBUG, "check resolvability by class {0}", resolver.getClass().getName());
 
             if (resolver.engineCanResolveURI(context)) {
                 return resolver.engineResolveURI(context);
@@ -173,8 +174,8 @@ public class ResourceResolver {
     public static XMLSignatureInput resolve(
         List<ResourceResolverSpi> individualResolvers, ResourceResolverContext context
     ) throws ResourceResolverException {
-        LOG.debug(
-            "I was asked to create a ResourceResolver and got {}",
+        LOG.log(Level.DEBUG,
+            "I was asked to create a ResourceResolver and got {0}",
             individualResolvers == null ? 0 : individualResolvers.size()
         );
 
@@ -182,7 +183,7 @@ public class ResourceResolver {
         if (individualResolvers != null) {
             for (ResourceResolverSpi resolver : individualResolvers) {
                 String currentClass = resolver.getClass().getName();
-                LOG.debug("check resolvability by class {}", currentClass);
+                LOG.log(Level.DEBUG, "check resolvability by class {0}", currentClass);
 
                 if (resolver.engineCanResolveURI(context)) {
                     return resolver.engineResolveURI(context);

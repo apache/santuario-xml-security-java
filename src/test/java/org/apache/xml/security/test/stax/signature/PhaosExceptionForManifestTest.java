@@ -50,10 +50,10 @@ import org.w3c.dom.Document;
  * These are separated out from PhaosTest as we have to change the default configuration to set
  *  "doNotThrowExceptionForManifests" to "true".
  */
-public class PhaosExceptionForManifestTest {
+class PhaosExceptionForManifestTest {
 
-    private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void setUp() throws Exception {
@@ -68,12 +68,10 @@ public class PhaosExceptionForManifestTest {
     }
 
     @Test
-    public void test_signature_rsa_detached_b64_transform() throws Exception {
+    void test_signature_rsa_detached_b64_transform() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/phaos/phaos-xmldsig-three/signature-rsa-detached-b64-transform.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-detached-b64-transform.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the key
         byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);

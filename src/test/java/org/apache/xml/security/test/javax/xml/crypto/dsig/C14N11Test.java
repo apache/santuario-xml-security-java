@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * This is a testcase to validate all the W3C xmldsig C14N11 testcases.
  *
  */
-public class C14N11Test {
+class C14N11Test {
 
     private final SignatureValidator validator;
     private final File dir;
@@ -58,104 +58,104 @@ public class C14N11Test {
     }
 
     @Test
-    public void test_xmlid_1() throws Exception {
+    void test_xmlid_1() throws Exception {
         test_c14n11("xmlid-1");
     }
 
     @Test
-    public void test_xmlid_2() throws Exception {
+    void test_xmlid_2() throws Exception {
         test_c14n11("xmlid-2");
     }
 
     @Test
-    public void test_xmlspace_1() throws Exception {
+    void test_xmlspace_1() throws Exception {
         test_c14n11("xmlspace-1");
     }
 
     @Test
-    public void test_xmlspace_2() throws Exception {
+    void test_xmlspace_2() throws Exception {
         test_c14n11("xmlspace-2");
     }
 
     @Test
-    public void test_xmlspace_3() throws Exception {
+    void test_xmlspace_3() throws Exception {
         test_c14n11("xmlspace-3");
     }
 
     @Test
-    public void test_xmlspace_4() throws Exception {
+    void test_xmlspace_4() throws Exception {
         test_c14n11("xmlspace-4");
     }
 
     @Test
-    public void test_xmllang_1() throws Exception {
+    void test_xmllang_1() throws Exception {
         test_c14n11("xmllang-1");
     }
 
     @Test
-    public void test_xmllang_2() throws Exception {
+    void test_xmllang_2() throws Exception {
         test_c14n11("xmllang-2");
     }
 
     @Test
-    public void test_xmllang_3() throws Exception {
+    void test_xmllang_3() throws Exception {
         test_c14n11("xmllang-3");
     }
 
     @Test
-    public void test_xmllang_4() throws Exception {
+    void test_xmllang_4() throws Exception {
         test_c14n11("xmllang-4");
     }
 
     @Test
-    public void test_xmlbase_prop_1() throws Exception {
+    void test_xmlbase_prop_1() throws Exception {
         test_c14n11("xmlbase-prop-1");
     }
 
     @Test
-    public void test_xmlbase_prop_2() throws Exception {
+    void test_xmlbase_prop_2() throws Exception {
         test_c14n11("xmlbase-prop-2");
     }
 
     @Test
-    public void test_xmlbase_prop_3() throws Exception {
+    void test_xmlbase_prop_3() throws Exception {
         test_c14n11("xmlbase-prop-3");
     }
 
     @Test
-    public void test_xmlbase_prop_4() throws Exception {
+    void test_xmlbase_prop_4() throws Exception {
         test_c14n11("xmlbase-prop-4");
     }
 
     @Test
-    public void test_xmlbase_prop_5() throws Exception {
+    void test_xmlbase_prop_5() throws Exception {
         test_c14n11("xmlbase-prop-5");
     }
 
     @Test
-    public void test_xmlbase_prop_6() throws Exception {
+    void test_xmlbase_prop_6() throws Exception {
         test_c14n11("xmlbase-prop-6");
     }
 
     @Test
-    public void test_xmlbase_prop_7() throws Exception {
+    void test_xmlbase_prop_7() throws Exception {
         test_c14n11("xmlbase-prop-7");
     }
 
     @Test
-    public void test_xmlbase_c14n11spec_102() throws Exception {
+    void test_xmlbase_c14n11spec_102() throws Exception {
         String[] vendors = {"IAIK", "IBM", "ORCL", "SUN", "UPC"};
         test_c14n11("xmlbase-c14n11spec-102", vendors);
     }
 
     @Test
-    public void test_xmlbase_c14n11spec2_102() throws Exception {
+    void test_xmlbase_c14n11spec2_102() throws Exception {
         String[] vendors = {"IAIK", "IBM", "ORCL", "SUN"};
         test_c14n11("xmlbase-c14n11spec2-102", vendors);
     }
 
     @Test
-    public void test_xmlbase_c14n11spec3_103() throws Exception {
+    void test_xmlbase_c14n11spec3_103() throws Exception {
         String[] vendors = {"IAIK", "IBM", "ORCL", "SUN", "UPC"};
         test_c14n11("xmlbase-c14n11spec3-103", vendors);
     }

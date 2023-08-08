@@ -24,7 +24,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.Transforms;
@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
-public class TransformXSLTTest {
+class TransformXSLTTest {
 
     private static final String SOURCE_PATH = "src/test/resources/com/phaos/phaos-xmldsig-three";
     private static final String SIGNATURE_FILE = "signature-rsa-detached-xslt-transform.xml";
@@ -50,7 +50,7 @@ public class TransformXSLTTest {
      * See bug 41927 for more info.
      */
     @Test
-    public void test1() throws Exception {
+    void test1() throws Exception {
         Document doc1 = getDocument(SIGNATURE_FILE);
         Document doc2 = getDocument(STYLESHEET_FILE);
 
@@ -62,7 +62,7 @@ public class TransformXSLTTest {
         Element transformEl = (Element) xpath.evaluate(expression, doc1, XPathConstants.NODE);
 
         Transform transform = new Transform(doc1, Transforms.TRANSFORM_XSLT, transformEl.getChildNodes());
-        transform.performTransform(new XMLSignatureInput(doc2), false);
+        transform.performTransform(new XMLSignatureNodeInput(doc2), false);
     }
 
     private static Document getDocument(String fileName) throws Exception {

@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * testcases from Baltimore
  *
  */
-public class Baltimore18Test {
+class Baltimore18Test {
 
     private final File dir;
     private final KeySelector cks;
@@ -59,7 +59,7 @@ public class Baltimore18Test {
     }
 
     @Test
-    public void testSignatureKeyname() throws Exception {
+    void testSignatureKeyname() throws Exception {
         String file = "signature-keyname.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -68,7 +68,7 @@ public class Baltimore18Test {
     }
 
     @Test
-    public void testSignatureRetrievalmethodRawx509crt() throws Exception {
+    void testSignatureRetrievalmethodRawx509crt() throws Exception {
         String file = "signature-retrievalmethod-rawx509crt.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -77,7 +77,7 @@ public class Baltimore18Test {
     }
 
     @Test
-    public void testSignatureX509CrtCrl() throws Exception {
+    void testSignatureX509CrtCrl() throws Exception {
         String file = "signature-x509-crt-crl.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -86,7 +86,7 @@ public class Baltimore18Test {
     }
 
     @Test
-    public void testSignatureX509Crt() throws Exception {
+    void testSignatureX509Crt() throws Exception {
         String file = "signature-x509-crt.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -95,7 +95,7 @@ public class Baltimore18Test {
     }
 
     @Test
-    public void testSignatureX509Is() throws Exception {
+    void testSignatureX509Is() throws Exception {
         String file = "signature-x509-is.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -104,7 +104,7 @@ public class Baltimore18Test {
     }
 
     @Test
-    public void testSignatureX509Ski() throws Exception {
+    void testSignatureX509Ski() throws Exception {
         String file = "signature-x509-ski.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);
@@ -113,7 +113,7 @@ public class Baltimore18Test {
     }
 
     @Test
-    public void testSignatureX509Sn() throws Exception {
+    void testSignatureX509Sn() throws Exception {
         String file = "signature-x509-sn.xml";
 
         SignatureValidator validator = new SignatureValidator(dir);

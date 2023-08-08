@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test the JDKXPathFactory by adding a custom transform that hard-wires the use of JDKXPathFactory, instead of
  * checking to see whether Xalan is on the classpath or not
  */
-public class JDKXPathFactoryTest {
+class JDKXPathFactoryTest {
 
     private final KeyPair kp;
 
@@ -79,7 +79,7 @@ public class JDKXPathFactoryTest {
     }
 
     @Test
-    public void testXPathSignature() throws Exception {
+    void testXPathSignature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");

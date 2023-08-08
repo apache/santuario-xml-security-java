@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.algorithms;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.Key;
@@ -50,8 +52,7 @@ import org.w3c.dom.Element;
  */
 public class SignatureAlgorithm extends Algorithm {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SignatureAlgorithm.class);
+    private static final Logger LOG = System.getLogger(SignatureAlgorithm.class.getName());
 
     /** All available algorithm classes are registered here */
     private static Map<String, Class<? extends SignatureAlgorithmSpi>> algorithmHash =
@@ -172,7 +173,7 @@ public class SignatureAlgorithm extends Algorithm {
         throws XMLSignatureException {
         try {
             Class<? extends SignatureAlgorithmSpi> implementingClass = algorithmHash.get(algorithmURI);
-            LOG.debug("Create URI \"{}\" class \"{}\"", algorithmURI, implementingClass);
+            LOG.log(Level.DEBUG, "Create URI \"{0}\" class \"{1}\"", algorithmURI, implementingClass);
             if (implementingClass == null) {
                 Object[] exArgs = { algorithmURI };
                 throw new XMLSignatureException("algorithms.NoSuchAlgorithmNoEx", exArgs);
@@ -184,7 +185,7 @@ public class SignatureAlgorithm extends Algorithm {
                     return constructor.newInstance(provider);
 
                 } catch (NoSuchMethodException e) {
-                    LOG.warn("Class \"{}\" does not have a constructor with Provider", implementingClass);
+                    LOG.log(Level.WARNING, "Class \"{0}\" does not have a constructor with Provider", implementingClass);
                 }
             }
 
@@ -361,7 +362,7 @@ public class SignatureAlgorithm extends Algorithm {
        throws AlgorithmAlreadyRegisteredException, ClassNotFoundException,
            XMLSignatureException {
         JavaUtils.checkRegisterPermission();
-        LOG.debug("Try to register {} {}", algorithmURI, implementingClass);
+        LOG.log(Level.DEBUG, "Try to register {0} {1}", algorithmURI, implementingClass);
 
         // are we already registered?
         Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);
@@ -397,7 +398,7 @@ public class SignatureAlgorithm extends Algorithm {
        throws AlgorithmAlreadyRegisteredException, ClassNotFoundException,
            XMLSignatureException {
         JavaUtils.checkRegisterPermission();
-        LOG.debug("Try to register {} {}", algorithmURI, implementingClass);
+        LOG.log(Level.DEBUG, "Try to register {0} {1}", algorithmURI, implementingClass);
 
         // are we already registered?
         Class<? extends SignatureAlgorithmSpi> registeredClass = algorithmHash.get(algorithmURI);

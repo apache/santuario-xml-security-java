@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.signature;
 
 
-import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -40,6 +39,7 @@ import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.VerifiedReference;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureDigestInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.signature.reference.ReferenceData;
 import org.apache.xml.security.signature.reference.ReferenceNodeSetData;
@@ -69,8 +69,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Test a Signature and Validation, and check that we have access to the Element(s) that was
  * validated.
  */
-public class SignatureReferenceTest {
-    public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
+class SignatureReferenceTest {
 
     public SignatureReferenceTest() throws Exception {
         Init.init();
@@ -78,7 +77,7 @@ public class SignatureReferenceTest {
     }
 
     @Test
-    public void testSigningVerifyingReference() throws Throwable {
+    void testSigningVerifyingReference() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
 
@@ -87,7 +86,7 @@ public class SignatureReferenceTest {
 
         // Check the reference(s)
         SignedInfo signedInfo = signature.getSignedInfo();
-        assertTrue(signedInfo.getLength() == 1);
+        assertEquals(1, signedInfo.getLength());
         Reference reference = signedInfo.item(0);
         ReferenceData referenceData = reference.getReferenceData();
         assertNotNull(referenceData);
@@ -107,7 +106,7 @@ public class SignatureReferenceTest {
 
     // See SANTUARIO-465
     @Test
-    public void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
+    void testNoReferenceChildren() throws ParserConfigurationException, XMLSecurityException {
         Document doc = TestUtils.newDocument();
         Element referenceElement = doc.createElementNS(Constants.SignatureSpecNS, "Reference");
         referenceElement.setAttributeNS(null, "URI", "#_12345");
@@ -141,16 +140,14 @@ public class SignatureReferenceTest {
     }
 
     @Test
-    public void testManifestReferences() throws Throwable {
+    void testManifestReferences() throws Throwable {
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xPath = xpf.newXPath();
         xPath.setNamespaceContext(new DSNamespaceContext());
 
-        InputStream sourceDocument =
-            this.getClass().getClassLoader().getResourceAsStream(
-                    "at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("at/iaik/ixsil/coreFeatures/signatures/manifestSignature.xml",
+            getClass().getClassLoader(), false);
 
         String expression = "//dsig:Signature[1]";
         Element sigElement =
@@ -249,7 +246,7 @@ public class SignatureReferenceTest {
         @Override
         public XMLSignatureInput engineResolveURI(ResourceResolverContext context)
             throws ResourceResolverException {
-            XMLSignatureInput result = new XMLSignatureInput("xyz");
+            XMLSignatureInput result = new XMLSignatureDigestInput("xyz");
 
             result.setSourceURI(context.uriToResolve);
 

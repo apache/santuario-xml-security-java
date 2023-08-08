@@ -18,9 +18,8 @@
  */
 package org.apache.xml.security.test.dom.keys;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
@@ -29,7 +28,6 @@ import org.apache.xml.security.keys.content.DEREncodedKeyValue;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -42,9 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class DEREncodedKeyValueTest {
-
-    private static final String SEP = FileSystems.getDefault().getSeparator();
+class DEREncodedKeyValueTest {
 
     private static final String ID_CONTROL = "abc123";
 
@@ -59,7 +55,7 @@ public class DEREncodedKeyValueTest {
     }
 
     @Test
-    public void testSchema() throws Exception {
+    void testSchema() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         Element element = derEncodedKeyValue.getElement();
 
@@ -68,7 +64,7 @@ public class DEREncodedKeyValueTest {
     }
 
     @Test
-    public void testRSAPublicKeyFromElement() throws Exception {
+    void testRSAPublicKeyFromElement() throws Exception {
         Document doc = loadXML("DEREncodedKeyValue-RSA.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
         Element element = (Element) nl.item(0);
@@ -80,7 +76,7 @@ public class DEREncodedKeyValueTest {
     }
 
     @Test
-    public void testDSAPublicKeyFromElement() throws Exception {
+    void testDSAPublicKeyFromElement() throws Exception {
         Document doc = loadXML("DEREncodedKeyValue-DSA.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
         Element element = (Element) nl.item(0);
@@ -92,7 +88,7 @@ public class DEREncodedKeyValueTest {
     }
 
     @Test
-    public void testECPublicKeyFromElement() throws Exception {
+    void testECPublicKeyFromElement() throws Exception {
         Document doc = loadXML("DEREncodedKeyValue-EC.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
         Element element = (Element) nl.item(0);
@@ -104,28 +100,28 @@ public class DEREncodedKeyValueTest {
     }
 
     @Test
-    public void testRSAPublicKeyFromKey() throws Exception {
+    void testRSAPublicKeyFromKey() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(rsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @Test
-    public void testDSAPublicKeyFromKey() throws Exception {
+    void testDSAPublicKeyFromKey() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), dsaKeyControl);
         assertEquals(dsaKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(dsaKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @Test
-    public void testECPublicKeyFromKey() throws Exception {
+    void testECPublicKeyFromKey() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), ecKeyControl);
         assertEquals(ecKeyControl, derEncodedKeyValue.getPublicKey());
         assertArrayEquals(ecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
     }
 
     @Test
-    public void testId() throws Exception {
+    void testId() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals("", derEncodedKeyValue.getId());
         assertNull(derEncodedKeyValue.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
@@ -141,17 +137,17 @@ public class DEREncodedKeyValueTest {
 
     // Utility methods
 
-    private File getControlFilePath(String fileName) {
-        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys",
+    private Path getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolvePath("src", "test", "resources", "org", "apache", "xml", "security", "keys",
             "content", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
+        return XMLUtils.read(getControlFilePath(fileName).toFile(), false);
     }
 
-    private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
-        String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
+    private PublicKey loadPublicKey(String fileName, String algorithm) throws Exception {
+        String fileData = Files.readString(getControlFilePath(fileName));
         byte[] keyBytes = XMLUtils.decode(fileData);
         KeyFactory kf = KeyFactory.getInstance(algorithm);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);

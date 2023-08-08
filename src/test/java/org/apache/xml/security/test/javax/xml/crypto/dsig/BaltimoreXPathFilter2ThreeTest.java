@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * under data/vectors/ie/baltimore/merlin-examples directory
  *
  */
-public class BaltimoreXPathFilter2ThreeTest {
+class BaltimoreXPathFilter2ThreeTest {
 
     private final SignatureValidator validator;
 
@@ -50,7 +50,7 @@ public class BaltimoreXPathFilter2ThreeTest {
     }
 
     @Test
-    public void testSignSpec() throws Exception {
+    void testSignSpec() throws Exception {
         String file = "sign-spec.xml";
 
         boolean coreValidity = validator.validate(file,
@@ -63,7 +63,7 @@ public class BaltimoreXPathFilter2ThreeTest {
     }
 
     @Test
-    public void testSignXfdl() throws Exception {
+    void testSignXfdl() throws Exception {
         String file = "sign-xfdl.xml";
 
         boolean coreValidity = validator.validate(file,

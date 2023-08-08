@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.c14n.helper;
 
 
+import java.lang.System.Logger;
+
 import org.apache.xml.security.c14n.helper.C14nHelper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -28,10 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class C14nHelperTest {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(C14nHelperTest.class);
+class C14nHelperTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -41,7 +40,7 @@ public class C14nHelperTest {
      * Method testNamespaceIsAbsolute01
      */
     @Test
-    public void testNamespaceIsAbsolute01() {
+    void testNamespaceIsAbsolute01() {
 
         String namespaceURI = "http://www.w3.org/Signature/";
 
@@ -52,7 +51,7 @@ public class C14nHelperTest {
      * @see <A HREF="http://lists.w3.org/Archives/Public/w3c-ietf-xmldsig/2001JulSep/0068.html">The list</A>
      */
     @Test
-    public void testNamespaceIsAbsolute02() {
+    void testNamespaceIsAbsolute02() {
 
         String namespaceURI = "http://www.w3.org/../blah";
 
@@ -63,7 +62,7 @@ public class C14nHelperTest {
      * Method testNamespaceIsAbsolute03
      */
     @Test
-    public void testNamespaceIsAbsolute03() {
+    void testNamespaceIsAbsolute03() {
 
         // unknown protocol?
         String namespaceURI = "hxxp://www.w3.org/";
@@ -75,7 +74,7 @@ public class C14nHelperTest {
      * Method testNamespaceIsRelative01
      */
     @Test
-    public void testNamespaceIsRelative01() {
+    void testNamespaceIsRelative01() {
 
         String namespaceURI = "../blah";
 
@@ -86,7 +85,7 @@ public class C14nHelperTest {
      * Method testNamespaceIsRelative02
      */
     @Test
-    public void testNamespaceIsRelative02() {
+    void testNamespaceIsRelative02() {
 
         String namespaceURI = "blah";
 
@@ -98,7 +97,7 @@ public class C14nHelperTest {
      */
     @Test
     @Disabled
-    public void testNamespaceIsRelative03() {
+    void testNamespaceIsRelative03() {
 
         String namespaceURI = "http://...";
 

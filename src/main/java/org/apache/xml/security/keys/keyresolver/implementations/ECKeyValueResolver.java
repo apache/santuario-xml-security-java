@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -32,8 +34,7 @@ import org.w3c.dom.Element;
 
 public class ECKeyValueResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ECKeyValueResolver.class);
+    private static final Logger LOG = System.getLogger(ECKeyValueResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -70,7 +71,7 @@ public class ECKeyValueResolver extends KeyResolverSpi {
             ECKeyValue ecKeyValue = new ECKeyValue(ecKeyElement, baseURI);
             return ecKeyValue.getPublicKey();
         } catch (XMLSecurityException ex) {
-            LOG.debug(ex.getMessage(), ex);
+            LOG.log(Level.DEBUG, ex.getMessage(), ex);
             //do nothing
         }
 

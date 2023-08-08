@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -51,8 +53,7 @@ import org.w3c.dom.Element;
  */
 public class PrivateKeyResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(PrivateKeyResolver.class);
+    private static final Logger LOG = System.getLogger(PrivateKeyResolver.class.getName());
 
     private final KeyStore keyStore;
     private final char[] password;
@@ -108,7 +109,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                 return privKey;
             }
         } else if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
-            LOG.debug("Can I resolve KeyName?");
+            LOG.log(Level.DEBUG, "Can I resolve KeyName?");
             String keyName = element.getFirstChild().getNodeValue();
 
             try {
@@ -117,7 +118,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                     return (PrivateKey) key;
                 }
             } catch (Exception e) {
-                LOG.debug("Cannot recover the key", e);
+                LOG.log(Level.DEBUG, "Cannot recover the key", e);
             }
         }
 
@@ -125,7 +126,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
     }
 
     private PrivateKey resolveX509Data(Element element, String baseURI) {
-        LOG.debug("Can I resolve X509Data?");
+        LOG.log(Level.DEBUG, "Can I resolve X509Data?");
 
         try {
             X509Data x509Data = new X509Data(element, baseURI);
@@ -166,9 +167,9 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                 }
             }
         } catch (XMLSecurityException e) {
-            LOG.debug("XMLSecurityException", e);
+            LOG.log(Level.DEBUG, "XMLSecurityException", e);
         } catch (KeyStoreException e) {
-            LOG.debug("KeyStoreException", e);
+            LOG.log(Level.DEBUG, "KeyStoreException", e);
         }
 
         return null;
@@ -178,7 +179,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * Search for a private key entry in the KeyStore with the same Subject Key Identifier
      */
     private PrivateKey resolveX509SKI(XMLX509SKI x509SKI) throws XMLSecurityException, KeyStoreException {
-        LOG.debug("Can I resolve X509SKI?");
+        LOG.log(Level.DEBUG, "Can I resolve X509SKI?");
 
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
@@ -190,7 +191,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                     XMLX509SKI certSKI = new XMLX509SKI(x509SKI.getDocument(), (X509Certificate) cert);
 
                     if (certSKI.equals(x509SKI)) {
-                        LOG.debug("match !!! ");
+                        LOG.log(Level.DEBUG, "match !!! ");
 
                         try {
                             Key key = keyStore.getKey(alias, password);
@@ -198,7 +199,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                                 return (PrivateKey) key;
                             }
                         } catch (Exception e) {
-                            LOG.debug("Cannot recover the key", e);
+                            LOG.log(Level.DEBUG, "Cannot recover the key", e);
                             // Keep searching
                         }
                     }
@@ -213,7 +214,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * Search for a private key entry in the KeyStore with the same Issuer/Serial Number pair.
      */
     private PrivateKey resolveX509IssuerSerial(XMLX509IssuerSerial x509Serial) throws KeyStoreException {
-        LOG.debug("Can I resolve X509IssuerSerial?");
+        LOG.log(Level.DEBUG, "Can I resolve X509IssuerSerial?");
 
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
@@ -226,7 +227,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                         new XMLX509IssuerSerial(x509Serial.getDocument(), (X509Certificate) cert);
 
                     if (certSerial.equals(x509Serial)) {
-                        LOG.debug("match !!! ");
+                        LOG.log(Level.DEBUG, "match !!! ");
 
                         try {
                             Key key = keyStore.getKey(alias, password);
@@ -234,7 +235,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                                 return (PrivateKey) key;
                             }
                         } catch (Exception e) {
-                            LOG.debug("Cannot recover the key", e);
+                            LOG.log(Level.DEBUG, "Cannot recover the key", e);
                             // Keep searching
                         }
                     }
@@ -249,7 +250,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
      * Search for a private key entry in the KeyStore with the same Subject Name.
      */
     private PrivateKey resolveX509SubjectName(XMLX509SubjectName x509SubjectName) throws KeyStoreException {
-        LOG.debug("Can I resolve X509SubjectName?");
+        LOG.log(Level.DEBUG, "Can I resolve X509SubjectName?");
 
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
@@ -262,7 +263,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                         new XMLX509SubjectName(x509SubjectName.getDocument(), (X509Certificate) cert);
 
                     if (certSN.equals(x509SubjectName)) {
-                        LOG.debug("match !!! ");
+                        LOG.log(Level.DEBUG, "match !!! ");
 
                         try {
                             Key key = keyStore.getKey(alias, password);
@@ -270,7 +271,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                                 return (PrivateKey) key;
                             }
                         } catch (Exception e) {
-                            LOG.debug("Cannot recover the key", e);
+                            LOG.log(Level.DEBUG, "Cannot recover the key", e);
                             // Keep searching
                         }
                     }
@@ -287,7 +288,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
     private PrivateKey resolveX509Certificate(
         XMLX509Certificate x509Cert
     ) throws XMLSecurityException, KeyStoreException {
-        LOG.debug("Can I resolve X509Certificate?");
+        LOG.log(Level.DEBUG, "Can I resolve X509Certificate?");
         byte[] x509CertBytes = x509Cert.getCertificateBytes();
 
         Enumeration<String> aliases = keyStore.aliases();
@@ -302,11 +303,11 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                     try {
                         certBytes = cert.getEncoded();
                     } catch (CertificateEncodingException e1) {
-                        LOG.debug("Cannot recover the key", e1);
+                        LOG.log(Level.DEBUG, "Cannot recover the key", e1);
                     }
 
                     if (certBytes != null && Arrays.equals(certBytes, x509CertBytes)) {
-                        LOG.debug("match !!! ");
+                        LOG.log(Level.DEBUG, "match !!! ");
 
                         try {
                             Key key = keyStore.getKey(alias, password);
@@ -315,7 +316,7 @@ public class PrivateKeyResolver extends KeyResolverSpi {
                             }
                         }
                         catch (Exception e) {
-                            LOG.debug("Cannot recover the key", e);
+                            LOG.log(Level.DEBUG, "Cannot recover the key", e);
                             // Keep searching
                         }
                     }

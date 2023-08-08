@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.algorithms;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,8 +34,7 @@ import org.w3c.dom.Element;
  */
 public class JCEMapper {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(JCEMapper.class);
+    private static final Logger LOG = System.getLogger(JCEMapper.class.getName());
 
     private static Map<String, Algorithm> algorithmsMap = new ConcurrentHashMap<>();
 
@@ -421,7 +422,7 @@ public class JCEMapper {
      * @return The Algorithm object for the given URI.
      */
     private static Algorithm getAlgorithm(String algorithmURI) {
-        LOG.debug("Request for URI {}", algorithmURI);
+        LOG.log(Level.DEBUG, "Request for URI {0}", algorithmURI);
 
         if (algorithmURI != null) {
             return algorithmsMap.get(algorithmURI);

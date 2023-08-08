@@ -53,10 +53,10 @@ import org.w3c.dom.Document;
  * These are separated out from PhaosTest as we have to change the default configuration to set
  * "AllowNotSameDocumentReferences" to "true".
  */
-public class PhaosRemoteReferenceTest {
+class PhaosRemoteReferenceTest {
 
-    private XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void setUp() throws Exception {
@@ -73,7 +73,7 @@ public class PhaosRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_dsa_detached() throws Exception {
+    void test_signature_dsa_detached() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -81,10 +81,8 @@ public class PhaosRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "com/phaos/phaos-xmldsig-three/signature-dsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-dsa-detached.xml",
+            getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 
@@ -113,7 +111,7 @@ public class PhaosRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
+    void test_signature_hmac_sha1_exclusive_c14n_comments_detached() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -121,10 +119,8 @@ public class PhaosRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-comments-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-hmac-sha1-exclusive-c14n-comments-detached.xml",
+            getClass().getClassLoader(), false);
 
             // Set up the key
             byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
@@ -158,7 +154,7 @@ public class PhaosRemoteReferenceTest {
 
     // See SANTUARIO-319
     @Test
-    public void test_signature_rsa_detached() throws Exception {
+    void test_signature_rsa_detached() throws Exception {
 
         Proxy proxy = HttpRequestRedirectorProxy.startHttpEngine();
 
@@ -166,10 +162,8 @@ public class PhaosRemoteReferenceTest {
             ResolverHttp.setProxy(proxy);
 
             // Read in plaintext document
-            InputStream sourceDocument =
-                    this.getClass().getClassLoader().getResourceAsStream(
-                            "com/phaos/phaos-xmldsig-three/signature-rsa-detached.xml");
-            Document document = XMLUtils.read(sourceDocument, false);
+            Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-detached.xml",
+            getClass().getClassLoader(), false);
 
             // XMLUtils.outputDOM(document, System.out);
 

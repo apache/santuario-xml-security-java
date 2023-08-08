@@ -37,10 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  */
-public class XMLSecurityEventReaderTest {
+class XMLSecurityEventReaderTest {
 
     @Test
-    public void testConformness() throws Exception {
+    void testConformness() throws Exception {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
@@ -54,32 +54,32 @@ public class XMLSecurityEventReaderTest {
         while (xmlStreamReader.hasNext());
         xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
-        XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0);
+        try (XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, 0)) {
 
-        XMLEventReader xmlEventReader =
-            xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader().getResourceAsStream(
-                "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
-        while (xmlEventReader.hasNext()) {
-            assertEquals(xmlEventReader.hasNext(), xmlSecurityEventReader.hasNext());
-            XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
-            XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
-            assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
+            XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader()
+                .getResourceAsStream("org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
+            while (xmlEventReader.hasNext()) {
+                assertEquals(xmlEventReader.hasNext(), xmlSecurityEventReader.hasNext());
+                XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
+                XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
+                assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
 
-            XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
-            XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
-            if (stdPeekedXMLEvent == null) {
-                assertNull(secPeekedXMLEvent);
-            } else {
-                assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
+                XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
+                XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
+                if (stdPeekedXMLEvent == null) {
+                    assertNull(secPeekedXMLEvent);
+                } else {
+                    assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
+                }
             }
-        }
 
-        assertFalse(xmlEventReader.hasNext());
-        assertFalse(xmlSecurityEventReader.hasNext());
+            assertFalse(xmlEventReader.hasNext());
+            assertFalse(xmlSecurityEventReader.hasNext());
+        }
     }
 
     @Test
-    public void testIndex() throws Exception {
+    void testIndex() throws Exception {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         XMLStreamReader xmlStreamReader =
             xmlInputFactory.createXMLStreamReader(this.getClass().getClassLoader().getResourceAsStream(
@@ -94,33 +94,31 @@ public class XMLSecurityEventReaderTest {
         xmlSecEventDeque.push(XMLSecEventFactory.allocate(xmlStreamReader, null));//EndDocumentEvent
 
         int skip = 100;
+        try (XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, skip)) {
+            XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader()
+                .getResourceAsStream("org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
+            int currentIndex = 0;
+            while (xmlEventReader.hasNext()) {
+                XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
 
-        XMLSecurityEventReader xmlSecurityEventReader = new XMLSecurityEventReader(xmlSecEventDeque, skip);
+                if (currentIndex++ < skip) {
+                    continue;
+                }
 
-        XMLEventReader xmlEventReader =
-            xmlInputFactory.createXMLEventReader(this.getClass().getClassLoader().getResourceAsStream(
-                "org/apache/xml/security/c14n/inExcl/plain-soap-1.1.xml"));
-        int currentIndex = 0;
-        while (xmlEventReader.hasNext()) {
-            XMLEvent stdXmlEvent = xmlEventReader.nextEvent();
+                XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
+                assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
 
-            if (currentIndex++ < skip) {
-                continue;
+                XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
+                XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
+                if (stdPeekedXMLEvent == null) {
+                    assertNull(secPeekedXMLEvent);
+                } else {
+                    assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
+                }
             }
 
-            XMLEvent secXmlEvent = xmlSecurityEventReader.nextEvent();
-            assertEquals(stdXmlEvent.getEventType(), secXmlEvent.getEventType());
-
-            XMLEvent stdPeekedXMLEvent = xmlEventReader.peek();
-            XMLEvent secPeekedXMLEvent = xmlSecurityEventReader.peek();
-            if (stdPeekedXMLEvent == null) {
-                assertNull(secPeekedXMLEvent);
-            } else {
-                assertEquals(stdPeekedXMLEvent.getEventType(), secPeekedXMLEvent.getEventType());
-            }
+            assertFalse(xmlEventReader.hasNext());
+            assertFalse(xmlSecurityEventReader.hasNext());
         }
-
-        assertFalse(xmlEventReader.hasNext());
-        assertFalse(xmlSecurityEventReader.hasNext());
     }
 }

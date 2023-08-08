@@ -43,16 +43,16 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
 import org.apache.xml.security.stax.impl.XMLSecurityStreamWriter;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.matchers.CompareMatcher;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class XMLSecurityStreamWriterTest {
+class XMLSecurityStreamWriterTest {
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -61,149 +61,149 @@ public class XMLSecurityStreamWriterTest {
     }
 
     @Test
-    public void testIdentityTransformResult() throws Exception {
+    void testIdentityTransformResult() throws Exception {
         StringWriter securityStringWriter = new StringWriter();
         OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
         outputProcessorChain.addProcessor(new EventWriterProcessor(securityStringWriter));
-        XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
-
         StringWriter stdStringWriter = new StringWriter();
         XMLStreamWriter stdXmlStreamWriter = XMLOutputFactory.newInstance().createXMLStreamWriter(stdStringWriter);
+        try (XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain)) {
 
-        NamespaceContext namespaceContext = new NamespaceContext() {
-            @Override
-            public String getNamespaceURI(String prefix) {
-                if ("t3".equals(prefix)) {
-                    return "test3ns";
+            NamespaceContext namespaceContext = new NamespaceContext() {
+                @Override
+                public String getNamespaceURI(String prefix) {
+                    if ("t3".equals(prefix)) {
+                        return "test3ns";
+                    }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            public String getPrefix(String namespaceURI) {
-                if ("test2ns".equals(namespaceURI)) {
-                    return "t2";
-                } else if ("test3ns".equals(namespaceURI)) {
-                    return "t3";
+                @Override
+                public String getPrefix(String namespaceURI) {
+                    if ("test2ns".equals(namespaceURI)) {
+                        return "t2";
+                    } else if ("test3ns".equals(namespaceURI)) {
+                        return "t3";
+                    }
+                    return null;
                 }
-                return null;
-            }
 
-            @Override
-            public Iterator<String> getPrefixes(String namespaceURI) {
-                List<String> ns = new ArrayList<>();
-                ns.add(getPrefix(namespaceURI));
-                return ns.iterator();
-            }
-        };
+                @Override
+                public Iterator<String> getPrefixes(String namespaceURI) {
+                    List<String> ns = new ArrayList<>();
+                    ns.add(getPrefix(namespaceURI));
+                    return ns.iterator();
+                }
+            };
 
-        xmlSecurityStreamWriter.setNamespaceContext(namespaceContext);
-        stdXmlStreamWriter.setNamespaceContext(namespaceContext);
-        xmlSecurityStreamWriter.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
-        stdXmlStreamWriter.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
+            xmlSecurityStreamWriter.setNamespaceContext(namespaceContext);
+            stdXmlStreamWriter.setNamespaceContext(namespaceContext);
+            xmlSecurityStreamWriter.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
+            stdXmlStreamWriter.writeStartDocument(StandardCharsets.UTF_8.name(), "1.0");
 
-        xmlSecurityStreamWriter.writeDTD("<!DOCTYPE foobar [\n\t<!ENTITY x0 \"hello\">\n]>");
-        stdXmlStreamWriter.writeDTD("<!DOCTYPE foobar [\n\t<!ENTITY x0 \"hello\">\n]>");
+            xmlSecurityStreamWriter.writeDTD("<!DOCTYPE foobar [\n\t<!ENTITY x0 \"hello\">\n]>");
+            stdXmlStreamWriter.writeDTD("<!DOCTYPE foobar [\n\t<!ENTITY x0 \"hello\">\n]>");
 
-        xmlSecurityStreamWriter.writeStartElement("test1");
-        stdXmlStreamWriter.writeStartElement("test1");
+            xmlSecurityStreamWriter.writeStartElement("test1");
+            stdXmlStreamWriter.writeStartElement("test1");
 
-        xmlSecurityStreamWriter.writeDefaultNamespace("defaultns");
-        stdXmlStreamWriter.writeDefaultNamespace("defaultns");
+            xmlSecurityStreamWriter.writeDefaultNamespace("defaultns");
+            stdXmlStreamWriter.writeDefaultNamespace("defaultns");
 
-        xmlSecurityStreamWriter.writeNamespace("t2new", "test2ns");
-        stdXmlStreamWriter.writeNamespace("t2new", "test2ns");
+            xmlSecurityStreamWriter.writeNamespace("t2new", "test2ns");
+            stdXmlStreamWriter.writeNamespace("t2new", "test2ns");
 
-        xmlSecurityStreamWriter.writeStartElement("test2ns", "test2");
-        stdXmlStreamWriter.writeStartElement("test2ns", "test2");
+            xmlSecurityStreamWriter.writeStartElement("test2ns", "test2");
+            stdXmlStreamWriter.writeStartElement("test2ns", "test2");
 
-        xmlSecurityStreamWriter.writeNamespace("t2", "test2ns");
-        stdXmlStreamWriter.writeNamespace("t2", "test2ns");
+            xmlSecurityStreamWriter.writeNamespace("t2", "test2ns");
+            stdXmlStreamWriter.writeNamespace("t2", "test2ns");
 
-        xmlSecurityStreamWriter.writeStartElement("t3", "test3", "test3ns");
-        stdXmlStreamWriter.writeStartElement("t3", "test3", "test3ns");
+            xmlSecurityStreamWriter.writeStartElement("t3", "test3", "test3ns");
+            stdXmlStreamWriter.writeStartElement("t3", "test3", "test3ns");
 
-        xmlSecurityStreamWriter.writeNamespace("t3", "test3ns");
-        stdXmlStreamWriter.writeNamespace("t3", "test3ns");
+            xmlSecurityStreamWriter.writeNamespace("t3", "test3ns");
+            stdXmlStreamWriter.writeNamespace("t3", "test3ns");
 
-        xmlSecurityStreamWriter.writeNamespace("t4", "test4ns");
-        stdXmlStreamWriter.writeNamespace("t4", "test4ns");
+            xmlSecurityStreamWriter.writeNamespace("t4", "test4ns");
+            stdXmlStreamWriter.writeNamespace("t4", "test4ns");
 
-        xmlSecurityStreamWriter.writeStartElement("test4ns", "test4");
-        stdXmlStreamWriter.writeStartElement("test4ns", "test4");
+            xmlSecurityStreamWriter.writeStartElement("test4ns", "test4");
+            stdXmlStreamWriter.writeStartElement("test4ns", "test4");
 
-        xmlSecurityStreamWriter.writeAttribute("attr1", "attr1val");
-        stdXmlStreamWriter.writeAttribute("attr1", "attr1val");
+            xmlSecurityStreamWriter.writeAttribute("attr1", "attr1val");
+            stdXmlStreamWriter.writeAttribute("attr1", "attr1val");
 
-        xmlSecurityStreamWriter.writeAttribute("t2", "test2ns", "attr2", "attr2val");
-        stdXmlStreamWriter.writeAttribute("t2", "test2ns", "attr2", "attr2val");
+            xmlSecurityStreamWriter.writeAttribute("t2", "test2ns", "attr2", "attr2val");
+            stdXmlStreamWriter.writeAttribute("t2", "test2ns", "attr2", "attr2val");
 
-        xmlSecurityStreamWriter.writeAttribute("test3ns", "attr3", "attr3val");
-        stdXmlStreamWriter.writeAttribute("test3ns", "attr3", "attr3val");
+            xmlSecurityStreamWriter.writeAttribute("test3ns", "attr3", "attr3val");
+            stdXmlStreamWriter.writeAttribute("test3ns", "attr3", "attr3val");
 
-        xmlSecurityStreamWriter.writeEmptyElement("test1");
-        stdXmlStreamWriter.writeEmptyElement("test1");
+            xmlSecurityStreamWriter.writeEmptyElement("test1");
+            stdXmlStreamWriter.writeEmptyElement("test1");
 
-        xmlSecurityStreamWriter.setPrefix("t2new", "test2ns");
-        stdXmlStreamWriter.setPrefix("t2new", "test2ns");
+            xmlSecurityStreamWriter.setPrefix("t2new", "test2ns");
+            stdXmlStreamWriter.setPrefix("t2new", "test2ns");
 
-        xmlSecurityStreamWriter.writeEmptyElement("test2ns", "test2");
-        stdXmlStreamWriter.writeEmptyElement("test2ns", "test2");
+            xmlSecurityStreamWriter.writeEmptyElement("test2ns", "test2");
+            stdXmlStreamWriter.writeEmptyElement("test2ns", "test2");
 
-        xmlSecurityStreamWriter.writeEmptyElement("t2", "test2ns", "test2");
-        stdXmlStreamWriter.writeEmptyElement("t2", "test2ns", "test2");
+            xmlSecurityStreamWriter.writeEmptyElement("t2", "test2ns", "test2");
+            stdXmlStreamWriter.writeEmptyElement("t2", "test2ns", "test2");
 
-        xmlSecurityStreamWriter.writeEmptyElement("test2ns", "test2");
-        stdXmlStreamWriter.writeEmptyElement("test2ns", "test2");
+            xmlSecurityStreamWriter.writeEmptyElement("test2ns", "test2");
+            stdXmlStreamWriter.writeEmptyElement("test2ns", "test2");
 
-        xmlSecurityStreamWriter.writeEmptyElement("t3", "test3", "test3ns");
-        stdXmlStreamWriter.writeEmptyElement("t3", "test3", "test3ns");
+            xmlSecurityStreamWriter.writeEmptyElement("t3", "test3", "test3ns");
+            stdXmlStreamWriter.writeEmptyElement("t3", "test3", "test3ns");
 
-        xmlSecurityStreamWriter.writeCharacters("\n");
-        stdXmlStreamWriter.writeCharacters("\n");
+            xmlSecurityStreamWriter.writeCharacters("\n");
+            stdXmlStreamWriter.writeCharacters("\n");
 
-        xmlSecurityStreamWriter.writeCData("Hi");
-        stdXmlStreamWriter.writeCData("Hi");
+            xmlSecurityStreamWriter.writeCData("Hi");
+            stdXmlStreamWriter.writeCData("Hi");
 
-        xmlSecurityStreamWriter.writeComment("this is a comment");
-        stdXmlStreamWriter.writeComment("this is a comment");
+            xmlSecurityStreamWriter.writeComment("this is a comment");
+            stdXmlStreamWriter.writeComment("this is a comment");
 
-        xmlSecurityStreamWriter.writeCharacters("abcdcba".toCharArray(), 3, 1);
-        stdXmlStreamWriter.writeCharacters("abcdcba".toCharArray(), 3, 1);
+            xmlSecurityStreamWriter.writeCharacters("abcdcba".toCharArray(), 3, 1);
+            stdXmlStreamWriter.writeCharacters("abcdcba".toCharArray(), 3, 1);
 
-        xmlSecurityStreamWriter.writeEntityRef("x0");
-        stdXmlStreamWriter.writeEntityRef("x0");
+            xmlSecurityStreamWriter.writeEntityRef("x0");
+            stdXmlStreamWriter.writeEntityRef("x0");
 
-        xmlSecurityStreamWriter.writeEndElement();
-        stdXmlStreamWriter.writeEndElement();
+            xmlSecurityStreamWriter.writeEndElement();
+            stdXmlStreamWriter.writeEndElement();
 
-        xmlSecurityStreamWriter.writeProcessingInstruction("PI");
-        stdXmlStreamWriter.writeProcessingInstruction("PI");
+            xmlSecurityStreamWriter.writeProcessingInstruction("PI");
+            stdXmlStreamWriter.writeProcessingInstruction("PI");
 
-        xmlSecurityStreamWriter.writeProcessingInstruction("PI", "there");
-        stdXmlStreamWriter.writeProcessingInstruction("PI", "there");
+            xmlSecurityStreamWriter.writeProcessingInstruction("PI", "there");
+            stdXmlStreamWriter.writeProcessingInstruction("PI", "there");
 
-        assertEquals(xmlSecurityStreamWriter.getPrefix("test4ns"), stdXmlStreamWriter.getPrefix("test4ns"));
+            assertEquals(xmlSecurityStreamWriter.getPrefix("test4ns"), stdXmlStreamWriter.getPrefix("test4ns"));
 
-        stdXmlStreamWriter.close();
-        xmlSecurityStreamWriter.close();
+        } finally {
+            stdXmlStreamWriter.close();
+        }
 
-        MatcherAssert.assertThat(stdStringWriter.toString(), CompareMatcher.isSimilarTo(securityStringWriter.toString()));
+        assertThat(stdStringWriter.toString(), CompareMatcher.isSimilarTo(securityStringWriter.toString()));
     }
 
     // @see https://issues.apache.org/jira/browse/SANTUARIO-433
     @Test
-    public void testNullPrefix() throws Exception {
+    void testNullPrefix() throws Exception {
         StringWriter securityStringWriter = new StringWriter();
         OutboundSecurityContextImpl securityContext = new OutboundSecurityContextImpl();
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(securityContext);
         outputProcessorChain.addProcessor(new EventWriterProcessor(securityStringWriter));
-        XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain);
-
-        xmlSecurityStreamWriter.writeStartElement(null, "element", "http://element.ns");
-        xmlSecurityStreamWriter.writeDefaultNamespace("http://element.ns");
-        xmlSecurityStreamWriter.writeStartElement("childElement");
+        try (XMLSecurityStreamWriter xmlSecurityStreamWriter = new XMLSecurityStreamWriter(outputProcessorChain)) {
+            xmlSecurityStreamWriter.writeStartElement(null, "element", "http://element.ns");
+            xmlSecurityStreamWriter.writeDefaultNamespace("http://element.ns");
+            xmlSecurityStreamWriter.writeStartElement("childElement");
+        }
     }
 
     class EventWriterProcessor implements OutputProcessor {

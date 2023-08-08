@@ -18,7 +18,11 @@
  */
 package org.apache.xml.security.utils.resolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -43,8 +47,7 @@ import org.w3c.dom.Node;
  */
 public class ResolverXPointer extends ResourceResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ResolverXPointer.class);
+    private static final Logger LOG = System.getLogger(ResolverXPointer.class.getName());
 
     private static final String XP = "#xpointer(id(";
     private static final int XP_LENGTH = XP.length();
@@ -84,7 +87,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             }
         }
 
-        XMLSignatureInput result = new XMLSignatureInput(resultNode);
+        XMLSignatureInput result = new XMLSignatureNodeInput(resultNode);
         result.setSecureValidation(context.secureValidation);
 
         result.setMIMEType("text/xml");
@@ -128,7 +131,7 @@ public class ResolverXPointer extends ResourceResolverSpi {
             int idLen = idPlusDelim.length() -1;
             if (idPlusDelim.charAt(0) == '"' && idPlusDelim.charAt(idLen) == '"'
                 || idPlusDelim.charAt(0) == '\'' && idPlusDelim.charAt(idLen) == '\'') {
-                LOG.debug("Id = {}", idPlusDelim.substring(1, idLen));
+                LOG.log(Level.DEBUG, "Id = {0}", idPlusDelim.substring(1, idLen));
                 return true;
             }
         }

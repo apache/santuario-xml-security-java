@@ -35,24 +35,21 @@ import org.w3c.dom.Node;
 
 /**
  * Miscellaneous static utility methods for use in JSR 105 RI.
- *
  */
 public final class Utils {
 
     private Utils() {}
 
-    public static byte[] readBytesFromStream(InputStream is)
-        throws IOException
-    {
+    public static byte[] readBytesFromStream(InputStream is) throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[8192];
             while (true) {
                 int read = is.read(buf);
                 if (read == -1) { // EOF
                     break;
                 }
                 baos.write(buf, 0, read);
-                if (read < 1024) {
+                if (read < buf.length) {
                     break;
                 }
             }

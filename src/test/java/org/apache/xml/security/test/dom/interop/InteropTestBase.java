@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.interop;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
@@ -46,8 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(InteropTestBase.class);
+    private static final Logger LOG = System.getLogger(InteropTestBase.class.getName());
 
     /**
      * Method verifyHMAC
@@ -127,10 +128,10 @@ public class InteropTestBase {
             for (int i = 0; i < signature.getSignedInfo().getLength(); i++) {
                 boolean refVerify = signature.getSignedInfo().getVerificationResult(i);
                 if (refVerify) {
-                    LOG.debug("Reference " + i + " was OK");
+                    LOG.log(Level.DEBUG, "Reference " + i + " was OK");
                 } else {
                     // JavaUtils.writeBytesToFilename(filename + i + ".apache.txt", signature.getSignedInfo().item(i).getContentsAfterTransformation().getBytes());
-                    LOG.debug("Reference " + i + " was not OK");
+                    LOG.log(Level.DEBUG, "Reference " + i + " was not OK");
                 }
             }
             checkReferences(signature);

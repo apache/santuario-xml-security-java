@@ -40,7 +40,7 @@ import org.w3c.dom.Element;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SignatureTest {
+class SignatureTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
     private final KeyStore keyStore;
 
@@ -51,12 +51,12 @@ public class SignatureTest {
     }
 
     @Test
-    public void testSigning() throws Throwable {
+    void testSigning() throws Throwable {
         signDocument(getOriginalDocument());
     }
 
     @Test
-    public void testSigningVerifyingFromRebuildSignature() throws Throwable {
+    void testSigningVerifyingFromRebuildSignature() throws Throwable {
         Document doc = getOriginalDocument();
         signDocument(doc);
         Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
@@ -68,7 +68,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void testSigningVerifyingFromRebuildSignatureWithProvider() throws Throwable {
+    void testSigningVerifyingFromRebuildSignatureWithProvider() throws Throwable {
         Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc, provider);
@@ -83,7 +83,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void testSigningVerifyingFromExistingSignature() throws Throwable {
+    void testSigningVerifyingFromExistingSignature() throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
 
@@ -92,7 +92,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void testSigningVerifyingFromExistingSignatureWithProvider() throws Throwable {
+    void testSigningVerifyingFromExistingSignatureWithProvider() throws Throwable {
         Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc, provider);
@@ -103,7 +103,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void testSigningVerifyingFromExistingSignatureSameThread()
+    void testSigningVerifyingFromExistingSignatureSameThread()
         throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);
@@ -119,7 +119,7 @@ public class SignatureTest {
     }
 
     @Test
-    public void testSigningVerifyingFromExistingSignatureSeparateThread()
+    void testSigningVerifyingFromExistingSignatureSeparateThread()
         throws Throwable {
         Document doc = getOriginalDocument();
         XMLSignature signature = signDocument(doc);

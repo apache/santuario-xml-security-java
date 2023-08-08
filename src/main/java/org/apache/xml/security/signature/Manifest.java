@@ -19,6 +19,8 @@
 package org.apache.xml.security.signature;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -55,8 +57,7 @@ public class Manifest extends SignatureElementProxy {
      */
     public static final int MAXIMUM_REFERENCE_COUNT = 30;
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Manifest.class);
+    private static final Logger LOG = System.getLogger(Manifest.class.getName());
 
     private static Integer referenceCount =
         AccessController.doPrivileged(
@@ -311,8 +312,8 @@ public class Manifest extends SignatureElementProxy {
                     getFirstChild(), Constants._TAG_REFERENCE
                 );
         }
-        LOG.debug("verify {} References", referencesEl.length);
-        LOG.debug("I am {} requested to follow nested Manifests", followManifests
+        LOG.log(Level.DEBUG, "verify {0} References", referencesEl.length);
+        LOG.log(Level.DEBUG, "I am {0} requested to follow nested Manifests", followManifests
             ? "" : "not");
         if (referencesEl.length == 0) {
             throw new XMLSecurityException("empty", new Object[]{"References are empty"});
@@ -338,13 +339,13 @@ public class Manifest extends SignatureElementProxy {
                 if (!currentRefVerified) {
                     verify = false;
                 }
-                LOG.debug("The Reference has Type {}", currentRef.getType());
+                LOG.log(Level.DEBUG, "The Reference has Type {0}", currentRef.getType());
 
                 List<VerifiedReference> manifestReferences = Collections.emptyList();
 
                 // was verification successful till now and do we want to verify the Manifest?
                 if (verify && followManifests && currentRef.typeIsReferenceToManifest()) {
-                    LOG.debug("We have to follow a nested Manifest");
+                    LOG.log(Level.DEBUG, "We have to follow a nested Manifest");
 
                     try {
                         XMLSignatureInput signedManifestNodes =
@@ -364,7 +365,7 @@ public class Manifest extends SignatureElementProxy {
                                         );
                                     break;
                                 } catch (XMLSecurityException ex) {
-                                    LOG.debug(ex.getMessage(), ex);
+                                    LOG.log(Level.DEBUG, ex.getMessage(), ex);
                                     // Hm, seems not to be a ds:Manifest
                                 }
                             }
@@ -385,10 +386,9 @@ public class Manifest extends SignatureElementProxy {
 
                         if (!referencedManifestValid) {
                             verify = false;
-
-                            LOG.warn("The nested Manifest was invalid (bad)");
+                            LOG.log(Level.WARNING, "The nested Manifest was invalid (bad)");
                         } else {
-                            LOG.debug("The nested Manifest was valid (good)");
+                            LOG.log(Level.DEBUG, "The nested Manifest was valid (good)");
                         }
 
                         manifestReferences = referencedManifest.getVerificationResults();

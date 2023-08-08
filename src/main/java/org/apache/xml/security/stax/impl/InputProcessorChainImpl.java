@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.stax.impl;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +32,6 @@ import org.apache.xml.security.stax.ext.InputProcessor;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of a InputProcessorChain
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class InputProcessorChainImpl implements InputProcessorChain {
 
-    protected static final transient Logger LOG = LoggerFactory.getLogger(InputProcessorChainImpl.class);
+    private static final Logger LOG = System.getLogger(InputProcessorChainImpl.class.getName());
 
     private List<InputProcessor> inputProcessors;
     private int startPos;
@@ -160,17 +160,17 @@ public class InputProcessorChainImpl implements InputProcessorChain {
                 inputProcessors.add(idxToInsert, newInputProcessor);
             }
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Added {} to input chain: ", newInputProcessor.getClass().getName());
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Added {0} to input chain: ", newInputProcessor.getClass().getName());
             for (InputProcessor inputProcessor : inputProcessors) {
-                LOG.debug("Name: {} phase: {}", inputProcessor.getClass().getName(), inputProcessor.getPhase());
+                LOG.log(Level.DEBUG, "Name: {0} phase: {1}", inputProcessor.getClass().getName(), inputProcessor.getPhase());
             }
         }
     }
 
     @Override
     public synchronized void removeProcessor(InputProcessor inputProcessor) {
-        LOG.debug("Removing processor {} from input chain", inputProcessor.getClass().getName());
+        LOG.log(Level.DEBUG, "Removing processor {0} from input chain", inputProcessor.getClass().getName());
         if (this.inputProcessors.indexOf(inputProcessor) <= curPos) {
             this.curPos--;
         }

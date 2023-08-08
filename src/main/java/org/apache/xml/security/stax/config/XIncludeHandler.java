@@ -19,6 +19,8 @@
 package org.apache.xml.security.stax.config;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -45,8 +47,6 @@ import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathFactoryConfigurationException;
 
 import org.apache.xml.security.utils.ClassLoaderUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -65,7 +65,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class XIncludeHandler extends DefaultHandler {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(XIncludeHandler.class);
+    private static final Logger LOG = System.getLogger(XIncludeHandler.class.getName());
 
     private static final String xIncludeNS = "http://www.w3.org/2001/XInclude";
     private static final String xIncludeLN = "include";
@@ -249,17 +249,17 @@ public class XIncludeHandler extends DefaultHandler {
 
     @Override
     public void warning(SAXParseException e) throws SAXException {
-        LOG.warn(e.getMessage(), e);
+        LOG.log(Level.WARNING, e.getMessage(), e);
     }
 
     @Override
     public void error(SAXParseException e) throws SAXException {
-        LOG.error(e.getMessage(), e);
+        LOG.log(Level.ERROR, e.getMessage(), e);
     }
 
     @Override
     public void fatalError(SAXParseException e) throws SAXException {
-        LOG.error(e.getMessage(), e);
+        LOG.log(Level.ERROR, e.getMessage(), e);
     }
 
     private NodeList evaluateXPointer(String xpointer, Node node) throws SAXException {

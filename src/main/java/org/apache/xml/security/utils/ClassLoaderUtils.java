@@ -21,6 +21,8 @@ package org.apache.xml.security.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -34,8 +36,7 @@ import java.util.List;
  */
 public final class ClassLoaderUtils {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ClassLoaderUtils.class);
+    private static final Logger LOG = System.getLogger(ClassLoaderUtils.class.getName());
 
     private ClassLoaderUtils() {
     }
@@ -127,7 +128,7 @@ public final class ClassLoaderUtils {
         try {
             urls = Thread.currentThread().getContextClassLoader().getResources(resourceName);
         } catch (IOException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
             //ignore
         }
         if (!urls.hasMoreElements() && resourceName.charAt(0) == '/') {
@@ -138,7 +139,7 @@ public final class ClassLoaderUtils {
                         resourceName.substring(1)
                     );
             } catch (IOException e) {
-                LOG.debug(e.getMessage(), e);
+                LOG.log(Level.DEBUG, e.getMessage(), e);
                 // ignore
             }
         }
@@ -151,7 +152,7 @@ public final class ClassLoaderUtils {
             try {
                 urls = cluClassloader.getResources(resourceName);
             } catch (IOException e) {
-                LOG.debug(e.getMessage(), e);
+                LOG.log(Level.DEBUG, e.getMessage(), e);
                 // ignore
             }
         }
@@ -160,7 +161,7 @@ public final class ClassLoaderUtils {
             try {
                 urls = cluClassloader.getResources(resourceName.substring(1));
             } catch (IOException e) {
-                LOG.debug(e.getMessage(), e);
+                LOG.log(Level.DEBUG, e.getMessage(), e);
                 // ignore
             }
         }
@@ -172,7 +173,7 @@ public final class ClassLoaderUtils {
                 try {
                     urls = cl.getResources(resourceName);
                 } catch (IOException e) {
-                    LOG.debug(e.getMessage(), e);
+                    LOG.log(Level.DEBUG, e.getMessage(), e);
                     // ignore
                 }
             }
@@ -209,7 +210,7 @@ public final class ClassLoaderUtils {
         try {
             return (url != null) ? url.openStream() : null;
         } catch (IOException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
             return null;
         }
     }
@@ -237,7 +238,7 @@ public final class ClassLoaderUtils {
                 return cl.loadClass(className);
             }
         } catch (ClassNotFoundException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
             //ignore
         }
         return loadClass2(className, callingClass);
@@ -257,7 +258,7 @@ public final class ClassLoaderUtils {
                     return callingClass.getClassLoader().loadClass(className);
                 }
             }
-            LOG.debug(ex.getMessage(), ex);
+            LOG.log(Level.DEBUG, ex.getMessage(), ex);
             throw ex;
         }
     }

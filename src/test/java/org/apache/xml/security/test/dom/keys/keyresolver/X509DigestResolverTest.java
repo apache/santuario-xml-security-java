@@ -37,10 +37,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-public class X509DigestResolverTest {
+class X509DigestResolverTest {
 
     private final X509Certificate certControl;
-
     private final StorageResolver storageResolver;
 
     public X509DigestResolverTest() throws Exception {
@@ -54,7 +53,7 @@ public class X509DigestResolverTest {
     }
 
     @Test
-    public void testDigest() throws Exception {
+    void testDigest() throws Exception {
         Document doc = loadXML("X509Digest.xml");
         Element element = doc.getDocumentElement();
 

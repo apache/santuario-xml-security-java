@@ -91,7 +91,6 @@
      <exclude name="AvoidDuplicateLiterals" />
      <exclude name="AvoidFieldNameMatchingMethodName" />
      <exclude name="AvoidLiteralsInIfCondition" />
-     <exclude name="BeanMembersShouldSerialize" />
      <exclude name="CompareObjectsWithEquals" />
      <exclude name="ConstructorCallsOverridableMethod" />
      <exclude name="DataflowAnomalyAnalysis" />
@@ -100,10 +99,13 @@
      <exclude name="InvalidLogMessageFormat" />
      <exclude name="JUnitSpelling" />
      <exclude name="MissingSerialVersionUID" />
+     <exclude name="NonSerializableClass" />
      <exclude name="NullAssignment" />
+     <exclude name="ReturnEmptyCollectionRatherThanNull" />
      <exclude name="SingletonClassReturningNewInstance" />
      <exclude name="SingleMethodSingleton" />
      <exclude name="SuspiciousEqualsMethodName" />
+     <exclude name="TestClassWithoutTestCases" />
      <exclude name="UseLocaleWithCaseConversions" />
      <exclude name="UseProperClassLoader" />
   </rule>
@@ -129,5 +131,5 @@
   <rule ref="category/java/security.xml" >
      <exclude name="HardCodedCryptoKey" />
   </rule>
-      
+
 </ruleset>

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -36,8 +38,7 @@ import org.w3c.dom.Element;
 
 public class X509IssuerSerialResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509IssuerSerialResolver.class);
+    private static final Logger LOG = System.getLogger(X509IssuerSerialResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -92,7 +93,7 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
-                LOG.debug("", ex);
+                LOG.log(Level.DEBUG, "", ex);
                 throw ex;
             }
 
@@ -103,26 +104,26 @@ public class X509IssuerSerialResolver extends KeyResolverSpi {
                 X509Certificate cert = (X509Certificate)storageIterator.next();
                 XMLX509IssuerSerial certSerial = new XMLX509IssuerSerial(element.getOwnerDocument(), cert);
 
-                LOG.debug("Found Certificate Issuer: {}", certSerial.getIssuerName());
-                LOG.debug("Found Certificate Serial: {}", certSerial.getSerialNumber().toString());
+                LOG.log(Level.DEBUG, "Found Certificate Issuer: {0}", certSerial.getIssuerName());
+                LOG.log(Level.DEBUG, "Found Certificate Serial: {0}", certSerial.getSerialNumber().toString());
 
                 for (int i = 0; i < noOfISS; i++) {
                     XMLX509IssuerSerial xmliss = x509data.itemIssuerSerial(i);
 
-                    LOG.debug("Found Element Issuer:     {}", xmliss.getIssuerName());
-                    LOG.debug("Found Element Serial:     {}", xmliss.getSerialNumber().toString());
+                    LOG.log(Level.DEBUG, "Found Element Issuer:     {0}", xmliss.getIssuerName());
+                    LOG.log(Level.DEBUG, "Found Element Serial:     {0}", xmliss.getSerialNumber().toString());
 
                     if (certSerial.equals(xmliss)) {
-                        LOG.debug("match !!! ");
+                        LOG.log(Level.DEBUG, "match !!! ");
                         return cert;
                     }
-                    LOG.debug("no match...");
+                    LOG.log(Level.DEBUG, "no match...");
                 }
             }
 
             return null;
         } catch (XMLSecurityException ex) {
-            LOG.debug("XMLSecurityException", ex);
+            LOG.log(Level.DEBUG, "XMLSecurityException", ex);
 
             throw new KeyResolverException(ex);
         }

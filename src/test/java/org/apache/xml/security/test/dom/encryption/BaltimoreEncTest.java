@@ -19,6 +19,9 @@
 package org.apache.xml.security.test.dom.encryption;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -68,7 +71,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  * Interop test for XML Encryption
  *
  */
-public class BaltimoreEncTest {
+class BaltimoreEncTest {
 
     private static String cardNumber;
     private static String rsaCertSerialNumber;
@@ -82,8 +85,7 @@ public class BaltimoreEncTest {
     private final boolean haveKeyWraps;
     private final boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(BaltimoreEncTest.class);
+    private static final Logger LOG = System.getLogger(BaltimoreEncTest.class.getName());
 
     /**
      *  Constructor BaltimoreEncTest
@@ -155,7 +157,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for 3DES
      */
     @Test
-    public void test_five_content_3des_cbc() throws Exception {
+    void test_five_content_3des_cbc() throws Exception {
 
         if (haveISOPadding) {
             File file = resolveFile(
@@ -164,7 +166,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_3des_cbs as necessary "
                 + "crypto algorithms are not available"
             );
@@ -177,7 +179,7 @@ public class BaltimoreEncTest {
      * Check the merlin-enc-five element content test for AES256
      */
     @Test
-    public void test_five_content_aes256_cbc() throws Exception {
+    void test_five_content_aes256_cbc() throws Exception {
 
         if (haveISOPadding) {
             File file = resolveFile(
@@ -186,7 +188,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_aes256_cbc as necessary "
                 + "crypto algorithms are not available"
             );
@@ -200,7 +202,7 @@ public class BaltimoreEncTest {
      * AES 192 key wrap
      */
     @Test
-    public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
+    void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml");
@@ -208,7 +210,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_aes128_cbc_kw_aes192 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -222,7 +224,7 @@ public class BaltimoreEncTest {
      * AES 128 key wrap
      */
     @Test
-    public void test_five_content_3des_cbc_kw_aes128() throws Exception {
+    void test_five_content_3des_cbc_kw_aes128() throws Exception {
 
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
@@ -231,7 +233,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_3des_cbc_kw_aes128 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -245,7 +247,7 @@ public class BaltimoreEncTest {
      * RSA key wrap (PKCS 1.5 padding)
      */
     @Test
-    public void test_five_content_aes128_cbc_rsa_15() throws Exception {
+    void test_five_content_aes128_cbc_rsa_15() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml");
@@ -253,7 +255,7 @@ public class BaltimoreEncTest {
             Document dd = decryptElement(file);
             checkDecryptedDoc(dd, true);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_content_aes128_cbc_rsa_15 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -267,7 +269,7 @@ public class BaltimoreEncTest {
      * a CipherReference element
      */
     @Test
-    public void test_five_element_aes192_cbc_ref() throws Exception {
+    void test_five_element_aes192_cbc_ref() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes192-cbc-ref.xml");
@@ -277,7 +279,7 @@ public class BaltimoreEncTest {
             // due to the encrypted text remainin in the reference nodes
             checkDecryptedDoc(dd, false);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_element_aes192_cbc_ref as necessary "
                 + "crypto algorithms are not available"
             );
@@ -291,13 +293,13 @@ public class BaltimoreEncTest {
      * key wrap
      */
     @Test
-    public void test_five_data_aes128_cbc() throws Exception {
+    void test_five_data_aes128_cbc() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml");
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_aes128_cbc as necessary "
                 + "crypto algorithms are not available"
             );
@@ -311,7 +313,7 @@ public class BaltimoreEncTest {
      * key wrap
      */
     @Test
-    public void test_five_data_aes256_cbc_3des() throws Exception {
+    void test_five_data_aes256_cbc_3des() throws Exception {
         assumeFalse(isIBMJdK);
 
         if (haveISOPadding && haveKeyWraps) {
@@ -320,7 +322,7 @@ public class BaltimoreEncTest {
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_aes256_cbc_3des as necessary "
                 + "crypto algorithms are not available"
             );
@@ -334,14 +336,14 @@ public class BaltimoreEncTest {
      * key wrap
      */
     @Test
-    public void test_five_data_aes192_cbc_aes256() throws Exception {
+    void test_five_data_aes192_cbc_aes256() throws Exception {
         if (haveISOPadding && haveKeyWraps) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml");
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_aes192_cbc_aes256 as necessary "
                 + "crypto algorithms are not available"
             );
@@ -355,14 +357,14 @@ public class BaltimoreEncTest {
      * RSA key wrap (OAEP and no parameters)
      */
     @Test
-    public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
+    void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         if (haveISOPadding) {
             File file = resolveFile(
                 "src/test/resources/ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml");
             byte[] decrypt = decryptData(file);
             checkDecryptedData(decrypt);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Skipping test test_five_data_3des_cbc_rsa_oaep as necessary "
                 + "crypto algorithms are not available"
             );
@@ -413,16 +415,17 @@ public class BaltimoreEncTest {
         XMLCipher cipher;
 
         // Parse the document in question
-        Document doc = XMLUtils.read(new java.io.FileInputStream(file), false);
+        Document doc;
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            doc = XMLUtils.read(inputStream, false);
+        }
 
         // Now we have the document, lets build the XMLCipher element
-        Element ee = null;
-
         // Create the XMLCipher element
         cipher = XMLCipher.getInstance();
 
         // Need to pre-load the Encrypted Data so we can get the key info
-        ee = (Element) doc.getElementsByTagName("EncryptedData").item(0);
+        Element ee = (Element) doc.getElementsByTagName("EncryptedData").item(0);
         cipher.init(XMLCipher.DECRYPT_MODE, null);
         EncryptedData encryptedData = cipher.loadEncryptedData(doc, ee);
 
@@ -580,7 +583,7 @@ public class BaltimoreEncTest {
     private void checkDecryptedDoc(Document d, boolean doNodeCheck) throws Exception {
 
         String cc = retrieveCCNumber(d);
-        LOG.debug("Retrieved Credit Card : " + cc);
+        LOG.log(Level.DEBUG, "Retrieved Credit Card : " + cc);
         assertEquals(cardNumber, cc);
 
         // Test cc numbers

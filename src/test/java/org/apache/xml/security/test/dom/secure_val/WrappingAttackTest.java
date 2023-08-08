@@ -38,14 +38,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a wrapping attack.
  */
-public class WrappingAttackTest extends InteropTestBase {
+class WrappingAttackTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
     @Test
-    public void testWrappingAttack() throws Exception {
+    void testWrappingAttack() throws Exception {
         boolean success = readAndVerifySignature("manifestSignatureWrapping.xml");
         assertTrue(success);
         try {

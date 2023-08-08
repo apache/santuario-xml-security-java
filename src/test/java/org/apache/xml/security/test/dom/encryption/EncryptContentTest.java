@@ -21,6 +21,8 @@ package org.apache.xml.security.test.dom.encryption;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
@@ -45,10 +47,9 @@ import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EncryptContentTest {
+class EncryptContentTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(EncryptContentTest.class);
+    private static final Logger LOG = System.getLogger(EncryptContentTest.class.getName());
 
     private static final String DATA =
         "<users>\n" +
@@ -109,9 +110,9 @@ public class EncryptContentTest {
     }
 
     @Test
-    public void testContentRemoved() throws Exception {
+    void testContentRemoved() throws Exception {
         if (!haveISOPadding) {
-            LOG.warn("Test testContentRemoved skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testContentRemoved skipped as necessary algorithms not available");
             return;
         }
 
@@ -161,9 +162,9 @@ public class EncryptContentTest {
      * https://issues.apache.org/jira/browse/SANTUARIO-301
      */
     @Test
-    public void testMultipleKeyInfoElements() throws Exception {
+    void testMultipleKeyInfoElements() throws Exception {
         if (!haveISOPadding) {
-            LOG.warn("Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
             return;
         }
 

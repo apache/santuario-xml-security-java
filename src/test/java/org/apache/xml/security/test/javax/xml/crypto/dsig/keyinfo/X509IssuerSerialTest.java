@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.X509IssuerSerial
  *
  */
-public class X509IssuerSerialTest {
+class X509IssuerSerialTest {
 
     private final KeyInfoFactory fac;
     private final String name;
@@ -51,19 +51,19 @@ public class X509IssuerSerialTest {
     }
 
     @Test
-    public void testgetIssuerName() {
+    void testgetIssuerName() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getIssuerName());
     }
 
     @Test
-    public void testgetSerialNumber() {
+    void testgetSerialNumber() {
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ZERO);
         assertNotNull(x509is.getSerialNumber());
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test newX509IssuerSerial(String, BigInteger)
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
         assertEquals(name, x509is.getIssuerName());
@@ -75,7 +75,7 @@ public class X509IssuerSerialTest {
      * distinguished name does not conform to RFC 2253.
      */
     @Test
-    public void testConstructorBadIssuerName() {
+    void testConstructorBadIssuerName() {
         // test newX509IssuerSerial(String, BigInteger)
         String badName = "cn=bad,=+bad,";
         try {
@@ -88,7 +88,7 @@ public class X509IssuerSerialTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
 
         X509IssuerSerial x509is = fac.newX509IssuerSerial(name, BigInteger.ONE);
         try {

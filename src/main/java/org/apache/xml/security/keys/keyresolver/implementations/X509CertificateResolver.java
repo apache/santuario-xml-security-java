@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -38,8 +40,7 @@ import org.w3c.dom.Element;
  */
 public class X509CertificateResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509CertificateResolver.class);
+    private static final Logger LOG = System.getLogger(X509CertificateResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -91,7 +92,7 @@ public class X509CertificateResolver extends KeyResolverSpi {
             }
             return null;
         } catch (XMLSecurityException ex) {
-            LOG.debug("Security Exception", ex);
+            LOG.log(Level.DEBUG, "Security Exception", ex);
             throw new KeyResolverException(ex);
         }
     }

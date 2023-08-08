@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.stax.signature;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.Provider;
@@ -26,6 +28,8 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -33,9 +37,15 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
+import org.apache.xml.security.stax.ext.OutboundXMLSec;
 import org.apache.xml.security.stax.ext.SecurePart;
+import org.apache.xml.security.stax.ext.XMLSec;
+import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -45,6 +55,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,11 +63,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class AbstractSignatureCreationTest {
+class AbstractSignatureCreationTest {
 
-    protected static boolean bcInstalled;
+    private static boolean bcInstalled;
 
     protected XMLInputFactory xmlInputFactory;
+
+    public static boolean isBcInstalled() {
+        return bcInstalled;
+    }
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -92,6 +107,19 @@ public class AbstractSignatureCreationTest {
     public void createXMLInputFactory() throws Exception {
         xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
+    }
+
+
+    protected final byte[] process(String xmlFile, XMLSecurityProperties properties, SecurityEventListener listener)
+        throws Exception {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (InputStream sourceDocument = getClass().getClassLoader().getResourceAsStream(xmlFile)) {
+            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(sourceDocument);
+            OutboundXMLSec outboundXMLSec = XMLSec.getOutboundXMLSec(properties);
+            XMLStreamWriter xmlStreamWriter = outboundXMLSec.processOutMessage(baos, UTF_8.name(), listener);
+            XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
+        }
+        return baos.toByteArray();
     }
 
     /**
@@ -269,7 +297,7 @@ public class AbstractSignatureCreationTest {
             if (!context.uriToResolve.isEmpty()) {
                 throw new ResourceResolverException("This resolved can only handle empty URIs", context.uriToResolve, context.baseUri);
             }
-            return new XMLSignatureInput(signedElement);
+            return new XMLSignatureNodeInput(signedElement);
         }
 
         @Override

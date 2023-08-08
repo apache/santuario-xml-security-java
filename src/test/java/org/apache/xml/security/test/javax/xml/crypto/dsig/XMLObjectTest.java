@@ -42,21 +42,21 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.XMLObject
  *
  */
-public class XMLObjectTest {
+class XMLObjectTest {
 
+    private static final String id = "id";
+    private static final String mimeType = "mime";
+    private static final String encoding = "encoding";
     private final XMLSignatureFactory factory;
-    private final String id = "id";
-    private final String mimeType = "mime";
-    private final String encoding = "encoding";
 
     public XMLObjectTest() throws Exception {
         factory = XMLSignatureFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("unchecked") // important for the test
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test XMLSignatureFactory.newXMLObject(List, String, String, String)
         XMLObject obj;
 
@@ -69,15 +69,16 @@ public class XMLObjectTest {
 
         String strEntry = "wrong type";
         // use raw List type to test for invalid XMLStructure entries
+        @SuppressWarnings("rawtypes")
         List invalidList = new ArrayList();
         addEntryToRawList(invalidList, strEntry);
         try {
             factory.newXMLObject(invalidList, null, null, null);
-            fail("Should raise a CCE for content containing " +
+            fail("Should raise a ClassCastException for content containing " +
                  "invalid, i.e. non-XMLStructure, entries");
         } catch (ClassCastException cce) {
         } catch (Exception ex) {
-            fail("Should raise a CCE for content with invalid entries " +
+            fail("Should raise a ClassCastException for content with invalid entries " +
                  "instead of " + ex);
         }
         list.add(new TestUtils.MyOwnXMLStructure());
@@ -89,7 +90,6 @@ public class XMLObjectTest {
         assertEquals(obj.getMimeType(), mimeType);
         assertEquals(obj.getEncoding(), encoding);
 
-        @SuppressWarnings("unchecked")
         List<XMLStructure> unmodifiable = obj.getContent();
         try {
             unmodifiable.add(new TestUtils.MyOwnXMLStructure());
@@ -99,14 +99,16 @@ public class XMLObjectTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testIsFeatureSupported() {
         List<XMLStructure> list = new ArrayList<>();
         list.add(new TestUtils.MyOwnXMLStructure());
         XMLObject obj = factory.newXMLObject(list, id, mimeType, encoding);
         try {
             obj.isFeatureSupported(null);
             fail("Should raise a NPE for null feature");
-        } catch (NullPointerException npe) {}
+        } catch (NullPointerException npe) {
+            // ok
+        }
 
         assertFalse(obj.isFeatureSupported("not supported"));
     }

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.c14n.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,8 +34,7 @@ import org.w3c.dom.Node;
  */
 public class NameSpaceSymbTable {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(NameSpaceSymbTable.class);
+    private static final Logger LOG = System.getLogger(NameSpaceSymbTable.class.getName());
 
     private static final String XMLNS = "xmlns";
     private static final SymbMap initialMap = new SymbMap();
@@ -59,7 +60,7 @@ public class NameSpaceSymbTable {
         try {
             symb = initialMap.clone();
         } catch (CloneNotSupportedException e) {
-            LOG.error("Error cloning the initial map");
+            LOG.log(Level.ERROR, "Error cloning the initial map");
         }
     }
 
@@ -133,7 +134,7 @@ public class NameSpaceSymbTable {
             try {
                 symb = symb.clone();
             } catch (CloneNotSupportedException e) {
-                LOG.error("Error cloning the symbol map");
+                LOG.log(Level.ERROR, "Error cloning the symbol map");
             }
             cloned = true;
         }

@@ -34,14 +34,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * This is a test for a Retrieval Method pointing to another Retrieval Method (forbidden under
  * secure validation).
  */
-public class ForbiddenRetrievalMethodTest {
+class ForbiddenRetrievalMethodTest {
 
     public ForbiddenRetrievalMethodTest() {
         org.apache.xml.security.Init.init();
     }
 
     @Test
-    public void testMultipleRetrievalMethods() throws Exception {
+    void testMultipleRetrievalMethods() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod3.xml";
         File fis = XmlSecTestEnvironment.resolveFile(filename);
         Document doc = XMLUtils.read(fis, false);

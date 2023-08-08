@@ -22,7 +22,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -38,6 +37,7 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class Canonicalizer11Test {
+class Canonicalizer11Test {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -67,7 +67,7 @@ public class Canonicalizer11Test {
      * 3.1 PIs, Comments, and Outside of Document Element
      */
     @Test
-    public void test31withCommentsSubtree() throws Exception {
+    void test31withCommentsSubtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -85,7 +85,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-OutsideDoc">the example from the spec</A>
      */
     @Test
-    public void test31subtree() throws Exception {
+    void test31subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -103,7 +103,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
     @Test
-    public void test32subtree() throws Exception {
+    void test32subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -121,7 +121,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      */
     @Test
-    public void test33subtree() throws Exception {
+    void test33subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -139,7 +139,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34() throws Exception {
+    void test34() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -165,7 +165,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34subtree() throws Exception {
+    void test34subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -183,7 +183,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
     @Test
-    public void test35subtree() throws Exception {
+    void test35subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -201,7 +201,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
     @Test
-    public void test36subtree() throws Exception {
+    void test36subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -220,7 +220,7 @@ public class Canonicalizer11Test {
      */
     @Test
     @Disabled
-    public void test38() throws Exception {
+    void test38() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer11_OmitCommentsTransformer c = new Canonicalizer11_OmitCommentsTransformer();
@@ -253,9 +253,9 @@ public class Canonicalizer11Test {
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
-            System.out.println("Expected:\n" + new String(reference, StandardCharsets.UTF_8));
+            System.out.println("Expected:\n" + new String(reference, UTF_8));
             System.out.println("");
-            System.out.println("Got:\n" + new String(baos.toByteArray(), StandardCharsets.UTF_8));
+            System.out.println("Got:\n" + new String(baos.toByteArray(), UTF_8));
         }
 
         assertTrue(equals);
@@ -321,7 +321,7 @@ public class Canonicalizer11Test {
      * relative namespace URIs.
      */
     @Test
-    public void testRelativeNSbehaviour() throws Exception {
+    void testRelativeNSbehaviour() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -607,7 +607,7 @@ public class Canonicalizer11Test {
         // if everything is OK, result is true; we do a binary compare, byte by byte
         boolean result = java.security.MessageDigest.isEqual(refBytes, baos.toByteArray());
         if (!result) {
-            assertEquals(new String(baos.toByteArray(), StandardCharsets.UTF_8), new String(refBytes, StandardCharsets.UTF_8));
+            assertEquals(new String(baos.toByteArray(), UTF_8), new String(refBytes, UTF_8));
         }
         assertTrue(result);
     }
@@ -616,17 +616,13 @@ public class Canonicalizer11Test {
     public static byte[] getBytesFromResource(URL resource) throws IOException {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream inputStream = resource.openStream();
-        try {
+        try (InputStream inputStream = resource.openStream()) {
             byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
-
             return baos.toByteArray();
-        } finally {
-            inputStream.close();
         }
     }
 

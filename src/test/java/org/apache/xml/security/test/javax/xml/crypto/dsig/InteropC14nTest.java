@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * under data/vectors/interop directory
  *
  */
-public class InteropC14nTest {
+class InteropC14nTest {
 
     private SignatureValidator validator;
     private final File base;
@@ -54,7 +54,7 @@ public class InteropC14nTest {
     }
 
     @Test
-    public void test_y1_exc_signature() throws Exception {
+    void test_y1_exc_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y1"));
         String file = "exc-signature.xml";
 
@@ -76,7 +76,7 @@ public class InteropC14nTest {
     */
 
     @Test
-    public void test_y3_signature() throws Exception {
+    void test_y3_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y3"));
         String file = "signature.xml";
 
@@ -90,7 +90,7 @@ public class InteropC14nTest {
     }
 
     @Test
-    public void test_y4_signature() throws Exception {
+    void test_y4_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y4"));
         String file = "signature.xml";
 
@@ -105,7 +105,7 @@ public class InteropC14nTest {
 
     @Test
     @Disabled
-    public void test_y5_signature() throws Exception {
+    void test_y5_signature() throws Exception {
         validator = new SignatureValidator(new File(base, "Y5"));
         String file = "signature.xml";
 
@@ -120,7 +120,7 @@ public class InteropC14nTest {
 
     @Test
     @Disabled
-    public void test_y5_signatureCommented() throws Exception {
+    void test_y5_signatureCommented() throws Exception {
         validator = new SignatureValidator(new File(base, "Y5"));
         String file = "signatureCommented.xml";
 

@@ -43,10 +43,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.SignatureProperties
  *
  */
-public class SignaturePropertiesTest {
+class SignaturePropertiesTest {
 
+    private static final String id = "id";
     private final XMLSignatureFactory factory;
-    private final String id = "id";
     private final SignatureProperty prop;
 
     public SignaturePropertiesTest() throws Exception {
@@ -59,7 +59,7 @@ public class SignaturePropertiesTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test XMLSignatureFactory.newSignatureProperties(List, String)
         SignatureProperties props;
 
@@ -111,7 +111,7 @@ public class SignaturePropertiesTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         List<SignatureProperty> list = new ArrayList<>();
         list.add(prop);
         SignatureProperties props = factory.newSignatureProperties(list, id);

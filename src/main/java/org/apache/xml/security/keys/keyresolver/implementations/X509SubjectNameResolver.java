@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -35,8 +37,7 @@ import org.w3c.dom.Element;
 
 public class X509SubjectNameResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509SubjectNameResolver.class);
+    private static final Logger LOG = System.getLogger(X509SubjectNameResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -83,7 +84,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
-                LOG.debug("", ex);
+                LOG.log(Level.DEBUG, "", ex);
 
                 throw ex;
             }
@@ -98,22 +99,22 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
             while (storageIterator.hasNext()) {
                 X509Certificate cert = (X509Certificate) storageIterator.next();
                 XMLX509SubjectName certSN = new XMLX509SubjectName(element.getOwnerDocument(), cert);
-                LOG.debug("Found Certificate SN: {}", certSN.getSubjectName());
+                LOG.log(Level.DEBUG, "Found Certificate SN: {0}", certSN.getSubjectName());
 
                 for (XMLX509SubjectName childSubject : x509childObject) {
-                    LOG.debug("Found Element SN:     {}", childSubject.getSubjectName());
+                    LOG.log(Level.DEBUG, "Found Element SN:     {0}", childSubject.getSubjectName());
 
                     if (certSN.equals(childSubject)) {
-                        LOG.debug("match !!! ");
+                        LOG.log(Level.DEBUG, "match !!! ");
                         return cert;
                     }
-                    LOG.debug("no match...");
+                    LOG.log(Level.DEBUG, "no match...");
                 }
             }
 
             return null;
         } catch (XMLSecurityException ex) {
-            LOG.debug("XMLSecurityException", ex);
+            LOG.log(Level.DEBUG, "XMLSecurityException", ex);
             throw new KeyResolverException(ex);
         }
     }

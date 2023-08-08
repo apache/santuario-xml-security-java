@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.interop;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
@@ -43,13 +45,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @see <A HREF="http://jcewww.iaik.at/products/ixsil/index.php">The IAIK IXSIL Website</A>
  */
-public class IAIKTest extends InteropTestBase {
+class IAIKTest extends InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(IAIKTest.class);
+    private static final Logger LOG = System.getLogger(IAIKTest.class.getName());
 
     /** Field gregorsDir */
-    static Path gregorsDir;
+    private static final Path gregorsDir;
 
     static {
         gregorsDir = resolvePath("src", "test", "resources", "at", "iaik", "ixsil");
@@ -63,7 +64,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_signatureAlgorithms_signatures_hMACShortSignature()
+    void test_signatureAlgorithms_signatures_hMACShortSignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACShortSignature.xml");
@@ -75,7 +76,7 @@ public class IAIKTest extends InteropTestBase {
             this.verifyHMAC(filename, resolver, followManifests, hmacKey);
             fail("HMACOutputLength Exception not caught");
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         } catch (XMLSignatureException ex) {
             if (!"algorithms.HMACOutputLengthMin".equals(ex.getMsgID())) {
@@ -90,7 +91,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_signatureAlgorithms_signatures_hMACSignature()
+    void test_signatureAlgorithms_signatures_hMACSignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "hMACSignature.xml");
@@ -102,13 +103,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verifyHMAC(filename, resolver, followManifests, hmacKey);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -120,7 +121,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_coreFeatures_signatures_manifestSignature_core()
+    void test_coreFeatures_signatures_manifestSignature_core()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
@@ -131,13 +132,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Core validation crashed for " + filename);
+            LOG.log(Level.ERROR, "Core validation crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Core validation failed for " + filename);
+            LOG.log(Level.ERROR, "Core validation failed for " + filename);
         }
 
         assertTrue(verify, "Core validation failed for " + filename);
@@ -149,7 +150,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_coreFeatures_signatures_manifestSignature_manifest()
+    void test_coreFeatures_signatures_manifestSignature_manifest()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "manifestSignature.xml");
@@ -160,13 +161,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests, false);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Following the ds:Manifest failed for " + filename);
+            LOG.log(Level.ERROR, "Following the ds:Manifest failed for " + filename);
         }
 
         assertTrue(verify, "Following the ds:Manifest failed for " + filename);
@@ -178,7 +179,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_coreFeatures_signatures_signatureTypesSignature()
+    void test_coreFeatures_signatures_signatureTypesSignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "signatureTypesSignature.xml");
@@ -189,13 +190,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests, false     );
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, "Verification failed for " + filename);
@@ -207,7 +208,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_coreFeatures_signatures_anonymousReferenceSignature()
+    void test_coreFeatures_signatures_anonymousReferenceSignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "coreFeatures", "signatures", "anonymousReferenceSignature.xml");
@@ -220,13 +221,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -238,7 +239,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_signatureAlgorithms_signatures_dSASignature()
+    void test_signatureAlgorithms_signatures_dSASignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "dSASignature.xml");
@@ -249,13 +250,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -267,7 +268,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_signatureAlgorithms_signatures_rSASignature()
+    void test_signatureAlgorithms_signatures_rSASignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "signatureAlgorithms", "signatures", "rSASignature.xml");
@@ -278,13 +279,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -296,7 +297,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_transforms_signatures_base64DecodeSignature()
+    void test_transforms_signatures_base64DecodeSignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "transforms", "signatures", "base64DecodeSignature.xml");
@@ -307,13 +308,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests, false);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -325,7 +326,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_transforms_signatures_c14nSignature() throws Exception {
+    void test_transforms_signatures_c14nSignature() throws Exception {
 
         File filename = resolveFile(gregorsDir, "transforms", "signatures", "c14nSignature.xml");
         ResourceResolverSpi resolver = null;
@@ -335,13 +336,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests, false);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -353,7 +354,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_transforms_signatures_envelopedSignatureSignature()
+    void test_transforms_signatures_envelopedSignatureSignature()
         throws Exception {
 
         File filename = resolveFile(gregorsDir, "transforms", "signatures", "envelopedSignatureSignature.xml");
@@ -364,13 +365,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -382,7 +383,7 @@ public class IAIKTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_transforms_signatures_xPathSignature() throws Exception {
+    void test_transforms_signatures_xPathSignature() throws Exception {
 
         File filename = resolveFile(gregorsDir, "transforms", "signatures", "xPathSignature.xml");
         ResourceResolverSpi resolver = null;
@@ -392,13 +393,13 @@ public class IAIKTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
 
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());

@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class Canonicalizer20010315ExclusiveTest {
+class Canonicalizer20010315ExclusiveTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -67,7 +67,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void test221excl() throws Exception {
+    void test221excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
@@ -109,7 +109,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void test222excl() throws Exception {
+    void test222excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
@@ -136,7 +136,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void test24excl() throws Exception {
+    void test24excl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
@@ -163,7 +163,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testComplexDocexcl() throws Exception {
+    void testComplexDocexcl() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer20010315_ExclWithCommentsTransformer c = new Canonicalizer20010315_ExclWithCommentsTransformer();
@@ -189,7 +189,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testNodeSet() throws Exception {
+    void testNodeSet() throws Exception {
 
         final String XML =
                 "<env:Envelope"
@@ -240,7 +240,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * https://issues.apache.org/jira/browse/SANTUARIO-263
      */
     @Test
-    public void test24Aexcl() throws Exception {
+    void test24Aexcl() throws Exception {
         Document doc = TestUtils.newDocument();
         Element local = doc.createElementNS("foo:bar", "dsig:local");
         Element test = doc.createElementNS("http://example.net", "etsi:test");
@@ -282,7 +282,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList1() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList1() throws Exception {
         final String XML =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -345,7 +345,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList2() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList2() throws Exception {
         final String XML =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -419,7 +419,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList3() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList3() throws Exception {
         final String XML =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -482,7 +482,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testDefaultNSInInclusiveNamespacePrefixList4() throws Exception {
+    void testDefaultNSInInclusiveNamespacePrefixList4() throws Exception {
         final String XML =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -545,7 +545,7 @@ public class Canonicalizer20010315ExclusiveTest {
      * @throws Exception
      */
     @Test
-    public void testPropagateDefaultNs1() throws Exception {
+    void testPropagateDefaultNs1() throws Exception {
         final String XML =
                 "<env:Envelope"
                         + " xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\""
@@ -586,7 +586,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs2() throws Exception {
+    void testPropagateDefaultNs2() throws Exception {
         final String XML =
                 "<env:Envelope"
                         + " xmlns=\"http://example.com\""
@@ -628,7 +628,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs3() throws Exception {
+    void testPropagateDefaultNs3() throws Exception {
         final String XML =
                 "<Envelope"
                         + " xmlns=\"http://example.com\""
@@ -670,7 +670,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs4() throws Exception {
+    void testPropagateDefaultNs4() throws Exception {
         final String XML =
                 "<Envelope"
                         + " xmlns=\"\""
@@ -712,7 +712,7 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     @Test
-    public void testPropagateDefaultNs5() throws Exception {
+    void testPropagateDefaultNs5() throws Exception {
         final String XML =
                 "<env:Envelope"
                         + " xmlns=\"http://example.com\""
@@ -782,19 +782,14 @@ public class Canonicalizer20010315ExclusiveTest {
     }
 
     public static byte[] getBytesFromResource(URL resource) throws IOException {
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream inputStream = resource.openStream();
-        try {
+        try (InputStream inputStream = resource.openStream()) {
             byte[] buf = new byte[1024];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
-
             return baos.toByteArray();
-        } finally {
-            inputStream.close();
         }
     }
 }

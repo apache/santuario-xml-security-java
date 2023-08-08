@@ -21,6 +21,8 @@ package org.apache.xml.security.test.dom.interop;
 
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -36,13 +38,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @see <A HREF="http://www.rsasecurity.com/products/bsafe/certj.html">RSA BSAFE Cert-J</A>
  */
-public class RSASecurityTest extends InteropTestBase {
+class RSASecurityTest extends InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(RSASecurityTest.class);
+    private static final Logger LOG = System.getLogger(RSASecurityTest.class.getName());
 
     /** Field blakesDir           */
-    static File blakesDir;
+    private static File blakesDir;
 
     static {
         blakesDir = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "com", "rsasecurity", "bdournaee");
@@ -50,7 +51,7 @@ public class RSASecurityTest extends InteropTestBase {
     }
 
     @Test
-    public void test_enveloping() throws Exception {
+    void test_enveloping() throws Exception {
 
         File filename = new File(blakesDir, "certj201_enveloping.xml");
         boolean followManifests = false;
@@ -58,14 +59,14 @@ public class RSASecurityTest extends InteropTestBase {
         boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
     }
 
     @Test
-    public void test_enveloped() throws Exception {
+    void test_enveloped() throws Exception {
 
         File filename = new File(blakesDir, "certj201_enveloped.xml");
         boolean followManifests = false;
@@ -73,7 +74,7 @@ public class RSASecurityTest extends InteropTestBase {
         boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());

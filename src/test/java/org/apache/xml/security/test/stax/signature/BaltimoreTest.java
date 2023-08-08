@@ -73,7 +73,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * from Baltimore using KeyTools XML. These test vectors are located in the directory
  * <CODE>data/ie/baltimore/merlin-examples/</CODE>.
  */
-public class BaltimoreTest {
+class BaltimoreTest {
 
     // Define the Keys
     private static final String DSA_Y_15 =
@@ -102,7 +102,7 @@ public class BaltimoreTest {
             "65537";
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -115,12 +115,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_fifteen_enveloping_hmac_sha1() throws Exception {
+    void test_fifteen_enveloping_hmac_sha1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -154,12 +153,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
+    void test_fifteen_enveloping_hmac_sha1_40() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-hmac-sha1-40.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -194,12 +192,11 @@ public class BaltimoreTest {
 
     // See SANTUARIO-320
     @Test
-    public void test_fifteen_enveloped_dsa() throws Exception {
+    void test_fifteen_enveloped_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloped-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloped-dsa.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -228,12 +225,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_fifteen_enveloping_b64_dsa() throws Exception {
+    void test_fifteen_enveloping_b64_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-b64-dsa.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -262,12 +258,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_fifteen_enveloping_dsa() throws Exception {
+    void test_fifteen_enveloping_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-dsa.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -296,12 +291,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_fifteen_enveloping_rsa() throws Exception {
+    void test_fifteen_enveloping_rsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-rsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-fifteen/signature-enveloping-rsa.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -330,12 +324,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_twenty_three_enveloping_hmac_sha1() throws Exception {
+    void test_twenty_three_enveloping_hmac_sha1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -369,12 +362,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
+    void test_twenty_three_enveloping_hmac_sha1_40() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1-40.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -409,12 +401,11 @@ public class BaltimoreTest {
 
     // See SANTUARIO-320
     @Test
-    public void test_twenty_three_enveloped_dsa() throws Exception {
+    void test_twenty_three_enveloped_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloped-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloped-dsa.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         Key publicKey = getPublicKey("DSA", 23);
@@ -447,12 +438,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_twenty_three_enveloping_b64_dsa() throws Exception {
+    void test_twenty_three_enveloping_b64_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-b64-dsa.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         Key publicKey = getPublicKey("DSA", 23);
@@ -485,12 +475,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_twenty_three_enveloping_dsa() throws Exception {
+    void test_twenty_three_enveloping_dsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -519,12 +508,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void test_twenty_three_enveloping_rsa() throws Exception {
+    void test_twenty_three_enveloping_rsa() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-rsa.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-rsa.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -553,12 +541,11 @@ public class BaltimoreTest {
     }
 
     @Test
-    public void testExcSignature() throws Exception {
+    void testExcSignature() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-exc-c14n-one/exc-signature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-exc-c14n-one/exc-signature.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 

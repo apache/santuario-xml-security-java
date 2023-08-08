@@ -43,8 +43,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * https://issues.apache.org/jira/browse/SANTUARIO-273
  * "xml:base attribute not processed correctly in C14N11 canonicalization"
  */
-public class Santuario273Test {
-    public static String input = ""
+class Santuario273Test {
+    private static final String INPUT = ""
         + "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
         + "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\" xml:base=\"http://www.acme.com/resources/\">\n"
         + "  <SignedInfo xml:base=\"subresources/\"><!-- comment inside -->\n"
@@ -66,7 +66,7 @@ public class Santuario273Test {
         + "</Signature>\n"
         ;
 
-    public static final String expectedResult = "<SignedInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\" xml:base=\"http://www.acme.com/resources/subresources/\">\n"
+    private static final String EXPECTED_RESULT = "<SignedInfo xmlns=\"http://www.w3.org/2000/09/xmldsig#\" xml:base=\"http://www.acme.com/resources/subresources/\">\n"
         + "    <CanonicalizationMethod Algorithm=\"http://www.w3.org/TR/2001/REC-xml-c14n-20010315\"></CanonicalizationMethod>\n"
         + "    <SignatureMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\"></SignatureMethod>\n"
         + "    <Reference URI=\"http://www.w3.org/TR/xml-stylesheet\">\n"
@@ -80,9 +80,9 @@ public class Santuario273Test {
     }
 
     @Test
-    public void testC14n11Base() throws Exception {
+    void testC14n11Base() throws Exception {
         Document doc = null;
-        try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
+        try (InputStream is = new ByteArrayInputStream(INPUT.getBytes())) {
             doc = XMLUtils.read(is, false);
         }
 
@@ -98,7 +98,7 @@ public class Santuario273Test {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             c14n.canonicalizeSubtree(signedInfo, output);
 
-            assertEquals(new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), expectedResult);
+            assertEquals(new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8), EXPECTED_RESULT);
         }
     }
 

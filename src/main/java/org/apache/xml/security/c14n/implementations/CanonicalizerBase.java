@@ -136,7 +136,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             if (input.isExcludeComments()) {
                 includeComments = false;
             }
-            if (input.isOctetStream()) {
+            if (input.hasUnprocessedInput()) {
                 engineCanonicalize(input.getBytes(), writer, secureValidation);
             } else if (input.isElement()) {
                 engineCanonicalizeSubTree(input.getSubNode(), input.getExcludeNode(), writer);

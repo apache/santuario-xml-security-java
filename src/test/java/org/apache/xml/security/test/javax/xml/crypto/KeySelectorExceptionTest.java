@@ -39,10 +39,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit test for javax.xml.crypto.KeySelectorException
  *
  */
-public class KeySelectorExceptionTest {
+class KeySelectorExceptionTest {
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test KeySelectorException()
         KeySelectorException kse = new KeySelectorException();
         assertNull(kse.getMessage());

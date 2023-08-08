@@ -39,6 +39,7 @@ import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -56,9 +57,9 @@ import static org.junit.jupiter.api.Assertions.fail;
  * These are separated out from SignatureVerificationTest as we have to change the default configuration to set
  * "MaximumAllowedReferencesPerManifest" to "2".
  */
-public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificationTest {
+class SignatureVerificationMaxRefTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -69,20 +70,14 @@ public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testMaximumAllowedReferencesPerManifest() throws Exception {
+    void testMaximumAllowedReferencesPerManifest() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -102,10 +97,8 @@ public class SignatureVerificationMaxRefTest extends AbstractSignatureVerificati
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         transformer.transform(new DOMSource(document), new StreamResult(baos));
 
-        XMLStreamReader xmlStreamReader = null;
-        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
-            xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
-        }
+        XMLStreamReader xmlStreamReader = xmlInputFactory
+            .createXMLStreamReader(new ByteArrayInputStream(baos.toByteArray()));
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();

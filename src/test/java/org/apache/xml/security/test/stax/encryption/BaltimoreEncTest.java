@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  * Interop test for XML Encryption
  *
  */
-public class BaltimoreEncTest {
+class BaltimoreEncTest {
 
     private static String cardNumber;
     private static int nodeCount;
@@ -103,13 +103,12 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_3des_cbc() throws Exception {
+    void test_five_content_3des_cbc() throws Exception {
 
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-tripledes-cbc.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-tripledes-cbc.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
@@ -141,13 +140,12 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_aes256_cbc() throws Exception {
+    void test_five_content_aes256_cbc() throws Exception {
 
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes256-cbc-prop.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes256-cbc-prop.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes(StandardCharsets.US_ASCII);
@@ -179,12 +177,11 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_aes128_cbc_kw_aes192() throws Exception {
+    void test_five_content_aes128_cbc_kw_aes192() throws Exception {
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-content-aes128-cbc-kw-aes192.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
@@ -216,12 +213,11 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_3des_cbc_kw_aes128() throws Exception {
+    void test_five_content_3des_cbc_kw_aes128() throws Exception {
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-tripledes-cbc-kw-aes128.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII);
@@ -253,12 +249,11 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_content_aes128_cbc_rsa_15() throws Exception {
+    void test_five_content_aes128_cbc_rsa_15() throws Exception {
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-element-aes128-cbc-rsa-1_5.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -286,12 +281,11 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_aes128_cbc() throws Exception {
+    void test_five_data_aes128_cbc() throws Exception {
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes128-cbc.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnop".getBytes(StandardCharsets.US_ASCII);
@@ -321,14 +315,13 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_aes256_cbc_3des() throws Exception {
+    void test_five_data_aes256_cbc_3des() throws Exception {
         assumeFalse(isIBMJdK);
 
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes256-cbc-kw-tripledes.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwx".getBytes(StandardCharsets.US_ASCII);
@@ -358,12 +351,11 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_aes192_cbc_aes256() throws Exception {
+    void test_five_data_aes192_cbc_aes256() throws Exception {
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-aes192-cbc-kw-aes256.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] keyBytes = "abcdefghijklmnopqrstuvwxyz012345".getBytes(StandardCharsets.US_ASCII);
@@ -393,12 +385,11 @@ public class BaltimoreEncTest {
     }
 
     @Test
-    public void test_five_data_3des_cbc_rsa_oaep() throws Exception {
+    void test_five_data_3des_cbc_rsa_oaep() throws Exception {
         // Read in document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource(
+            "ie/baltimore/merlin-examples/merlin-xmlenc-five/encrypt-data-tripledes-cbc-rsa-oaep-mgf1p.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -423,7 +414,7 @@ public class BaltimoreEncTest {
         document = StAX2DOM.readDoc(securityStreamReader);
     }
 
-    /*
+    /**
      * Check we have retrieved a Credit Card number and that it is OK
      * Check that the document has the correct number of nodes
      */
@@ -451,10 +442,7 @@ public class BaltimoreEncTest {
      * @return The retrieved credit card number
      * @throws XPathExpressionException
      */
-    private static String retrieveCCNumber(Document doc)
-        throws javax.xml.transform.TransformerException,
-        XPathExpressionException {
-
+    private static String retrieveCCNumber(Document doc) throws XPathExpressionException {
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         Map<String, String> namespace = new HashMap<>();

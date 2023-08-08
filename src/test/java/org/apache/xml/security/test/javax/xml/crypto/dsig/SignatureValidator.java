@@ -52,6 +52,7 @@ public class SignatureValidator {
         this.dir = null;
     }
 
+
     /**
      * @param base can be null. Base directory
      */
@@ -123,8 +124,8 @@ public class SignatureValidator {
 
         // Check core validation status
         if (!coreValidity) {
-            for (Object reference : signature.getSignedInfo().getReferences()) {
-                ((Reference) reference).validate(vc);
+            for (Reference reference : signature.getSignedInfo().getReferences()) {
+                reference.validate(vc);
             }
         }
         return coreValidity;

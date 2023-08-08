@@ -32,7 +32,7 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 /**
  * Some tests on attacks against the RetrievalMethodResolver.
  */
-public class RetrievalMethodResolverTest {
+class RetrievalMethodResolverTest {
 
     public RetrievalMethodResolverTest() {
         org.apache.xml.security.Init.init();
@@ -40,7 +40,7 @@ public class RetrievalMethodResolverTest {
     }
 
     @Test
-    public void testReferenceToSameRetrievalMethod() throws Exception {
+    void testReferenceToSameRetrievalMethod() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod1.xml";
         Document doc = XMLUtils.read(resolveFile(filename), false);
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
@@ -51,7 +51,7 @@ public class RetrievalMethodResolverTest {
     }
 
     @Test
-    public void testLoopBetweenRetrievalMethods() throws Exception {
+    void testLoopBetweenRetrievalMethods() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod2.xml";
         Document doc = XMLUtils.read(resolveFile(filename), false);
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);

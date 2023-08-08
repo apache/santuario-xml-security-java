@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.dom.interop;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -38,12 +40,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @see <A HREF="http://www.baltimore.com/keytools/xml/index.html">The KeyTools XML Website</A>
  */
-public class BaltimoreXalanTest extends InteropTestBase {
+class BaltimoreXalanTest extends InteropTestBase {
 
     private static final String CONFIG_FILE = "/config-xalan.xml";
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(BaltimoreXalanTest.class);
+    private static final Logger LOG = System.getLogger(BaltimoreXalanTest.class.getName());
 
     private static final File merlinsDir16 = resolveFile("src", "test", "resources", "ie", "baltimore",
         "merlin-examples", "merlin-xmldsig-sixteen");
@@ -69,7 +70,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_sixteen_external_dsa() throws Exception {
+    void test_sixteen_external_dsa() throws Exception {
 
         File file = new File(merlinsDir16, "signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -79,12 +80,12 @@ public class BaltimoreXalanTest extends InteropTestBase {
         try {
             verify = this.verify(file, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + file);
+            LOG.log(Level.ERROR, "Verification crashed for " + file);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + file);
+            LOG.log(Level.ERROR, "Verification failed for " + file);
         }
 
         assertTrue(verify, file.toString());
@@ -99,9 +100,9 @@ public class BaltimoreXalanTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_sixteen_bad_signature() throws Exception {
+    void test_sixteen_bad_signature() throws Exception {
 
-        File filename = new File(merlinsDir16 + "/bad-signature.xml");
+        File filename = new File(merlinsDir16, "bad-signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
         boolean followManifests = false;
         boolean verify = false;
@@ -109,12 +110,12 @@ public class BaltimoreXalanTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (verify) {
-            LOG.error("Verification passed (should have failed) for " + filename);
+            LOG.log(Level.ERROR, "Verification passed (should have failed) for " + filename);
         }
 
         assertFalse(verify, filename.toString());
@@ -127,7 +128,7 @@ public class BaltimoreXalanTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_twenty_three_external_dsa_2() throws Exception {
+    void test_twenty_three_external_dsa_2() throws Exception {
 
         File filename = new File(merlinsDir23, "signature.xml");
         ResourceResolverSpi resolver = new OfflineResolver();
@@ -137,12 +138,12 @@ public class BaltimoreXalanTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());

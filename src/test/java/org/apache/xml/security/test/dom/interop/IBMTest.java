@@ -20,6 +20,8 @@ package org.apache.xml.security.test.dom.interop;
 
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 
 import org.apache.xml.security.test.dom.utils.resolver.OfflineResolver;
@@ -51,13 +53,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * data/com/ibm/xss4j-20030127/
  * then the interop test is performed against these values, too.
  */
-public class IBMTest extends InteropTestBase {
+class IBMTest extends InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(IBMTest.class);
+    private static final Logger LOG = System.getLogger(IBMTest.class.getName());
 
     /** Field kentsDir           */
-    static final File kentsDir = resolveFile("data", "com", "ibm", "xss4j-20030127");
+    private static final File kentsDir = resolveFile("data", "com", "ibm", "xss4j-20030127");
 
     static {
         org.apache.xml.security.Init.init();
@@ -82,7 +83,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_hmac() throws Exception {
+    void test_enveloping_hmac() throws Exception {
         if (!runTests) {
             return;
         }
@@ -95,12 +96,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verifyHMAC(filename, resolver, followManifests, hmacKey);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -112,7 +113,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_detached_dsa() throws Exception {
+    void test_detached_dsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -124,12 +125,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -141,7 +142,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_detached_rsa() throws Exception {
+    void test_detached_rsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -153,12 +154,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -170,7 +171,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloped_dsa() throws Exception {
+    void test_enveloped_dsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -182,12 +183,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -199,7 +200,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloped_rsa() throws Exception {
+    void test_enveloped_rsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -211,12 +212,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -228,7 +229,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_dsa() throws Exception {
+    void test_enveloping_dsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -240,12 +241,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -257,7 +258,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_rsa() throws Exception {
+    void test_enveloping_rsa() throws Exception {
         if (!runTests) {
             return;
         }
@@ -269,12 +270,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
         assertTrue(verify, filename.toString());
@@ -286,7 +287,7 @@ public class IBMTest extends InteropTestBase {
      * @throws Exception
      */
     @Test
-    public void test_enveloping_dsa_soaped_broken() throws Exception {
+    void test_enveloping_dsa_soaped_broken() throws Exception {
         if (!runTests) {
             return;
         }
@@ -302,12 +303,12 @@ public class IBMTest extends InteropTestBase {
         try {
             verify = this.verify(filename, resolver, followManifests);
         } catch (RuntimeException ex) {
-            LOG.error("Verification crashed for " + filename);
+            LOG.log(Level.ERROR, "Verification crashed for " + filename);
             throw ex;
         }
 
         if (verify) {
-            LOG.error("Verification failed for " + filename + ", had to be broken but was successful");
+            LOG.log(Level.ERROR, "Verification failed for " + filename + ", had to be broken but was successful");
         }
 
         assertFalse(verify, filename.toString());

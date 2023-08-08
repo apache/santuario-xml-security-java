@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyPair;
@@ -73,10 +75,9 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
 /**
  *
  */
-public class XMLCipherTest {
+class XMLCipherTest {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLCipherTest.class);
+    private static final Logger LOG = System.getLogger(XMLCipherTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -132,7 +133,7 @@ public class XMLCipherTest {
      * encrypted using a AES 192 bit key.  Then reverse using the KEK
      */
     @Test
-    public void testAES128ElementAES192KWCipherUsingKEK() throws Exception {
+    void testAES128ElementAES192KWCipherUsingKEK() throws Exception {
 
         Document d = document(); // source
         Document ed = null;
@@ -187,7 +188,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
                 + "necessary algorithms not available"
             );
@@ -199,7 +200,7 @@ public class XMLCipherTest {
      * encrypted using an RSA key.  Reverse using KEK
      */
     @Test
-    public void testAES256ElementRSAKWCipherUsingKEK() throws Exception {
+    void testAES256ElementRSAKWCipherUsingKEK() throws Exception {
 
         Document d = document(); // source
         Document ed = null;
@@ -244,8 +245,8 @@ public class XMLCipherTest {
             builderKeyInfo.add(encryptedKey);
 
             ed = cipher.doFinal(d, e);
-            LOG.debug("Encrypted document");
-            LOG.debug(toString(ed));
+            LOG.log(Level.DEBUG, "Encrypted document");
+            LOG.log(Level.DEBUG, toString(ed));
 
 
             //decrypt
@@ -260,7 +261,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES256ElementRSAKWCipherUsingKEK skipped as "
                 + "necessary algorithms not available"
             );
@@ -273,7 +274,7 @@ public class XMLCipherTest {
      * EncryptedKey by hand
      */
     @Test
-    public void testAES192Element3DESKWCipher() throws Exception {
+    void testAES192Element3DESKWCipher() throws Exception {
 
         assumeFalse(isIBMJdK);
 
@@ -349,7 +350,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES192Element3DESKWCipher skipped as "
                 + "necessary algorithms not available"
             );
@@ -357,7 +358,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testTripleDesElementCipher() throws Exception {
+    void testTripleDesElementCipher() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
@@ -393,14 +394,14 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testTripleDesElementCipher skipped as necessary algorithms not available"
             );
         }
     }
 
     @Test
-    public void testAes128ElementCipher() throws Exception {
+    void testAes128ElementCipher() throws Exception {
         byte[] bits128 = {
                           (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
                           (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
@@ -437,14 +438,14 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAes128ElementCipher skipped as necessary algorithms not available"
             );
         }
     }
 
     @Test
-    public void testAes192ElementCipher() throws Exception {
+    void testAes192ElementCipher() throws Exception {
         byte[] bits192 = {
                           (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
                           (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
@@ -483,12 +484,12 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn("Test testAes192ElementCipher skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testAes192ElementCipher skipped as necessary algorithms not available");
         }
     }
 
     @Test
-    public void testAes265ElementCipher() throws Exception {
+    void testAes265ElementCipher() throws Exception {
         byte[] bits256 = {
                           (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
                           (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
@@ -529,7 +530,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn("Test testAes265ElementCipher skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testAes265ElementCipher skipped as necessary algorithms not available");
         }
     }
 
@@ -538,7 +539,7 @@ public class XMLCipherTest {
      * In this case the EncryptedData becomes the root element of the document
      */
     @Test
-    public void testTripleDesDocumentCipher() throws Exception {
+    void testTripleDesDocumentCipher() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
@@ -571,7 +572,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testTripleDesDocumentCipher skipped as "
                 + "necessary algorithms not available"
             );
@@ -579,7 +580,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testEncryptionProperties() throws Exception {
+    void testEncryptionProperties() throws Exception {
         Document d = document(); // source
         Document ed = null;      // target
         Document dd = null;      // target
@@ -629,7 +630,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testTripleDesDocumentCipher skipped as "
                 + "necessary algorithms not available"
             );
@@ -640,7 +641,7 @@ public class XMLCipherTest {
      * Test a Cipher Reference
      */
     @Test
-    public void testSameDocumentCipherReference() throws Exception {
+    void testSameDocumentCipherReference() throws Exception {
 
         if (haveISOPadding) {
             Document d = TestUtils.newDocument();
@@ -700,7 +701,7 @@ public class XMLCipherTest {
             assertEquals("A test encrypted secret",
                         new String(decryptBytes, StandardCharsets.US_ASCII));
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testSameDocumentCipherReference skipped as "
                 + "necessary algorithms not available"
             );
@@ -711,7 +712,7 @@ public class XMLCipherTest {
      * Test physical representation of decrypted element, see SANTUARIO-309
      */
     @Test
-    public void testPhysicalRepresentation() throws Exception {
+    void testPhysicalRepresentation() throws Exception {
 
         if (haveISOPadding) {
             byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -806,7 +807,7 @@ public class XMLCipherTest {
             n = n.getNextSibling();
             assertNull(n);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testPhysicalRepresentation skipped as "
                 + "necessary algorithms not available"
             );
@@ -814,9 +815,9 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testSerializedData() throws Exception {
+    void testSerializedData() throws Exception {
         if (!haveISOPadding) {
-            LOG.warn("Test testSerializedData skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testSerializedData skipped as necessary algorithms not available");
             return;
         }
 
@@ -840,7 +841,7 @@ public class XMLCipherTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.canonicalizeSubtree(e, baos);
         baos.close();
-        String before = baos.toString(StandardCharsets.UTF_8.name());
+        String before = baos.toString(StandardCharsets.UTF_8);
 
         byte[] serialized = baos.toByteArray();
         EncryptedData encryptedData = null;
@@ -864,15 +865,13 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testEncryptedKeyWithRecipient() throws Exception {
+    void testEncryptedKeyWithRecipient() throws Exception {
         String filename =
             "src/test/resources/org/apache/xml/security/encryption/encryptedKey.xml";
         if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
-        File f = new File(filename);
-
-        Document document = XMLUtils.read(new FileInputStream(f), false);
+        Document document = XMLUtils.read(new File(filename), false);
 
         XMLCipher keyCipher = XMLCipher.getInstance();
         keyCipher.init(XMLCipher.UNWRAP_MODE, null);
@@ -889,7 +888,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testEecryptToByteArray() throws Exception {
+    void testEecryptToByteArray() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -912,7 +911,7 @@ public class XMLCipherTest {
     }
 
     @Test
-    public void testMultipleKEKs() throws Exception {
+    void testMultipleKEKs() throws Exception {
 
         Document d = document(); // source
         Document ed = null;
@@ -973,7 +972,7 @@ public class XMLCipherTest {
             target = toString(dd);
             assertEquals(source, target);
         } else {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
                 + "necessary algorithms not available"
             );
@@ -987,12 +986,14 @@ public class XMLCipherTest {
         c14n.canonicalizeSubtree(n, baos);
         baos.flush();
 
-        return baos.toString(StandardCharsets.UTF_8.name());
+        return baos.toString(StandardCharsets.UTF_8);
     }
 
     private Document document() throws XMLParserException, IOException {
         File f = new File(documentName);
-        return XMLUtils.read(new FileInputStream(f), false);
+        try (FileInputStream inputStream = new FileInputStream(f)) {
+            return XMLUtils.read(inputStream, false);
+        }
     }
 
     private String element() {

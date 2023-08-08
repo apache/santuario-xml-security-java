@@ -31,26 +31,26 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Version test.
  */
-public class VersionTest {
+class VersionTest {
 
     /**
      * A unit test for the algorithm below to convert a version number
      * to a double.
      */
     @Test
-    public void testConvertVersion() throws Exception {
-        String version = convertVersion("1.4.4");
-        assertEquals("1.44", version);
+    void testRemoveClassifier() throws Exception {
+        String version = removeClassifier("1.4.4");
+        assertEquals("1.4.4", version);
 
-        version = convertVersion("1.4.4-SNAPSHOT");
-        assertEquals("1.44", version);
+        version = removeClassifier("1.4.4-SNAPSHOT");
+        assertEquals("1.4.4", version);
 
-        version = convertVersion("1.4");
+        version = removeClassifier("1.4");
         assertEquals("1.4", version);
     }
 
     @Test
-    public void testVersion() throws Exception {
+    void testVersion() throws Exception {
         Provider provider = Security.getProvider("ApacheXMLDSig");
         if (provider != null) {
             Security.removeProvider(provider.getName());
@@ -60,39 +60,17 @@ public class VersionTest {
         provider = Security.getProvider("ApacheXMLDSig");
         assertNotNull(provider);
 
-        String version = System.getProperty("product.version");
-        assertNotNull(version);
-
-        version = convertVersion(version);
-
-        double versionD = Double.parseDouble(version);
-        assertTrue(versionD == provider.getVersion());
-
+        String version = removeClassifier(System.getProperty("product.version"));
+        assertEquals(version, provider.getVersionStr());
         assertTrue(provider.getInfo().contains("Santuario"));
     }
 
-    /**
-     * Convert the version to a number that can be parsed to a double.
-     * Namely, remove the "-SNAPSHOT" from the end, and convert version
-     * numbers like 1.4.4 to 1.44.
-     */
-    private String convertVersion(String version) {
-
+    private String removeClassifier(String version) {
+        if (version == null) {
+            return null;
+        }
         // Remove the "-SNAPSHOT" version if it exists
         int dash = version.indexOf('-');
-        if (dash != -1) {
-            version = version.substring(0, dash);
-        }
-
-        // Remove the second decimal point if it exists
-        int lastDot = version.lastIndexOf('.');
-        if (version.indexOf('.') != lastDot) {
-            String prefix = version.substring(0, lastDot);
-            String suffix = version.substring(lastDot + 1, version.length());
-            version = prefix.concat(suffix);
-        }
-
-        return version;
+        return dash == -1 ? version : version.substring(0, dash);
     }
-
 }

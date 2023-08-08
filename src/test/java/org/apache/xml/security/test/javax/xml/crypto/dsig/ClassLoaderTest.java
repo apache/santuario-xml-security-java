@@ -19,6 +19,8 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -38,13 +40,12 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
  * invokes the XMLSignature API. It tests that there are not provider class
  * loading issues with more than one classloader (see 6380953).
  */
-public class ClassLoaderTest {
+class ClassLoaderTest {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ClassLoaderTest.class);
+    private static final Logger LOG = System.getLogger(ClassLoaderTest.class.getName());
 
     @Test
-    public void testMultipleLoaders() throws Exception {
+    void testMultipleLoaders() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
         URL[] urls = new URL[2];
@@ -64,7 +65,7 @@ public class ClassLoaderTest {
     }
 
     @Test
-    public void testProviderMultipleLoaders() throws Exception {
+    void testProviderMultipleLoaders() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
         URL[] urls = new URL[2];
@@ -92,12 +93,12 @@ public class ClassLoaderTest {
             }
             long end = System.currentTimeMillis();
             long elapsed = end-start;
-            LOG.debug("Elapsed: {}", elapsed);
+            LOG.log(Level.DEBUG, "Elapsed: {0}", elapsed);
         }
     }
 
     @Test
-    public void testProviderMultipleLoadersTwo() throws Exception {
+    void testProviderMultipleLoadersTwo() throws Exception {
         File file0 = resolveFile("build", "classes");
         File file1 = resolveFile("build", "test");
         URL[] urls = new URL[2];

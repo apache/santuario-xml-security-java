@@ -26,6 +26,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Provider;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,8 +62,7 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
      */
     public static final int MAXIMUM_REFERENCE_COUNT = 30;
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMSignedInfo.class);
+    private static final Logger LOG = System.getLogger(DOMSignedInfo.class.getName());
 
     /** Signature - NOT Recommended RSAwithMD5 */
     private static final String ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5 =
@@ -233,21 +234,21 @@ public final class DOMSignedInfo extends DOMStructure implements SignedInfo {
             byte[] signedInfoBytes = bos.toByteArray();
 
             // this whole block should only be done if LOGging is enabled
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Canonicalized SignedInfo:");
+            if (LOG.isLoggable(Level.DEBUG)) {
+                LOG.log(Level.DEBUG, "Canonicalized SignedInfo:");
                 StringBuilder sb = new StringBuilder(signedInfoBytes.length);
                 for (byte signedInfoByte : signedInfoBytes) {
                     sb.append((char) signedInfoByte);
                 }
-                LOG.debug(sb.toString());
-                LOG.debug("Data to be signed/verified:" + XMLUtils.encodeToString(signedInfoBytes));
+                LOG.log(Level.DEBUG, sb.toString());
+                LOG.log(Level.DEBUG, "Data to be signed/verified:" + XMLUtils.encodeToString(signedInfoBytes));
             }
 
             this.canonData = new ByteArrayInputStream(signedInfoBytes);
         } catch (TransformException te) {
             throw new XMLSignatureException(te);
         } catch (IOException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
             // Impossible
         }
     }

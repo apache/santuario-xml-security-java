@@ -28,9 +28,12 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.AccessController;
@@ -41,7 +44,6 @@ import java.security.Provider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -68,6 +70,7 @@ import javax.xml.crypto.dsig.XMLValidateContext;
 import org.apache.jcp.xml.dsig.internal.DigesterOutputStream;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureStreamInput;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
@@ -98,8 +101,8 @@ public final class DOMReference extends DOMStructure
         AccessController.doPrivileged((PrivilegedAction<Boolean>)
             () -> Boolean.getBoolean("com.sun.org.apache.xml.internal.security.useC14N11"));
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMReference.class);
+    private static final Logger LOG = System.getLogger(DOMReference.class.getName());
+
 
     private final DigestMethod digestMethod;
     private final String id;
@@ -329,7 +332,7 @@ public final class DOMReference extends DOMStructure
     public void marshal(Node parent, String dsPrefix, DOMCryptoContext context)
         throws MarshalException
     {
-        LOG.debug("Marshalling Reference");
+        LOG.log(Level.DEBUG, "Marshalling Reference");
         Document ownerDoc = DOMUtils.getOwnerDocument(parent);
 
         refElem = DOMUtils.createElement(ownerDoc, "Reference",
@@ -357,7 +360,7 @@ public final class DOMReference extends DOMStructure
         ((DOMDigestMethod)digestMethod).marshal(refElem, dsPrefix, context);
 
         // create and append DigestValue element
-        LOG.debug("Adding digestValueElem");
+        LOG.log(Level.DEBUG, "Adding digestValueElem");
         Element digestValueElem = DOMUtils.createElement(ownerDoc,
                                                          "DigestValue",
                                                          XMLSignature.XMLNS,
@@ -385,7 +388,7 @@ public final class DOMReference extends DOMStructure
 
         // insert digestValue into DigestValue element
         String encodedDV = XMLUtils.encodeToString(digestValue);
-        LOG.debug("Reference object uri = {}", uri);
+        LOG.log(Level.DEBUG, "Reference object uri = {0}", uri);
         Element digestElem = DOMUtils.getLastChildElement(refElem);
         if (digestElem == null) {
             throw new XMLSignatureException("DigestValue element expected");
@@ -395,7 +398,7 @@ public final class DOMReference extends DOMStructure
             (refElem.getOwnerDocument().createTextNode(encodedDV));
 
         digested = true;
-        LOG.debug("Reference digesting completed");
+        LOG.log(Level.DEBUG, "Reference digesting completed");
     }
 
     @Override
@@ -411,9 +414,9 @@ public final class DOMReference extends DOMStructure
         Data data = dereference(validateContext);
         calcDigestValue = transform(data, validateContext);
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Expected digest: " + XMLUtils.encodeToString(digestValue));
-            LOG.debug("Actual digest: " + XMLUtils.encodeToString(calcDigestValue));
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Expected digest: " + XMLUtils.encodeToString(digestValue));
+            LOG.log(Level.DEBUG, "Actual digest: " + XMLUtils.encodeToString(calcDigestValue));
         }
 
         validationStatus = Arrays.equals(digestValue, calcDigestValue);
@@ -443,8 +446,8 @@ public final class DOMReference extends DOMStructure
         }
         try {
             data = deref.dereference(this, context);
-            LOG.debug("URIDereferencer class name: {}", deref.getClass().getName());
-            LOG.debug("Data class name: {}", data.getClass().getName());
+            LOG.log(Level.DEBUG, "URIDereferencer class name: {0}", deref.getClass().getName());
+            LOG.log(Level.DEBUG, "Data class name: {0}", data.getClass().getName());
         } catch (URIReferenceException ure) {
             throw new XMLSignatureException(ure);
         }
@@ -486,7 +489,11 @@ public final class DOMReference extends DOMStructure
                 }
             }
 
-            if (data != null) {
+            if (data == null) {
+                LOG.log(Level.WARNING, "The input bytes to the digest operation are null. " +
+                   "This may be due to a problem with the Reference URI " +
+                   "or its Transforms.");
+            } else {
                 // explicitly use C14N 1.1 when generating signature
                 // first check system property, then context property
                 boolean c14n11 = useC14N11;
@@ -506,8 +513,7 @@ public final class DOMReference extends DOMStructure
                 if (data instanceof ApacheData) {
                     xi = ((ApacheData)data).getXMLSignatureInput();
                 } else if (data instanceof OctetStreamData) {
-                    xi = new XMLSignatureInput
-                        (((OctetStreamData)data).getOctetStream());
+                    xi = new XMLSignatureStreamInput(((OctetStreamData) data).getOctetStream());
                 } else if (data instanceof NodeSetData) {
                     TransformService spi = null;
                     if (provider == null) {
@@ -520,16 +526,16 @@ public final class DOMReference extends DOMStructure
                         }
                     }
                     data = spi.transform(data, context);
-                    xi = new XMLSignatureInput
-                        (((OctetStreamData)data).getOctetStream());
+                    xi = new XMLSignatureStreamInput(((OctetStreamData) data).getOctetStream());
                 } else {
                     throw new XMLSignatureException("unrecognized Data type");
                 }
 
                 boolean secVal = Utils.secureValidation(context);
                 xi.setSecureValidation(secVal);
-                if (context instanceof XMLSignContext && c14n11
-                    && !xi.isOctetStream() && !xi.isOutputStreamSet()) {
+                if (!(context instanceof XMLSignContext) || !c14n11 || xi.hasUnprocessedInput() || xi.isOutputStreamSet()) {
+                    xi.write(os);
+                } else {
                     TransformService spi = null;
                     if (provider == null) {
                         spi = TransformService.getInstance(c14nalg, "DOM");
@@ -545,25 +551,16 @@ public final class DOMReference extends DOMStructure
                     Element transformsElem = null;
                     String dsPrefix = DOMUtils.getSignaturePrefix(context);
                     if (allTransforms.isEmpty()) {
-                        transformsElem = DOMUtils.createElement(
-                            refElem.getOwnerDocument(),
-                            "Transforms", XMLSignature.XMLNS, dsPrefix);
-                        refElem.insertBefore(transformsElem,
-                            DOMUtils.getFirstChildElement(refElem));
+                        transformsElem = DOMUtils.createElement(refElem.getOwnerDocument(), "Transforms",
+                            XMLSignature.XMLNS, dsPrefix);
+                        refElem.insertBefore(transformsElem, DOMUtils.getFirstChildElement(refElem));
                     } else {
                         transformsElem = DOMUtils.getFirstChildElement(refElem);
                     }
-                    t.marshal(transformsElem, dsPrefix,
-                              (DOMCryptoContext)context);
+                    t.marshal(transformsElem, dsPrefix, (DOMCryptoContext) context);
                     allTransforms.add(t);
-                    xi.updateOutputStream(os, true);
-                } else {
-                    xi.updateOutputStream(os);
+                    xi.write(os, true);
                 }
-            } else {
-                LOG.warn("The input bytes to the digest operation are null. " +
-                   "This may be due to a problem with the Reference URI " +
-                   "or its Transforms.");
             }
             os.flush();
             if (cache != null && cache) {
@@ -573,20 +570,11 @@ public final class DOMReference extends DOMStructure
         } catch (NoSuchAlgorithmException | TransformException | MarshalException
                 | IOException | org.apache.xml.security.c14n.CanonicalizationException e) {
             throw new XMLSignatureException(e);
-        } finally { //NOPMD
-            if (xi != null && xi.getOctetStreamReal() != null) {
-                try {
-                    xi.getOctetStreamReal().close();
-                } catch (IOException e) {
-                    throw new XMLSignatureException(e);
-                }
-            }
-            if (dos != null) {
-                try {
-                    dos.close();
-                } catch (IOException e) {
-                    throw new XMLSignatureException(e);
-                }
+        } finally {
+            if (xi instanceof Closeable) {
+                close((Closeable) xi, dos);
+            } else {
+                close(dos);
             }
         }
     }
@@ -653,31 +641,40 @@ public final class DOMReference extends DOMStructure
             XMLSignatureInput xsi = ad.getXMLSignatureInput();
             if (xsi.isNodeSet()) {
                 try {
-                    final Set<Node> s = xsi.getNodeSet();
-                    return new NodeSetData() {
-                        @Override
-                        public Iterator<Node> iterator() { return s.iterator(); }
-                    };
+                    final Set<Node> set = xsi.getNodeSet();
+                    return (NodeSetData) set::iterator;
                 } catch (Exception e) {
-                    // LOG a warning
-                    LOG.warn("cannot cache dereferenced data: " + e);
+                    LOG.log(Level.WARNING, "cannot cache dereferenced data", e);
                     return null;
                 }
             } else if (xsi.isElement()) {
-                return new DOMSubTreeData
-                    (xsi.getSubNode(), xsi.isExcludeComments());
-            } else if (xsi.isOctetStream() || xsi.isByteArray()) {
+                return new DOMSubTreeData(xsi.getSubNode(), xsi.isExcludeComments());
+            } else if (xsi.hasUnprocessedInput()) {
                 try {
-                    return new OctetStreamData
-                        (xsi.getOctetStream(), xsi.getSourceURI(),
-                         xsi.getMIMEType());
+                    return new OctetStreamData(xsi.getUnprocessedInput(), xsi.getSourceURI(), xsi.getMIMEType());
                 } catch (IOException ioe) {
-                    // LOG a warning
-                    LOG.warn("cannot cache dereferenced data: " + ioe);
+                    LOG.log(Level.WARNING, "cannot cache dereferenced data", ioe);
                     return null;
                 }
             }
         }
         return dereferencedData;
+    }
+
+    private static void close(Closeable... closeables) throws XMLSignatureException {
+        XMLSignatureException collector = new XMLSignatureException("Close failed!");
+        for (Closeable closeable : closeables) {
+            if (closeable == null) {
+                continue;
+            }
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                collector.addSuppressed(e);
+            }
+        }
+        if (collector.getSuppressed().length > 0) {
+            throw collector;
+        }
     }
 }

@@ -19,6 +19,8 @@
 package org.apache.xml.security.keys.keyresolver.implementations;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
@@ -51,8 +53,7 @@ import org.xml.sax.SAXException;
  */
 public class KeyInfoReferenceResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(KeyInfoReferenceResolver.class);
+    private static final Logger LOG = System.getLogger(KeyInfoReferenceResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -70,7 +71,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getPublicKey();
             }
         } catch (XMLSecurityException e) {
-            LOG.debug("XMLSecurityException", e);
+            LOG.log(Level.DEBUG, "XMLSecurityException", e);
         }
 
         return null;
@@ -86,7 +87,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getX509Certificate();
             }
         } catch (XMLSecurityException e) {
-            LOG.debug("XMLSecurityException", e);
+            LOG.log(Level.DEBUG, "XMLSecurityException", e);
         }
 
         return null;
@@ -103,7 +104,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getSecretKey();
             }
         } catch (XMLSecurityException e) {
-            LOG.debug("XMLSecurityException", e);
+            LOG.log(Level.DEBUG, "XMLSecurityException", e);
         }
 
         return null;
@@ -120,7 +121,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
                 return referent.getPrivateKey();
             }
         } catch (XMLSecurityException e) {
-            LOG.debug("XMLSecurityException", e);
+            LOG.log(Level.DEBUG, "XMLSecurityException", e);
         }
 
         return null;
@@ -147,12 +148,12 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         try {
             referentElement = obtainReferenceElement(resource, secureValidation);
         } catch (Exception e) {
-            LOG.debug("XMLSecurityException", e);
+            LOG.log(Level.DEBUG, "XMLSecurityException", e);
             return null;
         }
 
         if (referentElement == null) {
-            LOG.debug("De-reference of KeyInfoReference URI returned null: {}", uriAttr.getValue());
+            LOG.log(Level.DEBUG, "De-reference of KeyInfoReference URI returned null: {0}", uriAttr.getValue());
             return null;
         }
 
@@ -233,7 +234,7 @@ public class KeyInfoReferenceResolver extends KeyResolverSpi {
         if (resource.isElement()) {
             e = (Element) resource.getSubNode();
         } else if (resource.isNodeSet()) {
-            LOG.debug("De-reference of KeyInfoReference returned an unsupported NodeSet");
+            LOG.log(Level.DEBUG, "De-reference of KeyInfoReference returned an unsupported NodeSet");
             return null;
         } else {
             // Retrieved resource is a byte stream

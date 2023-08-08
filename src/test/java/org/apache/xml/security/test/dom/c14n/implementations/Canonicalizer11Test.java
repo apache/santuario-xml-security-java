@@ -22,6 +22,8 @@ package org.apache.xml.security.test.dom.c14n.implementations;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -48,10 +50,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit test for
  * {@link org.apache.xml.security.c14n.implementations.Canonicalizer11}
  */
-public class Canonicalizer11Test {
+class Canonicalizer11Test {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Canonicalizer11Test.class);
+    private static final Logger LOG = System.getLogger(Canonicalizer11Test.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -68,7 +69,7 @@ public class Canonicalizer11Test {
      * 3.1 PIs, Comments, and Outside of Document Element
      */
     @Test
-    public void test31withCommentsSubtree() throws Exception {
+    void test31withCommentsSubtree() throws Exception {
         String descri =
             "3.1: PIs, Comments, and Outside of Document Element. (commented)";
 
@@ -87,7 +88,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
     @Test
-    public void test32subtree() throws Exception {
+    void test32subtree() throws Exception {
         String descri = "3.2 Whitespace in Document Content. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "32_input.xml").toString();
         Path fileRef = resolvePath(prefix, "in", "32_c14n.xml");
@@ -104,7 +105,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      */
     @Test
-    public void test33subtree() throws Exception  {
+    void test33subtree() throws Exception {
         String descri = "3.3 Start and End Tags. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "33_input.xml").toString();
         Path fileRef = resolvePath(prefix, "in", "33_c14n.xml");
@@ -122,7 +123,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34() throws Exception {
+    void test34() throws Exception {
         String descri =
             "3.4 Character Modifications and Character References. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "34_input.xml").toString();
@@ -140,7 +141,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
     @Test
-    public void test35subtree() throws Exception {
+    void test35subtree() throws Exception {
         String descri = "3.5 Entity References. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "35_input.xml").toString();
         Path fileRef = resolvePath(prefix, "in", "35_c14n.xml");
@@ -157,7 +158,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
     @Test
-    public void test36subtree() throws Exception {
+    void test36subtree() throws Exception {
         String descri = "3.6 UTF-8 Encoding. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "36_input.xml").toString();
         Path fileRef = resolvePath(prefix, "in", "36_c14n.xml");
@@ -174,7 +175,7 @@ public class Canonicalizer11Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-DocSubsets">the example from the spec</A>
      */
     @Test
-    public void test37() throws Exception {
+    void test37() throws Exception {
         String descri = "3.7 Document Subsets. (uncommented)";
         String fileIn = resolvePath(prefix, "in", "37_input.xml").toString();
         Path fileRef = resolvePath(prefix, "in", "37_c14n.xml");
@@ -198,7 +199,7 @@ public class Canonicalizer11Test {
      * 3.8 Document Subsets and XML Attributes
      */
     @Test
-    public void test38() throws Exception {
+    void test38() throws Exception {
         String descri = "3.8 Document Subsets and XML Attributes (uncommented)";
         String fileIn = resolvePath(prefix, "in", "38_input.xml").toString();
         Path fileRef = resolvePath(prefix, "in", "38_c14n.xml");
@@ -281,7 +282,7 @@ public class Canonicalizer11Test {
             }
             try (FileOutputStream fos = new FileOutputStream(fileOut)) {
                 fos.write(c14nBytes);
-                LOG.debug("Wrote erroneous result to file " + fileOut.toURI().toURL().toString());
+                LOG.log(Level.DEBUG, "Wrote erroneous result to file " + fileOut.toURI().toURL().toString());
                 assertEquals(new String(refBytes), new String(c14nBytes));
             }
         }

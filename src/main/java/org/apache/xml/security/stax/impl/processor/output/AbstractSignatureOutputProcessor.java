@@ -21,6 +21,8 @@ package org.apache.xml.security.stax.impl.processor.output;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -52,14 +54,12 @@ import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer
 import org.apache.xml.security.stax.impl.util.DigestOutputStream;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  */
 public abstract class AbstractSignatureOutputProcessor extends AbstractOutputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureOutputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(AbstractSignatureOutputProcessor.class.getName());
 
     private final List<SignaturePartDef> signaturePartDefList = new ArrayList<>();
     private InternalSignatureOutputProcessor activeInternalSignatureOutputProcessor;
@@ -137,7 +137,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
         String calculatedDigest =
             XMLUtils.encodeToString(digestOutputStream.getDigestValue());
-        LOG.debug("Calculated Digest: {}", calculatedDigest);
+        LOG.log(Level.DEBUG, "Calculated Digest: {0}", calculatedDigest);
 
         signaturePartDef.setDigestValue(calculatedDigest);
 
@@ -296,7 +296,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                     }
                     String calculatedDigest =
                         XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
-                    LOG.debug("Calculated Digest: {}", calculatedDigest);
+                    LOG.log(Level.DEBUG, "Calculated Digest: {0}", calculatedDigest);
                     signaturePartDef.setDigestValue(calculatedDigest);
 
                     outputProcessorChain.removeProcessor(this);

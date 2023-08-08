@@ -34,9 +34,10 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EmptyNamespaceTest {
+class EmptyNamespaceTest {
 
     private static final String message = "<SOAP-ENV:Body xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wsu=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\" wsu:Id=\"XWSSGID-1465203363337-2063525437\">\n" +
             "\t<ec:SubmitRetrieveInterchangeAgreementsRequestResponse xmlns:ec=\"ec:services:wsdl:RetrieveInterchangeAgreementsRequest-2\" xmlns:ec1=\"ec:schema:xsd:CommonBasicComponents-0.1\">\n" +
@@ -67,7 +68,7 @@ public class EmptyNamespaceTest {
             "</SOAP-ENV:Body>";
 
     @Test
-    public void doStAXTest() throws Exception {
+    void doStAXTest() throws Exception {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);
 
@@ -79,7 +80,7 @@ public class EmptyNamespaceTest {
         transformer.setProperties(properties);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            InputStream stream = new ByteArrayInputStream(message.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
+            InputStream stream = new ByteArrayInputStream(message.getBytes(UTF_8))) {
             transformer.setOutputStream(outputStream);
 
             transformer.transform(stream);
@@ -91,14 +92,14 @@ public class EmptyNamespaceTest {
     }
 
     @Test
-    public void doDOMTest() throws Exception {
+    void doDOMTest() throws Exception {
         org.apache.xml.security.Init.init();
         org.apache.xml.security.stax.config.Init.init(null, EmptyNamespaceTest.class);
 
         Canonicalizer20010315Excl transformer = new Canonicalizer20010315ExclOmitComments();
 
         Document document = null;
-        try (InputStream is = new ByteArrayInputStream(message.getBytes(java.nio.charset.StandardCharsets.UTF_8))) {
+        try (InputStream is = new ByteArrayInputStream(message.getBytes(UTF_8))) {
             document = XMLUtils.read(is, false);
         }
 
@@ -106,7 +107,7 @@ public class EmptyNamespaceTest {
         try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
             transformer.engineCanonicalizeSubTree(document, inclusiveNamespaces, output);
 
-            String result = new String(output.toByteArray(), java.nio.charset.StandardCharsets.UTF_8);
+            String result = new String(output.toByteArray(), UTF_8);
             assertEquals(message, result);
         }
     }

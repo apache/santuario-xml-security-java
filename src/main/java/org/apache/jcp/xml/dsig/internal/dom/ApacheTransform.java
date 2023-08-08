@@ -22,6 +22,8 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Set;
@@ -38,6 +40,9 @@ import javax.xml.crypto.dsig.TransformService;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
+import org.apache.xml.security.signature.XMLSignatureNodeSetInput;
+import org.apache.xml.security.signature.XMLSignatureStreamInput;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.Transforms;
 import org.w3c.dom.Document;
@@ -55,8 +60,8 @@ public abstract class ApacheTransform extends TransformService {
         org.apache.xml.security.Init.init();
     }
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ApacheTransform.class);
+    private static final Logger LOG = System.getLogger(ApacheTransform.class.getName());
+
     private Transform transform;
     protected Document ownerDoc;
     protected Element transformElem;
@@ -140,7 +145,7 @@ public abstract class ApacheTransform extends TransformService {
                 transform =
                     new Transform(ownerDoc, getAlgorithm(), transformElem.getChildNodes());
                 transform.setElement(transformElem, xc.getBaseURI());
-                LOG.debug("Created transform for algorithm: {}", getAlgorithm());
+                LOG.log(Level.DEBUG, "Created transform for algorithm: {0}", getAlgorithm());
             } catch (Exception ex) {
                 throw new TransformException("Couldn't find Transform for: " +
                                              getAlgorithm(), ex);
@@ -158,26 +163,25 @@ public abstract class ApacheTransform extends TransformService {
 
         XMLSignatureInput in;
         if (data instanceof ApacheData) {
-            LOG.debug("ApacheData = true");
+            LOG.log(Level.DEBUG, "ApacheData = true");
             in = ((ApacheData)data).getXMLSignatureInput();
         } else if (data instanceof NodeSetData) {
-            LOG.debug("isNodeSet() = true");
+            LOG.log(Level.DEBUG, "isNodeSet() = true");
             if (data instanceof DOMSubTreeData) {
-                LOG.debug("DOMSubTreeData = true");
+                LOG.log(Level.DEBUG, "DOMSubTreeData = true");
                 DOMSubTreeData subTree = (DOMSubTreeData)data;
-                in = new XMLSignatureInput(subTree.getRoot());
+                in = new XMLSignatureNodeInput(subTree.getRoot());
                 in.setExcludeComments(subTree.excludeComments());
             } else {
-                @SuppressWarnings("unchecked")
+                @SuppressWarnings({"unchecked", "rawtypes"})
                 Set<Node> nodeSet =
                     Utils.toNodeSet(((NodeSetData)data).iterator());
-                in = new XMLSignatureInput(nodeSet);
+                in = new XMLSignatureNodeSetInput(nodeSet);
             }
         } else {
-            LOG.debug("isNodeSet() = false");
+            LOG.log(Level.DEBUG, "isNodeSet() = false");
             try {
-                in = new XMLSignatureInput
-                    (((OctetStreamData)data).getOctetStream());
+                in = new XMLSignatureStreamInput(((OctetStreamData) data).getOctetStream());
             } catch (Exception ex) {
                 throw new TransformException(ex);
             }
@@ -194,7 +198,7 @@ public abstract class ApacheTransform extends TransformService {
             } else {
                 in = transform.performTransform(in, secVal);
             }
-            if (in.isOctetStream()) {
+            if (in.hasUnprocessedInput()) {
                 return new ApacheOctetStreamData(in);
             } else {
                 return new ApacheNodeSetData(in);

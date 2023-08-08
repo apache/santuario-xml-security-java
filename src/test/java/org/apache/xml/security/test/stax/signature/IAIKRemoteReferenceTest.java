@@ -63,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * These are separated out from IAIKTest as we have to change the default configuration to set
  * "AllowNotSameDocumentReferences" to "true".
  */
-public class IAIKRemoteReferenceTest {
+class IAIKRemoteReferenceTest {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -96,7 +96,7 @@ public class IAIKRemoteReferenceTest {
 
     // See SANTUARIO-322
     @Test
-    public void test_transforms_signatures_base64DecodeSignature() throws Exception {
+    void test_transforms_signatures_base64DecodeSignature() throws Exception {
         // Set up the Key
         Key publicKey = getPublicKey("RSA");
 
@@ -125,7 +125,7 @@ public class IAIKRemoteReferenceTest {
 
     // See SANTUARIO-322
     @Test
-    public void test_transforms_signatures_c14nSignature() throws Exception {
+    void test_transforms_signatures_c14nSignature() throws Exception {
         // Set up the Key
         Key publicKey = getPublicKey("RSA");
 

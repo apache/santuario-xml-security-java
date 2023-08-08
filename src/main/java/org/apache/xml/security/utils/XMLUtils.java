@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.security.AccessController;
@@ -41,8 +43,6 @@ import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.parser.XMLParser;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.parser.XMLParserImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,7 +63,7 @@ public final class XMLUtils {
             AccessController.doPrivileged(
                     (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
 
-    private static final Logger LOG = LoggerFactory.getLogger(XMLUtils.class);
+    private static final Logger LOG = System.getLogger(XMLUtils.class.getName());
 
     private static XMLParser xmlParserImpl =
             AccessController.doPrivileged(
@@ -74,7 +74,7 @@ public final class XMLUtils {
                                 return (XMLParser) JavaUtils.newInstanceWithEmptyConstructor(
                                         ClassLoaderUtils.loadClass(xmlParserClass, XMLUtils.class));
                             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                                LOG.error("Error instantiating XMLParser. Falling back to XMLParserImpl", e);
+                                LOG.log(Level.ERROR, "Error instantiating XMLParser. Falling back to XMLParserImpl", e);
                             }
                         }
                         return new XMLParserImpl();
@@ -241,7 +241,7 @@ public final class XMLUtils {
             Canonicalizer.getInstance(
                 Canonicalizer.ALGO_ID_C14N_PHYSICAL).canonicalizeSubtree(contextNode, os);
         } catch (IOException | InvalidCanonicalizerException | CanonicalizationException ex) {
-            LOG.error(ex.getMessage(), ex);
+            LOG.log(Level.ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -263,7 +263,7 @@ public final class XMLUtils {
             Canonicalizer.getInstance(
                 Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS).canonicalizeSubtree(contextNode, os);
         } catch (InvalidCanonicalizerException | CanonicalizationException ex) {
-            LOG.error(ex.getMessage(), ex);
+            LOG.log(Level.ERROR, ex.getMessage(), ex);
             // throw new RuntimeException(ex.getMessage());
         }
     }
@@ -872,7 +872,7 @@ public final class XMLUtils {
                                 // Continue searching to find duplicates
                                 foundElement = attr.getOwnerElement();
                             } else {
-                                LOG.warn("Multiple elements with the same 'Id' attribute value!");
+                                LOG.log(Level.WARNING, "Multiple elements with the same 'Id' attribute value!");
                                 return false;
                             }
                         }
@@ -932,7 +932,7 @@ public final class XMLUtils {
                     for (int i = 0; i < length; i++) {
                         Attr attr = (Attr)attributes.item(i);
                         if (attr.isId() && id.equals(attr.getValue()) && se != knownElement) {
-                            LOG.warn("Multiple elements with the same 'Id' attribute value!");
+                            LOG.log(Level.WARNING, "Multiple elements with the same 'Id' attribute value!");
                             return false;
                         }
                     }
@@ -1054,7 +1054,4 @@ public final class XMLUtils {
 
         return resizedBytes;
     }
-
-
-
 }

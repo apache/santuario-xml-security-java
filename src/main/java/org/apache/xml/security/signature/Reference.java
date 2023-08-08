@@ -18,8 +18,11 @@
  */
 package org.apache.xml.security.signature;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Collections;
@@ -123,8 +126,7 @@ public class Reference extends SignatureElementProxy {
         AccessController.doPrivileged((PrivilegedAction<Boolean>)
             () -> Boolean.getBoolean("org.apache.xml.security.useC14N11"));
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Reference.class);
+    private static final Logger LOG = System.getLogger(Reference.class.getName());
 
     private Manifest manifest;
     private XMLSignatureInput transformsOutput;
@@ -556,7 +558,7 @@ public class Reference extends SignatureElementProxy {
                     InclusiveNamespaces.prefixStr2Set(in.getInclusiveNamespaces());
             }
 
-            return nodes.getHTMLRepresentation(inclusiveNamespaces);
+            return new XMLSignatureInputDebugger(nodes, inclusiveNamespaces).getHTMLRepresentation();
         } catch (XMLSecurityException ex) {
             throw new XMLSignatureException(ex);
         }
@@ -634,19 +636,18 @@ public class Reference extends SignatureElementProxy {
                 };
             } catch (Exception e) {
                 // LOG a warning
-                LOG.warn("cannot cache dereferenced data: " + e);
+                LOG.log(Level.WARNING, "cannot cache dereferenced data", e);
             }
         } else if (input.isElement()) {
             referenceData = new ReferenceSubTreeData
                 (input.getSubNode(), input.isExcludeComments());
-        } else if (input.isOctetStream() || input.isByteArray()) {
+        } else if (input.hasUnprocessedInput()) {
             try {
                 referenceData = new ReferenceOctetStreamData
-                    (input.getOctetStream(), input.getSourceURI(),
+                    (input.getUnprocessedInput(), input.getSourceURI(),
                         input.getMIMEType());
             } catch (IOException ioe) {
-                // LOG a warning
-                LOG.warn("cannot cache dereferenced data: " + ioe);
+                LOG.log(Level.WARNING, "cannot cache dereferenced data.", ioe);
             }
         }
     }
@@ -695,7 +696,7 @@ public class Reference extends SignatureElementProxy {
     private byte[] calculateDigest(boolean validating)
         throws ReferenceNotInitializedException, XMLSignatureException {
         XMLSignatureInput input = this.getContentsBeforeTransformation();
-        if (input.isPreCalculatedDigest()) {
+        if (input.getPreCalculatedDigest() != null) {
             return getPreCalculatedDigest(input);
         }
 
@@ -714,16 +715,16 @@ public class Reference extends SignatureElementProxy {
             // if signing and c14n11 property == true explicitly add
             // C14N11 transform if needed
             if (Reference.useC14N11 && !validating && !output.isOutputStreamSet()
-                && !output.isOctetStream()) {
+                && !output.hasUnprocessedInput()) {
                 if (transforms == null) {
                     transforms = new Transforms(getDocument());
                     transforms.setSecureValidation(secureValidation);
                     getElement().insertBefore(transforms.getElement(), digestMethodElem);
                 }
                 transforms.addTransform(Transforms.TRANSFORM_C14N11_OMIT_COMMENTS);
-                output.updateOutputStream(os, true);
+                output.write(os, true);
             } else {
-                output.updateOutputStream(os);
+                output.write(os);
             }
             os.flush();
 
@@ -733,13 +734,9 @@ public class Reference extends SignatureElementProxy {
             return diOs.getDigestValue();
         } catch (XMLSecurityException | IOException ex) {
             throw new ReferenceNotInitializedException(ex);
-        } finally { //NOPMD
-            try {
-                if (output != null && output.getOctetStreamReal() != null) {
-                    output.getOctetStreamReal().close();
-                }
-            } catch (IOException ex) {
-                throw new ReferenceNotInitializedException(ex);
+        } finally {
+            if (output instanceof Closeable) {
+                close((Closeable) output);
             }
         }
     }
@@ -754,7 +751,7 @@ public class Reference extends SignatureElementProxy {
      */
     private byte[] getPreCalculatedDigest(XMLSignatureInput input)
             throws ReferenceNotInitializedException {
-        LOG.debug("Verifying element with pre-calculated digest");
+        LOG.log(Level.DEBUG, "Verifying element with pre-calculated digest");
         String preCalculatedDigest = input.getPreCalculatedDigest();
         return XMLUtils.decode(preCalculatedDigest);
     }
@@ -792,11 +789,11 @@ public class Reference extends SignatureElementProxy {
         boolean equal = MessageDigestAlgorithm.isEqual(elemDig, calcDig);
 
         if (!equal) {
-            LOG.warn("Verification failed for URI \"" + this.getURI() + "\"");
-            LOG.warn("Expected Digest: " + XMLUtils.encodeToString(elemDig));
-            LOG.warn("Actual Digest: " + XMLUtils.encodeToString(calcDig));
+            LOG.log(Level.WARNING, "Verification failed for URI \"" + this.getURI() + "\"");
+            LOG.log(Level.WARNING, "Expected Digest: " + XMLUtils.encodeToString(elemDig));
+            LOG.log(Level.WARNING, "Actual Digest: " + XMLUtils.encodeToString(calcDig));
         } else {
-            LOG.debug("Verification successful for URI \"{}\"", this.getURI());
+            LOG.log(Level.DEBUG, "Verification successful for URI \"{0}\"", this.getURI());
         }
 
         return equal;
@@ -809,5 +806,14 @@ public class Reference extends SignatureElementProxy {
     @Override
     public String getBaseLocalName() {
         return Constants._TAG_REFERENCE;
+    }
+
+
+    private static void close(Closeable closeable) throws ReferenceNotInitializedException {
+        try {
+            closeable.close();
+        } catch (IOException e) {
+            throw new ReferenceNotInitializedException(e, "Close failed!");
+        }
     }
 }

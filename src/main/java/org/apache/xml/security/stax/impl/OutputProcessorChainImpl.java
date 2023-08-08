@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.stax.impl;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +33,6 @@ import org.apache.xml.security.stax.ext.OutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of a OutputProcessorChain
@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OutputProcessorChainImpl implements OutputProcessorChain {
 
-    protected static final transient Logger LOG = LoggerFactory.getLogger(OutputProcessorChainImpl.class);
+    private static final Logger LOG = System.getLogger(OutputProcessorChainImpl.class.getName());
 
     private List<OutputProcessor> outputProcessors;
     private int startPos;
@@ -144,17 +144,17 @@ public class OutputProcessorChainImpl implements OutputProcessorChain {
         if (idxToInsert < this.curPos) {
             this.curPos++;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Added {} to output chain: ", newOutputProcessor.getClass().getName());
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Added {0} to output chain: ", newOutputProcessor.getClass().getName());
             for (OutputProcessor outputProcessor : outputProcessors) {
-                LOG.debug("Name: {} phase: {}", outputProcessor.getClass().getName(), outputProcessor.getPhase());
+                LOG.log(Level.DEBUG, "Name: {0} phase: {1}", outputProcessor.getClass().getName(), outputProcessor.getPhase());
             }
         }
     }
 
     @Override
     public void removeProcessor(OutputProcessor outputProcessor) {
-        LOG.debug("Removing processor {} from output chain", outputProcessor.getClass().getName());
+        LOG.log(Level.DEBUG, "Removing processor {0} from output chain", outputProcessor.getClass().getName());
         if (this.outputProcessors.indexOf(outputProcessor) <= this.curPos) {
             this.curPos--;
         }

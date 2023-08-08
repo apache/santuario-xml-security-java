@@ -18,13 +18,14 @@
  */
 package org.apache.xml.security.utils.resolver.implementations;
 
-import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureFileInput;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -34,8 +35,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class ResolverLocalFilesystem extends ResourceResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ResolverLocalFilesystem.class);
+    private static final Logger LOG = System.getLogger(ResolverLocalFilesystem.class.getName());
 
     /**
      * {@inheritDoc}
@@ -46,13 +46,9 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         try {
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
-
-            InputStream inputStream = Files.newInputStream(Paths.get(uriNew));  //NOPMD
-            XMLSignatureInput result = new XMLSignatureInput(inputStream);
+            XMLSignatureInput result = new XMLSignatureFileInput(Paths.get(uriNew));
             result.setSecureValidation(context.secureValidation);
-
             result.setSourceURI(uriNew.toString());
-
             return result;
         } catch (Exception e) {
             throw new ResourceResolverException(e, context.uriToResolve, context.baseUri, "generic.EmptyMessage");
@@ -74,17 +70,17 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         }
 
         try {
-            LOG.debug("I was asked whether I can resolve {}", context.uriToResolve);
+            LOG.log(Level.DEBUG, "I was asked whether I can resolve {0}", context.uriToResolve);
 
             if (context.uriToResolve.startsWith("file:") || context.baseUri.startsWith("file:")) {
-                LOG.debug("I state that I can resolve {}", context.uriToResolve);
+                LOG.log(Level.DEBUG, "I state that I can resolve {0}", context.uriToResolve);
                 return true;
             }
         } catch (Exception e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
         }
 
-        LOG.debug("But I can't");
+        LOG.log(Level.DEBUG, "But I can't");
 
         return false;
     }

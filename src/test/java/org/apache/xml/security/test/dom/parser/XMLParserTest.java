@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.parser;
 
 
-import java.io.InputStream;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -50,10 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test that we can plug in a custom XMLParser implementation via a system property
  */
-public class XMLParserTest {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLParserTest.class);
+class XMLParserTest {
 
     private final KeyPair rsaKeyPair;
 
@@ -73,14 +69,12 @@ public class XMLParserTest {
     }
 
     @Test
-    public void testRSA_SHA1() throws Exception {
+    void testRSA_SHA1() throws Exception {
         assertFalse(CustomXMLParserImpl.isCalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         List<String> localNames = new ArrayList<>();
         localNames.add("PaymentInfo");

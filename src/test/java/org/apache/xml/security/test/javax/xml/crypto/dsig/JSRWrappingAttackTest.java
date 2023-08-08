@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a wrapping attack.
  */
-public class JSRWrappingAttackTest {
+class JSRWrappingAttackTest {
 
     private final SignatureValidator validator;
     private final File dir;
@@ -55,7 +55,7 @@ public class JSRWrappingAttackTest {
 
 
     @Test
-    public void testWrappingAttack() throws Exception {
+    void testWrappingAttack() throws Exception {
         String file = "manifestSignatureWrapping.xml";
         Document doc = XMLUtils.read(new File(dir, file), false);
         Element sigElement = SignatureValidator.getSignatureElement(doc);

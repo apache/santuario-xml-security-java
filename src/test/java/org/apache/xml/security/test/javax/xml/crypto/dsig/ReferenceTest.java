@@ -28,7 +28,6 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -65,11 +64,11 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.Reference
  *
  */
-public class ReferenceTest {
+class ReferenceTest {
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
     private final DigestMethod dmSHA1;
-    private final String uri = "http://www.ietf.org/rfc/rfc3275.txt";
+    private static final String uri = "http://www.ietf.org/rfc/rfc3275.txt";
 
     private static final String[] CRYPTO_ALGS = { "RSA", "DSA" };
     private static final String[] SIG_ALGS = {
@@ -92,7 +91,7 @@ public class ReferenceTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         Reference ref;
         // test XMLSignatureFactory.newReference(String uri,
         //     DigestMethod dm) for generating Reference objects
@@ -203,7 +202,7 @@ public class ReferenceTest {
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
         Reference ref = fac.newReference(null, dmSHA1, null, null, null);
         try {
             ref.isFeatureSupported(null);
@@ -214,12 +213,12 @@ public class ReferenceTest {
     }
 
     @Test
-    public void testvalidate() throws Exception {
+    void testvalidate() throws Exception {
         testvalidate(false);
     }
 
     @Test
-    public void testvalidateWithCaching() throws Exception {
+    void testvalidateWithCaching() throws Exception {
         testvalidate(true);
     }
 
@@ -275,10 +274,7 @@ public class ReferenceTest {
                 boolean result = sig.validate(validateContext);
                 assertTrue(result);
 
-                @SuppressWarnings("unchecked")
-                Iterator<Reference> iter = sig.getSignedInfo().getReferences().iterator();
-                while (iter.hasNext()) {
-                    Reference validated_ref = iter.next();
+                for (Reference validated_ref : sig.getSignedInfo().getReferences()) {
                     if (!cache) {
                         assertNull(validated_ref.getDereferencedData());
                         assertNull(validated_ref.getDigestInputStream());
@@ -301,13 +297,14 @@ public class ReferenceTest {
 
     private boolean digestInputEqual(Reference ref) throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA1");
-        InputStream is = ref.getDigestInputStream();
-        int nbytes;
-        byte[] buf = new byte[256];
-        while ((nbytes = is.read(buf, 0, buf.length)) != -1) {
-            md.update(buf, 0, nbytes);
+        try (InputStream is = ref.getDigestInputStream()) {
+            int nbytes;
+            byte[] buf = new byte[256];
+            while ((nbytes = is.read(buf, 0, buf.length)) != -1) {
+                md.update(buf, 0, nbytes);
+            }
+            return Arrays.equals(md.digest(), ref.getDigestValue());
         }
-        return Arrays.equals(md.digest(), ref.getDigestValue());
     }
 
     @SuppressWarnings({

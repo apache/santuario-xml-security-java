@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Tests that creates and verifies ECDSA signatures.
  *
  */
-public class ECDSASignatureTest {
+class ECDSASignatureTest {
 
     private static final String ECDSA_JKS =
         "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
@@ -78,7 +78,7 @@ public class ECDSASignatureTest {
     }
 
     @Test
-    public void testOne() throws Exception {
+    void testOne() throws Exception {
         //
         // This test fails with the IBM JDK
         //
@@ -89,10 +89,11 @@ public class ECDSASignatureTest {
         assumeTrue(!isJDK16up);
 
         KeyStore keyStore = KeyStore.getInstance("JKS");
-        keyStore.load(new FileInputStream(ECDSA_JKS), ECDSA_JKS_PASSWORD.toCharArray());
+        try (FileInputStream inputStream = new FileInputStream(ECDSA_JKS)) {
+            keyStore.load(inputStream, ECDSA_JKS_PASSWORD.toCharArray());
+        }
 
-        PrivateKey privateKey =
-            (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
 
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
@@ -101,7 +102,7 @@ public class ECDSASignatureTest {
     // Failing with more recent BouncyCastle libraries
     @Test
     @Disabled
-    public void testTwo() throws Exception {
+    void testTwo() throws Exception {
         File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
         try (InputStream is = new FileInputStream(file)) {
             doVerify(is);
@@ -110,7 +111,7 @@ public class ECDSASignatureTest {
 
     @Test
     @Disabled
-    public void testThree()  throws Exception {
+    void testThree()  throws Exception {
         File file = resolveFile("src/test/resources/at/buergerkarte/testresp.xml");
         try (InputStream is = new FileInputStream(file)) {
             doVerify(is);
@@ -118,7 +119,7 @@ public class ECDSASignatureTest {
     }
 
     @Test
-    public void testKeyValue() throws Exception {
+    void testKeyValue() throws Exception {
         //
         // This test fails with the IBM JDK
         //

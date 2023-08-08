@@ -23,6 +23,7 @@ import java.security.MessageDigest;
 import java.util.Base64;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
+import org.apache.xml.security.signature.XMLSignatureDigestInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.implementations.TransformC14N;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  *
  * TransformC14N returns empty byte array when nothing is provided as an input
  */
-public class Santuario561Test {
+class Santuario561Test {
 
     @Test
-    public void transformC14NWithDigestTest() throws Exception {
+    void transformC14NWithDigestTest() throws Exception {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] digest = md.digest("Hello world!".getBytes());
-        XMLSignatureInput inputPrecomputed = new XMLSignatureInput(Base64.getEncoder().encodeToString(digest));
+        XMLSignatureInput inputPrecomputed = new XMLSignatureDigestInput(Base64.getEncoder().encodeToString(digest));
 
         MockTransformC14N mockTransformC14N = new MockTransformC14N();
 

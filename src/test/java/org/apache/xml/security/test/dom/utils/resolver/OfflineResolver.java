@@ -18,15 +18,17 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureFileInput;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
@@ -44,14 +46,13 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
  */
 public class OfflineResolver extends ResourceResolverSpi {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(OfflineResolver.class);
+    private static final Logger LOG = System.getLogger(OfflineResolver.class.getName());
 
     /** Field _uriMap */
-    static Map<String, String> _uriMap = null;
+    private static Map<String, String> _uriMap;
 
     /** Field _mimeMap */
-    static Map<String, String> _mimeMap = null;
+    private static Map<String, String> _mimeMap;
 
     static {
         org.apache.xml.security.Init.init();
@@ -102,19 +103,12 @@ public class OfflineResolver extends ResourceResolverSpi {
         try {
             String URI = context.uriToResolve;
             if (OfflineResolver._uriMap.containsKey(URI)) {
-                String newURI = OfflineResolver._uriMap.get(URI);
+                String absolutePath = OfflineResolver._uriMap.get(URI);
+                LOG.log(Level.DEBUG, "Mapped {0} to {1}", URI, absolutePath);
 
-                LOG.debug("Mapped " + URI + " to " + newURI);
-
-                InputStream is = new FileInputStream(newURI);
-
-                LOG.debug("Available bytes = " + is.available());
-
-                XMLSignatureInput result = new XMLSignatureInput(is);
-
+                XMLSignatureInput result = new XMLSignatureFileInput(Path.of(absolutePath));
                 result.setSourceURI(URI);
                 result.setMIMEType(OfflineResolver._mimeMap.get(URI));
-
                 return result;
             }
             Object[] exArgs = {"The URI " + URI + " is not configured for offline work" };
@@ -139,7 +133,7 @@ public class OfflineResolver extends ResourceResolverSpi {
         try {
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
             if ("http".equals(uriNew.getScheme())) {
-                LOG.debug("I state that I can resolve " + uriNew.toString());
+                LOG.log(Level.DEBUG, "I state that I can resolve {0}", uriNew);
                 return true;
             }
         } catch (URISyntaxException ex) {

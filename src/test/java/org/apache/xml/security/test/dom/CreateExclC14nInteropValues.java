@@ -435,10 +435,9 @@ public class CreateExclC14nInteropValues {
                                              + secretKey.length() + " octets)");
         xmlSignature.sign(xmlSignature.createSecretKey(secretKey.getBytes()));
 
-        FileOutputStream fos = new FileOutputStream(signatureFile);
-
-        XMLUtils.outputDOM(doc, fos);
-        fos.close();
+        try (FileOutputStream fos = new FileOutputStream(signatureFile)) {
+            XMLUtils.outputDOM(doc, fos);
+        }
 
         int length = xmlSignature.getSignedInfo().getLength();
 

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.utils;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.math.BigInteger;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,8 +38,7 @@ import org.w3c.dom.Text;
  */
 public abstract class ElementProxy {
 
-    protected static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ElementProxy.class);
+    protected static final Logger LOG = System.getLogger(ElementProxy.class.getName());
 
     /**
      * What XML element does this ElementProxy instance wrap?
@@ -86,7 +87,7 @@ public abstract class ElementProxy {
             throw new XMLSecurityException("ElementProxy.nullElement");
         }
 
-        LOG.debug("setElement(\"{}\", \"{}\")", element.getTagName(), baseURI);
+        LOG.log(Level.DEBUG, "setElement(\"{0}\", \"{1}\")", element.getTagName(), baseURI);
 
         setElement(element);
         this.baseURI = baseURI;
@@ -174,7 +175,7 @@ public abstract class ElementProxy {
             throw new XMLSecurityException("ElementProxy.nullElement");
         }
 
-        LOG.debug("setElement({}, \"{}\")", element.getTagName(), baseURI);
+        LOG.log(Level.DEBUG, "setElement({0}, \"{1}\")", element.getTagName(), baseURI);
 
         setElement(element);
         this.baseURI = baseURI;

@@ -18,19 +18,21 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.eclipse.jetty.http.MimeTypes;
@@ -41,6 +43,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 /**
  */
 public class HttpRequestRedirectorProxy {
+    private static final Logger LOG = System.getLogger(HttpRequestRedirectorProxy.class.getName());
 
     private static final int startPort = 31280;
     private static Server httpServer;
@@ -50,11 +53,9 @@ public class HttpRequestRedirectorProxy {
         int port = startPort;
 
         while (true) {
-            try {
-                ServerSocket ss = new ServerSocket(port);
+            try (ServerSocket ss = new ServerSocket(port)) {
                 ss.setReuseAddress(true);
                 //ok no exception so the port must be free
-                ss.close();
                 break;
             } catch (IOException e) {
                 port++;
@@ -102,6 +103,7 @@ public class HttpRequestRedirectorProxy {
                     if (inputStream == null) {
                         continue;
                     }
+                    LOG.log(Level.DEBUG, "Providing resource {0}", filePath);
                     String mime = mimeTypes.getMimeByExtension(req.getPathInfo());
                     if (mime != null) {
                         resp.setContentType(mime);
@@ -110,6 +112,7 @@ public class HttpRequestRedirectorProxy {
                     return;
                 }
             }
+            LOG.log(Level.INFO, "Unable to serve request line {0}, the file name was not found.", requestLine);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

@@ -37,11 +37,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}
  *
  */
-public class ResourceResolverTest {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger
-            (ResourceResolverTest.class);
+class ResourceResolverTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -51,7 +47,7 @@ public class ResourceResolverTest {
      * Tests registering a custom resolver implementation.
      */
     @Test
-    public void testCustomResolver() throws Exception {
+    void testCustomResolver() throws Exception {
         String className =
             "org.apache.xml.security.test.dom.utils.resolver.OfflineResolver";
         ResourceResolver.registerAtStart(className);
@@ -80,7 +76,7 @@ public class ResourceResolverTest {
     }
 
     @Test
-    public void testLocalFileWithEmptyBaseURI() throws Exception {
+    void testLocalFileWithEmptyBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         String file = resolveFile("pom.xml").toURI().toString();
@@ -98,7 +94,7 @@ public class ResourceResolverTest {
     }
 
     @Test
-    public void testIsSafeURIToResolveFile() throws Exception {
+    void testIsSafeURIToResolveFile() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         String file = resolveFile("pom.xml").toURI().toString();
@@ -110,7 +106,7 @@ public class ResourceResolverTest {
     }
 
     @Test
-    public void testIsSafeURIToResolveFileBaseURI() throws Exception {
+    void testIsSafeURIToResolveFileBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         String file = resolveFile("pom.xml").toURI().toString();
@@ -122,7 +118,7 @@ public class ResourceResolverTest {
     }
 
     @Test
-    public void testIsSafeURIToResolveHTTP() throws Exception {
+    void testIsSafeURIToResolveHTTP() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
@@ -133,7 +129,7 @@ public class ResourceResolverTest {
     }
 
     @Test
-    public void testIsSafeURIToResolveHTTPBaseURI() throws Exception {
+    void testIsSafeURIToResolveHTTPBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("xyz");
@@ -144,7 +140,7 @@ public class ResourceResolverTest {
     }
 
     @Test
-    public void testIsSafeURIToResolveLocalReference() throws Exception {
+    void testIsSafeURIToResolveLocalReference() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("#1234");

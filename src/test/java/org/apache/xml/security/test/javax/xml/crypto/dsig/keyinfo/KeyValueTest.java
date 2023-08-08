@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.keyinfo.KeyValue
  *
  */
-public class KeyValueTest {
+class KeyValueTest {
 
     private static final String[] ALGOS = { "DSA", "RSA" };
     private final KeyInfoFactory fac;
@@ -61,7 +61,7 @@ public class KeyValueTest {
     }
 
     @Test
-    public void testgetPublicKey() {
+    void testgetPublicKey() {
         try {
             KeyValue kv = fac.newKeyValue(keys[0]);
             assertNotNull(kv.getPublicKey());
@@ -71,7 +71,7 @@ public class KeyValueTest {
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test newKeyValue(PublicKey pk)
         for (PublicKey key : keys) {
             try {
@@ -84,7 +84,7 @@ public class KeyValueTest {
     }
 
     @Test
-    public void testisFeatureSupported() {
+    void testisFeatureSupported() {
         KeyValue kv = null;
         try {
             kv = fac.newKeyValue(keys[0]);

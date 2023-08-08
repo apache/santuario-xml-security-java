@@ -30,7 +30,7 @@ import static org.apache.xml.security.test.stax.utils.KeyLoader.loadPublicKey;
 import static org.apache.xml.security.test.stax.utils.KeyLoader.loadXML;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DEREncodedKeyValueResolverTest {
+class DEREncodedKeyValueResolverTest {
 
     private final PublicKey rsaKeyControl;
     private final PublicKey dsaKeyControl;
@@ -48,7 +48,7 @@ public class DEREncodedKeyValueResolverTest {
     }
 
     @Test
-    public void testRSAPublicKey() throws Exception {
+    void testRSAPublicKey() throws Exception {
         Document doc = loadXML("DEREncodedKeyValue-RSA.xml");
         Element element = doc.getDocumentElement();
 
@@ -57,7 +57,7 @@ public class DEREncodedKeyValueResolverTest {
     }
 
     @Test
-    public void testDSAPublicKey() throws Exception {
+    void testDSAPublicKey() throws Exception {
         Document doc = loadXML("DEREncodedKeyValue-DSA.xml");
         Element element = doc.getDocumentElement();
 
@@ -66,7 +66,7 @@ public class DEREncodedKeyValueResolverTest {
     }
 
     @Test
-    public void testECPublicKey() throws Exception {
+    void testECPublicKey() throws Exception {
         Document doc = loadXML("DEREncodedKeyValue-EC.xml");
         Element element = doc.getDocumentElement();
 

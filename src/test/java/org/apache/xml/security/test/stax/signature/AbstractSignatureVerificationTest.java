@@ -62,6 +62,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -69,12 +71,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  */
-public class AbstractSignatureVerificationTest {
+class AbstractSignatureVerificationTest {
 
-    protected static boolean bcInstalled;
+    private static boolean bcInstalled;
 
     protected XMLInputFactory xmlInputFactory;
     protected TransformerFactory transformerFactory = TransformerFactory.newInstance();
+
+    public static boolean isBcInstalled() {
+        return bcInstalled;
+    }
 
     @BeforeAll
     public static void setup() throws Exception {
@@ -352,31 +358,28 @@ public class AbstractSignatureVerificationTest {
         SignedElementSecurityEvent signedElementEvent =
                 (SignedElementSecurityEvent) securityEventListener.getSecurityEvent(SecurityEventConstants.SignedElement);
         assertNotNull(signedElementEvent);
-        assertEquals(signedElementEvent.getElementPath().size(), 2);
+        assertThat(signedElementEvent.getElementPath(), hasSize(2));
         assertEquals("{urn:example:po}PurchaseOrder", signedElementEvent.getElementPath().get(0).toString());
         assertEquals("{urn:example:po}PaymentInfo", signedElementEvent.getElementPath().get(1).toString());
         assertTrue(signedElementEvent.isSigned());
     }
 
-    protected void checkSignedElementMultipleSecurityEvents(
-            TestSecurityEventListener securityEventListener
-    ) {
+
+    protected void checkSignedElementMultipleSecurityEvents(TestSecurityEventListener securityEventListener) {
         List<SecurityEvent> signedElements =
                 securityEventListener.getSecurityEvents(SecurityEventConstants.SignedElement);
-        assertTrue(signedElements.size() == 2);
-        SignedElementSecurityEvent signedElementEvent =
-                (SignedElementSecurityEvent) signedElements.get(0);
+        assertThat(signedElements, hasSize(2));
+        SignedElementSecurityEvent signedElementEvent = (SignedElementSecurityEvent) signedElements.get(0);
         assertNotNull(signedElementEvent);
-        assertEquals(signedElementEvent.getElementPath().size(), 2);
+        assertThat(signedElementEvent.getElementPath(), hasSize(2));
         assertEquals("{urn:example:po}PurchaseOrder", signedElementEvent.getElementPath().get(0).toString());
         assertEquals("{urn:example:po}ShippingAddress", signedElementEvent.getElementPath().get(1).toString());
 
         assertTrue(signedElementEvent.isSigned());
 
-        signedElementEvent =
-                (SignedElementSecurityEvent) signedElements.get(1);
+        signedElementEvent = (SignedElementSecurityEvent) signedElements.get(1);
         assertNotNull(signedElementEvent);
-        assertEquals(signedElementEvent.getElementPath().size(), 2);
+        assertThat(signedElementEvent.getElementPath(), hasSize(2));
         assertEquals("{urn:example:po}PurchaseOrder", signedElementEvent.getElementPath().get(0).toString());
         assertEquals("{urn:example:po}PaymentInfo", signedElementEvent.getElementPath().get(1).toString());
         assertTrue(signedElementEvent.isSigned());

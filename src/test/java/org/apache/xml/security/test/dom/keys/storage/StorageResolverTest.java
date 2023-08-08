@@ -38,10 +38,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * KeyStore StorageResolver test.
  */
-public class StorageResolverTest {
+class StorageResolverTest {
 
     @Test
-    public void testStorageResolver() throws Exception {
+    void testStorageResolver() throws Exception {
 
         //
         // This test fails with the IBM JDK

@@ -19,7 +19,6 @@
 package org.apache.xml.security.test.dom.signature;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.cert.X509Certificate;
@@ -29,6 +28,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureFileInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
@@ -46,7 +46,7 @@ import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 /**
  * A test-case for Bugzilla bug 45744 - "XPath transform and xml-stylesheet".
  */
-public class ProcessingInstructionTest {
+class ProcessingInstructionTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -59,7 +59,7 @@ public class ProcessingInstructionTest {
     }
 
     @Test
-    public void testProcessingInstruction() throws Exception {
+    void testProcessingInstruction() throws Exception {
         File f = new File(dir, "upp_sign.xml");
         Document doc = XMLUtils.read(f, false);
 
@@ -114,12 +114,8 @@ public class ProcessingInstructionTest {
             throws ResourceResolverException {
             try {
                 URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
-
-                FileInputStream inputStream = new FileInputStream(new File(dir, "out.xml"));
-                XMLSignatureInput result = new XMLSignatureInput(inputStream);
-
+                XMLSignatureInput result = new XMLSignatureFileInput(resolveFile(dir.toPath(), "out.xml"));
                 result.setSourceURI(uriNew.toString());
-
                 return result;
             } catch (Exception ex) {
                 throw new ResourceResolverException(
@@ -135,7 +131,7 @@ public class ProcessingInstructionTest {
 
         private static URI getNewURI(String uri, String baseURI) throws URISyntaxException {
             URI newUri = null;
-            if (baseURI == null || baseURI.length() == 0) {
+            if (baseURI == null || baseURI.isEmpty()) {
                 newUri = new URI(uri);
             } else {
                 newUri = new URI(baseURI).resolve(uri);

@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * XMLX509IssuerSerial tests.
  *
  */
-public class XMLX509IssuerSerialTest {
+class XMLX509IssuerSerialTest {
 
     private final Document doc;
 
@@ -39,7 +39,7 @@ public class XMLX509IssuerSerialTest {
     }
 
     @Test
-    public void testGetIssuerName() throws Exception {
+    void testGetIssuerName() throws Exception {
         // Make sure hex encoded value is not escaped (see ...)
         String issuer = "9.99.999=#abc123";
         XMLX509IssuerSerial is =
@@ -53,7 +53,7 @@ public class XMLX509IssuerSerialTest {
     }
 
     @Test
-    public void testEqualsHashcode() throws Exception {
+    void testEqualsHashcode() throws Exception {
         XMLX509IssuerSerial is1 = new XMLX509IssuerSerial(doc, "1234", 0);
         assertEquals("1234", is1.getIssuerName());
 

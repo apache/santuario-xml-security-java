@@ -46,9 +46,9 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.CanonicalizationMethod
  *
  */
-public class CanonicalizationMethodTest {
+class CanonicalizationMethodTest {
 
-    XMLSignatureFactory factory;
+    private final XMLSignatureFactory factory;
 
     static {
         Security.insertProviderAt
@@ -68,7 +68,7 @@ public class CanonicalizationMethodTest {
     }
 
     @Test
-    public void testIsFeatureSupported() throws Exception {
+    void testIsFeatureSupported() throws Exception {
         CanonicalizationMethod cm;
         for (int i = 0; i < C14N_ALGOS.length; i++) {
             String algo = C14N_ALGOS[i];
@@ -87,7 +87,7 @@ public class CanonicalizationMethodTest {
     }
 
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         // test newAlgorithmMethod(String algorithm,
         //                         AlgorithmParameterSpec params)
         // for generating CanonicalizationMethod objects

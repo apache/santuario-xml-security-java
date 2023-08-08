@@ -44,17 +44,15 @@ import org.w3c.dom.Document;
 /**
  * A set of test-cases for Signature verification with various HMAC algorithms
  */
-public class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
+class SignatureHMACVerificationTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
-    public void testHMACSHA1() throws Exception {
+    void testHMACSHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -94,12 +92,10 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_224() throws Exception {
+    void testHMACSHA_224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -139,12 +135,10 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_256() throws Exception {
+    void testHMACSHA_256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -184,12 +178,10 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_384() throws Exception {
+    void testHMACSHA_384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -229,12 +221,10 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testHMACSHA_512() throws Exception {
+    void testHMACSHA_512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -274,14 +264,12 @@ public class SignatureHMACVerificationTest extends AbstractSignatureVerification
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testRIPEMD160() throws Exception {
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set the key up
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);

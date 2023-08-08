@@ -38,17 +38,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a forbidden algorithm (MD5) when secure validation is enabled.
  */
-public class ForbiddenAlgorithmTest extends InteropTestBase {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ForbiddenAlgorithmTest.class);
+class ForbiddenAlgorithmTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
     @Test
-    public void testMD5Digest() throws Exception {
+    void testMD5Digest() throws Exception {
         boolean success = readAndVerifySignature("signature-joseph-exc.xml", false);
 
         assertTrue(success);

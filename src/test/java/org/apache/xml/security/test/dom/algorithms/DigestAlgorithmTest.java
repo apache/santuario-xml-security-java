@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * A test to make sure that the various digest algorithms are working
  */
-public class DigestAlgorithmTest {
+class DigestAlgorithmTest {
 
     private static boolean bcInstalled;
 
@@ -77,7 +77,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA1() throws Exception {
+    void testSHA1() throws Exception {
         Document doc = TestUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -95,7 +95,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA224() throws Exception {
+    void testSHA224() throws Exception {
         Document doc = TestUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -113,7 +113,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA256() throws Exception {
+    void testSHA256() throws Exception {
         Document doc = TestUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -131,7 +131,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA384() throws Exception {
+    void testSHA384() throws Exception {
         Document doc = TestUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -149,7 +149,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA512() throws Exception {
+    void testSHA512() throws Exception {
         Document doc = TestUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -167,7 +167,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testMD5() throws Exception {
+    void testMD5() throws Exception {
         Document doc = TestUtils.newDocument();
 
         MessageDigestAlgorithm digestAlgorithm =
@@ -185,7 +185,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
+    void testRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         Document doc = TestUtils.newDocument();
 
@@ -204,7 +204,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testWhirlpool() throws Exception {
+    void testWhirlpool() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         Document doc = TestUtils.newDocument();
 
@@ -223,7 +223,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA3_224() throws Exception {
+    void testSHA3_224() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         Document doc = TestUtils.newDocument();
 
@@ -242,7 +242,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA3_256() throws Exception {
+    void testSHA3_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         Document doc = TestUtils.newDocument();
 
@@ -261,7 +261,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA3_384() throws Exception {
+    void testSHA3_384() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         Document doc = TestUtils.newDocument();
 
@@ -280,7 +280,7 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testSHA3_512() throws Exception {
+    void testSHA3_512() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         Document doc = TestUtils.newDocument();
 
@@ -299,13 +299,13 @@ public class DigestAlgorithmTest {
     }
 
     @Test
-    public void testNullAlgorithm() throws Exception {
+    void testNullAlgorithm() throws Exception {
         assertThrows(XMLSignatureException.class, () ->
                 MessageDigestAlgorithm.getInstance(TestUtils.newDocument(), null));
     }
 
     @Test
-    public void testNoSuchAlgorithm() throws Exception {
+    void testNoSuchAlgorithm() throws Exception {
         assertThrows(XMLSignatureException.class, () ->
                 MessageDigestAlgorithm.getInstance(TestUtils.newDocument(), "xyz"));
     }

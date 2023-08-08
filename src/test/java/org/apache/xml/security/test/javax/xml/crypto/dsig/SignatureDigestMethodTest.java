@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test signing using all available digest methods
  */
-public class SignatureDigestMethodTest {
+class SignatureDigestMethodTest {
 
     private final KeySelector kvks;
     private final CanonicalizationMethod withoutComments;
@@ -100,72 +100,72 @@ public class SignatureDigestMethodTest {
     }
 
     @Test
-    public void testSHA1() throws Exception {
+    void testSHA1() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha1, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA224() throws Exception {
+    void testSHA224() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA256() throws Exception {
+    void testSHA256() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA384() throws Exception {
+    void testSHA384() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA512() throws Exception {
+    void testSHA512() throws Exception {
         test_create_signature_enveloping(rsaSha1, sha512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
+    void testRIPEMD160() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, ripemd160, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testWHIRLPOOL() throws Exception {
+    void testWHIRLPOOL() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, whirlpool, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA3_224() throws Exception {
+    void testSHA3_224() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_224, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA3_256() throws Exception {
+    void testSHA3_256() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_256, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA3_384() throws Exception {
+    void testSHA3_384() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_384, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);
     }
 
     @Test
-    public void testSHA3_512() throws Exception {
+    void testSHA3_512() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1, sha3_512, rsaki,
                                          TestUtils.getPrivateKey("RSA"), kvks);

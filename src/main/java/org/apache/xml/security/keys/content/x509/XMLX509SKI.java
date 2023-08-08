@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.content.x509;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
@@ -36,8 +38,7 @@ import org.w3c.dom.Element;
  */
 public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataContent {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLX509SKI.class);
+    private static final Logger LOG = System.getLogger(XMLX509SKI.class.getName());
 
     /**
      * <CODE>SubjectKeyIdentifier (id-ce-subjectKeyIdentifier) (2.5.29.14)</CODE>:
@@ -133,8 +134,8 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
 
         System.arraycopy(extensionValue, 4, skidValue, 0, skidValue.length);
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Base64 of SKI is " + XMLUtils.encodeToString(skidValue));
+        if (LOG.isLoggable(Level.DEBUG)) {
+            LOG.log(Level.DEBUG, "Base64 of SKI is " + XMLUtils.encodeToString(skidValue));
         }
 
         return skidValue;
@@ -165,7 +166,7 @@ public class XMLX509SKI extends SignatureElementProxy implements XMLX509DataCont
                 result = 31 * result + element;
             }
         } catch (XMLSecurityException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
         }
         return result;
 

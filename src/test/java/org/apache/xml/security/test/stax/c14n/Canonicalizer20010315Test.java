@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class Canonicalizer20010315Test {
+class Canonicalizer20010315Test {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -64,7 +64,7 @@ public class Canonicalizer20010315Test {
     }
 
     @Test
-    public void test221() throws Exception {
+    void test221() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
@@ -81,6 +81,7 @@ public class Canonicalizer20010315Test {
                 break;
             }
         }
+        assertNotNull(xmlSecEvent, "xmlSecEvent is null");
         while (xmlSecEventReader.hasNext()) {
 
             c.transform(xmlSecEvent);
@@ -105,36 +106,38 @@ public class Canonicalizer20010315Test {
     }
 
     @Test
-    public void test222() throws Exception {
+    void test222() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
         c.setOutputStream(baos);
-        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
-                this.getClass().getClassLoader().getResourceAsStream(
-                    "org/apache/xml/security/c14n/inExcl/example2_2_2.xml")
-        );
+        try (InputStream inputStream = this.getClass().getClassLoader()
+            .getResourceAsStream("org/apache/xml/security/c14n/inExcl/example2_2_2.xml")) {
+            XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(inputStream);
 
-        XMLSecEvent xmlSecEvent = null;
-        while (xmlSecEventReader.hasNext()) {
-            xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
-            if (xmlSecEvent.isStartElement() && xmlSecEvent.asStartElement().getName().equals(new QName("http://example.net", "elem2"))) {
-                break;
+            XMLSecEvent xmlSecEvent = null;
+            while (xmlSecEventReader.hasNext()) {
+                xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
+                if (xmlSecEvent.isStartElement()
+                    && xmlSecEvent.asStartElement().getName().equals(new QName("http://example.net", "elem2"))) {
+                    break;
+                }
+            }
+            assertNotNull(xmlSecEvent, "xmlSecEvent is null");
+            while (xmlSecEventReader.hasNext()) {
+
+                c.transform(xmlSecEvent);
+
+                if (xmlSecEvent.isEndElement()
+                    && xmlSecEvent.asEndElement().getName().equals(new QName("http://example.net", "elem2"))) {
+                    break;
+                }
+                xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
             }
         }
-        while (xmlSecEventReader.hasNext()) {
 
-            c.transform(xmlSecEvent);
-
-            if (xmlSecEvent.isEndElement() && xmlSecEvent.asEndElement().getName().equals(new QName("http://example.net", "elem2"))) {
-                break;
-            }
-            xmlSecEvent = (XMLSecEvent) xmlSecEventReader.nextEvent();
-        }
-
-        byte[] reference =
-            getBytesFromResource(this.getClass().getClassLoader().getResource(
-                "org/apache/xml/security/c14n/inExcl/example2_2_2_c14nized.xml"));
+        byte[] reference = getBytesFromResource(this.getClass().getClassLoader()
+            .getResource("org/apache/xml/security/c14n/inExcl/example2_2_2_c14nized.xml"));
         boolean equals = java.security.MessageDigest.isEqual(reference, baos.toByteArray());
 
         if (!equals) {
@@ -150,7 +153,7 @@ public class Canonicalizer20010315Test {
      * 3.1 PIs, Comments, and Outside of Document Element
      */
     @Test
-    public void test31withCommentsSubtree() throws Exception {
+    void test31withCommentsSubtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -168,7 +171,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-OutsideDoc">the example from the spec</A>
      */
     @Test
-    public void test31subtree() throws Exception {
+    void test31subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -186,7 +189,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-WhitespaceInContent">the example from the spec</A>
      */
     @Test
-    public void test32subtree() throws Exception {
+    void test32subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -204,7 +207,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-SETags">the example from the spec</A>
      */
     @Test
-    public void test33subtree() throws Exception {
+    void test33subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -222,7 +225,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34() throws Exception {
+    void test34() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -248,7 +251,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Chars">the example from the spec</A>
      */
     @Test
-    public void test34subtree() throws Exception {
+    void test34subtree() throws Exception {
         URL fileIn =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/34_input_validatingParser.xml");
@@ -265,7 +268,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-Entities">the example from the spec</A>
      */
     @Test
-    public void test35subtree() throws Exception {
+    void test35subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -283,7 +286,7 @@ public class Canonicalizer20010315Test {
      * @see <A HREF="http://www.w3.org/TR/2001/PR-xml-c14n-20010119#Example-UTF8">the example from the spec</A>
      */
     @Test
-    public void test36subtree() throws Exception {
+    void test36subtree() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -355,7 +358,7 @@ public class Canonicalizer20010315Test {
      * relative namespace URIs.
      */
     @Test
-    public void testRelativeNSbehaviour() throws Exception {
+    void testRelativeNSbehaviour() throws Exception {
 
         URL fileIn =
             this.getClass().getClassLoader().getResource(
@@ -370,7 +373,7 @@ public class Canonicalizer20010315Test {
     }
 
     @Test
-    public void testDefault_ns_redefinition() throws Exception {
+    void testDefault_ns_redefinition() throws Exception {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Canonicalizer20010315_WithCommentsTransformer c = new Canonicalizer20010315_WithCommentsTransformer();
@@ -725,23 +728,21 @@ public class Canonicalizer20010315Test {
     }
 
     public static byte[] getBytesFromResource(URL resource, boolean unix) throws IOException {
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        InputStream inputStream = resource.openStream();
-        if (unix) {
-            inputStream = new UnixInputStream(inputStream);
-        }
-        try {
-            byte[] buf = new byte[1024];
+        try (InputStream inputStream = wrapInputStream(resource.openStream(), unix)) {
+            byte[] buf = new byte[8192];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
 
             return baos.toByteArray();
-        } finally {
-            inputStream.close();
         }
+    }
+
+
+    private static InputStream wrapInputStream(InputStream inputStream, boolean unix) {
+        return unix ? new UnixInputStream(inputStream) : inputStream;
     }
 
 //   /**

@@ -35,26 +35,26 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class NameSpaceSymbTableTest {
-    static Attr node1, node2;
+class NameSpaceSymbTableTest {
+    private static final Attr node1, node2;
     static {
         try {
             Document doc = TestUtils.newDocument();
             node1 = doc.createAttributeNS("a","b");
             node2 = doc.createAttributeNS("b","c");
         } catch (Exception e) {
-            // e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
     @Test
-    public void testNullFirstXmlns() {
+    void testNullFirstXmlns() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         assertNull(ns.getMapping("xmlns"));
     }
 
     @Test
-    public void testXmlnsPut() {
+    void testXmlnsPut() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
@@ -62,7 +62,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testXmlnsMap() {
+    void testXmlnsMap() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
@@ -72,7 +72,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testXmlnsMap2() {
+    void testXmlnsMap2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.push();
@@ -83,7 +83,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testXmlnsPrefix() {
+    void testXmlnsPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
@@ -97,7 +97,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testXmlnsRemovePrefix() {
+    void testXmlnsRemovePrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.push();
@@ -108,7 +108,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testPrefix() {
+    void testPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a", node1);
@@ -126,7 +126,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testSeveralPrefixes() {
+    void testSeveralPrefixes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a",node1);
@@ -138,7 +138,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testSeveralPrefixes2() {
+    void testSeveralPrefixes2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a",node1);
@@ -149,7 +149,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testGetUnrenderedNodes() {
+    void testGetUnrenderedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         List<Attr> l = new ArrayList<>();
@@ -163,7 +163,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testUnrederedNodes() {
+    void testUnrederedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         List<Attr> l = new ArrayList<>();
@@ -193,7 +193,7 @@ public class NameSpaceSymbTableTest {
     }
 
     @Test
-    public void testBug38655() {
+    void testBug38655() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
 

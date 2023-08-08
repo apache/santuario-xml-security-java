@@ -20,6 +20,8 @@ package org.apache.xml.security.stax.impl.processor.input;
 
 import jakarta.xml.bind.JAXBElement;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -60,8 +62,6 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An input handler for the EncryptedKey XML Structure
@@ -69,7 +69,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHandler {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(XMLEncryptedKeyInputHandler.class);
+    private static final transient Logger LOG = System.getLogger(XMLEncryptedKeyInputHandler.class.getName());
 
     @Override
     public void handle(final InputProcessorChain inputProcessorChain, final XMLSecurityProperties securityProperties,
@@ -252,8 +252,8 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         } catch (IllegalStateException e) {
                             throw new XMLSecurityException(e);
                         } catch (Exception e) {
-                            LOG.warn("Unwrapping of the encrypted key failed with error: " + e.getMessage() + ". " +
-                                    "Generating a faked one to mitigate timing attacks.");
+                            LOG.log(Level.WARNING, "Unwrapping of the encrypted key failed with error: "
+                                + e.getMessage() + ". Generating a faked one to mitigate timing attacks.");
 
                             int keyLength = JCEMapper.getKeyLengthFromURI(symmetricAlgorithmURI);
                             this.decryptedKey = XMLSecurityConstants.generateBytes(keyLength / 8);

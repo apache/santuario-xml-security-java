@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.Field;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -47,10 +49,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SignatureAlgorithmTest {
+class SignatureAlgorithmTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SignatureAlgorithmTest.class);
+    private static final Logger LOG = System.getLogger(SignatureAlgorithmTest.class.getName());
 
     static {
         org.apache.xml.security.Init.init();
@@ -69,7 +70,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testSameKeySeveralAlgorithmSigning() throws Exception {
+    void testSameKeySeveralAlgorithmSigning() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
             new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
@@ -83,7 +84,7 @@ public class SignatureAlgorithmTest {
         try {
             otherSignatureAlgorithm.initSign(pk);
         } catch (XMLSecurityException ex) {
-            LOG.warn(
+            LOG.log(Level.WARNING,
                 "Test testSameKeySeveralAlgorithmSigning skipped as necessary algorithms "
                 + "not available"
             );
@@ -95,7 +96,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testConstructionWithProvider() throws Exception {
+    void testConstructionWithProvider() throws Exception {
         Field algorithmHashField = SignatureAlgorithm.class.getDeclaredField("algorithmHash");
         algorithmHashField.setAccessible(true);
         @SuppressWarnings("unchecked")
@@ -119,7 +120,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSASigningKeyIsPrivateKey() throws Exception {
+    void testRSASigningKeyIsPrivateKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
@@ -129,7 +130,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testDSASigningKeyIsPrivateKey() throws Exception {
+    void testDSASigningKeyIsPrivateKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_DSA);
@@ -139,7 +140,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSASigningKeyIsPrivateKey() throws Exception {
+    void testECDSASigningKeyIsPrivateKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
@@ -149,7 +150,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSAVerifyingKeyIsPublicKey() throws Exception {
+    void testRSAVerifyingKeyIsPublicKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1);
@@ -159,7 +160,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testDSAVerifyingKeyIsPublicKey() throws Exception {
+    void testDSAVerifyingKeyIsPublicKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_DSA);
@@ -169,7 +170,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testECDSAVerifyingKeyIsPublicKey() throws Exception {
+    void testECDSAVerifyingKeyIsPublicKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
@@ -179,7 +180,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACSigningKeyIsSecretKey() throws Exception {
+    void testHMACSigningKeyIsSecretKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_MAC_HMAC_SHA1);
@@ -189,7 +190,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testHMACVerifyingKeyIsSecretKey() throws Exception {
+    void testHMACVerifyingKeyIsSecretKey() throws Exception {
         Document doc = TestUtils.newDocument();
         SignatureAlgorithm signatureAlgorithm =
                 new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_MAC_HMAC_SHA1);
@@ -199,7 +200,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testAlreadyRegisteredException() throws Exception {
+    void testAlreadyRegisteredException() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
             SignatureAlgorithm.register(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
                     SignatureBaseRSA.SignatureRSASHA256.class)
@@ -207,7 +208,7 @@ public class SignatureAlgorithmTest {
     }
 
     @Test
-    public void testAlreadyRegisteredExceptionFromString() throws Exception {
+    void testAlreadyRegisteredExceptionFromString() throws Exception {
         assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
                 SignatureAlgorithm.register(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
                         SignatureBaseRSA.SignatureRSASHA256.class.getName())

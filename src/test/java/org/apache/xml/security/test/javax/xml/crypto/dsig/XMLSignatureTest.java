@@ -21,9 +21,7 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -68,6 +66,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -80,20 +80,20 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for javax.xml.crypto.dsig.XMLSignature
  *
  */
-public class XMLSignatureTest {
+class XMLSignatureTest {
+    private static final String id = "id";
+    private static final String sigValueId = "signatureValueId";
+    private static final String DSA_SHA256 = "http://www.w3.org/2009/xmldsig11#dsa-sha256";
+
     private final XMLSignatureFactory fac;
     private final KeyInfoFactory kifac;
     private final SignedInfo defSi;
     private final KeyInfo defKi;
     private final List<XMLObject> objs;
-    private final String id = "id";
-    private final String sigValueId = "signatureValueId";
     private final Key[] SIGN_KEYS;
     private final Key[] VALIDATE_KEYS;
     private final SignatureMethod[] SIG_METHODS;
     private final URIDereferencer ud;
-    private static final String DSA_SHA256 =
-        "http://www.w3.org/2009/xmldsig11#dsa-sha256";
 
     static {
         Security.insertProviderAt
@@ -131,7 +131,7 @@ public class XMLSignatureTest {
 
     @SuppressWarnings("rawtypes")
     @Test
-    public void testConstructor() throws Exception {
+    void testConstructor() throws Exception {
         XMLSignature sig = null;
         // test XMLSignatureFactory.newXMLSignature(SignedInfo, KeyInfo)
         // and XMLSignatureFactory.newXMLSignature(SignedInfo,
@@ -173,14 +173,14 @@ public class XMLSignatureTest {
         sig = fac.newXMLSignature(defSi, defKi);
         assertNull(sig.getId());
         assertEquals(sig.getKeyInfo(), defKi);
-        assertTrue(sig.getObjects().size()==0);
+        assertThat(sig.getObjects(), hasSize(0));
         assertNull(sig.getSignatureValue().getValue());
         assertNull(sig.getSignatureValue().getId());
         assertEquals(sig.getSignedInfo(), defSi);
     }
 
     @Test
-    public void testisFeatureSupported() throws Exception {
+    void testisFeatureSupported() throws Exception {
 
         XMLSignature sig = fac.newXMLSignature(defSi, null);
 
@@ -193,7 +193,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testsignANDvalidate() throws Exception {
+    void testsignANDvalidate() throws Exception {
         XMLSignature sig;
         SignedInfo si;
         KeyInfo ki = null;
@@ -226,7 +226,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignWithProvider() throws Exception {
+    void testSignWithProvider() throws Exception {
         XMLSignature sig;
         SignedInfo si;
         KeyInfo ki = null;
@@ -262,7 +262,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignWithEmptyNSPrefix() throws Exception {
+    void testSignWithEmptyNSPrefix() throws Exception {
         SignedInfo si = createSignedInfo(SIG_METHODS[1]);
         KeyInfo ki = kifac.newKeyInfo(Collections.singletonList
                     (kifac.newKeyValue((PublicKey) VALIDATE_KEYS[1])));
@@ -280,7 +280,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignWithReferenceManifestDependencies() throws Exception {
+    void testSignWithReferenceManifestDependencies() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
         List<Reference> refs = Collections.singletonList(fac.newReference("#object-1", dm));
@@ -337,11 +337,10 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testSignTemplateWithObjectNSDefs() throws Exception {
+    void testSignTemplateWithObjectNSDefs() throws Exception {
         File f = resolveFile(
             "src/test/resources/org/apache/xml/security/test/javax/xml/crypto/dsig/signature-enveloping-rsa-template.xml");
-
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+        Document doc = XMLUtils.read(f, false);
 
         // Find Signature element
         NodeList nl =
@@ -374,7 +373,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testCreateSignatureWithEmptyId() throws Exception {
+    void testCreateSignatureWithEmptyId() throws Exception {
         // create references
         DigestMethod dm = fac.newDigestMethod(DigestMethod.SHA1, null);
         List<Reference> refs = Collections.singletonList
@@ -403,7 +402,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testCreateDSA2048Signature() throws Exception {
+    void testCreateDSA2048Signature() throws Exception {
 
         // check if SHA256withDSA is supported
         boolean gotSHA256withDSA = false;
@@ -430,7 +429,7 @@ public class XMLSignatureTest {
     }
 
     @Test
-    public void testBadXPointer() throws Exception {
+    void testBadXPointer() throws Exception {
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS(null, "Root");
         SignatureMethod sm = SIG_METHODS[1];
@@ -482,7 +481,7 @@ public class XMLSignatureTest {
         private static final long serialVersionUID = 1L;
 
         TestProvider() {
-            super("TestProvider", 0, "TestProvider");
+            super("TestProvider", "0", "TestProvider");
         }
     }
 }

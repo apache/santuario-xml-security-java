@@ -19,6 +19,8 @@
 package org.apache.xml.security.encryption;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import org.apache.xml.security.c14n.CanonicalizationException;
 import org.apache.xml.security.signature.XMLSignatureInput;
@@ -44,8 +46,7 @@ import org.w3c.dom.Attr;
  */
 public class XMLCipherInput {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLCipherInput.class);
+    private static final Logger LOG = System.getLogger(XMLCipherInput.class.getName());
 
     /** The data we are working with */
     private CipherData cipherData;
@@ -103,7 +104,7 @@ public class XMLCipherInput {
 
         if (cipherData.getDataType() == CipherData.REFERENCE_TYPE) {
             // Fun time!
-            LOG.debug("Found a reference type CipherData");
+            LOG.log(Level.DEBUG, "Found a reference type CipherData");
             CipherReference cr = cipherData.getCipherReference();
 
             // Need to wrap the uri in an Attribute node so that we can
@@ -128,16 +129,16 @@ public class XMLCipherInput {
             }
 
             if (input != null) {
-                LOG.debug("Managed to resolve URI \"{}\"", cr.getURI());
+                LOG.log(Level.DEBUG, "Managed to resolve URI \"{0}\"", cr.getURI());
             } else {
-                LOG.debug("Failed to resolve URI \"{}\"", cr.getURI());
+                LOG.log(Level.DEBUG, "Failed to resolve URI \"{0}\"", cr.getURI());
                 throw new XMLEncryptionException();
             }
 
             // Lets see if there are any transforms
             Transforms transforms = cr.getTransforms();
             if (transforms != null) {
-                LOG.debug("Have transforms in cipher reference");
+                LOG.log(Level.DEBUG, "Have transforms in cipher reference");
                 try {
                     org.apache.xml.security.transforms.Transforms dsTransforms =
                         transforms.getDSTransforms();
@@ -161,7 +162,7 @@ public class XMLCipherInput {
             throw new XMLEncryptionException("CipherData.getDataType() returned unexpected value");
         }
 
-        LOG.debug("Encrypted octets:\n{}", base64EncodedEncryptedOctets);
+        LOG.log(Level.DEBUG, "Encrypted octets:\n{0}", base64EncodedEncryptedOctets);
 
         return XMLUtils.decode(base64EncodedEncryptedOctets);
     }

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -39,8 +41,7 @@ import org.w3c.dom.Element;
  */
 public class SecretKeyResolver extends KeyResolverSpi
 {
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SecretKeyResolver.class);
+    private static final Logger LOG = System.getLogger(SecretKeyResolver.class.getName());
 
     private final KeyStore keyStore;
     private final char[] password;
@@ -80,7 +81,7 @@ public class SecretKeyResolver extends KeyResolverSpi
     protected SecretKey engineResolveSecretKey(
         Element element, String baseURI, StorageResolver storage, boolean secureValidation
     ) throws KeyResolverException {
-        LOG.debug("Can I resolve {}?", element.getTagName());
+        LOG.log(Level.DEBUG, "Can I resolve {0}?", element.getTagName());
 
         if (XMLUtils.elementIsInSignatureSpace(element, Constants._TAG_KEYNAME)) {
             String keyName = element.getFirstChild().getNodeValue();
@@ -90,11 +91,11 @@ public class SecretKeyResolver extends KeyResolverSpi
                     return (SecretKey) key;
                 }
             } catch (Exception e) {
-                LOG.debug("Cannot recover the key", e);
+                LOG.log(Level.DEBUG, "Cannot recover the key", e);
             }
         }
 
-        LOG.debug("I can't");
+        LOG.log(Level.DEBUG, "I can't");
         return null;
     }
 
