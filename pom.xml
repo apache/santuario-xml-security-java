@@ -91,7 +91,7 @@
     </distributionManagement>
 
     <properties>
-        <activation-api.version>2.1.1</activation-api.version>
+        <activation-api.version>2.1.2</activation-api.version>
         <bcprov.version>1.76</bcprov.version>
         <clirr.version>2.8</clirr.version>
         <commons.codec.version>1.15</commons.codec.version>
