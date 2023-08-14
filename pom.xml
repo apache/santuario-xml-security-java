@@ -98,7 +98,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <jaxb.runtime>4.0.3</jaxb.runtime>
         <jetty.version>11.0.15</jetty.version>
-        <jmh.version>1.36</jmh.version>
+        <jmh.version>1.37</jmh.version>
         <jetty.version>11.0.15</jetty.version>
         <junit.version>5.10.0</junit.version>
         <slf4j.version>2.0.7</slf4j.version>
