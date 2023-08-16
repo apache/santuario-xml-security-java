@@ -1,4 +1,4 @@
-[![Build Status](https://builds.apache.org/view/S-Z/view/Santuario/job/santuario-java-trunk//badge/icon?subject=Build)](https://builds.apache.org/view/S-Z/view/Santuario/job/santuario-java-trunk/)
+[![Build Status](https://builds.apache.org/job/santuario/job/Santuario%202.3.x-fixes%20JDK8/badge/icon?subject=Build)](https://builds.apache.org/job/Santuario/job/Santuario%202.3.x-fixes%20JDK8/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/apache/santuario-xml-security-java)](https://lgtm.com/projects/g/apache/santuario-xml-security-java/alerts/)
 
