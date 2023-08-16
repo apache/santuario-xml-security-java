@@ -1,4 +1,4 @@
-[![Build Status](https://builds.apache.org/job/santuario/job/Santuario%20Java%20JDK11/badge/icon?subject=Build)](https://builds.apache.org/job/Santuario/job/Santuario%20Java%20JDK11/)
+[![Build Status](https://builds.apache.org/job/santuario/job/Santuario-Java-main-JDK11/badge/icon?subject=Build)](https://builds.apache.org/job/Santuario/job/Santuario-Java-main-JDK11/)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.apache.santuario/xmlsec)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/apache/santuario-xml-security-java/badge)](https://api.securityscorecards.dev/projects/github.com/apache/santuario-xml-security-java)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6932/badge)](https://bestpractices.coreinfrastructure.org/projects/6932)
