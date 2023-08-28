@@ -104,18 +104,23 @@ class SignatureAlgorithmTest {
         assertFalse(algorithmHash.isEmpty());
 
         Document doc = TestUtils.newDocument();
-        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
+        try {
+            Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+            Provider provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
 
-        for (String algorithmURI : algorithmHash.keySet()) {
-            try {
-                AlgorithmParameterSpec spec = algorithmURI.equals(XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS)
-                        ? new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)
-                        : null;
-                SignatureAlgorithm signatureAlgorithm = new SignatureAlgorithm(doc, algorithmURI, provider, spec);
-                assertEquals(provider.getName(), signatureAlgorithm.getJCEProviderName());
-            } catch (XMLSecurityException e) {
-                assertEquals("", Arrays.asList(e.getStackTrace()).toString());
+            for (String algorithmURI : algorithmHash.keySet()) {
+                try {
+                    AlgorithmParameterSpec spec = algorithmURI.equals(XMLSignature.ALGO_ID_SIGNATURE_RSA_PSS)
+                            ? new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)
+                            : null;
+                    SignatureAlgorithm signatureAlgorithm = new SignatureAlgorithm(doc, algorithmURI, provider, spec);
+                    assertEquals(provider.getName(), signatureAlgorithm.getJCEProviderName());
+                } catch (XMLSecurityException e) {
+                    assertEquals("", Arrays.asList(e.getStackTrace()).toString());
+                }
             }
+        } catch (ReflectiveOperationException e) {
+            // BouncyCastle not installed, ignore
         }
     }
 

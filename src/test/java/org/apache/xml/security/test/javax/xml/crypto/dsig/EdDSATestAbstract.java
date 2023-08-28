@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
+import java.security.Provider;
 import java.security.Security;
 
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
@@ -39,6 +40,8 @@ public abstract class EdDSATestAbstract {
     public static final String EDDSA_KS_TYPE = "PKCS12";
     private static boolean bcAddedForTheTest = false;
 
+    private static boolean edDSASupported = true;
+
     @BeforeAll
     public static void beforeAll() {
         Security.insertProviderAt
@@ -52,8 +55,17 @@ public abstract class EdDSATestAbstract {
         } catch (NumberFormatException ex) {
             isNotJDK15up = true;
         }
-        if (isNotJDK15up && Security.getProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME) == null) {
-            Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+
+        if (isNotJDK15up && Security.getProvider("BC") == null) {
+            // Use reflection to add new BouncyCastleProvider
+            try {
+                Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                Provider bouncyCastleProvider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
+                Security.addProvider(bouncyCastleProvider);
+            } catch (ReflectiveOperationException e) {
+                // BouncyCastle not installed, ignore
+                edDSASupported = false;
+            }
             bcAddedForTheTest = true;
         }
     }
@@ -61,8 +73,12 @@ public abstract class EdDSATestAbstract {
     @AfterAll
     public static void afterAll() {
         if (bcAddedForTheTest) {
-            Security.removeProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME);
+            Security.removeProvider("BC");
         }
+    }
+
+    public static boolean isEdDSASupported() {
+        return edDSASupported;
     }
 
     public void updateIdReferences(DOMValidateContext vc, String elementName, String idAttributeName) {
