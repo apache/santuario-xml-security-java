@@ -18,10 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.PublicKey;
+import java.security.*;
 import java.util.Enumeration;
 
 import org.apache.xml.security.Init;
@@ -69,17 +66,23 @@ class SignatureTest {
 
     @Test
     void testSigningVerifyingFromRebuildSignatureWithProvider() throws Throwable {
-        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
-        Document doc = getOriginalDocument();
-        XMLSignature signature = signDocument(doc, provider);
-        assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
+        try {
+            Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+            Provider provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
 
-        Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
-        signature = new XMLSignature(signatureElem, "", provider);
-        assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
+            Document doc = getOriginalDocument();
+            XMLSignature signature = signDocument(doc, provider);
+            assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
 
-        PublicKey pubKey = getPublicKey();
-        assertTrue(signature.checkSignatureValue(pubKey));
+            Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
+            signature = new XMLSignature(signatureElem, "", provider);
+            assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
+
+            PublicKey pubKey = getPublicKey();
+            assertTrue(signature.checkSignatureValue(pubKey));
+        } catch (ReflectiveOperationException e) {
+            // BouncyCastle not installed, ignore
+        }
     }
 
     @Test
@@ -93,13 +96,18 @@ class SignatureTest {
 
     @Test
     void testSigningVerifyingFromExistingSignatureWithProvider() throws Throwable {
-        Provider provider = new org.bouncycastle.jce.provider.BouncyCastleProvider();
-        Document doc = getOriginalDocument();
-        XMLSignature signature = signDocument(doc, provider);
-        assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
+        try {
+            Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+            Provider provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
+            Document doc = getOriginalDocument();
+            XMLSignature signature = signDocument(doc, provider);
+            assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
 
-        PublicKey pubKey = getPublicKey();
-        assertTrue(signature.checkSignatureValue(pubKey));
+            PublicKey pubKey = getPublicKey();
+            assertTrue(signature.checkSignatureValue(pubKey));
+        } catch (ReflectiveOperationException e) {
+            // BouncyCastle not installed, ignore
+        }
     }
 
     @Test

@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -55,6 +56,7 @@ class SignatureValidatorEdDSATest extends EdDSATestAbstract {
             "envelopingInvalidSignatureEd25519.xml,false,Invalid signature should fail!",
             "envelopingInvalidSignatureEd448.xml,false,Invalid signature should fail!"})
     void test_enveloping_signature_with_ID(String filename, String result, String message) throws Exception {
+        Assumptions.assumeTrue(isEdDSASupported());
         DOMValidateContext vc = testInstance.getValidateContext(filename, new KeySelectors.RawX509KeySelector());
         updateIdReferences(vc);
 

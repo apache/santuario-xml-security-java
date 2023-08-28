@@ -43,6 +43,7 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
@@ -60,7 +61,7 @@ class EDDSASignatureTest extends EdDSATestAbstract {
 
     @Test
     void testEd22519() throws Exception {
-
+        Assumptions.assumeTrue(isEdDSASupported());
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
 
@@ -72,7 +73,7 @@ class EDDSASignatureTest extends EdDSATestAbstract {
 
     @Test
     void testEd22519VerifyXML() throws Exception {
-
+        Assumptions.assumeTrue(isEdDSASupported());
         try (InputStream xmlSignatureExample
                      = EDDSASignatureTest.class.getResourceAsStream("/org/apache/xml/security/samples/input/eddsaEd25519Signature.xml")) {
             doVerify(xmlSignatureExample);
@@ -81,7 +82,7 @@ class EDDSASignatureTest extends EdDSATestAbstract {
 
     @Test
     void testEd448VerifyXML() throws Exception {
-
+        Assumptions.assumeTrue(isEdDSASupported());
         try (InputStream xmlSignatureExample
                      = EDDSASignatureTest.class.getResourceAsStream("/org/apache/xml/security/samples/input/eddsaEd448Signature.xml")) {
             doVerify(xmlSignatureExample);
@@ -90,7 +91,7 @@ class EDDSASignatureTest extends EdDSATestAbstract {
 
     @Test
     void testEd448() throws Exception {
-
+        Assumptions.assumeTrue(isEdDSASupported());
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
         keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
 
