@@ -330,19 +330,6 @@
                         <outputName>${project.artifactId}-${project.version}-bom</outputName>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.spdx</groupId>
-                    <artifactId>spdx-maven-plugin</artifactId>
-                    <version>0.7.0</version>
-                    <executions>
-                        <execution>
-                            <id>build-spdx</id>
-                            <goals>
-                                <goal>createSPDX</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -628,10 +615,6 @@
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.spdx</groupId>
-                <artifactId>spdx-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
