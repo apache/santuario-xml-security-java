@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
 import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -56,6 +57,7 @@ public class SignatureValidatorEdDSATest extends EdDSATestAbstract {
     public void test_enveloping_signature_with_ID(String filename, String result, String message) throws Exception {
         DOMValidateContext vc = testInstance.getValidateContext
                 (filename, new KeySelectors.RawX509KeySelector());
+        Assumptions.assumeTrue(isEdDSASupported());
         updateIdReferences(vc);
 
         boolean coreValidity = testInstance.validate(vc);

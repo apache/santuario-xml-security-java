@@ -53,6 +53,7 @@ import org.apache.xml.security.test.javax.xml.crypto.KeySelectors;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.w3c.dom.Element;
@@ -76,6 +77,7 @@ public class XMLSignatureEdDSATest extends EdDSATestAbstract {
             "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448,ed448",
     })
     public void createEdDSASignatureTest(String signatureAlgorithm, String alias) throws Exception {
+        Assumptions.assumeTrue(isEdDSASupported());
         byte[] buff = doSign(signatureAlgorithm, alias);
         Assertions.assertNotNull(buff);
         assertValidSignature(buff);
