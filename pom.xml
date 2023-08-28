@@ -629,6 +629,7 @@
                 </pluginManagement>
              </build>
          </profile>
+         <profile>
             <id>bouncycastle</id>
             <dependencies>
                 <dependency>
