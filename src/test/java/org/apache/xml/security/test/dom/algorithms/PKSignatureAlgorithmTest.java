@@ -58,6 +58,7 @@ class PKSignatureAlgorithmTest {
 
     private static KeyPair rsaKeyPair, ecKeyPair;
     private static boolean bcInstalled;
+    private static int javaVersion;
 
     static {
         org.apache.xml.security.Init.init();
@@ -82,6 +83,11 @@ class PKSignatureAlgorithmTest {
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
+        }
+        try {
+            javaVersion = Integer.getInteger("java.specification.version", 0);
+        } catch (NumberFormatException ex) {
+            // ignore
         }
 
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
@@ -198,8 +204,6 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA1_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -214,8 +218,6 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA224_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -230,8 +232,6 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA256_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -246,8 +246,6 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA384_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -262,8 +260,6 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA512_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
@@ -278,7 +274,7 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA3_224_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -294,7 +290,7 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA3_256_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -310,7 +306,7 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA3_384_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -326,7 +322,7 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA3_512_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
@@ -342,7 +338,6 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_PSS() throws Exception {
-        Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
         // Read in plaintext document
         Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
             getClass().getClassLoader(), false);
