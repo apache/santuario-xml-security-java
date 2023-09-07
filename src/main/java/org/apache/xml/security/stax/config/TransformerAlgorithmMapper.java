@@ -18,15 +18,15 @@
  */
 package org.apache.xml.security.stax.config;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.utils.ClassLoaderUtils;
-import org.apache.xml.security.configuration.TransformAlgorithmType;
-import org.apache.xml.security.configuration.TransformAlgorithmsType;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.xml.security.configuration.TransformAlgorithmType;
+import org.apache.xml.security.configuration.TransformAlgorithmsType;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
+import org.apache.xml.security.utils.ClassLoaderUtils;
 
 /**
  * Mapping between JCE id and xmlsec uri's for algorithms
@@ -48,8 +48,7 @@ public final class TransformerAlgorithmMapper {
         algorithmsClassMapIn = new HashMap<>();
         algorithmsClassMapOut = new HashMap<>();
 
-        for (int i = 0; i < algorithms.size(); i++) {
-            TransformAlgorithmType algorithmType = algorithms.get(i);
+        for (TransformAlgorithmType algorithmType : algorithms) {
             if (algorithmType.getINOUT() == null) {
                 algorithmsClassMapInOut.put(algorithmType.getURI(),
                         ClassLoaderUtils.loadClass(algorithmType.getJAVACLASS(), callingClass));

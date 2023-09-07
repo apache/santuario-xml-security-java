@@ -18,39 +18,38 @@
  */
 package org.apache.xml.security.test.stax;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
-import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import org.apache.xml.security.stax.ext.InputProcessor;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.InboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.InputProcessorChainImpl;
-
-import javax.xml.stream.XMLStreamException;
-import java.util.HashSet;
-import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class InputProcessorChainTest {
+class InputProcessorChainTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        Init.init(this.getClass().getClassLoader().getResource("security-config.xml").toURI(),
-                this.getClass());
+        Init.init(this.getClass().getClassLoader().getResource("security-config.xml").toURI(), this.getClass());
     }
 
     abstract class AbstractInputProcessor implements InputProcessor {
 
         private XMLSecurityConstants.Phase phase = XMLSecurityConstants.Phase.PROCESSING;
-        private Set<Object> beforeProcessors = new HashSet<>();
-        private Set<Object> afterProcessors = new HashSet<>();
+        private final Set<Object> beforeProcessors = new HashSet<>();
+        private final Set<Object> afterProcessors = new HashSet<>();
 
         @Override
         public void addBeforeProcessor(Object processor) {
@@ -97,7 +96,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorPhase1() {
+    void testAddProcessorPhase1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -118,7 +117,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorPhase2() {
+    void testAddProcessorPhase2() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -158,7 +157,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorBefore1() {
+    void testAddProcessorBefore1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -201,7 +200,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorAfter1() {
+    void testAddProcessorAfter1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {
@@ -244,7 +243,7 @@ public class InputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorBeforeAndAfter1() {
+    void testAddProcessorBeforeAndAfter1() {
         InputProcessorChainImpl inputProcessorChain = new InputProcessorChainImpl(new InboundSecurityContextImpl());
 
         AbstractInputProcessor inputProcessor1 = new AbstractInputProcessor() {

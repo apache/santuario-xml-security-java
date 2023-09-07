@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.xml.xpath.XPath;
@@ -28,6 +29,7 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -38,22 +40,22 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * A test for SANTUARIO-499 - https://issues.apache.org/jira/browse/SANTUARIO-499
  * TransformXSLT doesn't support xslt:transform synonym
  */
-public class Santuario499Test {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(Santuario499Test.class);
+class Santuario499Test {
 
     static {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXSLTTransform() throws Exception {
+    @Test
+    void testXSLTTransform() throws Exception {
 
         URL signatureFile = this.getClass().getResource("Arbeidstijd_anonymous.xml");
         assertNotNull(signatureFile);
 
-        Document doc = XMLUtils.read(signatureFile.openStream(), false);
+        Document doc;
+        try (InputStream input = signatureFile.openStream()) {
+            doc = XMLUtils.read(input, false);
+        }
 
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

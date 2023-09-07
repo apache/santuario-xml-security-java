@@ -39,6 +39,7 @@ import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -48,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class InitTest {
+class InitTest {
 
     private static final String CONFIG_FILE = "org/apache/xml/security/resource/config.xml";
 
@@ -62,8 +63,8 @@ public class InitTest {
         System.clearProperty("org.apache.xml.security.resource.config");
     }
 
-    @org.junit.jupiter.api.Test
-    public void testFileInit() throws Exception {
+    @Test
+    void testFileInit() throws Exception {
         assertFalse(Init.isInitialized());
         Init.init();
         assertTrue(Init.isInitialized());
@@ -73,91 +74,93 @@ public class InitTest {
         assertEquals("MessageDigest", JCEMapper.getAlgorithmClassFromURI(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256));
     }
 
-    @org.junit.jupiter.api.Test
-    public void checkConfigFileImplementationsExist() throws Exception {
+    @Test
+    void checkConfigFileImplementationsExist() throws Exception {
+        Document doc;
         try (InputStream is = ClassLoaderUtils.getResourceAsStream(CONFIG_FILE, InitTest.class)) {
             /* read library configuration file */
-            Document doc = XMLUtils.read(is, true);
-            Node config = doc.getFirstChild();
-            for (; config != null; config = config.getNextSibling()) {
-                if ("Configuration".equals(config.getLocalName())) {
-                    break;
+            doc = XMLUtils.read(is, true);
+        }
+
+        Node config = doc.getFirstChild();
+        for (; config != null; config = config.getNextSibling()) {
+            if ("Configuration".equals(config.getLocalName())) {
+                break;
+            }
+        }
+
+        for (Node el = config.getFirstChild(); el != null; el = el.getNextSibling()) {
+            if (Node.ELEMENT_NODE != el.getNodeType()) {
+                continue;
+            }
+            String tag = el.getLocalName();
+
+            if ("CanonicalizationMethods".equals(tag)) {
+                Element[] list =
+                    XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "CanonicalizationMethod");
+
+                for (Element element : list) {
+                    String javaClass =
+                        element.getAttributeNS(null, "JAVACLASS");
+
+                    Class<? extends CanonicalizerSpi> clazz =
+                        (Class<? extends CanonicalizerSpi>)
+                        ClassLoaderUtils.loadClass(javaClass, Canonicalizer.class);
+                    assertNotNull(clazz);
                 }
             }
 
-            for (Node el = config.getFirstChild(); el != null; el = el.getNextSibling()) {
-                if (Node.ELEMENT_NODE != el.getNodeType()) {
-                    continue;
+            if ("TransformAlgorithms".equals(tag)) {
+                Element[] tranElem =
+                    XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "TransformAlgorithm");
+
+                for (Element element : tranElem) {
+                    String javaClass =
+                        element.getAttributeNS(null, "JAVACLASS");
+
+                    Class<? extends TransformSpi> transformSpiClass =
+                        (Class<? extends TransformSpi>)
+                        ClassLoaderUtils.loadClass(javaClass, Transform.class);
+                    assertNotNull(transformSpiClass);
                 }
-                String tag = el.getLocalName();
+            }
 
-                if ("CanonicalizationMethods".equals(tag)) {
-                    Element[] list =
-                            XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "CanonicalizationMethod");
+            if ("SignatureAlgorithms".equals(tag)) {
+                Element[] sigElems =
+                    XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "SignatureAlgorithm");
 
-                    for (Element element : list) {
-                        String javaClass =
-                                element.getAttributeNS(null, "JAVACLASS");
+                for (Element sigElem : sigElems) {
+                    String javaClass =
+                        sigElem.getAttributeNS(null, "JAVACLASS");
 
-                        Class<? extends CanonicalizerSpi> clazz =
-                                (Class<? extends CanonicalizerSpi>)
-                                        ClassLoaderUtils.loadClass(javaClass, Canonicalizer.class);
-                        assertNotNull(clazz);
-                    }
+                    Class<? extends SignatureAlgorithmSpi> clazz =
+                        (Class<? extends SignatureAlgorithmSpi>)
+                        ClassLoaderUtils.loadClass(javaClass, SignatureAlgorithm.class);
+                    assertNotNull(clazz);
                 }
+            }
 
-                if ("TransformAlgorithms".equals(tag)) {
-                    Element[] tranElem =
-                            XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "TransformAlgorithm");
-
-                    for (Element element : tranElem) {
-                        String javaClass =
-                                element.getAttributeNS(null, "JAVACLASS");
-
-                        Class<? extends TransformSpi> transformSpiClass =
-                                (Class<? extends TransformSpi>)
-                                        ClassLoaderUtils.loadClass(javaClass, Transform.class);
-                        assertNotNull(transformSpiClass);
-                    }
+            if ("ResourceResolvers".equals(tag)) {
+                Element[] resolverElem =
+                    XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "Resolver");
+                for (Element element : resolverElem) {
+                    String javaClass =
+                        element.getAttributeNS(null, "JAVACLASS");
+                    ResourceResolverSpi resourceResolverSpi = (ResourceResolverSpi) ClassLoaderUtils
+                        .loadClass(javaClass, ResourceResolver.class).getDeclaredConstructor().newInstance();
+                    assertNotNull(resourceResolverSpi);
                 }
+            }
 
-                if ("SignatureAlgorithms".equals(tag)) {
-                    Element[] sigElems =
-                            XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "SignatureAlgorithm");
-
-                    for (Element sigElem : sigElems) {
-                        String javaClass =
-                                sigElem.getAttributeNS(null, "JAVACLASS");
-
-                        Class<? extends SignatureAlgorithmSpi> clazz =
-                                (Class<? extends SignatureAlgorithmSpi>)
-                                        ClassLoaderUtils.loadClass(javaClass, SignatureAlgorithm.class);
-                        assertNotNull(clazz);
-                    }
-                }
-
-                if ("ResourceResolvers".equals(tag)) {
-                    Element[] resolverElem =
-                            XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "Resolver");
-                    for (Element element : resolverElem) {
-                        String javaClass =
-                                element.getAttributeNS(null, "JAVACLASS");
-                        ResourceResolverSpi resourceResolverSpi =
-                                (ResourceResolverSpi)ClassLoaderUtils.loadClass(javaClass, ResourceResolver.class).newInstance();
-                        assertNotNull(resourceResolverSpi);
-                    }
-                }
-
-                if ("KeyResolver".equals(tag)){
-                    Element[] resolverElem =
-                            XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "Resolver");
-                    for (Element element : resolverElem) {
-                        String javaClass =
-                                element.getAttributeNS(null, "JAVACLASS");
-                        KeyResolverSpi keyResolverSpi =
-                                (KeyResolverSpi) ClassLoaderUtils.loadClass(javaClass, KeyResolver.class).newInstance();
-                        assertNotNull(keyResolverSpi);
-                    }
+            if ("KeyResolver".equals(tag)){
+                Element[] resolverElem =
+                    XMLUtils.selectNodes(el.getFirstChild(), Init.CONF_NS, "Resolver");
+                for (Element element : resolverElem) {
+                    String javaClass =
+                        element.getAttributeNS(null, "JAVACLASS");
+                    KeyResolverSpi keyResolverSpi = (KeyResolverSpi) ClassLoaderUtils
+                        .loadClass(javaClass, KeyResolver.class).getDeclaredConstructor().newInstance();
+                    assertNotNull(keyResolverSpi);
                 }
             }
         }

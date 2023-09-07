@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.content.x509;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.math.BigInteger;
 import java.security.cert.X509Certificate;
 
@@ -30,8 +32,7 @@ import org.w3c.dom.Element;
 
 public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX509DataContent {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLX509IssuerSerial.class);
+    private static final Logger LOG = System.getLogger(XMLX509IssuerSerial.class.getName());
 
     /**
      * Constructor XMLX509IssuerSerial
@@ -102,7 +103,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
     public BigInteger getSerialNumber() {
         String text =
             this.getTextFromChildElement(Constants._TAG_X509SERIALNUMBER, Constants.SignatureSpecNS);
-        LOG.debug("X509SerialNumber text: {}", text);
+        LOG.log(Level.DEBUG, "X509SerialNumber text: {0}", text);
 
         return new BigInteger(text);
     }
@@ -128,6 +129,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof XMLX509IssuerSerial)) {
             return false;
@@ -139,6 +141,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
             && this.getIssuerName().equals(other.getIssuerName());
     }
 
+    @Override
     public int hashCode() {
         int result = 17;
         result = 31 * result + getSerialNumber().hashCode();
@@ -147,6 +150,7 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_X509ISSUERSERIAL;
     }

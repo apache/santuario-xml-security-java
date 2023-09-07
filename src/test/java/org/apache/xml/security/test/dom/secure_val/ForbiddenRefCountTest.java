@@ -19,8 +19,6 @@
 package org.apache.xml.security.test.dom.secure_val;
 
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -31,10 +29,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -45,27 +45,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a forbidden number of references when secure validation is enabled.
  */
-public class ForbiddenRefCountTest extends InteropTestBase {
-
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    public static final String KEYSTORE_DIRECTORY = BASEDIR + "/src/test/resources/";
-    public static final String KEYSTORE_PASSWORD_STRING = "changeit";
-    public static final char[] KEYSTORE_PASSWORD = KEYSTORE_PASSWORD_STRING.toCharArray();
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ForbiddenRefCountTest.class);
+class ForbiddenRefCountTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
-    public ForbiddenRefCountTest() {
-        super();
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testReferenceCount() throws Exception {
+    @Test
+    void testReferenceCount() throws Exception {
         Document doc = getOriginalDocument();
         signDocument(doc, 31);
         assertTrue(verifySignature(doc, false));
@@ -100,8 +87,9 @@ public class ForbiddenRefCountTest extends InteropTestBase {
             sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
         }
 
-        sig.addKeyInfo(getPublicKey());
-        sig.sign(getPrivateKey());
+        KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
+        sig.addKeyInfo(getPublicKey(ks));
+        sig.sign(getPrivateKey(ks));
     }
 
     private boolean verifySignature(Document doc, boolean secValidation) throws XMLSignatureException, XMLSecurityException {
@@ -112,16 +100,8 @@ public class ForbiddenRefCountTest extends InteropTestBase {
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
 
-    private KeyStore getKeyStore() throws Exception {
-        KeyStore ks = KeyStore.getInstance("JKS");
-        InputStream ksis = new FileInputStream(KEYSTORE_DIRECTORY + "test.jks");
-        ks.load(ksis, KEYSTORE_PASSWORD);
-        ksis.close();
-        return ks;
-    }
 
-    private PublicKey getPublicKey() throws Exception {
-        KeyStore keyStore = getKeyStore();
+    private PublicKey getPublicKey(KeyStore keyStore) throws Exception {
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
             String alias = aliases.nextElement();
@@ -132,13 +112,12 @@ public class ForbiddenRefCountTest extends InteropTestBase {
         return null;
     }
 
-    private PrivateKey getPrivateKey() throws Exception {
-        KeyStore keyStore = getKeyStore();
+    private PrivateKey getPrivateKey(KeyStore keyStore) throws Exception {
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
             String alias = aliases.nextElement();
             if (keyStore.isKeyEntry(alias)) {
-                return (PrivateKey) keyStore.getKey(alias, KEYSTORE_PASSWORD);
+                return (PrivateKey) keyStore.getKey(alias, XmlSecTestEnvironment.TEST_KS_PASSWORD.toCharArray());
             }
         }
         return null;

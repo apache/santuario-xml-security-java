@@ -20,15 +20,16 @@ package org.apache.xml.security.test.dom.secure_val;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -37,76 +38,45 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * This is a test for a wrapping attack.
  */
-public class WrappingAttackTest extends InteropTestBase {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(WrappingAttackTest.class);
+class WrappingAttackTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
-    public WrappingAttackTest() {
-        super();
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testWrappingAttack() throws Exception {
-        boolean success =
-            readAndVerifySignature(
-                "src/test/resources/at/iaik/ixsil/coreFeatures/signatures",
-                "manifestSignatureWrapping.xml"
-            );
-
+    @Test
+    void testWrappingAttack() throws Exception {
+        boolean success = readAndVerifySignature("manifestSignatureWrapping.xml");
         assertTrue(success);
         try {
-            readAndVerifySignatureAndSetManifest(
-                "src/test/resources/at/iaik/ixsil/coreFeatures/signatures",
-                "manifestSignatureWrapping.xml"
-            );
+            readAndVerifySignatureAndSetManifest("manifestSignatureWrapping.xml");
             fail("Failure expected when secure validation is enabled");
         } catch (XMLSignatureException ex) {
             assertTrue(ex.getMessage().contains("no XMLSignatureInput"));
         }
     }
 
-    private boolean readAndVerifySignature(
-        String directory, String file
-    ) throws Exception {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            directory = basedir + "/" + directory;
-        }
 
-        File f = new File(directory + "/" + file);
+    private boolean readAndVerifySignature(String file) throws Exception {
+        File f = resolveFile("src", "test", "resources", "at", "iaik", "ixsil", "coreFeatures", "signatures", file);
+        org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
-
-        Element sigElement =
-            (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
-                                                 Constants._TAG_SIGNATURE).item(0);
+        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+            .item(0);
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString());
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }
 
-    private boolean readAndVerifySignatureAndSetManifest(
-        String directory, String file
-    ) throws Exception {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            directory = basedir + "/" + directory;
-        }
 
-        File f = new File(directory + "/" + file);
+    private boolean readAndVerifySignatureAndSetManifest(String file) throws Exception {
+        File f = resolveFile("src", "test", "resources", "at", "iaik", "ixsil", "coreFeatures", "signatures", file);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
+        org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        Element sigElement =
-            (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
-                                                 Constants._TAG_SIGNATURE).item(0);
+        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+            .item(0);
 
-        Element manifestElement =
-            (Element) doc.getElementsByTagName("Manifest").item(0);
+        Element manifestElement = (Element) doc.getElementsByTagName("Manifest").item(0);
         manifestElement.setIdAttribute("Id", true);
 
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), true);

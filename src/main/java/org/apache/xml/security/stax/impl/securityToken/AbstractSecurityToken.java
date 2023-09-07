@@ -122,6 +122,7 @@ public abstract class AbstractSecurityToken implements SecurityToken {
         return tokenUsages;
     }
 
+    @Override
     public String getSha1Identifier() {
         return sha1Identifier;
     }

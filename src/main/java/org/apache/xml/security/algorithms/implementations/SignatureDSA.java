@@ -19,6 +19,8 @@
 package org.apache.xml.security.algorithms.implementations;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -42,8 +44,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
     public static final String URI = Constants.SignatureSpecNS + "dsa-sha1";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(SignatureDSA.class);
+    private static final Logger LOG = System.getLogger(SignatureDSA.class.getName());
 
     /** Field algorithm */
     private final Signature signatureAlgorithm;
@@ -56,6 +57,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetURI() {
         return XMLSignature.ALGO_ID_SIGNATURE_DSA;
     }
@@ -71,7 +73,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
 
     public SignatureDSA(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(engineGetURI());
-        LOG.debug("Created SignatureDSA using {}", algorithmID);
+        LOG.log(Level.DEBUG, "Created SignatureDSA using {0}", algorithmID);
 
         try {
             if (provider == null) {
@@ -96,6 +98,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws XMLSignatureException {
         try {
@@ -108,11 +111,12 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected boolean engineVerify(byte[] signature)
         throws XMLSignatureException {
         try {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Called DSA.verify() on " + XMLUtils.encodeToString(signature));
+            if (LOG.isLoggable(Level.DEBUG)) {
+                LOG.log(Level.DEBUG, "Called DSA.verify() on " + XMLUtils.encodeToString(signature));
             }
 
             byte[] jcebytes = JavaUtils.convertDsaXMLDSIGtoASN1(signature, size / 8);
@@ -126,6 +130,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineInitVerify(Key publicKey) throws XMLSignatureException {
         engineInitVerify(publicKey, this.signatureAlgorithm);
         size = ((DSAKey)publicKey).getParams().getQ().bitLength();
@@ -134,6 +139,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected byte[] engineSign() throws XMLSignatureException {
         try {
             byte[] jcebytes = this.signatureAlgorithm.sign();
@@ -147,6 +153,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineInitSign(Key privateKey, SecureRandom secureRandom)
         throws XMLSignatureException {
         engineInitSign(privateKey, secureRandom, this.signatureAlgorithm);
@@ -156,6 +163,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineInitSign(Key privateKey) throws XMLSignatureException {
         engineInitSign(privateKey, (SecureRandom)null);
     }
@@ -163,6 +171,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineUpdate(byte[] input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
@@ -174,6 +183,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineUpdate(byte input) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(input);
@@ -185,6 +195,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected void engineUpdate(byte[] buf, int offset, int len) throws XMLSignatureException {
         try {
             this.signatureAlgorithm.update(buf, offset, len);
@@ -198,6 +209,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetJCEAlgorithmString() {
         return this.signatureAlgorithm.getAlgorithm();
     }
@@ -207,6 +219,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      *
      * {@inheritDoc}
      */
+    @Override
     protected String engineGetJCEProviderName() {
         return this.signatureAlgorithm.getProvider().getName();
     }
@@ -217,6 +230,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      * @param HMACOutputLength
      * @throws XMLSignatureException
      */
+    @Override
     protected void engineSetHMACOutputLength(int HMACOutputLength) throws XMLSignatureException {
         throw new XMLSignatureException("algorithms.HMACOutputLengthOnlyForHMAC");
     }
@@ -228,6 +242,7 @@ public class SignatureDSA extends SignatureAlgorithmSpi {
      * @param algorithmParameterSpec
      * @throws XMLSignatureException
      */
+    @Override
     protected void engineInitSign(
         Key signingKey, AlgorithmParameterSpec algorithmParameterSpec
     ) throws XMLSignatureException {

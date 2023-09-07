@@ -18,12 +18,14 @@
  */
 package org.apache.xml.security.test.dom.keys;
 
-import java.io.FileInputStream;
+import java.io.File;
 
 import org.apache.xml.security.keys.content.KeyInfoReference;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -33,16 +35,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class KeyInfoReferenceTest {
-
-    private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class KeyInfoReferenceTest {
 
     private static final String ID_CONTROL = "abc123";
     private static final String URI_CONTROL = "http://www.example.org/keyinfo.xml";
 
-    @org.junit.jupiter.api.Test
-    public void testSchema() throws Exception {
+    @Test
+    void testSchema() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         Element element = keyInfoReference.getElement();
 
@@ -50,8 +49,8 @@ public class KeyInfoReferenceTest {
         assertEquals("KeyInfoReference", element.getLocalName());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testURIFromElement() throws Exception {
+    @Test
+    void testURIFromElement() throws Exception {
         Document doc = loadXML("KeyInfoReference.xml");
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
         Element element = (Element) nl.item(0);
@@ -61,14 +60,14 @@ public class KeyInfoReferenceTest {
         assertEquals(ID_CONTROL, keyInfoReference.getId());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testURIOnConstruction() throws Exception {
+    @Test
+    void testURIOnConstruction() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals(URI_CONTROL, keyInfoReference.getURI());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testId() throws Exception {
+    @Test
+    void testId() throws Exception {
         KeyInfoReference keyInfoReference = new KeyInfoReference(TestUtils.newDocument(), URI_CONTROL);
         assertEquals("", keyInfoReference.getId());
         assertNull(keyInfoReference.getElement().getAttributeNodeNS(null, Constants._ATT_ID));
@@ -84,15 +83,13 @@ public class KeyInfoReferenceTest {
 
     // Utility methods
 
-    private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
-            SEP + "keys" + SEP + "content" +
-            SEP + fileName;
+    private File getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys",
+            "content", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
+        return XMLUtils.read(getControlFilePath(fileName), false);
     }
 
 }

@@ -24,10 +24,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.apache.xml.security.c14n.implementations.Canonicalizer11_OmitComments;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -38,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * An xml:Id attribute is appearing in a child element, contrary to the C14n11 spec.
  */
-public class Santuario191Test {
+class Santuario191Test {
 
     private static final String INPUT_DATA =
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -58,8 +59,8 @@ public class Santuario191Test {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testSantuario191() throws Exception {
+    @Test
+    void testSantuario191() throws Exception {
         //
         // Parse the Data
         //
@@ -79,7 +80,7 @@ public class Santuario191Test {
             //
             // Test against expected result
             //
-            assertEquals(EXPECTED_RESULT, output.toString(StandardCharsets.UTF_8.name()));
+            assertEquals(EXPECTED_RESULT, output.toString(StandardCharsets.UTF_8));
         }
     }
 

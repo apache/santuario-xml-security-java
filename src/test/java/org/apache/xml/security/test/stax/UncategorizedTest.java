@@ -18,27 +18,27 @@
  */
 package org.apache.xml.security.test.stax;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.junit.jupiter.api.Test;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConfigurationException;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class UncategorizedTest {
+class UncategorizedTest {
 
     @Test
-    public void testConfigurationLoadFromUrl() throws Exception {
+    void testConfigurationLoadFromUrl() throws Exception {
         URL url =
             this.getClass().getClassLoader().getResource(
                 "org/apache/xml/security/c14n/in/32_input.xml");
@@ -51,7 +51,7 @@ public class UncategorizedTest {
     }
 
     @Test
-    public void testDuplicateActions() throws Exception {
+    void testDuplicateActions() throws Exception {
         XMLSecurityProperties properties = new XMLSecurityProperties();
         List<XMLSecurityConstants.Action> actions = new ArrayList<>();
         actions.add(XMLSecurityConstants.SIGNATURE);

@@ -21,21 +21,23 @@ package org.apache.xml.security.stax.impl.processor.output;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.config.ResourceResolverMapper;
 import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
@@ -53,14 +55,11 @@ import org.apache.xml.security.stax.impl.util.DigestOutputStream;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  */
 public abstract class AbstractSignatureOutputProcessor extends AbstractOutputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureOutputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(AbstractSignatureOutputProcessor.class.getName());
 
     private final List<SignaturePartDef> signaturePartDefList = new ArrayList<>();
     private InternalSignatureOutputProcessor activeInternalSignatureOutputProcessor;
@@ -138,7 +137,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
         String calculatedDigest =
             XMLUtils.encodeToString(digestOutputStream.getDigestValue());
-        LOG.debug("Calculated Digest: {}", calculatedDigest);
+        LOG.log(Level.DEBUG, "Calculated Digest: {0}", calculatedDigest);
 
         signaturePartDef.setDigestValue(calculatedDigest);
 
@@ -148,26 +147,25 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     protected void verifySignatureParts(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
         List<SignaturePartDef> signaturePartDefs = getSignaturePartDefList();
         Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.SIGNATURE_PARTS);
-        if (dynamicSecureParts != null) {
-            Iterator<Map.Entry<Object, SecurePart>> securePartsMapIterator = dynamicSecureParts.entrySet().iterator();
-            loop:
-            while (securePartsMapIterator.hasNext()) {
-                Map.Entry<Object, SecurePart> securePartEntry = securePartsMapIterator.next();
-                final SecurePart securePart = securePartEntry.getValue();
-
-                if (securePart.isRequired()) {
-                    for (int i = 0; i < signaturePartDefs.size(); i++) {
-                        SignaturePartDef signaturePartDef = signaturePartDefs.get(i);
-
-                        if (signaturePartDef.getSecurePart() == securePart) {
-                            continue loop;
-                        }
-                    }
-                    throw new XMLSecurityException("stax.signature.securePartNotFound",
-                                                   new Object[] {securePart.getName()});
-                }
+        if (dynamicSecureParts == null) {
+            return;
+        }
+        for (Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
+            final SecurePart securePart = securePartEntry.getValue();
+            if (securePart.isRequired() && !findSecurePart(securePart, signaturePartDefs)) {
+                throw new XMLSecurityException("stax.signature.securePartNotFound",
+                    new Object[] {securePart.getName()});
             }
         }
+    }
+
+    private boolean findSecurePart(final SecurePart securePart, List<SignaturePartDef> signaturePartDefs) {
+        for (SignaturePartDef signaturePartDef : signaturePartDefs) {
+            if (signaturePartDef.getSecurePart() == securePart) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected InternalSignatureOutputProcessor getActiveInternalSignatureOutputProcessor() {
@@ -182,8 +180,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
     protected DigestOutputStream createMessageDigestOutputStream(String digestAlgorithm)
             throws XMLSecurityException {
 
-        String jceName = JCEAlgorithmMapper.translateURItoJCEID(digestAlgorithm);
-        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(digestAlgorithm);
+        String jceName = JCEMapper.translateURItoJCEID(digestAlgorithm);
+        String jceProvider = JCEMapper.getJCEProviderFromURI(digestAlgorithm);
         if (jceName == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {digestAlgorithm});
@@ -252,8 +250,8 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
 
     public class InternalSignatureOutputProcessor extends AbstractOutputProcessor {
 
-        private SignaturePartDef signaturePartDef;
-        private XMLSecStartElement xmlSecStartElement;
+        private final SignaturePartDef signaturePartDef;
+        private final XMLSecStartElement xmlSecStartElement;
         private int elementCounter;
 
         private OutputStream bufferedDigestOutputStream;
@@ -298,7 +296,7 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                     }
                     String calculatedDigest =
                         XMLUtils.encodeToString(this.digestOutputStream.getDigestValue());
-                    LOG.debug("Calculated Digest: {}", calculatedDigest);
+                    LOG.log(Level.DEBUG, "Calculated Digest: {0}", calculatedDigest);
                     signaturePartDef.setDigestValue(calculatedDigest);
 
                     outputProcessorChain.removeProcessor(this);

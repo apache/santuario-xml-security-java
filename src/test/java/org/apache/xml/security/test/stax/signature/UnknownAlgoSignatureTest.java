@@ -55,10 +55,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  * org.apache.xml.security.samples.signature.CreateEnvelopingSignature</code>
  * </p>
  */
-public class UnknownAlgoSignatureTest {
+class UnknownAlgoSignatureTest {
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -72,19 +72,13 @@ public class UnknownAlgoSignatureTest {
 
 
     @Test
-    public void testGood() throws Exception {
+    void testGood() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "org/apache/xml/security/temp/signature/signature-good.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-good.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource(
-                "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
-        );
+        KeyStore keyStore = loadKeyStore();
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -108,19 +102,13 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadC14nAlgo() throws Exception {
+    void testBadC14nAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "org/apache/xml/security/temp/signature/signature-bad-c14n-algo.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-bad-c14n-algo.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource(
-                "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
-        );
+        KeyStore keyStore = loadKeyStore();
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -153,19 +141,13 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadSigAlgo() throws Exception {
+    void testBadSigAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "org/apache/xml/security/temp/signature/signature-bad-sig-algo.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-bad-sig-algo.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource(
-                "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
-        );
+        KeyStore keyStore = loadKeyStore();
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -199,19 +181,13 @@ public class UnknownAlgoSignatureTest {
     }
 
     @Test
-    public void testBadTransformAlgo() throws Exception {
+    void testBadTransformAlgo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "org/apache/xml/security/temp/signature/signature-bad-transform-algo.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("org/apache/xml/security/temp/signature/signature-bad-transform-algo.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource(
-                "org/apache/xml/security/samples/input/keystore.jks").openStream(), null
-        );
+        KeyStore keyStore = loadKeyStore();
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("test");
 
         // XMLUtils.outputDOM(document, System.out);
@@ -243,5 +219,12 @@ public class UnknownAlgoSignatureTest {
         // XMLUtils.outputDOM(document, System.out);
     }
 
-
+    private KeyStore loadKeyStore() throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        try (InputStream inputStream = this.getClass().getClassLoader()
+            .getResourceAsStream("org/apache/xml/security/samples/input/keystore.jks")) {
+            keyStore.load(inputStream, null);
+        }
+        return keyStore;
+    }
 }

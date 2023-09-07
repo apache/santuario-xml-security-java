@@ -19,10 +19,12 @@
 package org.apache.xml.security.test.dom.secure_val;
 
 
-import java.io.FileInputStream;
+import java.io.File;
 
 import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -32,25 +34,16 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * This is a test for a Retrieval Method pointing to another Retrieval Method (forbidden under
  * secure validation).
  */
-public class ForbiddenRetrievalMethodTest {
-
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class ForbiddenRetrievalMethodTest {
 
     public ForbiddenRetrievalMethodTest() {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testMultipleRetrievalMethods() throws Exception {
-        FileInputStream fis = null;
+    @Test
+    void testMultipleRetrievalMethods() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod3.xml";
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis = new FileInputStream(BASEDIR + SEP + filename);
-        } else {
-            fis = new FileInputStream(filename);
-        }
-
+        File fis = XmlSecTestEnvironment.resolveFile(filename);
         Document doc = XMLUtils.read(fis, false);
 
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);

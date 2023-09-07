@@ -18,6 +18,18 @@
  */
 package org.apache.xml.security.test.stax.transformer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.Transformer;
@@ -29,24 +41,12 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class TransformEnvelopedSignatureTest {
+class TransformEnvelopedSignatureTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -59,7 +59,7 @@ public class TransformEnvelopedSignatureTest {
     }
 
     @Test
-    public void testXMLSecEventToXMLSecEventAPI() throws Exception {
+    void testXMLSecEventToXMLSecEventAPI() throws Exception {
         TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
 
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
@@ -114,7 +114,7 @@ public class TransformEnvelopedSignatureTest {
     }
 
     @Test
-    public void testXMLSecEventToInputStreamAPI() throws Exception {
+    void testXMLSecEventToInputStreamAPI() throws Exception {
         TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -173,7 +173,7 @@ public class TransformEnvelopedSignatureTest {
     }
 
     @Test
-    public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
+    void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
         TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformEnvelopedSignature.setOutputStream(byteArrayOutputStream);

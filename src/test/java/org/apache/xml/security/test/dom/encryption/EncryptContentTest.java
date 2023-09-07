@@ -21,6 +21,8 @@ package org.apache.xml.security.test.dom.encryption;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
@@ -37,6 +39,7 @@ import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -44,10 +47,9 @@ import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EncryptContentTest {
+class EncryptContentTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(EncryptContentTest.class);
+    private static final Logger LOG = System.getLogger(EncryptContentTest.class.getName());
 
     private static final String DATA =
         "<users>\n" +
@@ -71,7 +73,7 @@ public class EncryptContentTest {
         "  </user>\n" +
         "</users>\n";
 
-    private SecretKey secretKey;
+    private final SecretKey secretKey;
     private boolean haveISOPadding;
 
     public EncryptContentTest() throws Exception {
@@ -107,10 +109,10 @@ public class EncryptContentTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testContentRemoved() throws Exception {
+    @Test
+    void testContentRemoved() throws Exception {
         if (!haveISOPadding) {
-            LOG.warn("Test testContentRemoved skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testContentRemoved skipped as necessary algorithms not available");
             return;
         }
 
@@ -159,10 +161,10 @@ public class EncryptContentTest {
      * See SANTUARIO-301:
      * https://issues.apache.org/jira/browse/SANTUARIO-301
      */
-    @org.junit.jupiter.api.Test
-    public void testMultipleKeyInfoElements() throws Exception {
+    @Test
+    void testMultipleKeyInfoElements() throws Exception {
         if (!haveISOPadding) {
-            LOG.warn("Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
+            LOG.log(Level.WARNING, "Test testMultipleKeyInfoElements skipped as necessary algorithms not available");
             return;
         }
 

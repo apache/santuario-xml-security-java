@@ -18,15 +18,19 @@
  */
 package org.apache.xml.security.stax.impl.resourceResolvers;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.regex.Pattern;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
-import java.util.regex.Pattern;
 
 /**
  * Resolver for external http[s] resources.

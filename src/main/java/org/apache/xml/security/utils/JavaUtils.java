@@ -22,6 +22,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,8 +34,7 @@ import java.security.SecurityPermission;
  */
 public final class JavaUtils {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(JavaUtils.class);
+    private static final Logger LOG = System.getLogger(JavaUtils.class.getName());
 
     private static final SecurityPermission REGISTER_PERMISSION =
         new SecurityPermission("org.apache.xml.security.register");
@@ -42,33 +43,30 @@ public final class JavaUtils {
         // we don't allow instantiation
     }
 
+
     /**
      * Method getBytesFromFile
      *
-     * @param fileName
+     * @param filePath
      * @return the bytes read from the file
-     *
      * @throws FileNotFoundException
      * @throws IOException
+     * @deprecated Use {@link Files#readAllBytes(java.nio.file.Path)}
      */
-    public static byte[] getBytesFromFile(String fileName)
+    @Deprecated(forRemoval = true, since = "4.0.0")
+    public static byte[] getBytesFromFile(String filePath)
         throws FileNotFoundException, IOException {
-
-        byte[] refBytes = null;
-
-        try (InputStream inputStream = Files.newInputStream(Paths.get(fileName));
+        try (InputStream inputStream = Files.newInputStream(Paths.get(filePath));
             UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[8_192];
             int len;
 
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);
             }
 
-            refBytes = baos.toByteArray();
+            return baos.toByteArray();
         }
-
-        return refBytes;
     }
 
     /**
@@ -82,26 +80,28 @@ public final class JavaUtils {
             try (OutputStream outputStream = Files.newOutputStream(Paths.get(filename))) {
                 outputStream.write(bytes);
             } catch (IOException ex) {
-                LOG.debug(ex.getMessage(), ex);
+                LOG.log(Level.DEBUG, ex.getMessage(), ex);
             }
         } else {
-            LOG.debug("writeBytesToFilename got null byte[] pointed");
+            LOG.log(Level.DEBUG, "writeBytesToFilename got null byte[] pointed");
         }
     }
+
 
     /**
      * This method reads all bytes from the given InputStream till EOF and
      * returns them as a byte array.
+     * <p>
+     * The method doesn't close the input stream.
      *
      * @param inputStream
      * @return the bytes read from the stream
-     *
      * @throws FileNotFoundException
      * @throws IOException
      */
     public static byte[] getBytesFromStream(InputStream inputStream) throws IOException {
         try (UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
-            byte[] buf = new byte[4 * 1024];
+            byte[] buf = new byte[8_192];
             int len;
             while ((len = inputStream.read(buf)) > 0) {
                 baos.write(buf, 0, len);

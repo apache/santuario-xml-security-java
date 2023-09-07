@@ -23,6 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
@@ -34,6 +36,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.signature.XMLSignatureByteInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.transforms.TransformSpi;
 import org.apache.xml.security.transforms.TransformationException;
@@ -54,8 +57,7 @@ public class TransformXSLT extends TransformSpi {
     static final String defaultXSLTSpecNSprefix = "xslt";
     static final String XSLTSTYLESHEET = "stylesheet";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(TransformXSLT.class);
+    private static final Logger LOG = System.getLogger(TransformXSLT.class.getName());
 
     /**
      * {@inheritDoc}
@@ -137,7 +139,7 @@ public class TransformXSLT extends TransformSpi {
             try {
                 transformer.setOutputProperty("{http://xml.apache.org/xalan}line-separator", "\n");
             } catch (Exception e) {
-                LOG.warn("Unable to set Xalan line-separator property: " + e.getMessage());
+                LOG.log(Level.WARNING, "Unable to set Xalan line-separator property: " + e.getMessage());
             }
 
             try (InputStream is = new ByteArrayInputStream(input.getBytes())) {
@@ -146,7 +148,7 @@ public class TransformXSLT extends TransformSpi {
                     try (ByteArrayOutputStream baos1 = new ByteArrayOutputStream()) {
                         StreamResult outputTarget = new StreamResult(baos1);
                         transformer.transform(xmlSource, outputTarget);
-                        XMLSignatureInput output = new XMLSignatureInput(baos1.toByteArray());
+                        XMLSignatureInput output = new XMLSignatureByteInput(baos1.toByteArray());
                         output.setSecureValidation(secureValidation);
                         return output;
                     }
@@ -155,7 +157,7 @@ public class TransformXSLT extends TransformSpi {
 
                 transformer.transform(xmlSource, outputTarget);
             }
-            XMLSignatureInput output = new XMLSignatureInput((byte[])null);
+            XMLSignatureInput output = new XMLSignatureByteInput(null);
             output.setSecureValidation(secureValidation);
             output.setOutputStream(baos);
             return output;

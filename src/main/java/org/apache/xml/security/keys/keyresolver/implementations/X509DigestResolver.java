@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
@@ -44,8 +46,7 @@ import org.w3c.dom.Element;
  */
 public class X509DigestResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509DigestResolver.class);
+    private static final Logger LOG = System.getLogger(X509DigestResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -84,7 +85,7 @@ public class X509DigestResolver extends KeyResolverSpi {
         try {
             return resolveCertificate(element, baseURI, storage);
         } catch (XMLSecurityException e) {
-            LOG.debug("XMLSecurityException", e);
+            LOG.log(Level.DEBUG, "XMLSecurityException", e);
         }
 
         return null;
@@ -130,12 +131,11 @@ public class X509DigestResolver extends KeyResolverSpi {
             while (storageIterator.hasNext()) {
                 X509Certificate cert = (X509Certificate) storageIterator.next();
 
-                for (int i = 0; i < x509Digests.length; i++) {
-                    XMLX509Digest keyInfoDigest = x509Digests[i];
+                for (XMLX509Digest keyInfoDigest : x509Digests) {
                     byte[] certDigestBytes = XMLX509Digest.getDigestBytesFromCert(cert, keyInfoDigest.getAlgorithm());
 
                     if (Arrays.equals(keyInfoDigest.getDigestBytes(), certDigestBytes)) {
-                        LOG.debug("Found certificate with: {}", cert.getSubjectX500Principal().getName());
+                        LOG.log(Level.DEBUG, "Found certificate with: {0}", cert.getSubjectX500Principal().getName());
                         return cert;
                     }
 
@@ -159,7 +159,7 @@ public class X509DigestResolver extends KeyResolverSpi {
         if (storage == null) {
             Object[] exArgs = { Constants._TAG_X509DIGEST };
             KeyResolverException ex = new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
-            LOG.debug("", ex);
+            LOG.log(Level.DEBUG, "", ex);
             throw ex;
         }
     }

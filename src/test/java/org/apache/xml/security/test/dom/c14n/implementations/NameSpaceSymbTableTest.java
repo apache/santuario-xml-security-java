@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.xml.security.c14n.implementations.NameSpaceSymbTable;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
@@ -34,34 +35,34 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-public class NameSpaceSymbTableTest {
-    static Attr node1, node2;
+class NameSpaceSymbTableTest {
+    private static final Attr node1, node2;
     static {
         try {
             Document doc = TestUtils.newDocument();
             node1 = doc.createAttributeNS("a","b");
             node2 = doc.createAttributeNS("b","c");
         } catch (Exception e) {
-            // e.printStackTrace();
+            throw new IllegalStateException(e);
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testNullFirstXmlns() {
+    @Test
+    void testNullFirstXmlns() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         assertNull(ns.getMapping("xmlns"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXmlnsPut() {
+    @Test
+    void testXmlnsPut() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
         assertEquals(node1, ns.getMapping("xmlns"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXmlnsMap() {
+    @Test
+    void testXmlnsMap() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
@@ -70,8 +71,8 @@ public class NameSpaceSymbTableTest {
         assertEquals(null, ns.getMapping("xmlns"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXmlnsMap2() {
+    @Test
+    void testXmlnsMap2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.push();
@@ -81,8 +82,8 @@ public class NameSpaceSymbTableTest {
         assertEquals(null, ns.getMapping("xmlns"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXmlnsPrefix() {
+    @Test
+    void testXmlnsPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("xmlns", "http://a", node1);
@@ -95,8 +96,8 @@ public class NameSpaceSymbTableTest {
         assertEquals(node1, ns.getMapping("xmlns"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXmlnsRemovePrefix() {
+    @Test
+    void testXmlnsRemovePrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.push();
@@ -106,8 +107,8 @@ public class NameSpaceSymbTableTest {
         assertNull(ns.getMapping("xmlns"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testPrefix() {
+    @Test
+    void testPrefix() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a", node1);
@@ -124,8 +125,8 @@ public class NameSpaceSymbTableTest {
         assertEquals(node1, ns.getMapping("a"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testSeveralPrefixes() {
+    @Test
+    void testSeveralPrefixes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a",node1);
@@ -136,8 +137,8 @@ public class NameSpaceSymbTableTest {
         assertNull(ns.getMapping("a"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testSeveralPrefixes2() {
+    @Test
+    void testSeveralPrefixes2() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         ns.addMapping("a", "http://a",node1);
@@ -147,8 +148,8 @@ public class NameSpaceSymbTableTest {
         assertEquals(node1, ns.getMapping("a"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testGetUnrenderedNodes() {
+    @Test
+    void testGetUnrenderedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         List<Attr> l = new ArrayList<>();
@@ -161,8 +162,8 @@ public class NameSpaceSymbTableTest {
         assertEquals(n, node2);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testUnrederedNodes() {
+    @Test
+    void testUnrederedNodes() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
         List<Attr> l = new ArrayList<>();
@@ -191,8 +192,8 @@ public class NameSpaceSymbTableTest {
         assertTrue(l.contains(node2));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testBug38655() {
+    @Test
+    void testBug38655() {
         NameSpaceSymbTable ns = new NameSpaceSymbTable();
         ns.push();
 

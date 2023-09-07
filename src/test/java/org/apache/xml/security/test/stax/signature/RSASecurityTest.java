@@ -41,17 +41,15 @@ import org.w3c.dom.Document;
  * from RSA Security using Cert-J 2.01. These test vectors are located in the directory
  * <CODE>data/com/rsasecurity/bdournaee/</CODE>.
  */
-public class RSASecurityTest extends AbstractSignatureVerificationTest {
+class RSASecurityTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
-    public void test_enveloping() throws Exception {
+    void test_enveloping() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/rsasecurity/bdournaee/certj201_enveloping.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/rsasecurity/bdournaee/certj201_enveloping.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -81,12 +79,10 @@ public class RSASecurityTest extends AbstractSignatureVerificationTest {
 
     // See SANTUARIO-320
     @Test
-    public void test_enveloped() throws Exception {
+    void test_enveloped() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "com/rsasecurity/bdournaee/certj201_enveloped.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("com/rsasecurity/bdournaee/certj201_enveloped.xml",
+            getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 

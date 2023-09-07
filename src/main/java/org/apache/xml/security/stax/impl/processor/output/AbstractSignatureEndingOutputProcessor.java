@@ -20,11 +20,18 @@ package org.apache.xml.security.stax.impl.processor.output;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.PSSParameterSpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.security.auth.DestroyFailedException;
 import javax.security.auth.Destroyable;
@@ -51,8 +58,6 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.UnsyncBufferedOutputStream;
 import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm.fromDigestAlgorithm;
 
@@ -60,7 +65,7 @@ import static org.apache.xml.security.algorithms.implementations.SignatureBaseRS
  */
 public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBufferingOutputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractSignatureEndingOutputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(AbstractSignatureEndingOutputProcessor.class.getName());
 
     private List<SignaturePartDef> signaturePartDefList;
 
@@ -255,7 +260,7 @@ public abstract class AbstractSignatureEndingOutputProcessor extends AbstractBuf
             try {
                 ((Destroyable)key).destroy();
             } catch (DestroyFailedException e) {
-                LOG.debug("Error destroying key: {}", e.getMessage());
+                LOG.log(Level.DEBUG, "Error destroying key: {0}", e.getMessage());
             }
         }
     }

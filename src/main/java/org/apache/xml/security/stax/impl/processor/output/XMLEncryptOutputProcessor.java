@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -37,8 +39,8 @@ import javax.crypto.spec.PSource;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
@@ -52,8 +54,6 @@ import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.XMLUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Processor to encrypt XML structures
@@ -61,7 +61,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(XMLEncryptOutputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(XMLEncryptOutputProcessor.class.getName());
 
     public XMLEncryptOutputProcessor() throws XMLSecurityException {
         super();
@@ -76,7 +76,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
             if (getActiveInternalEncryptionOutputProcessor() == null) {
                 SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.ENCRYPTION_PARTS);
                 if (securePart != null) {
-                    LOG.debug("Matched encryptionPart for encryption");
+                    LOG.log(Level.DEBUG, "Matched encryptionPart for encryption");
                     String tokenId = outputProcessorChain.getSecurityContext().get(
                             XMLSecurityConstants.PROP_USE_THIS_TOKEN_ID_FOR_ENCRYPTION);
                     SecurityTokenProvider<OutboundSecurityToken> securityTokenProvider =
@@ -189,7 +189,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
                         createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_xenc_CipherValue, false, null);
 
                         //encrypt the symmetric session key with the public key from the receiver:
-                        String jceid = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportAlgorithm);
+                        String jceid = JCEMapper.translateURItoJCEID(encryptionKeyTransportAlgorithm);
                         if (jceid == null) {
                             throw new XMLSecurityException("algorithms.NoSuchMap",
                                                            new Object[] {encryptionKeyTransportAlgorithm});
@@ -204,7 +204,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
                                 String jceDigestAlgorithm = "SHA-1";
                                 if (encryptionKeyTransportDigestAlgorithm != null) {
-                                    jceDigestAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportDigestAlgorithm);
+                                    jceDigestAlgorithm = JCEMapper.translateURItoJCEID(encryptionKeyTransportDigestAlgorithm);
                                 }
 
                                 PSource.PSpecified pSource = PSource.PSpecified.DEFAULT;
@@ -215,7 +215,7 @@ public class XMLEncryptOutputProcessor extends AbstractEncryptOutputProcessor {
 
                                 MGF1ParameterSpec mgfParameterSpec = new MGF1ParameterSpec("SHA-1");
                                 if (encryptionKeyTransportMGFAlgorithm != null) {
-                                    String jceMGFAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(encryptionKeyTransportMGFAlgorithm);
+                                    String jceMGFAlgorithm = JCEMapper.translateURItoJCEID(encryptionKeyTransportMGFAlgorithm);
                                     mgfParameterSpec = new MGF1ParameterSpec(jceMGFAlgorithm);
                                 }
                                 algorithmParameterSpec = new OAEPParameterSpec(jceDigestAlgorithm, "MGF1", mgfParameterSpec, pSource);

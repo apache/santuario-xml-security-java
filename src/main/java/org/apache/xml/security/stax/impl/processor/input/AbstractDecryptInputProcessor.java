@@ -18,12 +18,18 @@
  */
 package org.apache.xml.security.stax.impl.processor.input;
 
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -43,9 +49,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.security.auth.DestroyFailedException;
 import javax.security.auth.Destroyable;
-import jakarta.xml.bind.JAXBElement;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -54,6 +57,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.Attribute;
 
 import org.apache.commons.codec.binary.Base64OutputStream;
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.binding.xmldsig.KeyInfoType;
 import org.apache.xml.security.binding.xmlenc.EncryptedDataType;
 import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
@@ -62,7 +66,6 @@ import org.apache.xml.security.binding.xmlenc.ReferenceType;
 import org.apache.xml.security.binding.xop.Include;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.ConfigurationProperties;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.AbstractInputProcessor;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
@@ -86,16 +89,13 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Processor for decryption of EncryptedData XML structures
- *
  */
 public abstract class AbstractDecryptInputProcessor extends AbstractInputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(AbstractDecryptInputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(AbstractDecryptInputProcessor.class.getName());
 
     protected static final Integer maximumAllowedXMLStructureDepth =
             Integer.valueOf(ConfigurationProperties.getProperty("MaximumAllowedXMLStructureDepth"));
@@ -233,7 +233,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 handleSecurityToken(inboundSecurityToken, inputProcessorChain.getSecurityContext(), encryptedDataType);
 
                 final String algorithmURI = encryptedDataType.getEncryptionMethod().getAlgorithm();
-                final int ivLength = JCEAlgorithmMapper.getIVLengthFromURI(algorithmURI) / 8;
+                final int ivLength = JCEMapper.getIVLengthFromURI(algorithmURI) / 8;
                 Cipher symCipher = getCipher(algorithmURI);
 
                 if (encryptedDataType.getCipherData().getCipherReference() != null) {
@@ -322,7 +322,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     //we have to start the thread before we call decryptionThread.getPipedInputStream().
                     //Otherwise we will end in a deadlock, because the StAX reader expects already data.
                     //@See some lines below:
-                    LOG.debug("Starting decryption thread");
+                    LOG.log(Level.DEBUG, "Starting decryption thread");
                     thread.start();
 
                     decryptInputStream = decryptionThread.getPipedInputStream();
@@ -436,8 +436,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
     private Cipher getCipher(String algorithmURI) throws XMLSecurityException {
         Cipher symCipher;
         try {
-            String jceName = JCEAlgorithmMapper.translateURItoJCEID(algorithmURI);
-            String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algorithmURI);
+            String jceName = JCEMapper.translateURItoJCEID(algorithmURI);
+            String jceProvider = JCEMapper.getJCEProviderFromURI(algorithmURI);
             if (jceName == null) {
                 throw new XMLSecurityException("algorithms.NoSuchMap",
                                                new Object[] {algorithmURI});
@@ -875,11 +875,11 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     try {
                         ((Destroyable)secretKey).destroy();
                     } catch (DestroyFailedException e) {
-                        LOG.debug("Error destroying key: {}", e.getMessage());
+                        LOG.log(Level.DEBUG, "Error destroying key: {0}", e.getMessage());
                     }
                 }
 
-                LOG.debug("Decryption thread finished");
+                LOG.log(Level.DEBUG, "Decryption thread finished");
 
             } catch (Exception e) {
                 try {

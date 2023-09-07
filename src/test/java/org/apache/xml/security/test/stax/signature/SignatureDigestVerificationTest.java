@@ -36,34 +36,31 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD;
+
 /**
  * A set of test-cases for Signature verification with various digest algorithms
  */
-public class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest {
+class SignatureDigestVerificationTest extends AbstractSignatureVerificationTest {
 
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @Test
-    public void testSHA1() throws Exception {
+    void testSHA1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -101,20 +98,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA224() throws Exception {
+    void testSHA224() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -152,20 +143,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA256() throws Exception {
+    void testSHA256() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -203,20 +188,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA384() throws Exception {
+    void testSHA384() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -254,20 +233,14 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA512() throws Exception {
+    void testSHA512() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -305,22 +278,16 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testRIPEMD160() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testRIPEMD160() throws Exception {
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -358,22 +325,16 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testWhirlpool() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testWhirlpool() throws Exception {
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -411,22 +372,16 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_224() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testSHA3_224() throws Exception {
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -464,22 +419,16 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_256() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testSHA3_256() throws Exception {
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -517,22 +466,16 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_384() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testSHA3_384() throws Exception {
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM
@@ -570,22 +513,16 @@ public class SignatureDigestVerificationTest extends AbstractSignatureVerificati
     }
 
     @Test
-    public void testSHA3_512() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testSHA3_512() throws Exception {
+        Assumptions.assumeTrue(isBcInstalled());
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-                this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-                "default".toCharArray()
-        );
-        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Sign using DOM

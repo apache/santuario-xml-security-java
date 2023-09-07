@@ -30,6 +30,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -43,7 +44,6 @@ import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.XMLCipherUtil;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.ext.AbstractOutputProcessor;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
@@ -94,28 +94,29 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
     }
 
     protected void verifyEncryptionParts(OutputProcessorChain outputProcessorChain) throws XMLSecurityException {
-        List<EncryptionPartDef> encryptionPartDefs =
-                outputProcessorChain.getSecurityContext().getAsList(EncryptionPartDef.class);
-
-        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext().getAsMap(XMLSecurityConstants.ENCRYPTION_PARTS);
-        Iterator<Map.Entry<Object, SecurePart>> securePartsMapIterator = dynamicSecureParts.entrySet().iterator();
-        loop:
-        while (securePartsMapIterator.hasNext()) {
-            Map.Entry<Object, SecurePart> securePartEntry = securePartsMapIterator.next();
+        List<EncryptionPartDef> encryptionPartDefs = outputProcessorChain.getSecurityContext()
+            .getAsList(EncryptionPartDef.class);
+        Map<Object, SecurePart> dynamicSecureParts = outputProcessorChain.getSecurityContext()
+            .getAsMap(XMLSecurityConstants.ENCRYPTION_PARTS);
+        for (Entry<Object, SecurePart> securePartEntry : dynamicSecureParts.entrySet()) {
             final SecurePart securePart = securePartEntry.getValue();
-
-            if (securePart.isRequired()) {
-                for (int i = 0; encryptionPartDefs != null && i < encryptionPartDefs.size(); i++) {
-                    EncryptionPartDef encryptionPartDef = encryptionPartDefs.get(i);
-
-                    if (encryptionPartDef.getSecurePart() == securePart) {
-                        continue loop;
-                    }
-                }
+            if (securePart.isRequired() && !findSecurePart(securePart, encryptionPartDefs)) {
                 throw new XMLSecurityException("stax.encryption.securePartNotFound",
-                                               new Object[] {securePart.getName()});
+                    new Object[] {securePart.getName()});
             }
         }
+    }
+
+    private boolean findSecurePart(final SecurePart securePart, List<EncryptionPartDef> encryptionPartDefs) {
+        if (encryptionPartDefs == null) {
+            return false;
+        }
+        for (EncryptionPartDef encryptionPartDef : encryptionPartDefs) {
+            if (encryptionPartDef.getSecurePart() == securePart) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected AbstractInternalEncryptionOutputProcessor getActiveInternalEncryptionOutputProcessor() {
@@ -160,7 +161,7 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
             String encryptionSymAlgorithm = securityProperties.getEncryptionSymAlgorithm();
             try {
                 //initialize the cipher
-                String jceAlgorithm = JCEAlgorithmMapper.translateURItoJCEID(encryptionSymAlgorithm);
+                String jceAlgorithm = JCEMapper.translateURItoJCEID(encryptionSymAlgorithm);
                 if (jceAlgorithm == null) {
                     throw new XMLSecurityException("algorithms.NoSuchMap",
                                                    new Object[] {encryptionSymAlgorithm});

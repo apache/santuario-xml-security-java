@@ -20,44 +20,36 @@ package org.apache.xml.security.test.dom.signature;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.security.PublicKey;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.KeyValue;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class KeyValueTest {
-
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class KeyValueTest {
 
     static {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testDSAPublicKey() throws Exception {
-        File f = null;
-        String filename =
+    @Test
+    void testDSAPublicKey() throws Exception {
+        String path =
             "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-dsa.xml";
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            f = new File(BASEDIR + SEP + filename);
-        } else {
-            f = new File(filename);
-        }
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+        File f = XmlSecTestEnvironment.resolveFile(path);
+        Document doc = XMLUtils.read(f, false);
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
-        XMLSignature sig = new XMLSignature
-            ((Element) nl.item(0), f.toURI().toURL().toString());
+        XMLSignature sig = new XMLSignature((Element) nl.item(0), f.toURI().toURL().toString());
         KeyInfo ki = sig.getKeyInfo();
         KeyValue kv = ki.itemKeyValue(0);
         PublicKey pk = kv.getPublicKey();

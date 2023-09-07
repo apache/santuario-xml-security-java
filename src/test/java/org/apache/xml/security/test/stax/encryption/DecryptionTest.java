@@ -65,6 +65,7 @@ import org.apache.xml.security.stax.securityEvent.EncryptedKeyTokenSecurityEvent
 import org.apache.xml.security.stax.securityEvent.SecurityEvent;
 import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
@@ -72,8 +73,14 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,12 +94,12 @@ import static org.junit.jupiter.api.Assumptions.assumeFalse;
  * A set of test-cases for Decryption.
  *
  */
-public class DecryptionTest {
+class DecryptionTest {
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-    private boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
+    private final boolean isIBMJdK = System.getProperty("java.vendor").contains("IBM");
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -103,12 +110,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptElementValidation() throws Exception {
+    void testDecryptElementValidation() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -158,12 +163,10 @@ public class DecryptionTest {
 
 
     @Test
-    public void testDecryptContentValidation() throws Exception {
+    void testDecryptContentValidation() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -215,12 +218,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testStrongDecryption() throws Exception {
+    void testStrongDecryption() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -274,12 +275,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptMultipleElements() throws Exception {
+    void testDecryptMultipleElements() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -340,12 +339,10 @@ public class DecryptionTest {
      * encrypted using a AES 192 bit key.  Then reverse using the KEK
      */
     @Test
-    public void testAES128ElementAES192KWCipherUsingKEKInbound() throws Exception {
+    void testAES128ElementAES192KWCipherUsingKEKInbound() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -409,12 +406,10 @@ public class DecryptionTest {
      * encrypted using an RSA key.  Reverse using KEK
      */
     @Test
-    public void testAES256ElementRSAKWCipherUsingKEKInbound() throws Exception {
+    void testAES256ElementRSAKWCipherUsingKEKInbound() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
@@ -476,12 +471,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAES256ElementRSAKWCipherUsingKEKInboundIncludeEKKeyInfo() throws Exception {
+    void testAES256ElementRSAKWCipherUsingKEKInboundIncludeEKKeyInfo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
@@ -547,14 +540,12 @@ public class DecryptionTest {
      * encrypted using a 3DES key.  Then reverse by decrypting EncryptedKey.
      */
     @Test
-    public void testAES192Element3DESKWCipherInbound() throws Exception {
+    void testAES192Element3DESKWCipherInbound() throws Exception {
         assumeFalse(isIBMJdK);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] bits192 = "abcdefghijklmnopqrstuvwx".getBytes();
@@ -616,12 +607,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testTripleDesElementCipher() throws Exception {
+    void testTripleDesElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
@@ -676,12 +665,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAes128ElementCipher() throws Exception {
+    void testAes128ElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] bits128 = {
@@ -738,12 +725,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAes192ElementCipher() throws Exception {
+    void testAes192ElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] bits192 = {
@@ -802,12 +787,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testAes256ElementCipher() throws Exception {
+    void testAes256ElementCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] bits256 = {
@@ -870,12 +853,10 @@ public class DecryptionTest {
     // Test case for when the entire document is encrypted and decrypted
     // In this case the EncryptedData becomes the root element of the document
     @Test
-    public void testTripleDesDocumentCipher() throws Exception {
+    void testTripleDesDocumentCipher() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] passPhrase = "24 Bytes per DESede key!".getBytes();
@@ -929,7 +910,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testPhysicalRepresentation() throws Exception {
+    void testPhysicalRepresentation() throws Exception {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns:ns=\"ns.com\"><ns:elem xmlns:ns2=\"ns2.com\">11</ns:elem></ns:root>";
         Document document = null;
@@ -996,7 +977,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testPhysicalRepresentation2() throws Exception {
+    void testPhysicalRepresentation2() throws Exception {
         final String DATA1 =
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><ns:root xmlns=\"defns.com\" xmlns:ns=\"ns.com\"><elem xmlns=\"\">11</elem></ns:root>";
         Document document = null;
@@ -1183,7 +1164,7 @@ public class DecryptionTest {
     protected void checkMultipleEncryptedElementSecurityEvents(TestSecurityEventListener securityEventListener) {
         List<SecurityEvent> encryptedElements =
                 securityEventListener.getSecurityEvents(SecurityEventConstants.EncryptedElement);
-        assertTrue(encryptedElements.size() == 2);
+        assertThat(encryptedElements, hasSize(2));
 
         EncryptedElementSecurityEvent encryptedElementEvent =
                 (EncryptedElementSecurityEvent)encryptedElements.get(0);
@@ -1263,12 +1244,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testMaximumAllowedXMLStructureDepth() throws Exception {
+    void testMaximumAllowedXMLStructureDepth() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         for (int i = 0; i < 7; i++) {
             NodeList nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1315,12 +1294,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testModifiedEncryptedKeyCipherValue() throws Exception {
+    void testModifiedEncryptedKeyCipherValue() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
@@ -1393,12 +1370,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testKeyValue() throws Exception {
+    void testKeyValue() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1406,12 +1381,8 @@ public class DecryptionTest {
         SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
@@ -1454,12 +1425,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testIssuerSerial() throws Exception {
+    void testIssuerSerial() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1467,12 +1436,8 @@ public class DecryptionTest {
         SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
@@ -1525,12 +1490,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testX509Certificate() throws Exception {
+    void testX509Certificate() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1538,12 +1501,8 @@ public class DecryptionTest {
         SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
@@ -1596,12 +1555,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testSubjectName() throws Exception {
+    void testSubjectName() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1609,12 +1566,8 @@ public class DecryptionTest {
         SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
@@ -1667,7 +1620,7 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testSKI() throws Exception {
+    void testSKI() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -1677,10 +1630,8 @@ public class DecryptionTest {
         }
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1689,10 +1640,9 @@ public class DecryptionTest {
 
         // Set the key up
         KeyStore keyStore = KeyStore.getInstance("JCEKS");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("test.jceks").openStream(),
-            "secret".toCharArray()
-        );
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("test.jceks")) {
+            keyStore.load(inputStream, "secret".toCharArray());
+        }
         PrivateKey priv = (PrivateKey)keyStore.getKey("rsakey", "secret".toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("rsakey");
 
@@ -1746,12 +1696,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testNoKeyInfo() throws Exception {
+    void testNoKeyInfo() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -1759,12 +1707,8 @@ public class DecryptionTest {
         SecretKey key = keygen.generateKey();
 
         // Set the key up
-        KeyStore keyStore = KeyStore.getInstance("jks");
-        keyStore.load(
-            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
-            "default".toCharArray()
-        );
-        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", "default".toCharArray());
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        PrivateKey priv = (PrivateKey)keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
         X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
 
         // Encrypt using DOM
@@ -1808,12 +1752,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptElementValidationInDecryptOnlyMode() throws Exception {
+    void testDecryptElementValidationInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -1869,12 +1811,10 @@ public class DecryptionTest {
 
 
     @Test
-    public void testDecryptContentValidationInDecryptOnlyMode() throws Exception {
+    void testDecryptContentValidationInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();
@@ -1927,12 +1867,10 @@ public class DecryptionTest {
     }
 
     @Test
-    public void testDecryptWholeDocumentInDecryptOnlyMode() throws Exception {
+    void testDecryptWholeDocumentInDecryptOnlyMode() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
 
         // Set up the Key
         SecretKey secretKey = generateSecretKey();

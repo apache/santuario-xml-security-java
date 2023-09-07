@@ -21,14 +21,10 @@ package org.apache.xml.security.test.dom.signature;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
@@ -38,26 +34,23 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class HMACOutputLengthTest {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger
-            (HMACOutputLengthTest.class);
-
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class HMACOutputLengthTest {
 
     public HMACOutputLengthTest() throws Exception {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
+    @Test
+    void test_signature_enveloping_hmac_sha1_trunclen_0() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-0-attack.xml");
             fail("Expected HMACOutputLength exception");
@@ -69,8 +62,8 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
+    @Test
+    void test_signature_enveloping_hmac_sha1_trunclen_8() throws Exception {
         try {
             validate("signature-enveloping-hmac-sha1-trunclen-8-attack.xml");
         } catch (XMLSignatureException xse) {
@@ -81,8 +74,8 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void test_generate_hmac_sha1_40() throws Exception {
+    @Test
+    void test_generate_hmac_sha1_40() throws Exception {
         Document doc = TestUtils.newDocument();
         try {
             new XMLSignature(
@@ -98,8 +91,8 @@ public class HMACOutputLengthTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testValidHMACOutputLength() throws Exception {
+    @Test
+    void testValidHMACOutputLength() throws Exception {
         Document doc = TestUtils.newDocument();
 
         doc.appendChild(doc.createComment(" Comment before "));
@@ -146,13 +139,10 @@ public class HMACOutputLengthTest {
     }
 
     private boolean validate(String data) throws Exception {
-        File file =
-            new File(BASEDIR + SEP + "src/test/resources" + SEP + "javax" + SEP + "xml"
-                     + SEP + "crypto" + SEP + "dsig" + SEP, data);
-
-        Document doc = XMLUtils.read(new FileInputStream(file), false);
-        NodeList nl =
-            doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
+        File file = resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "test", "javax", "xml",
+            "crypto", "dsig", data);
+        Document doc = XMLUtils.read(file, false);
+        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
         if (nl.getLength() == 0) {
             throw new Exception("Couldn't find signature Element");
         }

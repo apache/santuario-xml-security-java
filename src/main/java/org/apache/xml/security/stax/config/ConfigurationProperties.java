@@ -18,11 +18,11 @@
  */
 package org.apache.xml.security.stax.config;
 
-import org.apache.xml.security.configuration.PropertiesType;
-import org.apache.xml.security.configuration.PropertyType;
-
 import java.util.List;
 import java.util.Properties;
+
+import org.apache.xml.security.configuration.PropertiesType;
+import org.apache.xml.security.configuration.PropertyType;
 
 /**
  * Configuration Properties
@@ -41,8 +41,7 @@ public final class ConfigurationProperties {
             Class<?> callingClass) throws Exception {
         properties = new Properties();
         List<PropertyType> handlerList = propertiesType.getProperty();
-        for (int i = 0; i < handlerList.size(); i++) {
-            PropertyType propertyType = handlerList.get(i);
+        for (PropertyType propertyType : handlerList) {
             properties.setProperty(propertyType.getNAME(), propertyType.getVAL());
         }
         ConfigurationProperties.callingClass = callingClass;

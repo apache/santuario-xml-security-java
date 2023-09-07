@@ -18,10 +18,11 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import javax.xml.namespace.QName;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.xml.namespace.QName;
 
 /**
  * Class to describe which and how an element must be secured

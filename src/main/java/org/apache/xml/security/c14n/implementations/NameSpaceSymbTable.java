@@ -18,10 +18,11 @@
  */
 package org.apache.xml.security.c14n.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
@@ -33,8 +34,7 @@ import org.w3c.dom.Node;
  */
 public class NameSpaceSymbTable {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(NameSpaceSymbTable.class);
+    private static final Logger LOG = System.getLogger(NameSpaceSymbTable.class.getName());
 
     private static final String XMLNS = "xmlns";
     private static final SymbMap initialMap = new SymbMap();
@@ -60,7 +60,7 @@ public class NameSpaceSymbTable {
         try {
             symb = initialMap.clone();
         } catch (CloneNotSupportedException e) {
-            LOG.error("Error cloning the initial map");
+            LOG.log(Level.ERROR, "Error cloning the initial map");
         }
     }
 
@@ -70,16 +70,16 @@ public class NameSpaceSymbTable {
      * @param result the list where to fill the unrendered xmlns definitions.
      **/
     public void getUnrenderedNodes(Collection<Attr> result) {
-        for (NameSpaceSymbEntry n : symb.entrySet()) {
+        for (NameSpaceSymbEntry nsEntry : symb.entrySet()) {
             //put them rendered?
-            if (!n.rendered && n.n != null) {
-                n = n.clone();
+            if (!nsEntry.rendered && nsEntry.n != null) {
+                nsEntry = nsEntry.clone();
                 needsClone();
-                symb.put(n.prefix, n);
-                n.lastrendered = n.uri;
-                n.rendered = true;
+                symb.put(nsEntry.prefix, nsEntry);
+                nsEntry.lastrendered = nsEntry.uri;
+                nsEntry.rendered = true;
 
-                result.add(n.n);
+                result.add(nsEntry.n);
             }
         }
     }
@@ -134,7 +134,7 @@ public class NameSpaceSymbTable {
             try {
                 symb = symb.clone();
             } catch (CloneNotSupportedException e) {
-                LOG.error("Error cloning the symbol map");
+                LOG.log(Level.ERROR, "Error cloning the symbol map");
             }
             cloned = true;
         }
@@ -307,6 +307,7 @@ class NameSpaceSymbEntry implements Cloneable {
     }
 
     /** {@inheritDoc} */
+    @Override
     public NameSpaceSymbEntry clone() { //NOPMD
         try {
             return (NameSpaceSymbEntry)super.clone();
@@ -340,9 +341,9 @@ class SymbMap implements Cloneable {
 
     List<NameSpaceSymbEntry> entrySet() {
         List<NameSpaceSymbEntry> a = new ArrayList<>();
-        for (int i = 0;i < entries.length;i++) {
-            if (entries[i] != null && entries[i].uri.length() != 0) {
-                a.add(entries[i]);
+        for (NameSpaceSymbEntry nsEntry : entries) {
+            if (nsEntry != null && !nsEntry.uri.isEmpty()) {
+                a.add(nsEntry);
             }
         }
         return a;

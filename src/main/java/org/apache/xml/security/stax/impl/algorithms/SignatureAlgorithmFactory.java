@@ -18,11 +18,11 @@
  */
 package org.apache.xml.security.stax.impl.algorithms;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+
+import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
  */
@@ -41,13 +41,13 @@ public final class SignatureAlgorithmFactory {
     }
 
     public SignatureAlgorithm getSignatureAlgorithm(String algoURI) throws XMLSecurityException, NoSuchProviderException, NoSuchAlgorithmException {
-        String algorithmClass = JCEAlgorithmMapper.getAlgorithmClassFromURI(algoURI);
+        String algorithmClass = JCEMapper.getAlgorithmClassFromURI(algoURI);
         if (algorithmClass == null) {
             throw new XMLSecurityException("algorithms.NoSuchMap",
                                            new Object[] {algoURI});
         }
-        String jceName = JCEAlgorithmMapper.translateURItoJCEID(algoURI);
-        String jceProvider = JCEAlgorithmMapper.getJCEProviderFromURI(algoURI);
+        String jceName = JCEMapper.translateURItoJCEID(algoURI);
+        String jceProvider = JCEMapper.getJCEProviderFromURI(algoURI);
         if ("MAC".equalsIgnoreCase(algorithmClass)) {
             return new HMACSignatureAlgorithm(jceName, jceProvider);
         } else if ("Signature".equalsIgnoreCase(algorithmClass)) {

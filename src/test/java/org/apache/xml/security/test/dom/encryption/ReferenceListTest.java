@@ -19,6 +19,7 @@
 package org.apache.xml.security.test.dom.encryption;
 
 
+import java.lang.System.Logger;
 import java.util.Iterator;
 
 import org.apache.xml.security.encryption.Reference;
@@ -26,6 +27,7 @@ import org.apache.xml.security.encryption.ReferenceList;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.EncryptionConstants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -34,18 +36,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-public class ReferenceListTest {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ReferenceListTest.class);
-
+class ReferenceListTest {
 
     public ReferenceListTest() throws Exception {
         org.apache.xml.security.Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testReferenceList() throws Exception {
+    @Test
+    void testReferenceList() throws Exception {
         Document doc = TestUtils.newDocument();
 
         XMLCipher dataCipher = XMLCipher.getInstance();

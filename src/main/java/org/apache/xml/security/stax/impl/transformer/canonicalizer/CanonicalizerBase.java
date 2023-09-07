@@ -80,7 +80,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
         NODE_AFTER_DOCUMENT_ELEMENT
     }
 
-    private static final Map<String, byte[]> CACHE = Collections.synchronizedMap(new WeakHashMap<String, byte[]>());
+    private static final Map<String, byte[]> CACHE = Collections.synchronizedMap(new WeakHashMap<>());
     private final C14NStack<XMLSecEvent> outputStack = new C14NStack<>();
     private boolean includeComments = false;
     private DocumentLevel currentDocumentLevel = DocumentLevel.NODE_BEFORE_DOCUMENT_ELEMENT;
@@ -293,8 +293,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
                     if (!utilizedNamespaces.isEmpty()) {
                         Collections.sort(utilizedNamespaces);
-                        for (int i = 0; i < utilizedNamespaces.size(); i++) {
-                            final XMLSecNamespace xmlSecNamespace = utilizedNamespaces.get(i);
+                        for (final XMLSecNamespace xmlSecNamespace : utilizedNamespaces) {
                             if (!namespaceIsAbsolute(xmlSecNamespace.getNamespaceURI())) {
                                 throw new XMLStreamException("namespace is relative encountered: " + xmlSecNamespace.getNamespaceURI());
                             }
@@ -309,9 +308,7 @@ public abstract class CanonicalizerBase extends TransformIdentity {
 
                     if (!utilizedAttributes.isEmpty()) {
                         Collections.sort(utilizedAttributes);
-                        for (int i = 0; i < utilizedAttributes.size(); i++) {
-                            final XMLSecAttribute xmlSecAttribute = utilizedAttributes.get(i);
-
+                        for (final XMLSecAttribute xmlSecAttribute : utilizedAttributes) {
                             final QName attributeName = xmlSecAttribute.getName();
                             final String attributeNamePrefix = attributeName.getPrefix();
                             if (attributeNamePrefix != null && !attributeNamePrefix.isEmpty()) {

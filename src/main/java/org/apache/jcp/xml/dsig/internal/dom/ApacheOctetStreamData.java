@@ -22,7 +22,9 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.io.IOException;
+
 import javax.xml.crypto.OctetStreamData;
+
 import org.apache.xml.security.signature.XMLSignatureInput;
 
 public class ApacheOctetStreamData extends OctetStreamData
@@ -33,10 +35,11 @@ public class ApacheOctetStreamData extends OctetStreamData
     public ApacheOctetStreamData(XMLSignatureInput xi)
         throws IOException
     {
-        super(xi.getOctetStream(), xi.getSourceURI(), xi.getMIMEType());
+        super(xi.getUnprocessedInput(), xi.getSourceURI(), xi.getMIMEType());
         this.xi = xi;
     }
 
+    @Override
     public XMLSignatureInput getXMLSignatureInput() {
         return xi;
     }

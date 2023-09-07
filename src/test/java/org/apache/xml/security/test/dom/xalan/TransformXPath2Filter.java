@@ -27,6 +27,7 @@ import org.apache.xml.security.utils.XPathFactory;
  */
 public class TransformXPath2Filter extends org.apache.xml.security.transforms.implementations.TransformXPath2Filter {
 
+    @Override
     protected XPathFactory getXPathFactory() {
         return new XalanXPathFactory();
     }

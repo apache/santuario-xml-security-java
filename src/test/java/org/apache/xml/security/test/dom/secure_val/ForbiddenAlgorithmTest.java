@@ -20,46 +20,38 @@ package org.apache.xml.security.test.dom.secure_val;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.interop.InteropTestBase;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
-
 /**
  * This is a test for a forbidden algorithm (MD5) when secure validation is enabled.
  */
-public class ForbiddenAlgorithmTest extends InteropTestBase {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(ForbiddenAlgorithmTest.class);
+class ForbiddenAlgorithmTest extends InteropTestBase {
 
     static {
         org.apache.xml.security.Init.init();
     }
 
-    public ForbiddenAlgorithmTest() {
-        super();
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testMD5Digest() throws Exception {
-        boolean success =
-            readAndVerifySignature("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", false);
+    @Test
+    void testMD5Digest() throws Exception {
+        boolean success = readAndVerifySignature("signature-joseph-exc.xml", false);
 
         assertTrue(success);
 
         try {
-            readAndVerifySignature("src/test/resources/interop/c14n/Y2", "signature-joseph-exc.xml", true);
+            readAndVerifySignature("signature-joseph-exc.xml", true);
             fail("Failure expected when secure validation is enabled");
         } catch (XMLSignatureException ex) {
             String error = "It is forbidden to use algorithm http://www.w3.org/2001/04/xmldsig-more#md5 "
@@ -68,21 +60,13 @@ public class ForbiddenAlgorithmTest extends InteropTestBase {
         }
     }
 
-    private boolean readAndVerifySignature(
-        String directory, String file, boolean secValidation
-    ) throws Exception {
-        String basedir = System.getProperty("basedir");
-        if (basedir != null && basedir.length() != 0) {
-            directory = basedir + "/" + directory;
-        }
 
-        File f = new File(directory + "/" + file);
+    private boolean readAndVerifySignature(String file, boolean secValidation) throws Exception {
+        File f = resolveFile("src", "test", "resources", "interop", "c14n", "Y2", file);
+        org.w3c.dom.Document doc = XMLUtils.read(f, false);
 
-        org.w3c.dom.Document doc = XMLUtils.read(new FileInputStream(f), false);
-
-        Element sigElement =
-            (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS,
-                                                 Constants._TAG_SIGNATURE).item(0);
+        Element sigElement = (Element) doc.getElementsByTagNameNS(Constants.SignatureSpecNS, Constants._TAG_SIGNATURE)
+            .item(0);
         XMLSignature signature = new XMLSignature(sigElement, f.toURI().toURL().toString(), secValidation);
         return signature.checkSignatureValue(signature.getKeyInfo().getPublicKey());
     }

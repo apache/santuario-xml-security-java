@@ -18,10 +18,10 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
-
 import java.util.List;
 import java.util.Map;
+
+import org.apache.xml.security.stax.securityEvent.SecurityEventListener;
 
 /**
  */

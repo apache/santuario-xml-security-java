@@ -18,17 +18,19 @@
  */
 package org.apache.xml.security.stax.ext;
 
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
-
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
+
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.namespace.QName;
+
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.XMLSecurityEventReader;
 
 /**
  * Abstract class for SecurityHeaderHandlers with parse LOGic for the xml structures

@@ -19,18 +19,19 @@
 
 package org.apache.xml.security.stax.impl;
 
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.XMLEvent;
+
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+
 /**
  */
-public class XMLSecurityEventReader implements XMLEventReader {
+public class XMLSecurityEventReader implements XMLEventReader, AutoCloseable {
 
     private final Iterator<XMLSecEvent> xmlSecEventIterator;
     private XMLEvent xmlSecEvent;

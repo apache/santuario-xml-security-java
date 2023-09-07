@@ -252,11 +252,13 @@ public final class MessageDigestAlgorithm extends Algorithm {
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseNamespace() {
         return Constants.SignatureSpecNS;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_DIGESTMETHOD;
     }

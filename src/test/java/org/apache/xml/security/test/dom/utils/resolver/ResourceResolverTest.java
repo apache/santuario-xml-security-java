@@ -19,15 +19,15 @@
 package org.apache.xml.security.test.dom.utils.resolver;
 
 
-import java.io.File;
-
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.implementations.ResolverLocalFilesystem;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,11 +37,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Unit test for {@link org.apache.xml.security.utils.resolver.ResourceResolver}
  *
  */
-public class ResourceResolverTest {
-
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger
-            (ResourceResolverTest.class);
+class ResourceResolverTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -50,8 +46,8 @@ public class ResourceResolverTest {
     /**
      * Tests registering a custom resolver implementation.
      */
-    @org.junit.jupiter.api.Test
-    public void testCustomResolver() throws Exception {
+    @Test
+    void testCustomResolver() throws Exception {
         String className =
             "org.apache.xml.security.test.dom.utils.resolver.OfflineResolver";
         ResourceResolver.registerAtStart(className);
@@ -79,12 +75,11 @@ public class ResourceResolverTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testLocalFileWithEmptyBaseURI() throws Exception {
+    @Test
+    void testLocalFileWithEmptyBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
-        String basedir = System.getProperty("basedir");
-        String file = new File(basedir, "pom.xml").toURI().toString();
+        String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue(file);
 
         ResourceResolver.register(new ResolverLocalFilesystem(), false);
@@ -98,12 +93,11 @@ public class ResourceResolverTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testIsSafeURIToResolveFile() throws Exception {
+    @Test
+    void testIsSafeURIToResolveFile() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
-        String basedir = System.getProperty("basedir");
-        String file = new File(basedir, "pom.xml").toURI().toString();
+        String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue(file);
 
         ResourceResolverContext resolverContext =
@@ -111,12 +105,11 @@ public class ResourceResolverTest {
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testIsSafeURIToResolveFileBaseURI() throws Exception {
+    @Test
+    void testIsSafeURIToResolveFileBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
-        String basedir = System.getProperty("basedir");
-        String file = new File(basedir, "pom.xml").toURI().toString();
+        String file = resolveFile("pom.xml").toURI().toString();
         uriAttr.setValue("xyz");
 
         ResourceResolverContext resolverContext =
@@ -124,8 +117,8 @@ public class ResourceResolverTest {
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testIsSafeURIToResolveHTTP() throws Exception {
+    @Test
+    void testIsSafeURIToResolveHTTP() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("http://www.apache.org");
@@ -135,8 +128,8 @@ public class ResourceResolverTest {
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testIsSafeURIToResolveHTTPBaseURI() throws Exception {
+    @Test
+    void testIsSafeURIToResolveHTTPBaseURI() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("xyz");
@@ -146,8 +139,8 @@ public class ResourceResolverTest {
         assertFalse(resolverContext.isURISafeToResolve());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testIsSafeURIToResolveLocalReference() throws Exception {
+    @Test
+    void testIsSafeURIToResolveLocalReference() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         uriAttr.setValue("#1234");

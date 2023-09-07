@@ -18,20 +18,18 @@
  */
 package org.apache.xml.security.test.stax.c14n;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
-import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
+import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer11_OmitCommentsTransformer;
+import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * <p></p>
  * An xml:Id attribute is appearing in a child element, contrary to the C14n11 spec.
  */
-public class Santuario191Test {
+class Santuario191Test {
 
     private static final String INPUT_DATA =
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -67,7 +65,7 @@ public class Santuario191Test {
     }
 
     @Test
-    public void testSantuario191() throws Exception {
+    void testSantuario191() throws Exception {
         //
         // Parse the Data
         //

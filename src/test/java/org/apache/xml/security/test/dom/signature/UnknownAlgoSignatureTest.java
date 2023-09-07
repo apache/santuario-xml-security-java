@@ -32,11 +32,14 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -47,20 +50,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  * org.apache.xml.security.samples.signature.CreateEnvelopingSignature</code>
  * </p>
  */
-public class UnknownAlgoSignatureTest {
-
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class UnknownAlgoSignatureTest {
 
     protected static final String KEYSTORE_TYPE = "JKS";
-
-    protected static final String KEYSTORE_FILE =
-        "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
-
+    protected static final String KEYSTORE_FILE = "src/test/resources/org/apache/xml/security/samples/input/keystore.jks";
     protected static final String CERT_ALIAS = "test";
-
-    protected static final String SIGNATURE_SOURCE_PATH =
-        "src/test/resources/org/apache/xml/security/temp/signature";
+    protected static final String SIGNATURE_SOURCE_PATH = "src/test/resources/org/apache/xml/security/temp/signature";
 
     protected PublicKey publicKey;
 
@@ -69,25 +64,21 @@ public class UnknownAlgoSignatureTest {
     }
 
     public UnknownAlgoSignatureTest() throws Exception {
-        FileInputStream fis = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis = new FileInputStream(BASEDIR + SEP + KEYSTORE_FILE);
-        } else {
-            fis = new FileInputStream(KEYSTORE_FILE);
-        }
         KeyStore keyStore = KeyStore.getInstance(KEYSTORE_TYPE);
-        keyStore.load(fis, null);
+        try (FileInputStream fis = new FileInputStream(resolveFile(KEYSTORE_FILE))) {
+            keyStore.load(fis, null);
+        }
         X509Certificate cert = (X509Certificate) keyStore.getCertificate(CERT_ALIAS);
         publicKey = cert.getPublicKey();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testGood() throws Exception {
+    @Test
+    void testGood() throws Exception {
         assertTrue(checkSignature("signature-good.xml"));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testBadC14NAlgo() throws Exception {
+    @Test
+    void testBadC14NAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-c14n-algo.xml"));
             fail("Exception not caught");
@@ -96,8 +87,8 @@ public class UnknownAlgoSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testBadSigAlgo() throws Exception {
+    @Test
+    void testBadSigAlgo() throws Exception {
         try {
             assertTrue(checkSignature("signature-bad-sig-algo.xml"));
             fail("Exception not caught");
@@ -106,8 +97,8 @@ public class UnknownAlgoSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testBadTransformAlgo() throws Exception {
+    @Test
+    void testBadTransformAlgo() throws Exception {
         try {
             assertTrue(checkReferences("signature-bad-transform-algo.xml"));
             fail("Exception not caught");
@@ -127,12 +118,7 @@ public class UnknownAlgoSignatureTest {
     }
 
     private XMLSignature unmarshalXMLSignature(String fileName) throws Exception {
-        File file = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            file = new File(BASEDIR + SEP + SIGNATURE_SOURCE_PATH, fileName);
-        } else {
-            file = new File(SIGNATURE_SOURCE_PATH, fileName);
-        }
+        File file = XmlSecTestEnvironment.resolveFile(SIGNATURE_SOURCE_PATH, fileName);
         Document doc = getDocument(file);
 
         XPathFactory xpf = XPathFactory.newInstance();
@@ -140,13 +126,12 @@ public class UnknownAlgoSignatureTest {
         xpath.setNamespaceContext(new DSNamespaceContext());
 
         String expression = "//ds:Signature[1]";
-        Element sigElement =
-            (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
+        Element sigElement = (Element) xpath.evaluate(expression, doc, XPathConstants.NODE);
         return new XMLSignature(sigElement, file.toURI().toURL().toString());
     }
 
     public static Document getDocument(File file) throws Exception {
-        return XMLUtils.read(new FileInputStream(file), false);
+        return XMLUtils.read(file, false);
     }
 
 }

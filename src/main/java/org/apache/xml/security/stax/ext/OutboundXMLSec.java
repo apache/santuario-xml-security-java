@@ -19,6 +19,8 @@
 package org.apache.xml.security.stax.ext;
 
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -29,8 +31,8 @@ import java.util.List;
 import javax.crypto.KeyGenerator;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.stax.config.JCEAlgorithmMapper;
 import org.apache.xml.security.stax.impl.DocumentContextImpl;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
@@ -51,6 +53,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
  *
  */
 public class OutboundXMLSec {
+    private static final Logger LOG = System.getLogger(OutboundXMLSec.class.getName());
 
     private final XMLSecurityProperties securityProperties;
 
@@ -94,8 +97,10 @@ public class OutboundXMLSec {
 
     private XMLStreamWriter processOutMessage(
         Object output, String encoding, SecurityEventListener eventListener) throws XMLSecurityException {
-        final OutboundSecurityContextImpl outboundSecurityContext = new OutboundSecurityContextImpl();
+        LOG.log(Level.DEBUG, "processOutMessage(output.class={0}, encoding={1}, eventListener={2})",
+            output.getClass(), encoding, eventListener);
 
+        final OutboundSecurityContextImpl outboundSecurityContext = new OutboundSecurityContextImpl();
         if (eventListener != null) {
             outboundSecurityContext.addSecurityEventListener(eventListener);
         }
@@ -245,7 +250,7 @@ public class OutboundXMLSec {
             }
             // If none is configured then generate one
             String keyAlgorithm =
-                JCEAlgorithmMapper.getJCEKeyAlgorithmFromURI(securityProperties.getEncryptionSymAlgorithm());
+                JCEMapper.getJCEKeyAlgorithmFromURI(securityProperties.getEncryptionSymAlgorithm());
             KeyGenerator keyGen;
             try {
                 keyGen = KeyGenerator.getInstance(keyAlgorithm);
@@ -256,7 +261,7 @@ public class OutboundXMLSec {
             //whereas bouncy castle expects the block size of 128 or 192 bits
             if (keyAlgorithm.contains("AES")) {
                 int keyLength =
-                    JCEAlgorithmMapper.getKeyLengthFromURI(securityProperties.getEncryptionSymAlgorithm());
+                    JCEMapper.getKeyLengthFromURI(securityProperties.getEncryptionSymAlgorithm());
                 keyGen.init(keyLength);
             }
 

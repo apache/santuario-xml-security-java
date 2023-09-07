@@ -21,6 +21,7 @@ package org.apache.xml.security.keys.content.x509;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger.Level;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -123,6 +124,7 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
     }
 
     /** {@inheritDoc} */
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof XMLX509Certificate)) {
             return false;
@@ -135,20 +137,22 @@ public class XMLX509Certificate extends SignatureElementProxy implements XMLX509
         }
     }
 
+    @Override
     public int hashCode() {
         int result = 17;
         try {
             byte[] bytes = getCertificateBytes();
-            for (int i = 0; i < bytes.length; i++) {
-                result = 31 * result + bytes[i];
+            for (byte element : bytes) {
+                result = 31 * result + element;
             }
         } catch (XMLSecurityException e) {
-            LOG.debug(e.getMessage(), e);
+            LOG.log(Level.DEBUG, e.getMessage(), e);
         }
         return result;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_X509CERTIFICATE;
     }

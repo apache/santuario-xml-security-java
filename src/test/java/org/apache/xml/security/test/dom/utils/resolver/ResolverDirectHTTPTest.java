@@ -18,6 +18,9 @@
  */
 package org.apache.xml.security.test.dom.utils.resolver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.xml.security.Init;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
@@ -32,11 +35,8 @@ import org.w3c.dom.Document;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.HashMap;
-import java.util.Map;
 
-
-public class ResolverDirectHTTPTest {
+class ResolverDirectHTTPTest {
 
     //change these properties to match your environment
     private static final String url = "http://www.apache.org";
@@ -54,7 +54,7 @@ public class ResolverDirectHTTPTest {
 
     @Test
     @Disabled
-    public void testProxyAuth() throws Exception {
+    void testProxyAuth() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
@@ -72,7 +72,7 @@ public class ResolverDirectHTTPTest {
 
     @Test
     @Disabled
-    public void testProxyAuthWithWrongPassword() throws Exception {
+    void testProxyAuthWithWrongPassword() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
@@ -95,7 +95,7 @@ public class ResolverDirectHTTPTest {
 
     @Test
     @Disabled
-    public void testServerAuth() throws Exception {
+    void testServerAuth() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
@@ -111,7 +111,7 @@ public class ResolverDirectHTTPTest {
 
     @Test
     @Disabled
-    public void testServerAuthWithWrongPassword() throws Exception {
+    void testServerAuthWithWrongPassword() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);
@@ -132,7 +132,7 @@ public class ResolverDirectHTTPTest {
 
     @Test
     @Disabled
-    public void testProxyAndServerAuth() throws Exception {
+    void testProxyAndServerAuth() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uri = doc.createAttribute("URI");
         uri.setNodeValue(url);

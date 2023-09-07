@@ -20,42 +20,33 @@ package org.apache.xml.security.test.dom.signature;
 
 
 import java.io.File;
-import java.io.FileInputStream;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class NoKeyInfoTest {
-
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class NoKeyInfoTest {
 
     static {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testNullKeyInfo() throws Exception {
-        File f = null;
-        String filename =
-            "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            f = new File(BASEDIR + SEP + filename);
-        } else {
-            f = new File(filename);
-        }
-        Document doc = XMLUtils.read(new FileInputStream(f), false);
+    @Test
+    void testNullKeyInfo() throws Exception {
+        String filename = "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/signature-enveloping-hmac-sha1.xml";
+        File f = XmlSecTestEnvironment.resolveFile(filename);
+        Document doc = XMLUtils.read(f, false);
         NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpecNS, "Signature");
-        XMLSignature sig = new XMLSignature
-            ((Element) nl.item(0), f.toURI().toURL().toString());
+        XMLSignature sig = new XMLSignature((Element) nl.item(0), f.toURI().toURL().toString());
         KeyInfo ki = sig.getKeyInfo();
         assertNull(ki);
     }

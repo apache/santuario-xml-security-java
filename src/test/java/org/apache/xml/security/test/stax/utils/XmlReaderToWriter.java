@@ -18,41 +18,68 @@
  */
 package org.apache.xml.security.test.stax.utils;
 
-// Revised from xmlbeans
-
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.stream.events.XMLEvent;
 
 public final class XmlReaderToWriter {
+
     private XmlReaderToWriter() {
     }
 
-    public static void writeAll(XMLStreamReader xmlr, XMLStreamWriter writer)
+
+    /**
+     * Writes everything from the reader to the writer, then closes both reader and writer.
+     *
+     * @param reader
+     * @param writer
+     * @throws XMLStreamException
+     */
+    public static void writeAllAndClose(XMLStreamReader reader, XMLStreamWriter writer) throws XMLStreamException {
+        try {
+            try {
+                writeAll(reader, writer);
+            } finally {
+                reader.close();
+            }
+        } finally {
+            writer.close();
+        }
+    }
+
+
+    /**
+     * Writes everything from the reader to the writer. Doesn't close the input.
+     *
+     * @param reader
+     * @param writer
+     * @throws XMLStreamException
+     */
+    public static void writeAll(XMLStreamReader reader, XMLStreamWriter writer)
             throws XMLStreamException {
         // Some implementations, Woodstox for example, already position their reader ON the first event, which is.
         // typically a START_DOCUMENT event.
         // If already positioned on an event, that is indicated by the event type.
         // Make sure we don't miss the initial event.
-        if (xmlr.getEventType() > 0) {
-            write(xmlr, writer);
+        if (reader.getEventType() > 0) {
+            write(reader, writer);
         }
-        while (xmlr.hasNext()) {
-            xmlr.next();
-            write(xmlr, writer);
+        while (reader.hasNext()) {
+            reader.next();
+            write(reader, writer);
         }
         //write(xmlr, writer); // write the last element
         writer.flush();
     }
 
-    public static void write(XMLStreamReader xmlr, XMLStreamWriter writer) throws XMLStreamException {
-        switch (xmlr.getEventType()) {
-            case XMLEvent.START_ELEMENT:
-                final String localName = xmlr.getLocalName();
-                final String namespaceURI = xmlr.getNamespaceURI();
+    public static void write(XMLStreamReader reader, XMLStreamWriter writer) throws XMLStreamException {
+        switch (reader.getEventType()) {
+            case XMLStreamConstants.START_ELEMENT:
+                final String localName = reader.getLocalName();
+                final String namespaceURI = reader.getNamespaceURI();
                 if (namespaceURI != null && namespaceURI.length() > 0) {
-                    final String prefix = xmlr.getPrefix();
+                    final String prefix = reader.getPrefix();
                     if (prefix != null) {
                         writer.writeStartElement(prefix, localName, namespaceURI);
                     } else {
@@ -62,67 +89,67 @@ public final class XmlReaderToWriter {
                     writer.writeStartElement(localName);
                 }
 
-                for (int i = 0, len = xmlr.getNamespaceCount(); i < len; i++) {
-                    String prefix = xmlr.getNamespacePrefix(i);
+                for (int i = 0, len = reader.getNamespaceCount(); i < len; i++) {
+                    String prefix = reader.getNamespacePrefix(i);
                     if (prefix == null) {
-                        writer.writeDefaultNamespace(xmlr.getNamespaceURI(i));
+                        writer.writeDefaultNamespace(reader.getNamespaceURI(i));
                     } else {
-                        writer.writeNamespace(prefix, xmlr.getNamespaceURI(i));
+                        writer.writeNamespace(prefix, reader.getNamespaceURI(i));
                     }
                 }
 
-                for (int i = 0, len = xmlr.getAttributeCount(); i < len; i++) {
-                    final String attUri = xmlr.getAttributeNamespace(i);
+                for (int i = 0, len = reader.getAttributeCount(); i < len; i++) {
+                    final String attUri = reader.getAttributeNamespace(i);
 
                     if (attUri != null && attUri.length() > 0) {
-                        final String prefix = xmlr.getAttributePrefix(i);
+                        final String prefix = reader.getAttributePrefix(i);
                         if (prefix != null) {
-                            writer.writeAttribute(prefix, attUri, xmlr.getAttributeLocalName(i), xmlr.getAttributeValue(i));
+                            writer.writeAttribute(prefix, attUri, reader.getAttributeLocalName(i), reader.getAttributeValue(i));
                         } else {
-                            writer.writeAttribute(attUri, xmlr.getAttributeLocalName(i), xmlr.getAttributeValue(i));
+                            writer.writeAttribute(attUri, reader.getAttributeLocalName(i), reader.getAttributeValue(i));
                         }
                     } else {
-                        writer.writeAttribute(xmlr.getAttributeLocalName(i), xmlr.getAttributeValue(i));
+                        writer.writeAttribute(reader.getAttributeLocalName(i), reader.getAttributeValue(i));
                     }
 
                 }
                 break;
-            case XMLEvent.END_ELEMENT:
+            case XMLStreamConstants.END_ELEMENT:
                 writer.writeEndElement();
                 break;
-            case XMLEvent.SPACE:
-            case XMLEvent.CHARACTERS:
-                char[] text = new char[xmlr.getTextLength()];
-                xmlr.getTextCharacters(0, text, 0, xmlr.getTextLength());
+            case XMLStreamConstants.SPACE:
+            case XMLStreamConstants.CHARACTERS:
+                char[] text = new char[reader.getTextLength()];
+                reader.getTextCharacters(0, text, 0, reader.getTextLength());
                 writer.writeCharacters(text, 0, text.length);
                 break;
-            case XMLEvent.PROCESSING_INSTRUCTION:
-                writer.writeProcessingInstruction(xmlr.getPITarget(), xmlr.getPIData());
+            case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                writer.writeProcessingInstruction(reader.getPITarget(), reader.getPIData());
                 break;
-            case XMLEvent.CDATA:
-                writer.writeCData(xmlr.getText());
+            case XMLStreamConstants.CDATA:
+                writer.writeCData(reader.getText());
                 break;
-            case XMLEvent.COMMENT:
-                writer.writeComment(xmlr.getText());
+            case XMLStreamConstants.COMMENT:
+                writer.writeComment(reader.getText());
                 break;
-            case XMLEvent.ENTITY_REFERENCE:
-                writer.writeEntityRef(xmlr.getLocalName());
+            case XMLStreamConstants.ENTITY_REFERENCE:
+                writer.writeEntityRef(reader.getLocalName());
                 break;
-            case XMLEvent.START_DOCUMENT:
-                String encoding = xmlr.getCharacterEncodingScheme();
-                String version = xmlr.getVersion();
+            case XMLStreamConstants.START_DOCUMENT:
+                String encoding = reader.getCharacterEncodingScheme();
+                String version = reader.getVersion();
 
                 if (encoding != null && version != null) {
                     writer.writeStartDocument(encoding, version);
                 } else if (version != null) {
-                    writer.writeStartDocument(xmlr.getVersion());
+                    writer.writeStartDocument(reader.getVersion());
                 }
                 break;
-            case XMLEvent.END_DOCUMENT:
+            case XMLStreamConstants.END_DOCUMENT:
                 writer.writeEndDocument();
                 break;
-            case XMLEvent.DTD:
-                writer.writeDTD(xmlr.getText());
+            case XMLStreamConstants.DTD:
+                writer.writeDTD(reader.getText());
                 break;
         }
     }

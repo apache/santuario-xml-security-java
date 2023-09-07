@@ -92,9 +92,7 @@ public class TransformXPath2Filter extends TransformSpi {
             }
 
             XPathFactory xpathFactory = getXPathFactory();
-            for (int i = 0; i < xpathElements.length; i++) {
-                Element xpathElement = xpathElements[i];
-
+            for (Element xpathElement : xpathElements) {
                 XPath2FilterContainer xpathContainer =
                     XPath2FilterContainer.newInstance(xpathElement, input.getSourceURI());
 
@@ -158,6 +156,7 @@ class XPath2NodeFilter implements NodeFilter {
     /**
      * @see org.apache.xml.security.signature.NodeFilter#isNodeInclude(org.w3c.dom.Node)
      */
+    @Override
     public int isNodeInclude(Node currentNode) {
         int result = 1;
 
@@ -180,6 +179,7 @@ class XPath2NodeFilter implements NodeFilter {
         return result;
     }
 
+    @Override
     public int isNodeIncludeDO(Node n, int level) {
         int result = 1;
         if (hasSubtractFilter) {

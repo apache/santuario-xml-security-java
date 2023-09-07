@@ -20,6 +20,8 @@ package org.apache.xml.security.signature;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.Key;
 import java.security.Provider;
 import java.security.PublicKey;
@@ -197,12 +199,19 @@ public final class XMLSignature extends SignatureElementProxy {
     public static final String ALGO_ID_SIGNATURE_ECDSA_RIPEMD160 =
         "http://www.w3.org/2007/05/xmldsig-more#ecdsa-ripemd160";
 
+    /**Signature - EDDSA ED25519 */
+    public static final String ALGO_ID_SIGNATURE_EDDSA_ED25519 =
+            "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed25519";
+
+    /**Signature - EDDSA ED448 */
+    public static final String ALGO_ID_SIGNATURE_EDDSA_ED448 =
+            "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448";
+
     /** Signature - Optional RSASSA-PSS */
     public static final String ALGO_ID_SIGNATURE_RSA_PSS =
             Constants.XML_DSIG_NS_MORE_07_05 + "rsa-pss";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XMLSignature.class);
+    private static final Logger LOG = System.getLogger(XMLSignature.class.getName());
 
     /** ds:Signature.ds:SignedInfo element */
     private final SignedInfo signedInfo;
@@ -855,23 +864,23 @@ public final class XMLSignature extends SignatureElementProxy {
             //create a SignatureAlgorithms from the SignatureMethod inside
             //SignedInfo. This is used to validate the signature.
             SignatureAlgorithm sa = si.getSignatureAlgorithm();
-            LOG.debug("signatureMethodURI = {}", sa.getAlgorithmURI());
-            LOG.debug("jceSigAlgorithm = {}", sa.getJCEAlgorithmString());
-            LOG.debug("PublicKey = {}", pk);
+            LOG.log(Level.DEBUG, "signatureMethodURI = {0}", sa.getAlgorithmURI());
+            LOG.log(Level.DEBUG, "jceSigAlgorithm = {0}", sa.getJCEAlgorithmString());
+            LOG.log(Level.DEBUG, "PublicKey = {0}", pk);
 
             byte[] sigBytes = null;
             try (SignerOutputStream so = new SignerOutputStream(sa);
                 OutputStream bos = new UnsyncBufferedOutputStream(so)) {
 
                 sa.initVerify(pk);
-                LOG.debug("jceSigProvider = {}", sa.getJCEProviderName());
+                LOG.log(Level.DEBUG, "jceSigProvider = {0}", sa.getJCEProviderName());
 
                 // Get the canonicalized (normalized) SignedInfo
                 si.signInOctetStream(bos);
                 // retrieve the byte[] from the stored signature
                 sigBytes = this.getSignatureValue();
             } catch (IOException ex) {
-                LOG.debug(ex.getMessage(), ex);
+                LOG.log(Level.DEBUG, ex.getMessage(), ex);
                 // Impossible...
             } catch (XMLSecurityException ex) {
                 throw ex;
@@ -880,7 +889,7 @@ public final class XMLSignature extends SignatureElementProxy {
             // have SignatureAlgorithm sign the input bytes and compare them to
             // the bytes that were stored in the signature.
             if (!sa.verify(sigBytes)) {
-                LOG.warn("Signature verification failed.");
+                LOG.log(Level.WARNING, "Signature verification failed.");
                 return false;
             }
 
@@ -1019,6 +1028,7 @@ public final class XMLSignature extends SignatureElementProxy {
      *
      * @return Constants._TAG_SIGNATURE
      */
+    @Override
     public String getBaseLocalName() {
         return Constants._TAG_SIGNATURE;
     }

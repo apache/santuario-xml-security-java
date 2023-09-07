@@ -28,28 +28,43 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dom.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.dom.DOMSignContext;
-import javax.xml.crypto.dsig.dom.DOMValidateContext;
-import javax.xml.crypto.dsig.keyinfo.KeyInfo;
-
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.Provider;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.crypto.KeySelector;
+import javax.xml.crypto.KeySelectorException;
+import javax.xml.crypto.KeySelectorResult;
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dom.DOMCryptoContext;
+import javax.xml.crypto.dsig.Manifest;
+import javax.xml.crypto.dsig.Reference;
+import javax.xml.crypto.dsig.SignatureMethod;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.XMLObject;
+import javax.xml.crypto.dsig.XMLSignContext;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureException;
+import javax.xml.crypto.dsig.XMLValidateContext;
+import javax.xml.crypto.dsig.dom.DOMSignContext;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
+
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * DOM-based implementation of XMLSignature.
@@ -58,13 +73,13 @@ import org.apache.xml.security.utils.XMLUtils;
 public final class DOMXMLSignature extends DOMStructure
     implements XMLSignature {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMXMLSignature.class);
-    private String id;
-    private SignatureValue sv;
+    private static final Logger LOG = System.getLogger(DOMXMLSignature.class.getName());
+
+    private final String id;
+    private final SignatureValue sv;
     private KeyInfo ki;
     private List<XMLObject> objects;
-    private SignedInfo si;
+    private final SignedInfo si;
     private Document ownerDoc = null;
     private Element localSigElem = null;
     private Element sigElem = null;
@@ -170,26 +185,32 @@ public final class DOMXMLSignature extends DOMStructure
         }
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public KeyInfo getKeyInfo() {
         return ki;
     }
 
+    @Override
     public SignedInfo getSignedInfo() {
         return si;
     }
 
+    @Override
     public List<XMLObject> getObjects() {
         return objects;
     }
 
+    @Override
     public SignatureValue getSignatureValue() {
         return sv;
     }
 
+    @Override
     public KeySelectorResult getKeySelectorResult() {
         return ksr;
     }
@@ -230,8 +251,8 @@ public final class DOMXMLSignature extends DOMStructure
         }
 
         // create and append Object elements if necessary
-        for (int i = 0, size = objects.size(); i < size; i++) {
-            ((DOMXMLObject)objects.get(i)).marshal(sigElem, dsPrefix, context);
+        for (XMLObject object : objects) {
+            ((DOMXMLObject)object).marshal(sigElem, dsPrefix, context);
         }
 
         // append Id attribute
@@ -272,11 +293,11 @@ public final class DOMXMLSignature extends DOMStructure
         for (int i = 0, size = refs.size(); validateRefs && i < size; i++) {
             Reference ref = refs.get(i);
             boolean refValid = ref.validate(vc);
-            LOG.debug("Reference [{}] is valid: {}", ref.getURI(), refValid);
+            LOG.log(Level.DEBUG, "Reference [{0}] is valid: {1}", ref.getURI(), refValid);
             validateRefs &= refValid;
         }
         if (!validateRefs) {
-            LOG.debug("Couldn't validate the References");
+            LOG.log(Level.DEBUG, "Couldn't validate the References");
             validationStatus = false;
             validated = true;
             return validationStatus;
@@ -295,7 +316,7 @@ public final class DOMXMLSignature extends DOMStructure
                 for (int j = 0; validateMans && j < csize; j++) {
                     XMLStructure xs = content.get(j);
                     if (xs instanceof Manifest) {
-                        LOG.debug("validating manifest");
+                        LOG.log(Level.DEBUG, "validating manifest");
                         Manifest man = (Manifest)xs;
                         @SuppressWarnings("unchecked")
                         List<Reference> manRefs = man.getReferences();
@@ -303,8 +324,8 @@ public final class DOMXMLSignature extends DOMStructure
                         for (int k = 0; validateMans && k < rsize; k++) {
                             Reference ref = manRefs.get(k);
                             boolean refValid = ref.validate(vc);
-                            LOG.debug(
-                                "Manifest ref [{}] is valid: {}", ref.getURI(),  refValid
+                            LOG.log(Level.DEBUG,
+                                "Manifest ref [{0}] is valid: {1}", ref.getURI(),  refValid
                             );
                             validateMans &= refValid;
                         }
@@ -456,13 +477,12 @@ public final class DOMXMLSignature extends DOMStructure
             if (parsedId != null && signatureIdMap.containsKey(parsedId)) {
                 XMLStructure xs = signatureIdMap.get(parsedId);
                 if (xs instanceof DOMReference) {
-                    digestReference((DOMReference)xs, signContext);
+                    digestReference((DOMReference) xs, signContext);
                 } else if (xs instanceof Manifest) {
-                    Manifest man = (Manifest)xs;
+                    Manifest man = (Manifest) xs;
                     List<Reference> manRefs = DOMManifest.getManifestReferences(man);
-                    for (int i = 0, size = manRefs.size(); i < size; i++) {
-                        digestReference((DOMReference)manRefs.get(i),
-                                        signContext);
+                    for (Reference manRef : manRefs) {
+                        digestReference((DOMReference) manRef, signContext);
                     }
                 }
             }
@@ -514,10 +534,12 @@ public final class DOMXMLSignature extends DOMStructure
             this.sigValueElem = sigValueElem;
         }
 
+        @Override
         public String getId() {
             return id;
         }
 
+        @Override
         public byte[] getValue() {
             return (value == null) ? null : value.clone();
         }
@@ -601,6 +623,7 @@ public final class DOMXMLSignature extends DOMStructure
             return result;
         }
 
+        @Override
         public void marshal(Node parent, String dsPrefix,
                             DOMCryptoContext context)
             throws MarshalException

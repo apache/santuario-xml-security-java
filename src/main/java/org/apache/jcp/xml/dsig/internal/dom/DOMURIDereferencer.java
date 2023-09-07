@@ -21,18 +21,23 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import javax.xml.crypto.Data;
+import javax.xml.crypto.URIDereferencer;
+import javax.xml.crypto.URIReference;
+import javax.xml.crypto.URIReferenceException;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.dom.DOMCryptoContext;
+import javax.xml.crypto.dom.DOMURIReference;
 
 import org.apache.xml.security.Init;
+import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
-import org.apache.xml.security.signature.XMLSignatureInput;
-
-import javax.xml.crypto.*;
-import javax.xml.crypto.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * DOM-based implementation of URIDereferencer.
@@ -48,6 +53,7 @@ public final class DOMURIDereferencer implements URIDereferencer {
         Init.init();
     }
 
+    @Override
     public Data dereference(URIReference uriRef, XMLCryptoContext context)
         throws URIReferenceException {
 
@@ -88,7 +94,7 @@ public final class DOMURIDereferencer implements URIDereferencer {
                     }
                 }
 
-                XMLSignatureInput result = new XMLSignatureInput(referencedElem);
+                XMLSignatureInput result = new XMLSignatureNodeInput(referencedElem);
                 result.setSecureValidation(secVal);
                 if (!uri.substring(1).startsWith("xpointer(id(")) {
                     result.setExcludeComments(true);
@@ -108,11 +114,10 @@ public final class DOMURIDereferencer implements URIDereferencer {
         if ((uriRef instanceof javax.xml.crypto.dsig.Reference) || resContext.isURISafeToResolve()) {
             try {
                 XMLSignatureInput in = ResourceResolver.resolve(resContext);
-                if (in.isOctetStream()) {
+                if (in.hasUnprocessedInput()) {
                     return new ApacheOctetStreamData(in);
-                } else {
-                    return new ApacheNodeSetData(in);
                 }
+                return new ApacheNodeSetData(in);
             } catch (Exception e) {
                 throw new URIReferenceException(e);
             }

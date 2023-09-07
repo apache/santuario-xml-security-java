@@ -31,7 +31,9 @@ import java.util.Collections;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -39,29 +41,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Test bugfix 41892: XML Security 1.4.0 does not build with IBM's JDK
  */
-public class XMLX509SKITest {
+class XMLX509SKITest {
 
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
-    private CertificateFactory cf;
+    private final CertificateFactory cf;
 
     public XMLX509SKITest() throws Exception {
         cf = CertificateFactory.getInstance("X.509");
     }
 
-    @org.junit.jupiter.api.Test
-    public void testGetSKIBytesFromCert() throws Exception {
-        File f = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            f = new File(BASEDIR + SEP +
-                "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
-        } else {
-            f = new File(
-                "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+    @Test
+    void testGetSKIBytesFromCert() throws Exception {
+        File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+        X509Certificate cert;
+        try (FileInputStream fis = new FileInputStream(f)) {
+            cert = (X509Certificate) cf.generateCertificate(fis);
         }
-
-        FileInputStream fis = new FileInputStream(f);
-        X509Certificate cert = (X509Certificate) cf.generateCertificate(fis);
 
         // Get subject key identifier from certificate
         byte[] skid = XMLX509SKI.getSKIBytesFromCert(cert);

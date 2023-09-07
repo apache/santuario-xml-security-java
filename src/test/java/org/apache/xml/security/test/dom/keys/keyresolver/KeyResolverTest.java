@@ -57,10 +57,12 @@ import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.keys.storage.implementations.KeyStoreResolver;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -68,10 +70,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * KeyResolver test.
  */
-public class KeyResolverTest {
-
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class KeyResolverTest {
 
     public KeyResolverTest() {
         org.apache.xml.security.Init.init();
@@ -80,8 +79,8 @@ public class KeyResolverTest {
     /**
      * Test key resolvers through a KeyInfo.
      */
-    @org.junit.jupiter.api.Test
-    public void testKeyResolvers() throws Exception {
+    @Test
+    void testKeyResolvers() throws Exception {
 
         //
         // This test fails with the IBM JDK
@@ -92,13 +91,9 @@ public class KeyResolverTest {
 
         char[] pwd = "secret".toCharArray();
         KeyStore ks = KeyStore.getInstance("JCEKS");
-        FileInputStream fis = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis = new FileInputStream(BASEDIR + SEP + "src/test/resources/test.jceks");
-        } else {
-            fis = new FileInputStream("src/test/resources/test.jceks");
+        try (FileInputStream fis = new FileInputStream(resolveFile("src/test/resources/test.jceks"))) {
+            ks.load(fis, pwd);
         }
-        ks.load(fis, pwd);
 
         X509Certificate cert = (X509Certificate)ks.getCertificate("rsakey");
         PublicKey publicKey = cert.getPublicKey();
@@ -194,8 +189,8 @@ public class KeyResolverTest {
      * Decrypt the data by resolving the Key Encryption Key.
      * This test verifies if a KeyResolver can return a PrivateKey.
      */
-    @org.junit.jupiter.api.Test
-    public void testResolvePrivateKey() throws Exception {
+    @Test
+    void testResolvePrivateKey() throws Exception {
         // See if AES-128 is available...
         String algorithmId =
             JCEMapper.translateURItoJCEID(

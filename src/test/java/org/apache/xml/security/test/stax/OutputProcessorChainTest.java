@@ -33,7 +33,6 @@ import org.apache.xml.security.stax.ext.XMLSecurityProperties;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.impl.OutboundSecurityContextImpl;
 import org.apache.xml.security.stax.impl.OutputProcessorChainImpl;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  */
-public class OutputProcessorChainTest {
+class OutputProcessorChainTest {
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -121,7 +120,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorPhase1() {
+    void testAddProcessorPhase1() {
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
@@ -142,7 +141,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorPhase2() {
+    void testAddProcessorPhase2() {
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
@@ -182,7 +181,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorBefore1() {
+    void testAddProcessorBefore1() {
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
@@ -225,7 +224,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorAfter1() {
+    void testAddProcessorAfter1() {
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
@@ -268,7 +267,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testAddProcessorBeforeAndAfter1() {
+    void testAddProcessorBeforeAndAfter1() {
         OutputProcessorChainImpl outputProcessorChain = new OutputProcessorChainImpl(new OutboundSecurityContextImpl());
 
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
@@ -308,7 +307,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testOrderOfProcessorsIsIndependentOfWhenTheyAreAddedToTheChain() {
+    void testOrderOfProcessorsIsIndependentOfWhenTheyAreAddedToTheChain() {
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         AbstractOutputProcessor outputProcessor2 = new AbstractOutputProcessor() {
@@ -342,7 +341,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testActionOrderOfProcessorsGroupsThemTogether() {
+    void testActionOrderOfProcessorsGroupsThemTogether() {
         AbstractOutputProcessor finalOutputProcessor = new AbstractOutputProcessor() {
         };
         finalOutputProcessor.setAction(null, -1);
@@ -385,7 +384,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testConflictingOrderOfProcessors1() {
+    void testConflictingOrderOfProcessors1() {
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessor1.setAction(null, -1);
@@ -405,7 +404,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testConflictingOrderOfProcessors2() {
+    void testConflictingOrderOfProcessors2() {
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessor1.setAction(null, -1);
@@ -425,7 +424,7 @@ public class OutputProcessorChainTest {
     }
 
     @Test
-    public void testConflictingOrderOfProcessors3() {
+    void testConflictingOrderOfProcessors3() {
         AbstractOutputProcessor outputProcessor1 = new AbstractOutputProcessor() {
         };
         outputProcessor1.setAction(null, -1);

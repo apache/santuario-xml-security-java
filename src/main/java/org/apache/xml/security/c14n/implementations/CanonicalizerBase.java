@@ -103,6 +103,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
+    @Override
     public void engineCanonicalizeSubTree(Node rootNode, OutputStream writer)
         throws CanonicalizationException {
         engineCanonicalizeSubTree(rootNode, (Node)null, writer);
@@ -115,6 +116,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
      * @param writer OutputStream to write the canonicalization result
      * @throws CanonicalizationException
      */
+    @Override
     public void engineCanonicalizeXPathNodeSet(Set<Node> xpathNodeSet, OutputStream writer)
         throws CanonicalizationException {
         this.xpathNodeSet = xpathNodeSet;
@@ -134,7 +136,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             if (input.isExcludeComments()) {
                 includeComments = false;
             }
-            if (input.isOctetStream()) {
+            if (input.hasUnprocessedInput()) {
                 engineCanonicalize(input.getBytes(), writer, secureValidation);
             } else if (input.isElement()) {
                 engineCanonicalizeSubTree(input.getSubNode(), input.getExcludeNode(), writer);
@@ -453,12 +455,16 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         } while(true);
     }
 
-    protected int isVisibleDO(Node currentNode, int level) {
+    protected int isVisibleDO(Node currentNode, int level) throws CanonicalizationException {
         if (nodeFilter != null) {
             for (NodeFilter filter : nodeFilter) {
-                int i = filter.isNodeIncludeDO(currentNode, level);
-                if (i != 1) {
-                    return i;
+                try {
+                    int i = filter.isNodeIncludeDO(currentNode, level);
+                    if (i != 1) {
+                        return i;
+                    }
+                } catch (Exception e) {
+                    throw new CanonicalizationException(e);
                 }
             }
         }
@@ -468,12 +474,16 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         return 1;
     }
 
-    protected int isVisibleInt(Node currentNode) {
+    protected int isVisibleInt(Node currentNode) throws CanonicalizationException {
         if (nodeFilter != null) {
             for (NodeFilter filter : nodeFilter) {
-                int i = filter.isNodeInclude(currentNode);
-                if (i != 1) {
-                    return i;
+                try {
+                    int i = filter.isNodeInclude(currentNode);
+                    if (i != 1) {
+                        return i;
+                    }
+                } catch (Exception e) {
+                    throw new CanonicalizationException(e);
                 }
             }
         }
@@ -483,11 +493,15 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         return 1;
     }
 
-    protected boolean isVisible(Node currentNode) {
+    protected boolean isVisible(Node currentNode) throws CanonicalizationException {
         if (nodeFilter != null) {
             for (NodeFilter filter : nodeFilter) {
-                if (filter.isNodeInclude(currentNode) != 1) {
-                    return false;
+                try {
+                    if (filter.isNodeInclude(currentNode) != 1) {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    throw new CanonicalizationException(e);
                 }
             }
         }

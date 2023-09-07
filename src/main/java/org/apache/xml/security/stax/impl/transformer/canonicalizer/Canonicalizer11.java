@@ -18,12 +18,15 @@
  */
 package org.apache.xml.security.stax.impl.transformer.canonicalizer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
-
-import javax.xml.namespace.QName;
-import java.util.*;
 
 /**
  */

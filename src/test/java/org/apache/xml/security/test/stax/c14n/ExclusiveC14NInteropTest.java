@@ -50,7 +50,7 @@ import org.w3c.dom.Document;
 /**
  * Interop test for exclusive canonical XML.
  */
-public class ExclusiveC14NInteropTest {
+class ExclusiveC14NInteropTest {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -63,7 +63,7 @@ public class ExclusiveC14NInteropTest {
             "92540127839696181660603196559927599444985269069164107041817893521317620801749269178254275499516782269048036232822187472000302495112526925817061777055402839811893512245205312429410597288465276425092799962454093795367121466944495977844096953319768287183660390415542263887700389610463126158583843139357076400271";
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -77,11 +77,9 @@ public class ExclusiveC14NInteropTest {
 
 
     @Test
-    public void test_Y1() throws Exception {
+    void test_Y1() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream("interop/c14n/Y1/exc-signature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        Document document = XMLUtils.readResource("interop/c14n/Y1/exc-signature.xml", getClass().getClassLoader(), false);
 
         // Set up the Key
         Key publicKey = getPublicKey();

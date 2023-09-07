@@ -18,6 +18,19 @@
  */
 package org.apache.xml.security.test.stax.transformer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.config.Init;
 import org.apache.xml.security.stax.ext.Transformer;
@@ -29,25 +42,12 @@ import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  */
-public class TransformBase64DecodeTest {
+class TransformBase64DecodeTest {
 
     private XMLInputFactory xmlInputFactory;
 
@@ -60,7 +60,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void testXMLSecEventToXMLSecEventAPI() throws Exception {
+    void testXMLSecEventToXMLSecEventAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
 
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
@@ -125,7 +125,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void testXMLSecEventToInputStreamAPI() throws Exception {
+    void testXMLSecEventToInputStreamAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
 
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -194,7 +194,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
+    void testXMLSecEventToOutputStreamStreamAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformBase64Decode.setOutputStream(byteArrayOutputStream);
@@ -225,7 +225,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void testInputStreamToOutputStreamStreamAPI() throws Exception {
+    void testInputStreamToOutputStreamStreamAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         transformBase64Decode.setOutputStream(byteArrayOutputStream);
@@ -237,7 +237,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void testInputStreamToXMLSecEventAPI() throws Exception {
+    void testInputStreamToXMLSecEventAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final List<XMLSecEvent> xmlSecEvents = new ArrayList<>();
 
@@ -285,7 +285,7 @@ public class TransformBase64DecodeTest {
     }
 
     @Test
-    public void testInputStreamToInputStreamAPI() throws Exception {
+    void testInputStreamToInputStreamAPI() throws Exception {
         TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 

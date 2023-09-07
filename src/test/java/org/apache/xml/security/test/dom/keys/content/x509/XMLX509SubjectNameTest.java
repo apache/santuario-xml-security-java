@@ -25,7 +25,9 @@ import java.security.cert.X509Certificate;
 
 import org.apache.xml.security.keys.content.x509.XMLX509SubjectName;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -33,26 +35,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Certificate parsing test.
  *
  */
-public class XMLX509SubjectNameTest {
+class XMLX509SubjectNameTest {
 
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
-
-    @org.junit.jupiter.api.Test
-    public void testEqualsAndHashCode() throws Exception {
-        File f = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            f = new File(BASEDIR + SEP +
-                    "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
-        } else {
-            f = new File(
-                    "src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+    @Test
+    void testEqualsAndHashCode() throws Exception {
+        File f = resolveFile("src/test/resources/ie/baltimore/merlin-examples/merlin-xmldsig-twenty-three/certs/lugh.crt");
+        X509Certificate cert;
+        try (FileInputStream fis = new FileInputStream(f)) {
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            cert = (X509Certificate) cf.generateCertificate(fis);
         }
-
-        FileInputStream fis = new FileInputStream(f);
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        X509Certificate cert = (X509Certificate) cf.generateCertificate(fis);
 
         XMLX509SubjectName x509SubjectName1 = new XMLX509SubjectName(TestUtils.newDocument(), cert);
         assertNotNull(x509SubjectName1.getSubjectName());

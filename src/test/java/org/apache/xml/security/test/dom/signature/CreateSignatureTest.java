@@ -44,17 +44,19 @@ import org.apache.xml.security.signature.SignatureProperty;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.transforms.params.XPath2FilterContainer;
 import org.apache.xml.security.transforms.params.XPathContainer;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,15 +66,9 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Tests that create signatures.
  *
  */
-public class CreateSignatureTest {
+class CreateSignatureTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(CreateSignatureTest.class);
-
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
-
-    private KeyPair kp;
+    private final KeyPair kp;
 
     public CreateSignatureTest() throws Exception {
         org.apache.xml.security.Init.init();
@@ -83,8 +79,8 @@ public class CreateSignatureTest {
      * Test for bug 36044 - Canonicalizing an empty node-set throws an
      * ArrayIndexOutOfBoundsException.
      */
-    @org.junit.jupiter.api.Test
-    public void testEmptyNodeSet() throws Exception {
+    @Test
+    void testEmptyNodeSet() throws Exception {
         Document doc = TestUtils.newDocument();
         Element envelope = doc.createElementNS("http://www.usps.gov/", "Envelope");
         envelope.appendChild(doc.createTextNode("\n"));
@@ -118,35 +114,28 @@ public class CreateSignatureTest {
         );
 
         KeyStore ks = KeyStore.getInstance("JKS");
-        FileInputStream fis = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis =
-                new FileInputStream(BASEDIR + SEP
-                    + "src/test/resources/org/apache/xml/security/samples/input/keystore.jks"
-                );
-        } else {
-            fis =
-                new FileInputStream("src/test/resources/org/apache/xml/security/samples/input/keystore.jks");
+        try (FileInputStream fis = new FileInputStream(
+            resolveFile("src/test/resources/org/apache/xml/security/samples/input/keystore.jks"))) {
+            ks.load(fis, "xmlsecurity".toCharArray());
         }
-        ks.load(fis, "xmlsecurity".toCharArray());
         PrivateKey privateKey = (PrivateKey) ks.getKey("test", "xmlsecurity".toCharArray());
 
         sig.sign(privateKey);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testOne() throws Exception {
+    @Test
+    void testOne() throws Exception {
         doVerify(doSign());
         doVerify(doSign());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testTwo() throws Exception {
+    @Test
+    void testTwo() throws Exception {
         doSignWithCert();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testWithNSPrefixDisabled() throws Exception {
+    @Test
+    void testWithNSPrefixDisabled() throws Exception {
         String prefix = ElementProxy.getDefaultPrefix(Constants.SignatureSpecNS);
         try {
             ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "");
@@ -158,8 +147,8 @@ public class CreateSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXPathSignature() throws Exception {
+    @Test
+    void testXPathSignature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -211,8 +200,8 @@ public class CreateSignatureTest {
         assertTrue(signature.checkSignatureValue(kp.getPublic()));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testCanonicalizedOctetStream() throws Exception {
+    @Test
+    void testCanonicalizedOctetStream() throws Exception {
         String signedXML = doSign();
 
         Document doc = null;
@@ -253,8 +242,8 @@ public class CreateSignatureTest {
         assertTrue(si.verify(false));
     }
 
-    @org.junit.jupiter.api.Test
-    public void testSHA256Digest() throws Exception {
+    @Test
+    void testSHA256Digest() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
@@ -292,8 +281,8 @@ public class CreateSignatureTest {
         doVerify(signedContent);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testSignatureProperties() throws Exception {
+    @Test
+    void testSignatureProperties() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
@@ -341,8 +330,8 @@ public class CreateSignatureTest {
         doVerify(signedContent, 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testAddDuplicateKeyInfo() throws Exception {
+    @Test
+    void testAddDuplicateKeyInfo() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
@@ -388,8 +377,8 @@ public class CreateSignatureTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testWrongSignatureName() throws Exception {
+    @Test
+    void testWrongSignatureName() throws Exception {
         PrivateKey privateKey = kp.getPrivate();
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
@@ -493,15 +482,7 @@ public class CreateSignatureTest {
     }
 
     private String doSignWithCert() throws Exception {
-        KeyStore ks = KeyStore.getInstance("JKS");
-        FileInputStream fis = null;
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis = new FileInputStream(BASEDIR + SEP +
-            "src/test/resources/test.jks");
-        } else {
-            fis = new FileInputStream("src/test/resources/test.jks");
-        }
-        ks.load(fis, "changeit".toCharArray());
+        KeyStore ks = XmlSecTestEnvironment.getTestKeyStore();
         PrivateKey privateKey = (PrivateKey) ks.getKey("mullan", "changeit".toCharArray());
         Document doc = TestUtils.newDocument();
         X509Certificate signingCert = (X509Certificate) ks.getCertificate("mullan");

@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.stax.impl.processor.output;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +27,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.OutputProcessorChain;
 import org.apache.xml.security.stax.ext.SecurePart;
@@ -42,7 +42,7 @@ import org.apache.xml.security.stax.impl.util.IDGenerator;
  */
 public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcessor {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(XMLSignatureOutputProcessor.class);
+    private static final transient Logger LOG = System.getLogger(XMLSignatureOutputProcessor.class.getName());
 
     public XMLSignatureOutputProcessor() throws XMLSecurityException {
         super();
@@ -66,7 +66,7 @@ public class XMLSignatureOutputProcessor extends AbstractSignatureOutputProcesso
             if (getActiveInternalSignatureOutputProcessor() == null) {
                 SecurePart securePart = securePartMatches(xmlSecStartElement, outputProcessorChain, XMLSecurityConstants.SIGNATURE_PARTS);
                 if (securePart != null) {
-                    LOG.debug("Matched securePart for signature");
+                    LOG.log(Level.DEBUG, "Matched securePart for signature");
 
                     InternalSignatureOutputProcessor internalSignatureOutputProcessor = null;
 

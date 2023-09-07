@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
-import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyPair;
@@ -41,8 +40,10 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -54,7 +55,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * A test to make sure that the various KeyWrap Encryption algorithms are working
  */
-public class KeyWrapEncryptionAlgorithmTest {
+class KeyWrapEncryptionAlgorithmTest {
 
     private static KeyPair rsaKeyPair;
     private static boolean bcInstalled;
@@ -87,18 +88,16 @@ public class KeyWrapEncryptionAlgorithmTest {
         rsaKeyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
 
-    @org.junit.jupiter.api.AfterAll
+    @AfterAll
     public static void cleanup() throws Exception {
         Security.removeProvider("BC");
     }
 
-    @org.junit.jupiter.api.Test
-    public void testAES128KW() throws Exception {
+    @Test
+    void testAES128KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -132,13 +131,11 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testAES192KW() throws Exception {
+    @Test
+    void testAES192KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -172,13 +169,11 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testAES256KW() throws Exception {
+    @Test
+    void testAES256KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
@@ -212,13 +207,11 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testTripleDESKW() throws Exception {
+    @Test
+    void testTripleDESKW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
@@ -250,13 +243,11 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testRSAv15KW() throws Exception {
+    @Test
+    void testRSAv15KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
@@ -286,13 +277,11 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testRSAOAEPKW() throws Exception {
+    @Test
+    void testRSAOAEPKW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
@@ -322,13 +311,11 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testRSAOAEP11KW() throws Exception {
+    @Test
+    void testRSAOAEP11KW() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("DESede");
@@ -358,15 +345,13 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testCamellia128KW() throws Exception {
+    @Test
+    void testCamellia128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -400,15 +385,13 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testCamellia192KW() throws Exception {
+    @Test
+    void testCamellia192KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -442,15 +425,13 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testCamellia256KW() throws Exception {
+    @Test
+    void testCamellia256KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("Camellia");
@@ -484,15 +465,13 @@ public class KeyWrapEncryptionAlgorithmTest {
         assertEquals(nodeList.getLength(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testSEED128KW() throws Exception {
+    @Test
+    void testSEED128KW() throws Exception {
         Assumptions.assumeTrue(bcInstalled);
 
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         KeyGenerator keygen = KeyGenerator.getInstance("SEED");

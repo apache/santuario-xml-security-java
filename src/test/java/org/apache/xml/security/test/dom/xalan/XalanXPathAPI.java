@@ -18,6 +18,16 @@
  */
 package org.apache.xml.security.test.dom.xalan;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.SourceLocator;
+import javax.xml.transform.TransformerException;
+
 import org.apache.xml.security.utils.XPathAPI;
 import org.apache.xml.utils.PrefixResolver;
 import org.apache.xml.utils.PrefixResolverDefault;
@@ -30,21 +40,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.SourceLocator;
-import javax.xml.transform.TransformerException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-
 /**
  * An implementation of XPathAPI using Xalan. This supports the "here()" function defined in the digital
  * signature spec.
  */
 class XalanXPathAPI implements XPathAPI {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(XalanXPathAPI.class);
+    private static final Logger LOG = System.getLogger(XalanXPathAPI.class.getName());
 
     private String xpathStr;
 
@@ -73,6 +75,7 @@ class XalanXPathAPI implements XPathAPI {
      *
      * @throws TransformerException
      */
+    @Override
     public NodeList selectNodeList(
         Node contextNode, Node xpathnode, String str, Node namespaceNode
     ) throws TransformerException {
@@ -91,6 +94,7 @@ class XalanXPathAPI implements XPathAPI {
      *  @param str The XPath expression
      *  @param namespaceNode The node from which prefixes in the XPath will be resolved to namespaces.
      */
+    @Override
     public boolean evaluate(Node contextNode, Node xpathnode, String str, Node namespaceNode)
         throws TransformerException {
         XObject object = eval(contextNode, xpathnode, str, namespaceNode);
@@ -100,6 +104,7 @@ class XalanXPathAPI implements XPathAPI {
     /**
      * Clear any context information from this object
      */
+    @Override
     public void clear() {
         xpathStr = null;
         xpath = null;
@@ -150,7 +155,7 @@ class XalanXPathAPI implements XPathAPI {
             Constructor<?> constructor = XPath.class.getConstructor(classes);
             xpath = (XPath) constructor.newInstance(objects);
         } catch (Exception ex) {
-            LOG.debug(ex.getMessage(), ex);
+            throw new IllegalStateException("Could not construct xpath for " + str, ex);
         }
         if (xpath == null) {
             xpath = new XPath(str, null, prefixResolver, XPath.SELECT, null);
@@ -161,11 +166,11 @@ class XalanXPathAPI implements XPathAPI {
     private static synchronized void fixupFunctionTable() {
         installed = false;
         if (new FunctionTable().functionAvailable("here")) {
-            LOG.debug("Here function already registered");
+            LOG.log(Level.DEBUG, "Here function already registered");
             installed = true;
             return;
         }
-        LOG.debug("Registering Here function");
+        LOG.log(Level.DEBUG, "Registering Here function");
         /**
          * Try to register our here() implementation as internal function.
          */
@@ -178,7 +183,7 @@ class XalanXPathAPI implements XPathAPI {
                 installed = true;
             }
         } catch (Exception ex) {
-            LOG.debug("Error installing function using the static installFunction method", ex);
+            LOG.log(Level.DEBUG, "Error installing function using the static installFunction method", ex);
         }
         if (!installed) {
             try {
@@ -189,13 +194,13 @@ class XalanXPathAPI implements XPathAPI {
                 installFunction.invoke(funcTable, params);
                 installed = true;
             } catch (Exception ex) {
-                LOG.debug("Error installing function using the static installFunction method", ex);
+                LOG.log(Level.DEBUG, "Error installing function using the static installFunction method", ex);
             }
         }
         if (installed) {
-            LOG.debug("Registered class {} for XPath function 'here()' function in internal table", FuncHere.class.getName());
+            LOG.log(Level.INFO, "Registered class {0} for XPath function 'here()' function in internal table", FuncHere.class.getName());
         } else {
-            LOG.debug("Unable to register class {} for XPath function 'here()' function in internal table", FuncHere.class.getName());
+            LOG.log(Level.DEBUG, "Unable to register class {0} for XPath function 'here()' function in internal table", FuncHere.class.getName());
         }
     }
 

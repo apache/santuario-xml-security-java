@@ -73,7 +73,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * XML Signature implementation. Thanks to Gregor Karlinger who provided these
  * test vectors. They are located in the directory <CODE>data/at/iaik/ixsil/</CODE>.
  */
-public class IAIKTest {
+class IAIKTest {
 
     // Define the Keys
     private static final String DSA_Y =
@@ -91,7 +91,7 @@ public class IAIKTest {
             "3";
 
     private XMLInputFactory xmlInputFactory;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private final TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -105,12 +105,10 @@ public class IAIKTest {
 
 
     @Test
-    public void test_signatureAlgorithms_signatures_hMACSignature() throws Exception {
+    void test_signatureAlgorithms_signatures_hMACSignature() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/hMACSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "at/iaik/ixsil/signatureAlgorithms/signatures/hMACSignature.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -143,12 +141,10 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_signatureAlgorithms_signatures_hMACShortSignature() throws Exception {
+    void test_signatureAlgorithms_signatures_hMACShortSignature() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/hMACShortSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "at/iaik/ixsil/signatureAlgorithms/signatures/hMACShortSignature.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         byte[] hmacKey = "secret".getBytes(StandardCharsets.US_ASCII);
@@ -179,12 +175,10 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_signatureAlgorithms_signatures_dSASignature() throws Exception {
+    void test_signatureAlgorithms_signatures_dSASignature() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/dSASignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "at/iaik/ixsil/signatureAlgorithms/signatures/dSASignature.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -213,12 +207,10 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_signatureAlgorithms_signatures_rSASignature() throws Exception {
+    void test_signatureAlgorithms_signatures_rSASignature() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/signatureAlgorithms/signatures/rSASignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "at/iaik/ixsil/signatureAlgorithms/signatures/rSASignature.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -247,12 +239,10 @@ public class IAIKTest {
     }
 
     @Test
-    public void test_transforms_signatures_envelopedSignatureSignature() throws Exception {
+    void test_transforms_signatures_envelopedSignatureSignature() throws Exception {
         // Read in plaintext document
-        InputStream sourceDocument =
-                this.getClass().getClassLoader().getResourceAsStream(
-                        "at/iaik/ixsil/transforms/signatures/envelopedSignatureSignature.xml");
-        Document document = XMLUtils.read(sourceDocument, false);
+        String name = "at/iaik/ixsil/transforms/signatures/envelopedSignatureSignature.xml";
+        Document document = XMLUtils.readResource(name, getClass().getClassLoader(), false);
 
         // Set up the Key
         Key publicKey = getPublicKey("RSA");

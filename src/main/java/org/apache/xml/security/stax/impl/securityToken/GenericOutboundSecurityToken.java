@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.xml.security.stax.ext.OutputProcessor;
-import org.w3c.dom.Element;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.stax.ext.OutputProcessor;
 import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants.KeyIdentifier;
+import org.w3c.dom.Element;
 
 /**
  */
@@ -116,6 +116,7 @@ public class GenericOutboundSecurityToken extends AbstractSecurityToken implemen
         return null;
     }
 
+    @Override
     public Element getCustomTokenReference() {
         return customTokenReference;
     }

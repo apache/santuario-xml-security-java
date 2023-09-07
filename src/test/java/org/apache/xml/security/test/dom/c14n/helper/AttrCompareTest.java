@@ -24,6 +24,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.xml.security.c14n.helper.AttrCompare;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.utils.Constants;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit test for {@link org.apache.xml.security.c14n.AttrCompare#compare}
  *
  */
-public class AttrCompareTest {
+class AttrCompareTest {
 
     static {
         org.apache.xml.security.Init.init();
@@ -50,8 +51,8 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.jupiter.api.Test
-    public void testA1() throws ParserConfigurationException {
+    @Test
+    void testA1() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
         Element root = doc.getDocumentElement();
@@ -77,8 +78,8 @@ public class AttrCompareTest {
         assertTrue(attrCompare.compare(attr1, attr0) > 0, attr1 + " < " + attr0);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testA2() throws ParserConfigurationException {
+    @Test
+    void testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
         Attr attr0 = doc.createAttributeNS(null, "foo");
@@ -98,8 +99,8 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.jupiter.api.Test
-    public void __testA2() throws ParserConfigurationException {
+    @Test
+    void __testA2() throws ParserConfigurationException {
 
         Document doc = createDoc("documentElement");
         Element root = doc.getDocumentElement();
@@ -134,8 +135,8 @@ public class AttrCompareTest {
      *
      * @throws ParserConfigurationException
      */
-    @org.junit.jupiter.api.Test
-    public void testComplete() throws ParserConfigurationException {
+    @Test
+    void testComplete() throws ParserConfigurationException {
 
         /* <e5 xmlns="http://example.org"
          *     xmlns:a="http://www.w3.org"
@@ -160,16 +161,15 @@ public class AttrCompareTest {
                         createAttr(doc, "a:attr", "out", "http://www.w3.org") };
 
         //J+
-        for (int i = 0; i < attrs.length; i++) {
-            root.setAttributeNode(attrs[i]);
+        for (Attr attr : attrs) {
+            root.setAttributeNode(attr);
         }
 
         NamedNodeMap nnm = root.getAttributes();
 
         assertEquals(nnm.getLength(), attrs.length, "nnm.getLength()");
 
-        for (int i = 0; i < attrs.length; i++) {
-            Attr attr = attrs[i];
+        for (Attr attr : attrs) {
             assertNotNull(attr, "Attribute attr");
         }
 

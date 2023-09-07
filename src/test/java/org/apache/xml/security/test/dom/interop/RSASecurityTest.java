@@ -20,7 +20,13 @@ package org.apache.xml.security.test.dom.interop;
 
 
 
+import java.io.File;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,58 +38,46 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @see <A HREF="http://www.rsasecurity.com/products/bsafe/certj.html">RSA BSAFE Cert-J</A>
  */
-public class RSASecurityTest extends InteropTestBase {
+class RSASecurityTest extends InteropTestBase {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(RSASecurityTest.class);
+    private static final Logger LOG = System.getLogger(RSASecurityTest.class.getName());
 
     /** Field blakesDir           */
-    static String blakesDir =
-        "src/test/resources/com/rsasecurity/bdournaee/";
+    private static File blakesDir;
 
     static {
-        String basedir = System.getProperty("basedir");
-        if(basedir != null && basedir.length() != 0) {
-            blakesDir = basedir + "/" + blakesDir;
-        }
+        blakesDir = XmlSecTestEnvironment.resolveFile("src", "test", "resources", "com", "rsasecurity", "bdournaee");
         org.apache.xml.security.Init.init();
     }
 
-    /**
-     * Constructor RSASecurityTest
-     */
-    public RSASecurityTest() {
-        super();
-    }
+    @Test
+    void test_enveloping() throws Exception {
 
-    @org.junit.jupiter.api.Test
-    public void test_enveloping() throws Exception {
-
-        String filename = blakesDir + "certj201_enveloping.xml";
+        File filename = new File(blakesDir, "certj201_enveloping.xml");
         boolean followManifests = false;
         ResourceResolverSpi resolver = null;
         boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
-    @org.junit.jupiter.api.Test
-    public void test_enveloped() throws Exception {
+    @Test
+    void test_enveloped() throws Exception {
 
-        String filename = blakesDir + "certj201_enveloped.xml";
+        File filename = new File(blakesDir, "certj201_enveloped.xml");
         boolean followManifests = false;
         ResourceResolverSpi resolver = null;
         boolean verify = this.verify(filename, resolver, followManifests);
 
         if (!verify) {
-            LOG.error("Verification failed for " + filename);
+            LOG.log(Level.ERROR, "Verification failed for " + filename);
         }
 
-        assertTrue(verify, filename);
+        assertTrue(verify, filename.toString());
     }
 
 }

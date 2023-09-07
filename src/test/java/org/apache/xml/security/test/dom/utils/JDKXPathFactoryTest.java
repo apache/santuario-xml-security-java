@@ -47,6 +47,7 @@ import org.apache.xml.security.utils.I18n;
 import org.apache.xml.security.utils.JDKXPathFactory;
 import org.apache.xml.security.utils.XMLUtils;
 import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -56,12 +57,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Test the JDKXPathFactory by adding a custom transform that hard-wires the use of JDKXPathFactory, instead of
  * checking to see whether Xalan is on the classpath or not
  */
-public class JDKXPathFactoryTest {
+class JDKXPathFactoryTest {
 
-    static org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(JDKXPathFactoryTest.class);
-
-    private KeyPair kp;
+    private final KeyPair kp;
 
     public JDKXPathFactoryTest() throws Exception {
         // org.apache.xml.security.Init.init();
@@ -80,8 +78,8 @@ public class JDKXPathFactoryTest {
         kp = KeyPairGenerator.getInstance("RSA").genKeyPair();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testXPathSignature() throws Exception {
+    @Test
+    void testXPathSignature() throws Exception {
         Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");

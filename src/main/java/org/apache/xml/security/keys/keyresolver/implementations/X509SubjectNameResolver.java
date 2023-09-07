@@ -18,12 +18,13 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
-
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.content.x509.XMLX509SubjectName;
@@ -36,8 +37,7 @@ import org.w3c.dom.Element;
 
 public class X509SubjectNameResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509SubjectNameResolver.class);
+    private static final Logger LOG = System.getLogger(X509SubjectNameResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -84,7 +84,7 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
-                LOG.debug("", ex);
+                LOG.log(Level.DEBUG, "", ex);
 
                 throw ex;
             }
@@ -97,28 +97,24 @@ public class X509SubjectNameResolver extends KeyResolverSpi {
 
             Iterator<Certificate> storageIterator = storage.getIterator();
             while (storageIterator.hasNext()) {
-                X509Certificate cert = (X509Certificate)storageIterator.next();
-                XMLX509SubjectName certSN =
-                    new XMLX509SubjectName(element.getOwnerDocument(), cert);
+                X509Certificate cert = (X509Certificate) storageIterator.next();
+                XMLX509SubjectName certSN = new XMLX509SubjectName(element.getOwnerDocument(), cert);
+                LOG.log(Level.DEBUG, "Found Certificate SN: {0}", certSN.getSubjectName());
 
-                LOG.debug("Found Certificate SN: {}", certSN.getSubjectName());
+                for (XMLX509SubjectName childSubject : x509childObject) {
+                    LOG.log(Level.DEBUG, "Found Element SN:     {0}", childSubject.getSubjectName());
 
-                for (int i = 0; i < x509childObject.length; i++) {
-                    LOG.debug("Found Element SN:     {}", x509childObject[i].getSubjectName());
-
-                    if (certSN.equals(x509childObject[i])) {
-                        LOG.debug("match !!! ");
-
+                    if (certSN.equals(childSubject)) {
+                        LOG.log(Level.DEBUG, "match !!! ");
                         return cert;
                     }
-                    LOG.debug("no match...");
+                    LOG.log(Level.DEBUG, "no match...");
                 }
             }
 
             return null;
         } catch (XMLSecurityException ex) {
-            LOG.debug("XMLSecurityException", ex);
-
+            LOG.log(Level.DEBUG, "XMLSecurityException", ex);
             throw new KeyResolverException(ex);
         }
     }

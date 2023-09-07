@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.PublicKey;
@@ -25,32 +26,32 @@ import java.security.PublicKey;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 /**
  * Test case contributed by Matthias Germann for testing that bug 43239 is
  * fixed: "No installed provider supports this key" when checking a RSA
  * signature against a DSA key before RSA key.
  */
-public class InvalidKeyTest {
-
-    private static final String BASEDIR =
-        System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class InvalidKeyTest {
 
     static {
         Init.init();
     }
 
-    @org.junit.jupiter.api.Test
-    public void test() throws Exception {
-        FileInputStream input = new FileInputStream(BASEDIR + SEP +
-            "src/test/resources/org/apache/xml/security/samples/input/truststore.jks");
+    @Test
+    void test() throws Exception {
         KeyStore trustStore = KeyStore.getInstance("JKS");
-        trustStore.load(input, "testpw".toCharArray());
+        try (FileInputStream input = new FileInputStream(
+            resolveFile("src/test/resources/org/apache/xml/security/samples/input/truststore.jks"))) {
+            trustStore.load(input, "testpw".toCharArray());
+        }
 
         try {
             validate(trustStore.getCertificate("bedag-test").getPublicKey());
@@ -62,11 +63,8 @@ public class InvalidKeyTest {
     }
 
     private void validate(PublicKey pk) throws Exception {
-        FileInputStream is = new FileInputStream(BASEDIR + SEP +
-            "src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
-
-        Document e = XMLUtils.read(is, false);
-
+        File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
+        Document e = XMLUtils.read(file, false);
         Node assertion = e.getFirstChild();
         while (!(assertion instanceof Element)) {
             assertion = assertion.getNextSibling();

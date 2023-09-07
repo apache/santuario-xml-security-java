@@ -21,6 +21,7 @@ package org.apache.xml.security.test.dom.keys.content.x509;
 
 import org.apache.xml.security.keys.content.x509.XMLX509IssuerSerial;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,16 +30,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * XMLX509IssuerSerial tests.
  *
  */
-public class XMLX509IssuerSerialTest {
+class XMLX509IssuerSerialTest {
 
-    private Document doc;
+    private final Document doc;
 
     public XMLX509IssuerSerialTest() throws Exception {
         doc = TestUtils.newDocument();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testGetIssuerName() throws Exception {
+    @Test
+    void testGetIssuerName() throws Exception {
         // Make sure hex encoded value is not escaped (see ...)
         String issuer = "9.99.999=#abc123";
         XMLX509IssuerSerial is =
@@ -51,8 +52,8 @@ public class XMLX509IssuerSerialTest {
         // System.out.println(is.getIssuerName());
     }
 
-    @org.junit.jupiter.api.Test
-    public void testEqualsHashcode() throws Exception {
+    @Test
+    void testEqualsHashcode() throws Exception {
         XMLX509IssuerSerial is1 = new XMLX509IssuerSerial(doc, "1234", 0);
         assertEquals("1234", is1.getIssuerName());
 

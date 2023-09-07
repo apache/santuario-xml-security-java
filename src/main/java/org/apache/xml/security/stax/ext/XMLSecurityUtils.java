@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.stax.ext;
 
+import jakarta.xml.bind.JAXBElement;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,17 +40,13 @@ import java.util.TreeSet;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.XMLConstants;
-import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-
-import org.w3c.dom.ls.LSInput;
-import org.w3c.dom.ls.LSResourceResolver;
-import org.xml.sax.SAXException;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
@@ -71,6 +69,9 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.ls.LSInput;
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.SAXException;
 
 /**
  */
@@ -104,25 +105,25 @@ public class XMLSecurityUtils {
         int eventType = xmlSecEvent.getEventType();
 
         switch (eventType) {
-            case XMLSecEvent.START_ELEMENT:
+            case XMLStreamConstants.START_ELEMENT:
                 return "START_ELEMENT";
-            case XMLSecEvent.END_ELEMENT:
+            case XMLStreamConstants.END_ELEMENT:
                 return "END_ELEMENT";
-            case XMLSecEvent.PROCESSING_INSTRUCTION:
+            case XMLStreamConstants.PROCESSING_INSTRUCTION:
                 return "PROCESSING_INSTRUCTION";
-            case XMLSecEvent.CHARACTERS:
+            case XMLStreamConstants.CHARACTERS:
                 return "CHARACTERS";
-            case XMLSecEvent.COMMENT:
+            case XMLStreamConstants.COMMENT:
                 return "COMMENT";
-            case XMLSecEvent.START_DOCUMENT:
+            case XMLStreamConstants.START_DOCUMENT:
                 return "START_DOCUMENT";
-            case XMLSecEvent.END_DOCUMENT:
+            case XMLStreamConstants.END_DOCUMENT:
                 return "END_DOCUMENT";
-            case XMLSecEvent.ATTRIBUTE:
+            case XMLStreamConstants.ATTRIBUTE:
                 return "ATTRIBUTE";
-            case XMLSecEvent.DTD:
+            case XMLStreamConstants.DTD:
                 return "DTD";
-            case XMLSecEvent.NAMESPACE:
+            case XMLStreamConstants.NAMESPACE:
                 return "NAMESPACE";
             default:
                 throw new IllegalArgumentException("Illegal XMLSecEvent received: " + eventType);
@@ -155,8 +156,7 @@ public class XMLSecurityUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T getQNameType(List<Object> objects, QName qName) {
-        for (int i = 0; i < objects.size(); i++) {
-            Object o = objects.get(i);
+        for (Object o : objects) {
             if (o instanceof JAXBElement) {
                 JAXBElement<?> jaxbElement = (JAXBElement<?>) o;
                 if (jaxbElement.getName().equals(qName)) {
@@ -434,8 +434,7 @@ public class XMLSecurityUtils {
             }
 
             if (excludeVisible) {
-                for (int i = 0; i < onElementDeclaredNamespaces.size(); i++) {
-                    XMLSecNamespace xmlSecNamespace = onElementDeclaredNamespaces.get(i);
+                for (XMLSecNamespace xmlSecNamespace : onElementDeclaredNamespaces) {
                     String prefix = xmlSecNamespace.getPrefix();
                     if (prefix == null || prefix.isEmpty()) {
                         prefixes.remove("#default");

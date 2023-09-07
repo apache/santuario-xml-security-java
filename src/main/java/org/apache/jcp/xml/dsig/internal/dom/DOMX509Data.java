@@ -42,11 +42,10 @@ import javax.xml.crypto.dsig.XMLSignature;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 import javax.xml.crypto.dsig.keyinfo.X509IssuerSerial;
 
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * DOM-based implementation of X509Data.
@@ -130,6 +129,7 @@ public final class DOMX509Data extends DOMStructure implements X509Data {
         this.content = Collections.unmodifiableList(newContent);
     }
 
+    @Override
     public List<Object> getContent() {
         return content;
     }
@@ -143,8 +143,7 @@ public final class DOMX509Data extends DOMStructure implements X509Data {
                                                 XMLSignature.XMLNS, dsPrefix);
 
         // append children and preserve order
-        for (int i = 0, size = content.size(); i < size; i++) {
-            Object object = content.get(i);
+        for (Object object : content) {
             if (object instanceof X509Certificate) {
                 marshalCert((X509Certificate)object,xdElem,ownerDoc,dsPrefix);
             } else if (object instanceof XMLStructure) {

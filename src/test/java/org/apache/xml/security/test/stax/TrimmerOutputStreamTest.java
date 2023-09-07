@@ -18,29 +18,28 @@
  */
 package org.apache.xml.security.test.stax;
 
-import org.junit.jupiter.api.Test;
+import java.io.ByteArrayOutputStream;
 
 import org.apache.xml.security.stax.impl.util.TrimmerOutputStream;
-
-import java.io.ByteArrayOutputStream;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  */
-public class TrimmerOutputStreamTest {
+class TrimmerOutputStreamTest {
 
     private static final String TEST_STR
         = "Within this class we test if the TrimmerOutputStream works correctly under different conditions";
 
     @Test
-    public void testWriteSingleBytes() throws Exception {
+    void testWriteSingleBytes() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 
         byte[] TEST_STRBytes = ("<a>" + TEST_STR + "</a>").getBytes();
-        for (int i = 0; i < TEST_STRBytes.length; i++) {
-            trimmerOutputStream.write(TEST_STRBytes[i]);
+        for (byte test_STRByte : TEST_STRBytes) {
+            trimmerOutputStream.write(test_STRByte);
         }
         trimmerOutputStream.close();
 
@@ -49,7 +48,7 @@ public class TrimmerOutputStreamTest {
     }
 
     @Test
-    public void testWriteRandomByteSizes() throws Exception {
+    void testWriteRandomByteSizes() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         TrimmerOutputStream trimmerOutputStream = new TrimmerOutputStream(baos, 32, 3, 4);
 

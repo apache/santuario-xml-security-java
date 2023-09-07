@@ -21,24 +21,38 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import javax.xml.crypto.*;
-import javax.xml.crypto.dsig.*;
-import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
-
 import java.io.IOException;
-import java.security.*;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.Provider;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PSSParameterSpec;
 
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+import javax.xml.crypto.MarshalException;
+import javax.xml.crypto.dsig.SignedInfo;
+import javax.xml.crypto.dsig.XMLSignContext;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureException;
+import javax.xml.crypto.dsig.XMLValidateContext;
+import javax.xml.crypto.dsig.spec.SignatureMethodParameterSpec;
+
 import org.apache.jcp.xml.dsig.internal.SignerOutputStream;
 import org.apache.xml.security.algorithms.implementations.SignatureBaseRSA.SignatureRSASSAPSS.DigestAlgorithm;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 /**
  * DOM-based abstract implementation of SignatureMethod for RSA-PSS.
@@ -48,8 +62,8 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
 
     private static final String DOM_SIGNATURE_PROVIDER = "org.jcp.xml.dsig.internal.dom.SignatureProvider";
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(DOMRSAPSSSignatureMethod.class);
+    private static final Logger LOG = System.getLogger(DOMRSAPSSSignatureMethod.class.getName());
+
 
     private final SignatureMethodParameterSpec params;
     private Signature signature;
@@ -117,23 +131,25 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
 
             if (((RSAPSSParameterSpec)params).getTrailerField() > 0) {
                 trailerField = ((RSAPSSParameterSpec)params).getTrailerField();
-                LOG.debug("Setting trailerField from RSAPSSParameterSpec to: {}", trailerField);
+                LOG.log(Level.DEBUG, "Setting trailerField from RSAPSSParameterSpec to: {0}", trailerField);
             }
             if (((RSAPSSParameterSpec)params).getSaltLength() > 0) {
                 saltLength = ((RSAPSSParameterSpec)params).getSaltLength();
-                LOG.debug("Setting saltLength from RSAPSSParameterSpec to: {}", saltLength);
+                LOG.log(Level.DEBUG, "Setting saltLength from RSAPSSParameterSpec to: {0}", saltLength);
             }
             if (((RSAPSSParameterSpec)params).getDigestName() != null) {
                 digestName = ((RSAPSSParameterSpec)params).getDigestName();
-                LOG.debug("Setting digestName from RSAPSSParameterSpec to: {}", digestName);
+                LOG.log(Level.DEBUG, "Setting digestName from RSAPSSParameterSpec to: {0}", digestName);
             }
         }
     }
 
+    @Override
     public final AlgorithmParameterSpec getParameterSpec() {
         return params;
     }
 
+    @Override
     void marshalParams(Element parent, String prefix)
         throws MarshalException
     {
@@ -166,6 +182,7 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         parent.appendChild(rsaPssParamsElement);
     }
 
+    @Override
     SignatureMethodParameterSpec unmarshalParams(Element paramsElem)
         throws MarshalException
     {
@@ -203,6 +220,7 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         return getDefaultParameterSpec();
     }
 
+    @Override
     boolean verify(Key key, SignedInfo si, byte[] sig,
                    XMLValidateContext context)
         throws InvalidKeyException, SignatureException, XMLSignatureException
@@ -230,10 +248,10 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         } catch (InvalidAlgorithmParameterException e) {
             throw new XMLSignatureException(e);
         }
-        LOG.debug("Signature provider: {}", signature.getProvider());
-        LOG.debug("Verifying with key: {}", key);
-        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
-        LOG.debug("Signature Bytes length: {}", sig.length);
+        LOG.log(Level.DEBUG, "Signature provider: {0}", signature.getProvider());
+        LOG.log(Level.DEBUG, "Verifying with key: {0}", key);
+        LOG.log(Level.DEBUG, "JCA Algorithm: {0}", getJCAAlgorithm());
+        LOG.log(Level.DEBUG, "Signature Bytes length: {0}", sig.length);
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             ((DOMSignedInfo)si).canonicalize(context, outputStream);
@@ -244,6 +262,7 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         }
     }
 
+    @Override
     byte[] sign(Key key, SignedInfo si, XMLSignContext context)
         throws InvalidKeyException, XMLSignatureException
     {
@@ -270,9 +289,9 @@ public abstract class DOMRSAPSSSignatureMethod extends AbstractDOMSignatureMetho
         } catch (InvalidAlgorithmParameterException e) {
             throw new XMLSignatureException(e);
         }
-        LOG.debug("Signature provider: {}", signature.getProvider());
-        LOG.debug("Signing with key: {}", key);
-        LOG.debug("JCA Algorithm: {}", getJCAAlgorithm());
+        LOG.log(Level.DEBUG, "Signature provider: {0}", signature.getProvider());
+        LOG.log(Level.DEBUG, "Signing with key: {0}", key);
+        LOG.log(Level.DEBUG, "JCA Algorithm: {0}", getJCAAlgorithm());
 
         try (SignerOutputStream outputStream = new SignerOutputStream(signature)) {
             ((DOMSignedInfo)si).canonicalize(context, outputStream);

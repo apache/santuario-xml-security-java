@@ -18,15 +18,16 @@
  */
 package org.apache.xml.security.stax.config;
 
-import org.apache.xml.security.utils.ClassLoaderUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
@@ -45,14 +46,18 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathFactoryConfigurationException;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import org.apache.xml.security.utils.ClassLoaderUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Absolutely primitive XInclude#xpointer scheme handling
@@ -60,7 +65,7 @@ import java.util.Map;
  */
 public class XIncludeHandler extends DefaultHandler {
 
-    private static final transient Logger LOG = LoggerFactory.getLogger(XIncludeHandler.class);
+    private static final Logger LOG = System.getLogger(XIncludeHandler.class.getName());
 
     private static final String xIncludeNS = "http://www.w3.org/2001/XInclude";
     private static final String xIncludeLN = "include";
@@ -151,7 +156,7 @@ public class XIncludeHandler extends DefaultHandler {
                 DOMResult domResult = new DOMResult();
                 try {
                     XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-                    SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+                    SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) TransformerFactory.newInstance();
                     saxTransformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
                     try {
                         saxTransformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
@@ -244,17 +249,17 @@ public class XIncludeHandler extends DefaultHandler {
 
     @Override
     public void warning(SAXParseException e) throws SAXException {
-        LOG.warn(e.getMessage(), e);
+        LOG.log(Level.WARNING, e.getMessage(), e);
     }
 
     @Override
     public void error(SAXParseException e) throws SAXException {
-        LOG.error(e.getMessage(), e);
+        LOG.log(Level.ERROR, e.getMessage(), e);
     }
 
     @Override
     public void fatalError(SAXParseException e) throws SAXException {
-        LOG.error(e.getMessage(), e);
+        LOG.log(Level.ERROR, e.getMessage(), e);
     }
 
     private NodeList evaluateXPointer(String xpointer, Node node) throws SAXException {

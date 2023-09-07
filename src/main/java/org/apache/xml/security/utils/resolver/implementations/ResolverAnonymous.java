@@ -20,11 +20,11 @@
 package org.apache.xml.security.utils.resolver.implementations;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureFileInput;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
@@ -54,7 +54,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
     @Override
     public XMLSignatureInput engineResolveURI(ResourceResolverContext context) throws ResourceResolverException {
         try {
-            XMLSignatureInput input = new XMLSignatureInput(Files.newInputStream(resourcePath));
+            XMLSignatureInput input = new XMLSignatureFileInput(resourcePath);
             input.setSecureValidation(context.secureValidation);
             return input;
         } catch (IOException e) {

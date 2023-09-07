@@ -28,10 +28,18 @@
  */
 package org.apache.jcp.xml.dsig.internal.dom;
 
-import java.util.*;
-import java.security.*;
+import java.security.AccessController;
+import java.security.InvalidParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivilegedAction;
+import java.security.Provider;
+import java.security.ProviderException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.xml.crypto.dsig.*;
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+import javax.xml.crypto.dsig.Transform;
 
 /**
  * The XMLDSig RI Provider.
@@ -121,10 +129,11 @@ public final class XMLDSigRI extends Provider {
 
     public XMLDSigRI() {
         /* We are the ApacheXMLDSig provider */
-        super("ApacheXMLDSig", 3.02, INFO);
+        super("ApacheXMLDSig", "4.0.0", INFO);
 
         final Provider p = this;
         AccessController.doPrivileged(new PrivilegedAction<Void>() {
+            @Override
             public Void run() {
                 Map<String, String> MECH_TYPE = new HashMap<>();
                 MECH_TYPE.put("MechanismType", "DOM");

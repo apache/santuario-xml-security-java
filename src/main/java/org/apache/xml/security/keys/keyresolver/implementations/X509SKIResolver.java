@@ -18,12 +18,13 @@
  */
 package org.apache.xml.security.keys.keyresolver.implementations;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
-
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.content.x509.XMLX509SKI;
@@ -36,9 +37,7 @@ import org.w3c.dom.Element;
 
 public class X509SKIResolver extends KeyResolverSpi {
 
-    private static final org.slf4j.Logger LOG =
-        org.slf4j.LoggerFactory.getLogger(X509SKIResolver.class);
-
+    private static final Logger LOG = System.getLogger(X509SKIResolver.class.getName());
 
     /** {@inheritDoc} */
     @Override
@@ -85,26 +84,24 @@ public class X509SKIResolver extends KeyResolverSpi {
                 KeyResolverException ex =
                     new KeyResolverException("KeyResolver.needStorageResolver", exArgs);
 
-                LOG.debug("", ex);
+                LOG.log(Level.DEBUG, "", ex);
 
                 throw ex;
             }
 
             XMLX509SKI[] x509childObject = new XMLX509SKI[x509childNodes.length];
-
             for (int i = 0; i < x509childNodes.length; i++) {
                 x509childObject[i] = new XMLX509SKI(x509childNodes[i], baseURI);
             }
 
             Iterator<Certificate> storageIterator = storage.getIterator();
             while (storageIterator.hasNext()) {
-                X509Certificate cert = (X509Certificate)storageIterator.next();
+                X509Certificate cert = (X509Certificate) storageIterator.next();
                 XMLX509SKI certSKI = new XMLX509SKI(element.getOwnerDocument(), cert);
 
-                for (int i = 0; i < x509childObject.length; i++) {
-                    if (certSKI.equals(x509childObject[i])) {
-                        LOG.debug("Return PublicKey from {}", cert.getSubjectX500Principal().getName());
-
+                for (XMLX509SKI childNodeSKI : x509childObject) {
+                    if (certSKI.equals(childNodeSKI)) {
+                        LOG.log(Level.DEBUG, "Return PublicKey from {0}", cert.getSubjectX500Principal().getName());
                         return cert;
                     }
                 }

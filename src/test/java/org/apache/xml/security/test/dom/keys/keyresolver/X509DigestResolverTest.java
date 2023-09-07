@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -26,7 +27,9 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.keys.storage.implementations.SingleCertificateResolver;
+import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -34,14 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 
-public class X509DigestResolverTest {
+class X509DigestResolverTest {
 
-    private static final String BASEDIR = System.getProperty("basedir") == null ? "./": System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
-
-    private X509Certificate certControl;
-
-    private StorageResolver storageResolver;
+    private final X509Certificate certControl;
+    private final StorageResolver storageResolver;
 
     public X509DigestResolverTest() throws Exception {
         certControl = loadCertificate("cert-X509Digest.crt");
@@ -53,8 +52,8 @@ public class X509DigestResolverTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
-    public void testDigest() throws Exception {
+    @Test
+    void testDigest() throws Exception {
         Document doc = loadXML("X509Digest.xml");
         Element element = doc.getDocumentElement();
 
@@ -72,21 +71,20 @@ public class X509DigestResolverTest {
 
     // Utility methods
 
-    private String getControlFilePath(String fileName) {
-        return BASEDIR + SEP + "src" + SEP + "test" + SEP + "resources" +
-            SEP + "org" + SEP + "apache" + SEP + "xml" + SEP + "security" +
-            SEP + "keys" + SEP + "content" + SEP + "x509" +
-            SEP + fileName;
+    private File getControlFilePath(String fileName) {
+        return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml",
+            "security", "keys", "content", "x509", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
-        return XMLUtils.read(new FileInputStream(getControlFilePath(fileName)), false);
+        return XMLUtils.read(getControlFilePath(fileName), false);
     }
 
     private X509Certificate loadCertificate(String fileName) throws Exception {
-        FileInputStream fis = new FileInputStream(getControlFilePath(fileName));
-        CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-        return (X509Certificate) certFactory.generateCertificate(fis);
+        try (FileInputStream fis = new FileInputStream(getControlFilePath(fileName))) {
+            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            return (X509Certificate) certFactory.generateCertificate(fis);
+        }
     }
 
 }

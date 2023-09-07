@@ -35,8 +35,8 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 import org.apache.xml.security.stax.impl.SignaturePartDef;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
-import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityEvent.SignatureValueSecurityEvent;
+import org.apache.xml.security.stax.securityToken.OutboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 
 import static org.apache.xml.security.stax.ext.XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE;
@@ -206,9 +206,7 @@ public class XMLSignatureEndingOutputProcessor extends AbstractSignatureEndingOu
             createStartElementAndOutputAsEvent(subOutputProcessorChain, XMLSecurityConstants.TAG_dsig_Transforms, false, null);
 
             String[] transforms = signaturePartDef.getTransforms();
-            for (int i = 0; i < transforms.length; i++) {
-                String transform = transforms[i];
-
+            for (String transform : transforms) {
                 if (!shouldIncludeTransform(transform)) {
                     continue;
                 }

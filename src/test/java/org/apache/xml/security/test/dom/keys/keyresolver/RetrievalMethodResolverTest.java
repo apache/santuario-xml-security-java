@@ -18,40 +18,31 @@
  */
 package org.apache.xml.security.test.dom.keys.keyresolver;
 
-import java.io.FileInputStream;
 import java.security.Security;
 
 import org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
+
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 
 
 /**
  * Some tests on attacks against the RetrievalMethodResolver.
  */
-public class RetrievalMethodResolverTest {
-
-    private static final String BASEDIR = System.getProperty("basedir");
-    private static final String SEP = System.getProperty("file.separator");
+class RetrievalMethodResolverTest {
 
     public RetrievalMethodResolverTest() {
         org.apache.xml.security.Init.init();
         Security.insertProviderAt(new XMLDSigRI(), 1);
     }
 
-    @org.junit.jupiter.api.Test
-    public void testReferenceToSameRetrievalMethod() throws Exception {
-        FileInputStream fis = null;
+    @Test
+    void testReferenceToSameRetrievalMethod() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod1.xml";
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis = new FileInputStream(BASEDIR + SEP + filename);
-        } else {
-            fis = new FileInputStream(filename);
-        }
-
-        Document doc = XMLUtils.read(fis, false);
-
+        Document doc = XMLUtils.read(resolveFile(filename), false);
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
 
         // Check neither of these give a StackOverflowError.
@@ -59,18 +50,10 @@ public class RetrievalMethodResolverTest {
         keyInfo.getX509Certificate();
     }
 
-    @org.junit.jupiter.api.Test
-    public void testLoopBetweenRetrievalMethods() throws Exception {
-        FileInputStream fis = null;
+    @Test
+    void testLoopBetweenRetrievalMethods() throws Exception {
         String filename = "src/test/resources/org/apache/xml/security/keyresolver/retrievalmethod2.xml";
-        if (BASEDIR != null && BASEDIR.length() != 0) {
-            fis = new FileInputStream(BASEDIR + SEP + filename);
-        } else {
-            fis = new FileInputStream(filename);
-        }
-
-        Document doc = XMLUtils.read(fis, false);
-
+        Document doc = XMLUtils.read(resolveFile(filename), false);
         KeyInfo keyInfo = new KeyInfo(doc.getDocumentElement(), null);
 
         // Check neither of these give a StackOverflowError.
