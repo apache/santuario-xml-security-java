@@ -413,7 +413,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA1MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA1_MGF1_PARAMS
                 = new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1,
                 20, PSSParameterSpec.TRAILER_FIELD_BC);
 
@@ -438,7 +438,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA1_MGF1_PARAMS;
         }
     }
 
@@ -447,7 +447,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA224MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA224_MGF1_PARAMS
                 = new PSSParameterSpec("SHA-224", "MGF1", MGF1ParameterSpec.SHA224,
                 28, PSSParameterSpec.TRAILER_FIELD_BC);
 
@@ -472,7 +472,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA224_MGF1_PARAMS;
         }
     }
 
@@ -481,7 +481,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA256MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA256_MGF1_PARAMS
                 = new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256,
                 32, PSSParameterSpec.TRAILER_FIELD_BC);
 
@@ -506,7 +506,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA256_MGF1_PARAMS;
         }
     }
 
@@ -515,7 +515,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA384MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA384_MGF1_PARAMS
                 = new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384,
                 48, PSSParameterSpec.TRAILER_FIELD_BC);
 
@@ -540,7 +540,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA384_MGF1_PARAMS;
         }
     }
 
@@ -549,7 +549,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA512MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA512_MGF1_PARAMS
                 = new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512,
                 64, PSSParameterSpec.TRAILER_FIELD_BC);
 
@@ -574,7 +574,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA512_MGF1_PARAMS;
         }
     }
 
@@ -583,7 +583,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA3_224MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA3_224_MGF1_PARAMS
                 = new PSSParameterSpec("SHA3-224", "MGF1",
                 new MGF1ParameterSpec("SHA3-224"),
                 28, PSSParameterSpec.TRAILER_FIELD_BC);
@@ -609,7 +609,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA3_224_MGF1_PARAMS;
         }
     }
 
@@ -618,7 +618,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA3_256MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA3_256_MGF1_PARAMS
                 = new PSSParameterSpec("SHA3-256", "MGF1",
                 new MGF1ParameterSpec("SHA3-256"),
                 32, PSSParameterSpec.TRAILER_FIELD_BC);
@@ -644,7 +644,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA3_256_MGF1_PARAMS;
         }
     }
 
@@ -653,7 +653,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA3_384MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA3_384_MGF1_PARAMS
                 = new PSSParameterSpec("SHA3-384", "MGF1",
                 new MGF1ParameterSpec("SHA3-384"),
                 48, PSSParameterSpec.TRAILER_FIELD_BC);
@@ -679,7 +679,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA3_384_MGF1_PARAMS;
         }
     }
 
@@ -688,7 +688,7 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
      */
     public static class SignatureRSASHA3_512MGF1 extends SignatureBaseRSAPSS {
 
-        private static PSSParameterSpec spec
+        private static final PSSParameterSpec SHA3_512_MGF1_PARAMS
                 = new PSSParameterSpec("SHA3-512", "MGF1",
                 new MGF1ParameterSpec("SHA3-512"),
                 64, PSSParameterSpec.TRAILER_FIELD_BC);
@@ -714,12 +714,12 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
         @Override
         public PSSParameterSpec getPSSParameterSpec() {
-            return spec;
+            return SHA3_512_MGF1_PARAMS;
         }
     }
 
     public static class SignatureRSASSAPSS extends SignatureBaseRSA {
-        PSSParameterSpec pssParameterSpec;
+        private PSSParameterSpec pssParameterSpec;
 
         public enum DigestAlgorithm {
             SHA256("SHA-256", "http://www.w3.org/2001/04/xmlenc#sha256", 32),
