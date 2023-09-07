@@ -60,20 +60,25 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
 
     public SignatureBaseRSA(Provider provider) throws XMLSignatureException {
         String algorithmID = JCEMapper.translateURItoJCEID(this.engineGetURI());
-        LOG.log(Level.DEBUG, "Created SignatureRSA using {0}", algorithmID);
+        this.signatureAlgorithm = getSignature(provider, algorithmID);
+        LOG.log(Level.DEBUG, "Created SignatureRSA using {0} and provider {1}",
+            algorithmID, signatureAlgorithm.getProvider());
+    }
 
+    Signature getSignature(Provider provider, String algorithmID)
+        throws XMLSignatureException {
         try {
             if (provider == null) {
                 String providerId = JCEMapper.getProviderId();
                 if (providerId == null) {
-                    this.signatureAlgorithm = Signature.getInstance(algorithmID);
+                    return Signature.getInstance(algorithmID);
 
                 } else {
-                    this.signatureAlgorithm = Signature.getInstance(algorithmID, providerId);
+                    return Signature.getInstance(algorithmID, providerId);
                 }
 
             } else {
-                this.signatureAlgorithm = Signature.getInstance(algorithmID, provider);
+                return Signature.getInstance(algorithmID, provider);
             }
 
         } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
@@ -364,10 +369,53 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         }
     }
 
+    public abstract static class SignatureBaseRSAPSS extends SignatureBaseRSA {
+
+        public SignatureBaseRSAPSS() throws XMLSignatureException {
+            super();
+        }
+
+        public SignatureBaseRSAPSS(Provider provider) throws XMLSignatureException {
+            super(provider);
+        }
+
+        @Override
+        Signature getSignature(Provider provider, String algorithmID)
+            throws XMLSignatureException {
+            try {
+                Signature sig;
+                if (provider == null) {
+                    String providerId = JCEMapper.getProviderId();
+                    if (providerId == null) {
+                        sig = Signature.getInstance("RSASSA-PSS");
+                    } else {
+                        sig = Signature.getInstance("RSASSA-PSS", providerId);
+                    }
+                } else {
+                    sig = Signature.getInstance("RSASSA-PSS", provider);
+                }
+                try {
+                    sig.setParameter(getPSSParameterSpec());
+                } catch (InvalidAlgorithmParameterException e) {
+                    throw new NoSuchAlgorithmException("Should not happen", e);
+                }
+                return sig;
+            } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+                return super.getSignature(provider, algorithmID);
+            }
+        }
+
+        abstract PSSParameterSpec getPSSParameterSpec();
+    }
+
     /**
      * Class SignatureRSASHA1MGF1
      */
-    public static class SignatureRSASHA1MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA1MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA1_MGF1_PARAMS
+                = new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1,
+                20, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA1MGF1
@@ -387,12 +435,21 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA1_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSASHA224MGF1
      */
-    public static class SignatureRSASHA224MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA224MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA224_MGF1_PARAMS
+                = new PSSParameterSpec("SHA-224", "MGF1", MGF1ParameterSpec.SHA224,
+                28, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA224MGF1
@@ -412,12 +469,21 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA224_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA224_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSASHA256MGF1
      */
-    public static class SignatureRSASHA256MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA256MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA256_MGF1_PARAMS
+                = new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256,
+                32, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA256MGF1
@@ -437,12 +503,21 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA256_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSASHA384MGF1
      */
-    public static class SignatureRSASHA384MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA384MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA384_MGF1_PARAMS
+                = new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384,
+                48, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA384MGF1
@@ -462,12 +537,21 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA384_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA384_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSASHA512MGF1
      */
-    public static class SignatureRSASHA512MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA512MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA512_MGF1_PARAMS
+                = new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512,
+                64, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA512MGF1
@@ -487,12 +571,22 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA512_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA512_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSA3_SHA224MGF1
      */
-    public static class SignatureRSASHA3_224MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA3_224MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA3_224_MGF1_PARAMS
+                = new PSSParameterSpec("SHA3-224", "MGF1",
+                new MGF1ParameterSpec("SHA3-224"),
+                28, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA3_224MGF1
@@ -512,12 +606,22 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_224_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA3_224_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSA3_SHA256MGF1
      */
-    public static class SignatureRSASHA3_256MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA3_256MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA3_256_MGF1_PARAMS
+                = new PSSParameterSpec("SHA3-256", "MGF1",
+                new MGF1ParameterSpec("SHA3-256"),
+                32, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA3_256MGF1
@@ -537,12 +641,22 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_256_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA3_256_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSA3_SHA384MGF1
      */
-    public static class SignatureRSASHA3_384MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA3_384MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA3_384_MGF1_PARAMS
+                = new PSSParameterSpec("SHA3-384", "MGF1",
+                new MGF1ParameterSpec("SHA3-384"),
+                48, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA3_384MGF1
@@ -562,12 +676,22 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_384_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA3_384_MGF1_PARAMS;
+        }
     }
 
     /**
      * Class SignatureRSASHA3_512MGF1
      */
-    public static class SignatureRSASHA3_512MGF1 extends SignatureBaseRSA {
+    public static class SignatureRSASHA3_512MGF1 extends SignatureBaseRSAPSS {
+
+        private static final PSSParameterSpec SHA3_512_MGF1_PARAMS
+                = new PSSParameterSpec("SHA3-512", "MGF1",
+                new MGF1ParameterSpec("SHA3-512"),
+                64, PSSParameterSpec.TRAILER_FIELD_BC);
 
         /**
          * Constructor SignatureRSASHA3_512MGF1
@@ -587,10 +711,15 @@ public abstract class SignatureBaseRSA extends SignatureAlgorithmSpi {
         public String engineGetURI() {
             return XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA3_512_MGF1;
         }
+
+        @Override
+        public PSSParameterSpec getPSSParameterSpec() {
+            return SHA3_512_MGF1_PARAMS;
+        }
     }
 
     public static class SignatureRSASSAPSS extends SignatureBaseRSA {
-        PSSParameterSpec pssParameterSpec;
+        private PSSParameterSpec pssParameterSpec;
 
         public enum DigestAlgorithm {
             SHA256("SHA-256", "http://www.w3.org/2001/04/xmlenc#sha256", 32),

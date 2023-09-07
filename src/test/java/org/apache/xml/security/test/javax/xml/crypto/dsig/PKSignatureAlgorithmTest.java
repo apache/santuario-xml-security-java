@@ -67,15 +67,19 @@ class PKSignatureAlgorithmTest {
     private final KeySelector kvks;
     private final CanonicalizationMethod withoutComments;
     private final DigestMethod sha1;
-    private final SignatureMethod rsaSha1, rsaSha224, rsaSha256, rsaSha384, rsaSha512, rsaRipemd160;
-    private final SignatureMethod rsaSha1Mgf1, rsaSha224Mgf1, rsaSha256Mgf1, rsaSha384Mgf1, rsaSha512Mgf1, rsaPss, rsaPssSha512;
-    private final SignatureMethod ecdsaSha1, ecdsaSha224, ecdsaSha256, ecdsaSha384, ecdsaSha512, ecdsaRipemd160;
+    private final SignatureMethod rsaSha1, rsaSha224, rsaSha256, rsaSha384,
+            rsaSha512, rsaRipemd160;
+    private final SignatureMethod rsaSha1Mgf1, rsaSha224Mgf1, rsaSha256Mgf1,
+            rsaSha384Mgf1, rsaSha512Mgf1, rsaSha3_224Mgf1, rsaSha3_256Mgf1,
+            rsaSha3_384Mgf1, rsaSha3_512Mgf1, rsaPss, rsaPssSha512;
+    private final SignatureMethod ecdsaSha1, ecdsaSha224, ecdsaSha256,
+            ecdsaSha384, ecdsaSha512, ecdsaRipemd160;
     private final XMLSignatureFactory fac;
     private final KeyPair rsaKeyPair, ecKeyPair;
     private final KeyInfo rsaki;
     private KeyInfo ecki;
     private boolean ecAlgParamsSupport = true;
-    private final boolean isJDK11;
+    private static int javaVersion;
     private static boolean bcInstalled;
 
     static {
@@ -102,6 +106,11 @@ class PKSignatureAlgorithmTest {
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
+        }
+        try {
+            javaVersion = Integer.getInteger("java.specification.version", 0);
+        } catch (NumberFormatException ex) {
+            // ignore
         }
     }
 
@@ -135,6 +144,10 @@ class PKSignatureAlgorithmTest {
         rsaSha256Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha256-rsa-MGF1", null);
         rsaSha384Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha384-rsa-MGF1", null);
         rsaSha512Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha512-rsa-MGF1", null);
+        rsaSha3_224Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha3-224-rsa-MGF1", null);
+        rsaSha3_256Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha3-256-rsa-MGF1", null);
+        rsaSha3_384Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha3-384-rsa-MGF1", null);
+        rsaSha3_512Mgf1 = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#sha3-512-rsa-MGF1", null);
         rsaPss = fac.newSignatureMethod("http://www.w3.org/2007/05/xmldsig-more#rsa-pss", null);
         RSAPSSParameterSpec params = new RSAPSSParameterSpec();
         params.setTrailerField(1);
@@ -168,7 +181,6 @@ class PKSignatureAlgorithmTest {
             ecki = kifac.newKeyInfo(Collections.singletonList
                                 (kifac.newKeyValue(ecKeyPair.getPublic())), "DSig.KeyInfo_1");
         }
-        isJDK11 = System.getProperty("java.version").startsWith("11");
     }
 
     @AfterAll
@@ -215,84 +227,105 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_SHA1_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha1Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testRSA_SHA224_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha224Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testRSA_SHA256_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha256Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testRSA_SHA384_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha384Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testRSA_SHA512_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
         test_create_signature_enveloping(rsaSha512Mgf1, sha1, rsaki,
                                          rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
+    void testRSA_SHA3_224_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >= 16);
+        test_create_signature_enveloping(rsaSha3_224Mgf1, sha1, rsaki,
+                                         rsaKeyPair.getPrivate(), kvks);
+    }
+
+    @Test
+    void testRSA_SHA3_256_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >= 16);
+        test_create_signature_enveloping(rsaSha3_256Mgf1, sha1, rsaki,
+                                         rsaKeyPair.getPrivate(), kvks);
+    }
+
+    @Test
+    void testRSA_SHA3_384_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >= 16);
+        test_create_signature_enveloping(rsaSha3_384Mgf1, sha1, rsaki,
+                                         rsaKeyPair.getPrivate(), kvks);
+    }
+
+    @Test
+    void testRSA_SHA3_512_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >= 16);
+        test_create_signature_enveloping(rsaSha3_512Mgf1, sha1, rsaki,
+                                         rsaKeyPair.getPrivate(), kvks);
+    }
+
+    @Test
     void testRSA_PSS() throws Exception {
-        Assumptions.assumeTrue(bcInstalled || org.apache.xml.security.test.dom.TestUtils.isJava11Compatible());
         test_create_signature_enveloping(rsaPss, sha1, rsaki,
                 rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testRSA_PSS_SHA512() throws Exception {
-        Assumptions.assumeTrue(bcInstalled || org.apache.xml.security.test.dom.TestUtils.isJava11Compatible());
         test_create_signature_enveloping(rsaPssSha512, sha1, rsaki,
                 rsaKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testECDSA_SHA1() throws Exception {
-        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && javaVersion != 11);
         test_create_signature_enveloping(ecdsaSha1, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testECDSA_SHA224() throws Exception {
-        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && javaVersion != 11);
         test_create_signature_enveloping(ecdsaSha224, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testECDSA_SHA256() throws Exception {
-        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && javaVersion != 11);
         test_create_signature_enveloping(ecdsaSha256, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testECDSA_SHA384() throws Exception {
-        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && javaVersion != 11);
         test_create_signature_enveloping(ecdsaSha384, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testECDSA_SHA512() throws Exception {
-        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && !isJDK11);
+        Assumptions.assumeTrue(ecAlgParamsSupport && ecki != null && javaVersion != 11);
         test_create_signature_enveloping(ecdsaSha512, sha1, ecki,
                                          ecKeyPair.getPrivate(), kvks);
     }
