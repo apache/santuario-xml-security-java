@@ -36,6 +36,7 @@ import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 class SignatureTest {
     public static final String DS_NS = "http://www.w3.org/2000/09/xmldsig#";
@@ -66,9 +67,10 @@ class SignatureTest {
 
     @Test
     void testSigningVerifyingFromRebuildSignatureWithProvider() throws Throwable {
+        Provider provider = null;
         try {
             Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-            Provider provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
+            provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
 
             Document doc = getOriginalDocument();
             XMLSignature signature = signDocument(doc, provider);
@@ -81,7 +83,8 @@ class SignatureTest {
             PublicKey pubKey = getPublicKey();
             assertTrue(signature.checkSignatureValue(pubKey));
         } catch (ReflectiveOperationException e) {
-            // BouncyCastle not installed, ignore
+            // BouncyCastle not installed, skip
+            assumeFalse(provider == null);
         }
     }
 
@@ -96,9 +99,10 @@ class SignatureTest {
 
     @Test
     void testSigningVerifyingFromExistingSignatureWithProvider() throws Throwable {
+        Provider provider = null;
         try {
             Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-            Provider provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
+            provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
             Document doc = getOriginalDocument();
             XMLSignature signature = signDocument(doc, provider);
             assertEquals(provider.getName(), signature.getSignedInfo().getSignatureAlgorithm().getJCEProviderName());
@@ -106,7 +110,8 @@ class SignatureTest {
             PublicKey pubKey = getPublicKey();
             assertTrue(signature.checkSignatureValue(pubKey));
         } catch (ReflectiveOperationException e) {
-            // BouncyCastle not installed, ignore
+            // BouncyCastle not installed, skip
+            assumeFalse(provider == null);
         }
     }
 

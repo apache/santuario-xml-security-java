@@ -45,6 +45,7 @@ import org.apache.xml.security.test.dom.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -104,9 +105,10 @@ class SignatureAlgorithmTest {
         assertFalse(algorithmHash.isEmpty());
 
         Document doc = TestUtils.newDocument();
+        Provider provider = null;
         try {
             Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
-            Provider provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
+            provider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
 
             for (String algorithmURI : algorithmHash.keySet()) {
                 try {
@@ -120,7 +122,8 @@ class SignatureAlgorithmTest {
                 }
             }
         } catch (ReflectiveOperationException e) {
-            // BouncyCastle not installed, ignore
+            // BouncyCastle not installed, skip
+            assumeFalse(provider == null);
         }
     }
 
