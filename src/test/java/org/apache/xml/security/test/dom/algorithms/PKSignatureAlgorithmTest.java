@@ -59,6 +59,7 @@ public class PKSignatureAlgorithmTest {
 
     private static KeyPair rsaKeyPair, ecKeyPair;
     private static boolean bcInstalled;
+    private static int javaVersion;
 
     static {
         org.apache.xml.security.Init.init();
@@ -83,6 +84,11 @@ public class PKSignatureAlgorithmTest {
                 Security.insertProviderAt(provider, 2);
                 bcInstalled = true;
             }
+        }
+        try {
+            javaVersion = Integer.getInteger("java.specification.version", 0);
+        } catch (NumberFormatException ex) {
+            // ignore
         }
 
         KeyPairGenerator rsaKpg = KeyPairGenerator.getInstance("RSA");
@@ -212,9 +218,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA1_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
+    void testRSA_SHA1_MGF1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -230,9 +234,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA224_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
+    void testRSA_SHA224_MGF1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -248,9 +250,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA256_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
+    void testRSA_SHA256_MGF1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -266,9 +266,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA384_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
+    void testRSA_SHA384_MGF1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -284,9 +282,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA512_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
-
+    void testRSA_SHA512_MGF1() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
@@ -302,8 +298,8 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_224_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testRSA_SHA3_224_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -320,8 +316,8 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_256_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testRSA_SHA3_256_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -338,8 +334,8 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_384_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testRSA_SHA3_384_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -356,8 +352,8 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_SHA3_512_MGF1() throws Exception {
-        Assumptions.assumeTrue(bcInstalled);
+    void testRSA_SHA3_512_MGF1() throws Exception {
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
 
         // Read in plaintext document
         InputStream sourceDocument =
@@ -374,8 +370,7 @@ public class PKSignatureAlgorithmTest {
     }
 
     @Test
-    public void testRSA_PSS() throws Exception {
-        Assumptions.assumeTrue(bcInstalled || TestUtils.isJava11Compatible());
+    void testRSA_PSS() throws Exception {
         // Read in plaintext document
         InputStream sourceDocument =
                 this.getClass().getClassLoader().getResourceAsStream(
