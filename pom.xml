@@ -95,7 +95,7 @@
         <clirr.version>2.8</clirr.version>
         <commons.codec.version>1.15</commons.codec.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <jetty.version>9.4.51.v20230217</jetty.version>
+        <jetty.version>9.4.52.v20230823</jetty.version>
         <junit.version>5.10.0</junit.version>
         <log4j.version>2.20.0</log4j.version>
         <slf4j.version>1.7.36</slf4j.version>
