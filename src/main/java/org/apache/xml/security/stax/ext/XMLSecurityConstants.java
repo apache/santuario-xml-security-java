@@ -22,7 +22,9 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 
+import java.security.AccessController;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivilegedAction;
 import java.security.SecureRandom;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -43,19 +45,13 @@ public class XMLSecurityConstants {
     public static final XMLOutputFactory xmlOutputFactory;
     public static final XMLOutputFactory xmlOutputFactoryNonRepairingNs;
 
-    private static final SecureRandom SECURE_RANDOM;
+    private static volatile SecureRandom SECURE_RANDOM;
+    private static final Object SECURE_RANDOM_LOCK = new Object();
     private static final String RANDOM_ALGORITHM_KEY = "org.apache.xml.security.securerandom.algorithm";
     private static JAXBContext jaxbContext;
     private static Schema schema;
 
     static {
-        try {
-            String PrngAlgorithm = System.getProperty(RANDOM_ALGORITHM_KEY);
-            SECURE_RANDOM = PrngAlgorithm != null ? SecureRandom.getInstance(PrngAlgorithm) : new SecureRandom();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
         try {
             datatypeFactory = DatatypeFactory.newInstance();
         } catch (DatatypeConfigurationException e) {
@@ -73,17 +69,36 @@ public class XMLSecurityConstants {
     }
 
     /**
-     * Generate bytes of the given length using the supplied algorithm in RANDOM_ALGORITHM_KEY or,
-     * if not specified, use SecureRandom instance from default constructor. The SecureRandom
+     * Generate bytes of the given length using the algorithm supplied in {@value #RANDOM_ALGORITHM_KEY} or,
+     * if not specified, use a {@code SecureRandom} instance from default constructor. The {@code SecureRandom}
      * instance that backs this method is cached for efficiency.
      *
-     * @return a byte array of the given length
+     * @return a new byte array of the given length
      * @throws XMLSecurityException
      */
     public static byte[] generateBytes(int length) throws XMLSecurityException {
+
+        SecureRandom rnd = SECURE_RANDOM;
+        if (rnd == null) {
+            synchronized (SECURE_RANDOM_LOCK) {
+                rnd = SECURE_RANDOM;
+                if (rnd == null) {
+                    try {
+                        final String prngAlgorithm = AccessController.doPrivileged(
+                                (PrivilegedAction<String>) () -> System.getProperty(RANDOM_ALGORITHM_KEY));
+                        SECURE_RANDOM = rnd = prngAlgorithm != null
+                                ? SecureRandom.getInstance(prngAlgorithm)
+                                : new SecureRandom();
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+
         try {
             byte[] temp = new byte[length];
-            SECURE_RANDOM.nextBytes(temp);
+            rnd.nextBytes(temp);
             return temp;
         } catch (Exception ex) {
             throw new XMLSecurityException(ex);
