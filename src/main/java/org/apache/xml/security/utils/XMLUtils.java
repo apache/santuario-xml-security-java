@@ -931,7 +931,7 @@ public final class XMLUtils {
                     int length = attributes.getLength();
                     for (int i = 0; i < length; i++) {
                         Attr attr = (Attr)attributes.item(i);
-                        if (attr.isId() && id.equals(attr.getValue()) && se != knownElement) {
+                        if (attr.isId() && id.equals(attr.getValue()) && !knownElement.isSameNode(se)) {
                             LOG.log(Level.WARNING, "Multiple elements with the same 'Id' attribute value!");
                             return false;
                         }
