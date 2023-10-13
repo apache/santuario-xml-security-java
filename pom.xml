@@ -16,16 +16,13 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd"
->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.santuario</groupId>
     <artifactId>xmlsec</artifactId>
     <packaging>bundle</packaging>
     <name>Apache XML Security for Java</name>
-    <version>2.3.4-SNAPSHOT</version>
+    <version>2.3.4</version>
     <description>
         Apache XML Security for Java supports XML-Signature Syntax and Processing,
         W3C Recommendation 12 February 2002, and XML Encryption Syntax and
@@ -62,7 +59,7 @@
         <connection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</connection>
         <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</developerConnection>
         <url>https://gitbox.apache.org/repos/asf?p=santuario-xml-security-java.git;a=summary</url>
-      <tag>HEAD</tag>
+      <tag>xmlsec-2.3.4</tag>
   </scm>
 
     <organization>
@@ -298,7 +295,7 @@
                             <replacements>
                                 <replacement>
                                     <token>Generated on: .+</token>
-                                    <value></value>
+                                    <value />
                                 </replacement>
                             </replacements>
                             <regex>true</regex>
@@ -594,7 +591,7 @@
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
-        <project.build.outputTimestamp>2023-03-27T09:30:49Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2023-10-13T12:06:10Z</project.build.outputTimestamp>
     </properties>
     
     <dependencies>
