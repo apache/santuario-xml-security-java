@@ -16,18 +16,21 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd"
+>
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
-        <version>30</version>
+        <version>29</version>
     </parent>
 
     <groupId>org.apache.santuario</groupId>
     <artifactId>xmlsec</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.3-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Apache XML Security for Java</name>
@@ -67,7 +70,7 @@
         <connection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</connection>
         <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</developerConnection>
         <url>https://gitbox.apache.org/repos/asf?p=santuario-xml-security-java.git;a=summary</url>
-      <tag>xmlsec-3.0.3</tag>
+      <tag>HEAD</tag>
     </scm>
     <issueManagement>
         <system>JIRA</system>
@@ -104,7 +107,7 @@
 
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.outputTimestamp>2023-10-13T09:50:02Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2023-03-27T06:33:07Z</project.build.outputTimestamp>
         <targetJdk>1.8</targetJdk>
         <test.logging.level>info</test.logging.level>
 
@@ -392,7 +395,7 @@
                             <replacements>
                                 <replacement>
                                     <token>Generated on: .+</token>
-                                    <value />
+                                    <value></value>
                                 </replacement>
                             </replacements>
                             <regex>true</regex>
