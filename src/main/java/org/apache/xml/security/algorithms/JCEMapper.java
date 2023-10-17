@@ -301,7 +301,23 @@ public class JCEMapper {
         );
         algorithmsMap.put(
             XMLCipher.DIFFIE_HELLMAN,
-            new Algorithm("", "", "KeyAgreement")
+            new Algorithm("RSA", "", "KeyAgreement")
+        );
+        algorithmsMap.put(
+                XMLCipher.DIFFIE_HELLMAN_EC,
+                new Algorithm("EC", "ECDH", "KeyAgreement")
+        );
+        algorithmsMap.put(
+                XMLCipher.DIFFIE_HELLMAN_EC,
+                new Algorithm("XDH", "XDH", "KeyAgreement")
+        );
+        algorithmsMap.put(
+                XMLCipher.DIFFIE_HELLMAN_EC,
+                new Algorithm("X25519", "X25519", "KeyAgreement")
+        );
+        algorithmsMap.put(
+                XMLCipher.DIFFIE_HELLMAN_EC,
+                new Algorithm("X448", "X448", "KeyAgreement")
         );
         algorithmsMap.put(
             XMLCipher.TRIPLEDES_KeyWrap,

@@ -18,44 +18,52 @@
  */
 package org.apache.xml.security.test.dom.keys;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.FileSystems;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.spec.X509EncodedKeySpec;
-
 import org.apache.xml.security.keys.content.DEREncodedKeyValue;
 import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.apache.xml.security.testutils.JDKTestUtils;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.JavaUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.File;
+import java.io.FileInputStream;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class DEREncodedKeyValueTest {
-
-    private static final String SEP = FileSystems.getDefault().getSeparator();
 
     private static final String ID_CONTROL = "abc123";
 
     private final PublicKey rsaKeyControl;
     private final PublicKey dsaKeyControl;
     private final PublicKey ecKeyControl;
+    private final PublicKey edecKeyControl;
+    private final PublicKey xecKeyControl;
 
     public DEREncodedKeyValueTest() throws Exception {
+
         rsaKeyControl = loadPublicKey("rsa.key", "RSA");
         dsaKeyControl = loadPublicKey("dsa.key", "DSA");
         ecKeyControl = loadPublicKey("ec.key", "EC");
+        edecKeyControl = loadPublicKey("ed25519.key", "EdDSA");
+        xecKeyControl = loadPublicKey("x25519.key", "XDH");
+    }
+
+    @AfterEach
+    public void setUp() throws Exception {
+        if (JDKTestUtils.isAuxiliaryProviderRegistered()) {
+            JDKTestUtils.unregisterAuxiliaryProvider();
+        }
     }
 
     @Test
@@ -104,6 +112,37 @@ public class DEREncodedKeyValueTest {
     }
 
     @Test
+    public void testEdECPublicKeyFromElement() throws Exception {
+        if (!JDKTestUtils.isAlgorithmSupported(edecKeyControl.getAlgorithm())) {
+            JDKTestUtils.registerAuxiliaryProvider();
+        }
+
+        Document doc = loadXML("DEREncodedKeyValue-EdEC.xml");
+        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        Element element = (Element) nl.item(0);
+
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
+        assertEquals(edecKeyControl, derEncodedKeyValue.getPublicKey());
+        assertArrayEquals(edecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
+    }
+
+    @Test
+    public void testXECPublicKeyFromElement() throws Exception {
+        if (!JDKTestUtils.isAlgorithmSupported(edecKeyControl.getAlgorithm())) {
+            JDKTestUtils.registerAuxiliaryProvider();
+        }
+
+        Document doc = loadXML("DEREncodedKeyValue-XEC.xml");
+        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        Element element = (Element) nl.item(0);
+
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
+        assertArrayEquals(xecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
+    }
+
+    @Test
     public void testRSAPublicKeyFromKey() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
@@ -125,6 +164,29 @@ public class DEREncodedKeyValueTest {
     }
 
     @Test
+    public void testEdECPublicKeyFromKey() throws Exception {
+
+        if (!JDKTestUtils.isAlgorithmSupported(edecKeyControl.getAlgorithm())) {
+            JDKTestUtils.registerAuxiliaryProvider();
+        }
+
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), edecKeyControl);
+        assertEquals(edecKeyControl, derEncodedKeyValue.getPublicKey());
+        assertArrayEquals(edecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
+    }
+
+    @Test
+    public void testXECPublicKeyFromKey() throws Exception {
+
+        if (!JDKTestUtils.isAlgorithmSupported(xecKeyControl.getAlgorithm())) {
+            JDKTestUtils.registerAuxiliaryProvider();
+        }
+
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), xecKeyControl);
+        assertArrayEquals(xecKeyControl.getEncoded(), derEncodedKeyValue.getBytesFromTextChild());
+    }
+
+    @Test
     public void testId() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals("", derEncodedKeyValue.getId());
@@ -140,10 +202,9 @@ public class DEREncodedKeyValueTest {
     }
 
     // Utility methods
-
     private File getControlFilePath(String fileName) {
         return XmlSecTestEnvironment.resolveFile("src", "test", "resources", "org", "apache", "xml", "security", "keys",
-            "content", fileName);
+                "content", fileName);
     }
 
     private Document loadXML(String fileName) throws Exception {
@@ -153,7 +214,8 @@ public class DEREncodedKeyValueTest {
     private PublicKey loadPublicKey(String filePath, String algorithm) throws Exception {
         String fileData = new String(JavaUtils.getBytesFromFile(getControlFilePath(filePath).getAbsolutePath()));
         byte[] keyBytes = XMLUtils.decode(fileData);
-        KeyFactory kf = KeyFactory.getInstance(algorithm);
+        KeyFactory kf = JDKTestUtils.isAlgorithmSupported(algorithm) ?
+                KeyFactory.getInstance(algorithm) : KeyFactory.getInstance(algorithm, JDKTestUtils.getAuxiliaryProvider());
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         return kf.generatePublic(keySpec);
     }

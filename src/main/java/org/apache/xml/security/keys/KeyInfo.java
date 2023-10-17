@@ -27,19 +27,12 @@ import java.util.List;
 
 import javax.crypto.SecretKey;
 
+import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.EncryptedKey;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.content.DEREncodedKeyValue;
-import org.apache.xml.security.keys.content.KeyInfoReference;
-import org.apache.xml.security.keys.content.KeyName;
-import org.apache.xml.security.keys.content.KeyValue;
-import org.apache.xml.security.keys.content.MgmtData;
-import org.apache.xml.security.keys.content.PGPData;
-import org.apache.xml.security.keys.content.RetrievalMethod;
-import org.apache.xml.security.keys.content.SPKIData;
-import org.apache.xml.security.keys.content.X509Data;
+import org.apache.xml.security.keys.content.*;
 import org.apache.xml.security.keys.content.keyvalues.DSAKeyValue;
 import org.apache.xml.security.keys.content.keyvalues.RSAKeyValue;
 import org.apache.xml.security.keys.keyresolver.KeyResolver;
@@ -50,7 +43,6 @@ import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.SignatureElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -88,7 +80,7 @@ import org.w3c.dom.Node;
  * contains the corresponding type.
  *
  */
-public class KeyInfo extends SignatureElementProxy {
+public class KeyInfo extends ElementProxy {
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(KeyInfo.class);
@@ -232,12 +224,24 @@ public class KeyInfo extends SignatureElementProxy {
     }
 
     /**
-     * Method add
+     * Method adds public key encoded as KeyValue. If public key type is not supported by KeyValue, then
+     * DEREncodedKeyValue is used. If public key type is not supported by DEREncodedKeyValue, then
+     * IllegalArgumentException is thrown.
      *
-     * @param pk
+     * @param pk public key to be added to KeyInfo
      */
-    public void add(PublicKey pk) {
-        this.add(new KeyValue(getDocument(), pk));
+    public void add(PublicKey pk)  {
+
+        if (KeyValue.isSupportedKeyType(pk)) {
+            this.add(new KeyValue(getDocument(), pk));
+            return;
+        }
+
+        try {
+            this.add(new DEREncodedKeyValue(getDocument(), pk));
+        } catch (XMLSecurityException ex) {
+            throw new IllegalArgumentException(ex);
+        }
     }
 
     /**
@@ -361,6 +365,16 @@ public class KeyInfo extends SignatureElementProxy {
     }
 
     /**
+     * Method add
+     *
+     * @param agreementMethod
+     */
+    public void add(AgreementMethodImpl agreementMethod) {
+        appendSelf(agreementMethod);
+        addReturnToSelf();
+    }
+
+    /**
      * Method addKeyInfoReference
      *
      * @param URI
@@ -472,6 +486,15 @@ public class KeyInfo extends SignatureElementProxy {
      */
     public int lengthKeyInfoReference() {
         return this.length(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
+    }
+
+    /**
+     * Method lengthAgreementMethod
+     *
+     * @return the number of the AgreementMethod tags
+     */
+    public int lengthAgreementMethod() {
+        return this.length(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_AGREEMENTMETHOD);
     }
 
     /**
@@ -668,6 +691,24 @@ public class KeyInfo extends SignatureElementProxy {
     }
 
     /**
+     * Method itemKeyValue
+     *
+     * @param i
+     * @return the asked KeyValue element, null if the index is too big
+     * @throws XMLSecurityException
+     */
+    public AgreementMethod itemAgreementMethod(int i) throws XMLSecurityException {
+        Element e =
+                XMLUtils.selectXencNode(
+                        getFirstChild(), EncryptionConstants._TAG_AGREEMENTMETHOD, i);
+
+        if (e != null) {
+            return new AgreementMethodImpl(e, this.baseURI);
+        }
+        return null;
+    }
+
+    /**
      * Method itemKeyInfoReference
      *
      * @param i
@@ -810,6 +851,16 @@ public class KeyInfo extends SignatureElementProxy {
      */
     public boolean containsKeyInfoReference() {
         return this.lengthKeyInfoReference() > 0;
+    }
+
+
+    /**
+     * Method containAgreementMethod
+     *
+     * @return If the KeyInfo contains a AgreementMethod node
+     */
+    public boolean containsAgreementMethod() {
+        return this.lengthAgreementMethod() > 0;
     }
 
     /**
@@ -1227,5 +1278,11 @@ public class KeyInfo extends SignatureElementProxy {
     @Override
     public String getBaseLocalName() {
         return Constants._TAG_KEYINFO;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String getBaseNamespace() {
+        return Constants.SignatureSpecNS;
     }
 }
