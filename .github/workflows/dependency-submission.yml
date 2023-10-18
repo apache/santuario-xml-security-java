@@ -2,7 +2,7 @@ name: 'Dependency Submission'
 on: 
   push:
     branches: [main]
-  pull-request:
+  pull_request:
     branches: [main]
 
 permissions:
