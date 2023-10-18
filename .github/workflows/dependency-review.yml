@@ -1,0 +1,23 @@
+name: 'Dependency Review'
+on: 
+  pull_request:
+    branches: [main, 3.0.x-fixes, 2.3.x-fixes]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v3
+          with:
+            fail-on-severity: moderate
+            comment-summary-in-pr: always
+            retry-on-snapshot-warnings: true
