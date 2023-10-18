@@ -2,6 +2,8 @@ name: 'Dependency Submission'
 on: 
   push:
     branches: [main]
+  pull-request:
+    branches: [main]
 
 permissions:
   contents: read
