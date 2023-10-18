@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v3
-          with:
-            fail-on-severity: moderate
-            comment-summary-in-pr: always
-            retry-on-snapshot-warnings: true
+        with:
+          fail-on-severity: moderate
+          comment-summary-in-pr: always
+          retry-on-snapshot-warnings: true
