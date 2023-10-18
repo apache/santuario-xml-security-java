@@ -7,10 +7,23 @@ permissions:
   contents: read
 
 jobs:
+  dependency-submission:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: Setup Java JDK
+        uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # v3.13.0
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Submit Dependency Snapshot
+        uses: advanced-security/maven-dependency-submission-action@c5ad0fd6b977364190852883b46728f25a9617c3 # v3.0.2
   dependency-review:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       pull-requests: write
     steps:
       - name: 'Checkout Repository'
@@ -20,4 +33,3 @@ jobs:
         with:
           fail-on-severity: moderate
           comment-summary-in-pr: always
-          retry-on-snapshot-warnings: true
