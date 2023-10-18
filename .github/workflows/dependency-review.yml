@@ -9,8 +9,6 @@ permissions:
 jobs:
   dependency-submission:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
@@ -19,8 +17,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-      - name: Submit Dependency Snapshot
-        uses: advanced-security/maven-dependency-submission-action@c5ad0fd6b977364190852883b46728f25a9617c3 # v3.0.2
   dependency-review:
     runs-on: ubuntu-latest
     permissions:
