@@ -22,14 +22,10 @@ import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
-import org.apache.xml.security.encryption.params.KeyDerivationParameter;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.AgreementMethodImpl;
-import org.apache.xml.security.keys.derivedKey.ConcatKDFParamsImpl;
-import org.apache.xml.security.keys.derivedKey.KeyDerivationMethodImpl;
 import org.apache.xml.security.keys.keyresolver.KeyResolverException;
 import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
 import org.apache.xml.security.keys.keyresolver.implementations.EncryptedKeyResolver;
@@ -1329,9 +1325,7 @@ public class XMLCipher {
     ) throws XMLEncryptionException {
 
         OAEPParameterSpec oaepParameters =
-                constructOAEPParameters(
-                        algorithm, digestAlg, mgfAlgorithm, oaepParams
-                );
+                AlgorithmParameterUtils.buildOAEPParameters(algorithm, digestAlg, mgfAlgorithm, oaepParams);
         return encryptKey(doc, key, oaepParameters, random);
     }
 
@@ -1556,7 +1550,7 @@ public class XMLCipher {
         if (XMLCipher.RSA_OAEP.equals(encryptionAlgorithm)
                 || XMLCipher.RSA_OAEP_11.equals(encryptionAlgorithm)) {
             LOG.debug("EncryptedKey key algorithm is RSA OAEP");
-            return  constructOAEPParameters(
+            return  AlgorithmParameterUtils.buildOAEPParameters(
                     encryptionAlgorithm, encMethod.getDigestAlgorithm(),
                     encMethod.getMGFAlgorithm(), encMethod.getOAEPparams());
         }
@@ -1566,89 +1560,10 @@ public class XMLCipher {
             // resolve the agreement method
             LOG.debug("EncryptedKey key is using Key agreement data");
             AgreementMethod agreementMethod = keyInfo.itemAgreementMethod(0);
-            return constructRecipientKeyAgreementParameters(encryptionAlgorithm, agreementMethod);
+            return AlgorithmParameterUtils.buildRecipientKeyAgreementParameters(encryptionAlgorithm,
+                    agreementMethod, (PrivateKey) this.key);
         }
         return null;
-    }
-
-    /**
-     * Construct an OAEPParameterSpec object from the given parameters
-     */
-    private OAEPParameterSpec constructOAEPParameters(
-        String encryptionAlgorithm,
-        String digestAlgorithm,
-        String mgfAlgorithm,
-        byte[] oaepParams
-    ) {
-        if (XMLCipher.RSA_OAEP.equals(encryptionAlgorithm)
-            || XMLCipher.RSA_OAEP_11.equals(encryptionAlgorithm)) {
-
-            String jceDigestAlgorithm = "SHA-1";
-            if (digestAlgorithm != null) {
-                jceDigestAlgorithm = JCEMapper.translateURItoJCEID(digestAlgorithm);
-            }
-
-            PSource.PSpecified pSource = PSource.PSpecified.DEFAULT;
-            if (oaepParams != null) {
-                pSource = new PSource.PSpecified(oaepParams);
-            }
-
-            MGF1ParameterSpec mgfParameterSpec = new MGF1ParameterSpec("SHA-1");
-            if (XMLCipher.RSA_OAEP_11.equals(encryptionAlgorithm)) {
-                mgfParameterSpec = AlgorithmParameterUtils.createMGF1Parameter(mgfAlgorithm);
-            }
-            return new OAEPParameterSpec(jceDigestAlgorithm, "MGF1", mgfParameterSpec, pSource);
-        }
-
-        return null;
-    }
-
-    /**
-     * Construct an KeyAgreementParameterSpec object from the given parameters
-     *
-     * @param keyWrapAlgo key wrap algorithm
-     * @param agreementMethod agreement method
-     */
-    private KeyAgreementParameterSpec constructRecipientKeyAgreementParameters(String keyWrapAlgo, AgreementMethod agreementMethod) throws XMLSecurityException {
-        String agreementAlgorithm = agreementMethod.getAlgorithm();
-        int keyLength = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgo);
-        KeyDerivationMethod keyDerivationMethod  = agreementMethod.getKeyDerivationMethod();
-        if (keyDerivationMethod == null) {
-            throw new XMLEncryptionException("Key Derivation Algorithm is not specified");
-        }
-        KeyDerivationParameter kdp = constructKeyDerivationParameter(keyDerivationMethod, keyLength);
-
-        KeyAgreementParameterSpec ecdhKeyAgreementParameters = new KeyAgreementParameterSpec(
-                KeyAgreementParameterSpec.ActorType.RECIPIENT,
-                agreementAlgorithm, kdp);
-        ecdhKeyAgreementParameters.setRecipientPrivateKey((PrivateKey) this.key);
-        ecdhKeyAgreementParameters.setOriginatorPublicKey(agreementMethod.getOriginatorKeyInfo().getPublicKey());
-        return ecdhKeyAgreementParameters;
-    }
-
-    /**
-     *  Construct a KeyDerivationParameter object from the given keyDerivationMethod and keyBitLength
-     *
-     * @param keyDerivationMethod element to parse
-     * @param keyBitLength expected derived key length
-     * @return KeyDerivationParameter object
-     * @throws XMLSecurityException if the keyDerivationMethod is not supported
-     */
-    public KeyDerivationParameter  constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod, int keyBitLength) throws XMLSecurityException {
-        String keyDerivationAlgorithm = keyDerivationMethod.getAlgorithm();
-        if (!EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(keyDerivationAlgorithm)) {
-            throw new XMLEncryptionException( "unknownAlgorithm", keyDerivationAlgorithm);
-        }
-        ConcatKDFParamsImpl concatKDFParams = ((KeyDerivationMethodImpl)keyDerivationMethod).getConcatKDFParams();
-
-        ConcatKeyDerivationParameter kdp = new ConcatKeyDerivationParameter(keyBitLength, concatKDFParams.getDigestMethod());
-        kdp.setAlgorithmID(concatKDFParams.getAlgorithmId());
-        kdp.setPartyUInfo(concatKDFParams.getPartyUInfo());
-        kdp.setPartyVInfo(concatKDFParams.getPartyVInfo());
-        kdp.setSuppPubInfo(concatKDFParams.getSuppPubInfo());
-        kdp.setSuppPrivInfo(concatKDFParams.getSuppPrivInfo());
-
-        return kdp;
     }
 
     /**

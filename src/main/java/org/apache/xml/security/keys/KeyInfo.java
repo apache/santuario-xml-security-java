@@ -703,7 +703,7 @@ public class KeyInfo extends ElementProxy {
                         getFirstChild(), EncryptionConstants._TAG_AGREEMENTMETHOD, i);
 
         if (e != null) {
-            return new AgreementMethodImpl(e, this.baseURI);
+            return new AgreementMethodImpl(e);
         }
         return null;
     }

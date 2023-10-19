@@ -28,10 +28,7 @@ import org.apache.xml.security.keys.OriginatorKeyInfo;
 import org.apache.xml.security.keys.RecipientKeyInfo;
 import org.apache.xml.security.keys.derivedKey.ConcatKDFParamsImpl;
 import org.apache.xml.security.keys.derivedKey.KeyDerivationMethodImpl;
-import org.apache.xml.security.utils.ElementProxy;
-import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.EncryptionElementProxy;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -102,17 +99,18 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
             throw new IllegalArgumentException("Algorithm [" + algorithm + "] is not URI ", ex);
         }
         algorithmURI = tmpAlgorithm.toString();
+
+        setLocalAttribute(Constants._ATT_ALGORITHM, algorithmURI);
     }
 
     /**
      * Constructor AgreementMethodImpl based on XML {@link Element}.
      *
      * @param element the XML {@link Element} containing AgreementMethod information
-     * @param baseURI the URI of the resource where the XML instance was stored
      * @throws XMLSecurityException
      */
-    public AgreementMethodImpl(Element element, String baseURI) throws XMLSecurityException {
-        super(element, baseURI);
+    public AgreementMethodImpl(Element element) throws XMLSecurityException {
+        super(element, EncryptionConstants.EncryptionSpecNS);
     }
 
     /**
@@ -269,6 +267,9 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
      */
     @Override
     public String getAlgorithm() {
+        if (algorithmURI == null) {
+            algorithmURI = getLocalAttribute(Constants._ATT_ALGORITHM);
+        }
         return algorithmURI;
     }
 

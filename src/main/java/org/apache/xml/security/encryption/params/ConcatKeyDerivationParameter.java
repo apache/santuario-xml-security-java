@@ -52,7 +52,7 @@ public class ConcatKeyDerivationParameter extends KeyDerivationParameter {
      */
     public ConcatKeyDerivationParameter(int keyBitLength, String digestAlgorithm) {
         super(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF, keyBitLength);
-        this.digestAlgorithm = digestAlgorithm;
+        this.digestAlgorithm = digestAlgorithm == null? MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256 : digestAlgorithm;
     }
 
     public String getDigestAlgorithm() {
