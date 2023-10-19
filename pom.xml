@@ -94,11 +94,11 @@
         <commons.codec.version>1.15</commons.codec.version>
         <hamcrest.version>2.2</hamcrest.version>
         <jaxb.runtime>4.0.3</jaxb.runtime>
-        <jetty.version>11.0.16</jetty.version>
+        <jetty.version>11.0.15</jetty.version>
         <jmh.version>1.37</jmh.version>
         <junit.version>5.10.0</junit.version>
         <slf4j.version>2.0.9</slf4j.version>
-        <xalan.version>2.7.3</xalan.version>
+        <xalan.version>2.7.1</xalan.version>
         <xmlunit.version>2.9.1</xmlunit.version>
         <xml.bind.api.version>4.0.1</xml.bind.api.version>
         <woodstox.core.version>6.5.1</woodstox.core.version>
@@ -198,25 +198,25 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>${jetty.version}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
             <version>${jetty.version}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlets</artifactId>
             <version>${jetty.version}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>xalan</groupId>
             <artifactId>xalan</artifactId>
             <version>${xalan.version}</version>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>xalan</groupId>
