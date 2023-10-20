@@ -1,0 +1,8 @@
+github:
+  protected_branches:
+    main:
+        # contexts are the names of checks that must pass
+        contexts:
+          - build (pull_request)
+          - dependency-submission (pull_request)
+          - dependency-review (pull_request)
