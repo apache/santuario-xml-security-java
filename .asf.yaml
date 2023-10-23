@@ -6,3 +6,4 @@ github:
           - build (pull_request)
           - dependency-submission (pull_request)
           - dependency-review (pull_request)
+          - Dependency Review / dependency-review (pull_request)
