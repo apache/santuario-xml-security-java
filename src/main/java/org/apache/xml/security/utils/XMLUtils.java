@@ -707,6 +707,27 @@ public final class XMLUtils {
     }
 
     /**
+     *
+     * @param sibling
+     * @param nodeName
+     * @param number
+     * @return nodes with the given node name
+     */
+    public static Element selectXenc11Node(Node sibling, String nodeName, int number) {
+        while (sibling != null) {
+            if (EncryptionConstants.EncryptionSpec11NS.equals(sibling.getNamespaceURI())
+                    && sibling.getLocalName().equals(nodeName)) {
+                if (number == 0){
+                    return (Element)sibling;
+                }
+                number--;
+            }
+            sibling = sibling.getNextSibling();
+        }
+        return null;
+    }
+
+    /**
      * @param sibling
      * @param uri
      * @param nodeName

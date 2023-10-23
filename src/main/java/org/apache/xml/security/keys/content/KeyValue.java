@@ -117,6 +117,20 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
     }
 
     /**
+     * Method getPublicKey verifies that the key xml KeyValue encoding is supported for the given key type. If the
+     * encoding is supported, it returns true else false.
+     *
+     * @return the public key type can be KeyValue encoding is supported then it returns true else false
+     */
+    public static boolean isSupportedKeyType(PublicKey publicKey){
+
+        return publicKey instanceof java.security.interfaces.DSAPublicKey
+                || publicKey instanceof java.security.interfaces.RSAPublicKey
+                || publicKey instanceof java.security.interfaces.ECPublicKey;
+
+    }
+
+    /**
      * Constructor KeyValue
      *
      * @param element

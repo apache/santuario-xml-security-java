@@ -27,12 +27,7 @@ import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
@@ -58,8 +53,10 @@ import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.keys.content.AgreementMethodImpl;
 import org.apache.xml.security.keys.keyresolver.KeyResolverException;
 import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
 import org.apache.xml.security.keys.keyresolver.implementations.EncryptedKeyResolver;
@@ -67,10 +64,7 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.transforms.InvalidTransformException;
 import org.apache.xml.security.transforms.TransformationException;
-import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.ElementProxy;
-import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.*;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -147,6 +141,12 @@ public final class XMLCipher {
     /** DIFFIE_HELLMAN Cipher */
     public static final String DIFFIE_HELLMAN =
         EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH;
+
+    /**
+     * DIFFIE_HELLMAN ES Cipher for Elliptic curve and X keys
+     */
+    public static final String DIFFIE_HELLMAN_EC =
+            EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES;
 
     /** Triple DES EDE (192 bit key) in CBC mode KEYWRAP*/
     public static final String TRIPLEDES_KeyWrap =
@@ -1299,7 +1299,7 @@ public final class XMLCipher {
      * @throws XMLEncryptionException
      */
     public EncryptedKey encryptKey(Document doc, Key key) throws XMLEncryptionException {
-        return encryptKey(doc, key, null, null);
+        return encryptKey(doc, key, (String) null, null);
     }
 
     /**
@@ -1341,7 +1341,19 @@ public final class XMLCipher {
         byte[] oaepParams,
         SecureRandom random
     ) throws XMLEncryptionException {
-        LOG.log(Level.DEBUG, "Encrypting key ...");
+
+        OAEPParameterSpec oaepParameters =
+                XMLCipherUtil.constructOAEPParameters(algorithm, digestAlg, mgfAlgorithm, oaepParams);
+        return encryptKey(doc, key, oaepParameters, random);
+    }
+
+    public EncryptedKey encryptKey(
+            Document doc,
+            Key key,
+            AlgorithmParameterSpec params,
+            SecureRandom random
+    ) throws XMLEncryptionException {
+        LOG.log(Level.DEBUG, "Encrypting key using algorithm specs [{0}] ...", params);
 
         if (null == key) {
             throw new XMLEncryptionException("empty", "Key unexpectedly null...");
@@ -1364,26 +1376,41 @@ public final class XMLCipher {
         } else {
             c = contextCipher;
         }
-        // Now perform the encryption
 
+        AlgorithmParameterSpec chiperSpec = null;
+        KeyPair origninatorKeyPair = null;
+        Key wrapKey = this.key;
+        if (params instanceof OAEPParameterSpec) {
+            chiperSpec = params;
+            wrapKey = this.key;
+        } else if (params instanceof KeyAgreementParameterSpec) {
+            KeyAgreementParameterSpec keyAgreementParameter = (KeyAgreementParameterSpec) params;
+            PublicKey recipientPublicKey = (PublicKey) this.key;
+            if (keyAgreementParameter.getRecipientPublicKey() == null) {
+                keyAgreementParameter.setRecipientPublicKey(recipientPublicKey);
+            }
+            if (keyAgreementParameter.getOriginatorPrivateKey() == null) {
+                origninatorKeyPair = KeyUtils.generateEphemeralDHKeyPair(recipientPublicKey, null);
+                keyAgreementParameter.setOriginatorKeyPair(origninatorKeyPair);
+            }
+
+            wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey(keyAgreementParameter);
+        }
+
+        // Now perform the encryption
         try {
-            // Should internally generate an IV
-            // todo - allow user to set an IV
-            OAEPParameterSpec oaepParameters =
-                constructOAEPParameters(
-                    algorithm, digestAlg, mgfAlgorithm, oaepParams
-                );
+
             if (random != null) {
-                if (oaepParameters == null) {
-                    c.init(Cipher.WRAP_MODE, this.key, random);
+                if (chiperSpec == null) {
+                    c.init(Cipher.WRAP_MODE, wrapKey, random);
                 } else {
-                    c.init(Cipher.WRAP_MODE, this.key, oaepParameters, random);
+                    c.init(Cipher.WRAP_MODE, wrapKey, chiperSpec, random);
                 }
             } else {
-                if (oaepParameters == null) {
-                    c.init(Cipher.WRAP_MODE, this.key);
+                if (chiperSpec == null) {
+                    c.init(Cipher.WRAP_MODE, wrapKey);
                 } else {
-                    c.init(Cipher.WRAP_MODE, this.key, oaepParameters);
+                    c.init(Cipher.WRAP_MODE, wrapKey, chiperSpec);
                 }
             }
             encryptedBytes = c.wrap(key);
@@ -1401,9 +1428,24 @@ public final class XMLCipher {
         try {
             EncryptionMethod method = factory.newEncryptionMethod(new URI(algorithm).toString());
             method.setDigestAlgorithm(digestAlg);
-            method.setMGFAlgorithm(mgfAlgorithm);
-            method.setOAEPparams(oaepParams);
             ek.setEncryptionMethod(method);
+            if (params instanceof OAEPParameterSpec) {
+                OAEPParameterSpec oaepSpec = (OAEPParameterSpec) params;
+                String mgf1Uri = XMLCipherUtil.getMgf1URIForParameter((MGF1ParameterSpec) oaepSpec.getMGFParameters());
+                method.setMGFAlgorithm(mgf1Uri);
+                if (PSource.PSpecified.DEFAULT != oaepSpec.getPSource() && oaepSpec.getPSource() instanceof PSource.PSpecified) {
+                    byte[] pSourceParams = ((PSource.PSpecified) oaepSpec.getPSource()).getValue();
+                    method.setOAEPparams(pSourceParams);
+                }
+            } else if (params instanceof KeyAgreementParameterSpec) {
+                KeyAgreementParameterSpec keyAgreementParameter = (KeyAgreementParameterSpec) params;
+                AgreementMethodImpl agreementMethod = new AgreementMethodImpl(contextDocument, keyAgreementParameter);
+
+                KeyInfo keyInfo = new KeyInfo(contextDocument);
+                keyInfo.add(agreementMethod);
+                ek.setKeyInfo(keyInfo);
+            }
+
         } catch (URISyntaxException ex) {
             throw new XMLEncryptionException(ex);
         }
@@ -1440,7 +1482,7 @@ public final class XMLCipher {
                 try {
                     String keyWrapAlg = encryptedKey.getEncryptionMethod().getAlgorithm();
                     String keyType = JCEMapper.getJCEKeyAlgorithmFromURI(keyWrapAlg);
-                    if ("RSA".equals(keyType) || "EC".equals(keyType)) {
+                    if (!ki.containsAgreementMethod() && ("RSA".equals(keyType) || "EC".equals(keyType))) {
                         key = ki.getPrivateKey();
                     } else {
                         key = ki.getSecretKey();
@@ -1478,17 +1520,23 @@ public final class XMLCipher {
 
         Key ret;
 
+        AlgorithmParameterSpec params;
         try {
-            EncryptionMethod encMethod = encryptedKey.getEncryptionMethod();
-            OAEPParameterSpec oaepParameters =
-                constructOAEPParameters(
-                    encMethod.getAlgorithm(), encMethod.getDigestAlgorithm(),
-                    encMethod.getMGFAlgorithm(), encMethod.getOAEPparams()
-                );
-            if (oaepParameters == null) {
+            params = getAlgorithmParameters(encryptedKey);
+        } catch (XMLSecurityException e) {
+            throw new XMLEncryptionException(e);
+        }
+
+        try {
+
+            if (params == null) {
                 c.init(Cipher.UNWRAP_MODE, key);
-            } else {
-                c.init(Cipher.UNWRAP_MODE, key, oaepParameters);
+            } else if (params instanceof OAEPParameterSpec) {
+                c.init(Cipher.UNWRAP_MODE, key, params);
+            }
+            if (params instanceof KeyAgreementParameterSpec) {
+                Key wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey((KeyAgreementParameterSpec) params);
+                c.init(Cipher.UNWRAP_MODE, wrapKey);
             }
             ret = c.unwrap(encryptedBytes, jceKeyAlgorithm, Cipher.SECRET_KEY);
         } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
@@ -1500,42 +1548,39 @@ public final class XMLCipher {
     }
 
     /**
-     * Construct an OAEPParameterSpec object from the given parameters
+     *  Method resolves the EncryptedKey  using the EncryptedKeyResolver
+     *
+     * @param encryptedKey
+     * @return
+     * @throws XMLEncryptionException
      */
-    private OAEPParameterSpec constructOAEPParameters(
-        String encryptionAlgorithm,
-        String digestAlgorithm,
-        String mgfAlgorithm,
-        byte[] oaepParams
-    ) {
-        if (XMLCipher.RSA_OAEP.equals(encryptionAlgorithm)
-            || XMLCipher.RSA_OAEP_11.equals(encryptionAlgorithm)) {
-
-            String jceDigestAlgorithm = "SHA-1";
-            if (digestAlgorithm != null) {
-                jceDigestAlgorithm = JCEMapper.translateURItoJCEID(digestAlgorithm);
-            }
-
-            PSource.PSpecified pSource = PSource.PSpecified.DEFAULT;
-            if (oaepParams != null) {
-                pSource = new PSource.PSpecified(oaepParams);
-            }
-
-            MGF1ParameterSpec mgfParameterSpec = new MGF1ParameterSpec("SHA-1");
-            if (XMLCipher.RSA_OAEP_11.equals(encryptionAlgorithm)) {
-                if (EncryptionConstants.MGF1_SHA224.equals(mgfAlgorithm)) {
-                    mgfParameterSpec = new MGF1ParameterSpec("SHA-224");
-                } else if (EncryptionConstants.MGF1_SHA256.equals(mgfAlgorithm)) {
-                    mgfParameterSpec = new MGF1ParameterSpec("SHA-256");
-                } else if (EncryptionConstants.MGF1_SHA384.equals(mgfAlgorithm)) {
-                    mgfParameterSpec = new MGF1ParameterSpec("SHA-384");
-                } else if (EncryptionConstants.MGF1_SHA512.equals(mgfAlgorithm)) {
-                    mgfParameterSpec = new MGF1ParameterSpec("SHA-512");
-                }
-            }
-            return new OAEPParameterSpec(jceDigestAlgorithm, "MGF1", mgfParameterSpec, pSource);
+    private AlgorithmParameterSpec getAlgorithmParameters(EncryptedKey encryptedKey) throws XMLSecurityException {
+        if (encryptedKey == null
+            || encryptedKey.getEncryptionMethod() == null
+            || encryptedKey.getEncryptionMethod().getAlgorithm() == null) {
+            LOG.log(Level.DEBUG,"EncryptedKey key algorithm is null");
+            return null;
         }
 
+        EncryptionMethod encMethod = encryptedKey.getEncryptionMethod();
+        String encryptionAlgorithm = encMethod.getAlgorithm();
+
+        if (XMLCipher.RSA_OAEP.equals(encryptionAlgorithm)
+                || XMLCipher.RSA_OAEP_11.equals(encryptionAlgorithm)) {
+            LOG.log(Level.DEBUG,"EncryptedKey key algorithm is RSA OAEP");
+            return  XMLCipherUtil.constructOAEPParameters(
+                    encryptionAlgorithm, encMethod.getDigestAlgorithm(),
+                    encMethod.getMGFAlgorithm(), encMethod.getOAEPparams());
+        }
+
+        KeyInfo keyInfo = encryptedKey.getKeyInfo();
+        if (keyInfo != null && keyInfo.containsAgreementMethod()) {
+            // resolve the agreement method
+            LOG.log(Level.DEBUG,"EncryptedKey key is using Key agreement data");
+            AgreementMethod agreementMethod = keyInfo.itemAgreementMethod(0);
+            return XMLCipherUtil.constructRecipientKeyAgreementParameters(encryptionAlgorithm,
+                    agreementMethod, (PrivateKey) this.key);
+        }
         return null;
     }
 
@@ -2030,7 +2075,7 @@ public final class XMLCipher {
          * @return a new AgreementMethod
          */
         AgreementMethod newAgreementMethod(String algorithm)  {
-            return new AgreementMethodImpl(algorithm);
+            return new AgreementMethodImpl(contextDocument, algorithm);
         }
 
         /**
@@ -2510,88 +2555,7 @@ public final class XMLCipher {
             return ((ReferenceListImpl) referenceList).toElement();
         }
 
-        private class AgreementMethodImpl implements AgreementMethod {
-            private byte[] kaNonce;
-            private List<Element> agreementMethodInformation;
-            private KeyInfo originatorKeyInfo;
-            private KeyInfo recipientKeyInfo;
-            private String algorithmURI;
 
-            /**
-             * @param algorithm
-             */
-            public AgreementMethodImpl(String algorithm) {
-                agreementMethodInformation = new LinkedList<>();
-                URI tmpAlgorithm = null;
-                try {
-                    tmpAlgorithm = new URI(algorithm);
-                } catch (URISyntaxException ex) {
-                    throw (IllegalArgumentException)
-                            new IllegalArgumentException().initCause(ex);
-                }
-                algorithmURI = tmpAlgorithm.toString();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public byte[] getKANonce() {
-                return kaNonce;
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public void setKANonce(byte[] kanonce) {
-                kaNonce = kanonce;
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public Iterator<Element> getAgreementMethodInformation() {
-                return agreementMethodInformation.iterator();
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public void addAgreementMethodInformation(Element info) {
-                agreementMethodInformation.add(info);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public void revoveAgreementMethodInformation(Element info) {
-                agreementMethodInformation.remove(info);
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public KeyInfo getOriginatorKeyInfo() {
-                return originatorKeyInfo;
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public void setOriginatorKeyInfo(KeyInfo keyInfo) {
-                originatorKeyInfo = keyInfo;
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public KeyInfo getRecipientKeyInfo() {
-                return recipientKeyInfo;
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public void setRecipientKeyInfo(KeyInfo keyInfo) {
-                recipientKeyInfo = keyInfo;
-            }
-
-            /** {@inheritDoc} */
-            @Override
-            public String getAlgorithm() {
-                return algorithmURI;
-            }
-        }
 
         private class CipherDataImpl implements CipherData {
             private static final String valueMessage =
