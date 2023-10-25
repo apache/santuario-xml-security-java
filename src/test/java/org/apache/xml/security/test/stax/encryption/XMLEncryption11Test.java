@@ -417,7 +417,7 @@ class XMLEncryption11Test {
             assertTrue(e.getCause() instanceof IOException);
             assertTrue(e.getCause().getCause() instanceof BadPaddingException);
             String cause = e.getCause().getCause().getMessage();
-            assertTrue("mac check in GCM failed".equals(cause) || "Tag mismatch!".equals(cause));
+            assertTrue("mac check in GCM failed".equals(cause) || cause.contains("Tag mismatch"));
         }
     }
 
