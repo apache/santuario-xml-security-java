@@ -118,6 +118,7 @@
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.utils.jmh_generated=ALL-UNNAMED
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.xalan=ALL-UNNAMED
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.stax.performance.jmh_generated=ALL-UNNAMED
+          --add-opens org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.providers=java.base
         </maven.test.argLine>
         <skipUT>false</skipUT>
         <skipIT>true</skipIT>
