@@ -1,6 +1,7 @@
 github:
   protected_branches:
     main:
+      required_status_checks:
         # contexts are the names of checks that must pass
         contexts:
           - build (pull_request)
