@@ -644,7 +644,7 @@
                         <plugin>
                             <artifactId>maven-surefire-plugin</artifactId>
                             <configuration>
-                                <argLine>--add-opens java.base/java.lang.reflect=ALL-UNNAMED @{argLine}</argLine>
+                                <argLine>--add-opens java.base/java.lang.reflect=ALL-UNNAMED @{argLine} -add-opens org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.providers=java.base</argLine>
                             </configuration>
                         </plugin>
                     </plugins>
