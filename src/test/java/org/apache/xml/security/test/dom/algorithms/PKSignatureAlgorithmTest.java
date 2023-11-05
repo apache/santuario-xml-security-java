@@ -509,7 +509,7 @@ public class PKSignatureAlgorithmTest {
         public static final String PROVIDER_NAME = "TestCustomProvider";
 
         protected CustomFakeProvider() {
-            super(PROVIDER_NAME, "1.0", "Custom security provider for unit tests");
+            super(PROVIDER_NAME, 1.0, "Custom security provider for unit tests");
             put("Signature.SHA1withRSA", TestCustomSignatureSpi.class.getName());
         }
 
