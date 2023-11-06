@@ -82,7 +82,7 @@ public class ConcatKDF implements DerivationAlgorithm {
      * @param offset    the offset parameter is ignored by this implementation.
      * @param keyLength The length of the key to derive
      * @return The derived key
-     * @throws XMLEncryptionException
+     * @throws XMLEncryptionException if the key length is too long to be derived with the given algorithm
      */
     @Override
     public byte[] deriveKey(byte[] secret, byte[] otherInfo, int offset, long keyLength) throws XMLSecurityException {
@@ -113,7 +113,7 @@ public class ConcatKDF implements DerivationAlgorithm {
             if (otherInfo != null && otherInfo.length > 0) {
                 digest.update(otherInfo);
             }
-            result.put(digest.digest(), 0, toGenerateSize < iDigestLength ? toGenerateSize : iDigestLength);
+            result.put(digest.digest(), 0, Math.min(toGenerateSize, iDigestLength));
             toGenerateSize -= iDigestLength;
         }
         if (offset > 0) {
@@ -127,7 +127,7 @@ public class ConcatKDF implements DerivationAlgorithm {
      * Method concatenate the bitstrings in following order {@code algID || partyUInfo || partyVInfo || suppPubInfo || suppPrivInfo}.
      * to crate otherInfo as key derivation function input.
      * If named parameters are null the value is ignored.
-     * Method parses the bitstring firs {@See https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF} and then concatenates them to a byte array.
+     * Method parses the bitstring firs {{@code @See} https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF} and then concatenates them to a byte array.
      *
      * @param sharedSecret The "shared" secret to use for key derivation (e.g. the secret key)
      * @param algID        A bit string that indicates how the derived keying material will be parsed and for which
@@ -206,10 +206,18 @@ public class ConcatKDF implements DerivationAlgorithm {
             throw new XMLEncryptionException( "errorInKeyDerivation");
         }
         if (paramLen % 2 != 0) {
-            LOG.log(Level.ERROR, "Invalid length of ConcatKDF parameter [{}]!", kdfP);
+            LOG.log(Level.ERROR, "Invalid length of ConcatKDF parameter [{0}]!", kdfP);
             throw new XMLEncryptionException( "errorInKeyDerivation");
         }
-        int iPadding = Integer.parseInt(kdfP.substring(0, 2), 16);
+        int iPadding;
+        String strPadding = kdfP.substring(0, 2);
+        try {
+            iPadding = Integer.parseInt(strPadding, 16);
+        } catch (NumberFormatException e) {
+            LOG.log(Level.ERROR, "Invalid padding number: [{0}]! Number is not Hexadecimal!", strPadding);
+            throw new XMLEncryptionException( "errorInKeyDerivation", e);
+        }
+
         if (iPadding != 0) {
             LOG.log(Level.ERROR, "Padded ConcatKDF parameters ara not supported");
             throw new XMLEncryptionException( "errorInKeyDerivation");

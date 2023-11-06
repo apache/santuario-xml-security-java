@@ -41,11 +41,14 @@ class KeyUtilsTest {
     /**
      * Test if the ephemeral key is generated with the same algorithm as the original key
      * @param testKey the enumeration  with exiting  keys in resource folder
-     * @throws Exception
+     * @throws Exception if the key cannot be loaded
      */
     @ParameterizedTest
     @EnumSource(KeyTestUtils.TestKeys.class)
     void generateEphemeralDHKeyPair(KeyTestUtils.TestKeys testKey) throws Exception {
+        String keyAlgorithm = testKey.getAlgorithm();
+        Assumptions.assumeTrue(JDKTestUtils.isAlgorithmSupported(keyAlgorithm, true), "Algorithm ["
+                + keyAlgorithm + "] not supported by JDK or auxiliary provider! Skipping test.");
 
         PublicKey publicKey = KeyTestUtils.loadPublicKey(testKey.getFilename(), testKey.getAlgorithm());
         // when
@@ -60,7 +63,7 @@ class KeyUtilsTest {
     /**
      * Test if the ephemeral key is generated with the same algorithm as the original key. The initial keys are generated
      * @param keyType the enumeration  with most common EC and XEC keys
-     * @throws Exception
+     * @throws Exception if the key cannot be loaded
      */
     @ParameterizedTest
     @EnumSource(value = KeyUtils.KeyType.class,

@@ -97,18 +97,15 @@ public class DERDecoderUtils {
      * @param derEncodedIS the DER-encoded input stream to decode.
      * @return the object identifier as a byte array.
      * @throws DERDecodingException if the given array is null.
-     * @throws IOException
      */
     public static byte[] readObjectIdentifier(InputStream derEncodedIS) throws DERDecodingException {
         try {
             validateType(derEncodedIS.read(), TYPE_OBJECT_IDENTIFIER);
             int length = readLength(derEncodedIS);
             LOG.log(System.Logger.Level.DEBUG, "DER decoding algorithm id bytes");
-            byte[] oidBytes = new byte[length];
-            derEncodedIS.read(oidBytes);
-            return oidBytes;
-        } catch (IOException e) {
-            throw new DERDecodingException(e, "Error occurred while reading the input stream.");
+            return derEncodedIS.readNBytes(length);
+        } catch (IOException ex) {
+            throw new DERDecodingException(ex, "Error occurred while reading the input stream.");
         }
     }
 
@@ -171,15 +168,15 @@ public class DERDecoderUtils {
         // number of bytes used to encode length
         int byteCount = value & 0x07f;
         //byteCount == 0 indicates indefinite length encoded data.
-        if (byteCount == 0)
+        if (byteCount == 0) {
             return -1;
+        }
 
-        // byteCount> 4 not able to handle more than 4Gb of data (max int size) tmp > 4 indicates.
-        if (byteCount < 0 || byteCount > 4) {
+        // byteCount > 4 not able to handle more than 4Gb of data (max int size) tmp > 4 indicates.
+        if (byteCount > 4) {
             throw new DERDecodingException("Data length byte size: [" + byteCount + "] is incorrect/too big");
         }
-        byte[] intSizeBytes = new byte[byteCount];
-        derEncodedIs.read(intSizeBytes);
+        byte[] intSizeBytes = derEncodedIs.readNBytes(byteCount);
         return new BigInteger(1, intSizeBytes).intValue();
     }
 
@@ -191,8 +188,8 @@ public class DERDecoderUtils {
      * Node values greater than or equal to 128 are encoded on multiple bytes.
      * Bit 7 of the leftmost byte is set to one. Bits 0 through 6 of each byte contains the encoded value.
      *
-     * @param oidBytes
-     * @return
+     * @param oidBytes the byte array containing the OID
+     * @return the decoded OID as a string
      */
     public static String decodeOID(byte[] oidBytes) {
 
@@ -244,7 +241,7 @@ public class DERDecoderUtils {
         }
         if (iLength > 1) {
             int iSteps = iLength - 1;
-            return ((inBytes[iOffset] & 0x07f) << 7 * iSteps)
+            return ((long) (inBytes[iOffset] & 0x07f) << 7 * iSteps)
                     + decodeBytes(inBytes, iOffset + 1, iSteps);
         } else {
             return inBytes[iOffset] & 0x07f;

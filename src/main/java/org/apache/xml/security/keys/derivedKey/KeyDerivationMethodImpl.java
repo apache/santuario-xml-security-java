@@ -64,6 +64,7 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
         }
     }
 
+    @Override
     public String getAlgorithm() {
         return getLocalAttribute(EncryptionConstants._ATT_ALGORITHM);
     }

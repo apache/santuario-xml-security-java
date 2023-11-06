@@ -151,7 +151,7 @@ public class KeyUtils {
      * @param recipientPublicKey public key of recipient
      * @param provider provider to use for key generation
      * @return generated keypair
-     * @throws XMLEncryptionException
+     * @throws XMLEncryptionException if the keys cannot be generated
      */
     public static KeyPair generateEphemeralDHKeyPair(PublicKey recipientPublicKey, Provider provider) throws XMLEncryptionException {
         String algorithm = recipientPublicKey.getAlgorithm();
@@ -185,7 +185,7 @@ public class KeyUtils {
      * @param algorithm  the key JCE algorithm name
      * @param provider the provider to use or null if default JCE provider should be used
      * @return the KeyPairGenerator
-     * @throws NoSuchAlgorithmException
+     * @throws NoSuchAlgorithmException if the algorithm is not supported
      */
     public static KeyPairGenerator createKeyPairGenerator(String algorithm, Provider provider) throws NoSuchAlgorithmException {
         return provider == null ? KeyPairGenerator.getInstance(algorithm)
@@ -198,7 +198,8 @@ public class KeyUtils {
      *
      * @param parameterSpec KeyAgreementParameterSpec which defines algorithm to derive key
      * @return generated secret key
-     * @throws XMLEncryptionException
+     * @throws XMLEncryptionException if the secret key cannot be generated as: Key agreement is not supported,
+     * wrong key types, etc.
      */
     public static SecretKey aesWrapKeyWithDHGeneratedKey(KeyAgreementParameterSpec parameterSpec)
             throws XMLEncryptionException {
@@ -207,8 +208,11 @@ public class KeyUtils {
             PrivateKey privateKey = parameterSpec.getAgreementPrivateKey();
 
             String algorithm = publicKey.getAlgorithm();
-            // java 11 uses ECDH instead of EC
-            algorithm = algorithm.equalsIgnoreCase("EC") ? "ECDH" : algorithm;
+            if ("EC".equalsIgnoreCase(algorithm)) {
+                LOG.log(Level.WARNING, "EC keys are detected for key agreement algorithm! " +
+                        "Cryptographic algorithm may not be secure, consider using a different algorithm (and keys). ");
+            }
+            algorithm = algorithm + (algorithm.equalsIgnoreCase("EC") ? "DH" : "");
             KeyAgreement keyAgreement = KeyAgreement.getInstance(algorithm);
             keyAgreement.init(privateKey);
             keyAgreement.doPhase(publicKey, true);
@@ -248,7 +252,7 @@ public class KeyUtils {
      * @param sharedSecret the shared secret
      * @param keyDerivationParameter the key derivation parameters
      * @return the derived key encryption key
-     * @throws XMLSecurityException
+     * @throws XMLSecurityException if the key derivation algorithm is not supported
      */
     public static byte[] deriveKeyEncryptionKey(byte[] sharedSecret, KeyDerivationParameter keyDerivationParameter)
             throws XMLSecurityException {

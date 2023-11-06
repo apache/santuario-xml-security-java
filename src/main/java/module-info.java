@@ -39,6 +39,7 @@ module org.apache.santuario.xmlsec {
     exports org.apache.xml.security.c14n.implementations;
     exports org.apache.xml.security.configuration;
     exports org.apache.xml.security.encryption;
+    exports org.apache.xml.security.encryption.params;
     exports org.apache.xml.security.exceptions;
     exports org.apache.xml.security.keys;
     exports org.apache.xml.security.keys.content;
