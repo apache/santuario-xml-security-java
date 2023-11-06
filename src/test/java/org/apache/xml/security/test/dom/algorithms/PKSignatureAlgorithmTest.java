@@ -18,11 +18,16 @@
  */
 package org.apache.xml.security.test.dom.algorithms;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Constructor;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
 import java.security.Provider;
+import java.security.PublicKey;
 import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
@@ -30,14 +35,12 @@ import java.security.spec.PSSParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
-import org.apache.xml.security.test.dom.TestUtils;
+import org.apache.xml.security.test.dom.providers.TestCustomSignatureSpi;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.AfterAll;
@@ -47,9 +50,6 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * A test to make sure that the various Public Key Signature algorithms are working
@@ -435,6 +435,83 @@ class PKSignatureAlgorithmTest {
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_RIPEMD160, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
+    }
+
+    @Test
+    void testRSA_SHA1WithCustomSecurityProvider() throws Exception {
+        TestCustomSignatureSpi.reset();
+        CustomFakeProvider.register();
+        try {
+            // Read in plaintext document
+            Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+                getClass().getClassLoader(), false);
+
+            List<String> localNames = new ArrayList<>();
+            localNames.add("PaymentInfo");
+
+            sign(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1, document, localNames, new CustomFakePrivateKey());
+            verify(document, new CustomFakePublicKey(), localNames);
+            TestCustomSignatureSpi.verifyCalls();
+        } finally {
+            CustomFakeProvider.deRegister();
+        }
+    }
+
+    private static class CustomFakeProvider extends Provider {
+
+        public static final String PROVIDER_NAME = "TestCustomProvider";
+
+        protected CustomFakeProvider() {
+            super(PROVIDER_NAME, "1.0", "Custom security provider for unit tests");
+            put("Signature.SHA1withRSA", TestCustomSignatureSpi.class.getName());
+        }
+
+        private static void register() {
+            Security.addProvider(new CustomFakeProvider());
+        }
+
+        private static void deRegister() {
+            final Provider provider = Security.getProvider(PROVIDER_NAME);
+            if (provider instanceof CustomFakeProvider) {
+                Security.removeProvider(PROVIDER_NAME);
+            }
+        }
+    }
+
+    private static class CustomFakePublicKey implements PublicKey {
+
+        @Override
+        public String getAlgorithm() {
+            return "Custom-ALG"; //return an algorithm that will not be supported by other providers
+        }
+
+        @Override
+        public String getFormat() {
+            return null;
+        }
+
+        @Override
+        public byte[] getEncoded() {
+            return new byte[0];
+        }
+    }
+
+    private static class CustomFakePrivateKey implements PrivateKey {
+
+        @Override
+        public String getAlgorithm() {
+            return "Custom-ALG"; //return an algorithm that will not be supported by other providers
+        }
+
+        @Override
+        public String getFormat() {
+            return null;
+        }
+
+        @Override
+        public byte[] getEncoded() {
+            return new byte[0];
+        }
     }
 
     private XMLSignature sign(

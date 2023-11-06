@@ -96,7 +96,7 @@
         <jaxb.runtime>4.0.3</jaxb.runtime>
         <jetty.version>11.0.16</jetty.version>
         <jmh.version>1.37</jmh.version>
-        <junit.version>5.10.0</junit.version>
+        <junit.version>5.10.1</junit.version>
         <slf4j.version>2.0.9</slf4j.version>
         <xalan.version>2.7.3</xalan.version>
         <xmlunit.version>2.9.1</xmlunit.version>
@@ -118,6 +118,7 @@
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.utils.jmh_generated=ALL-UNNAMED
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.xalan=ALL-UNNAMED
           --add-exports org.apache.santuario.xmlsec/org.apache.xml.security.test.stax.performance.jmh_generated=ALL-UNNAMED
+          --add-opens org.apache.santuario.xmlsec/org.apache.xml.security.test.dom.providers=java.base
         </maven.test.argLine>
         <skipUT>false</skipUT>
         <skipIT>true</skipIT>
@@ -314,7 +315,7 @@
                 <plugin>
                     <groupId>org.cyclonedx</groupId>
                     <artifactId>cyclonedx-maven-plugin</artifactId>
-                    <version>2.7.9</version>
+                    <version>2.7.10</version>
                     <executions>
                         <execution>
                             <id>make-bom</id>

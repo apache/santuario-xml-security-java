@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   dependency-submission:
@@ -15,11 +15,11 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       - name: Setup Java JDK
         uses: actions/setup-java@0ab4596768b603586c0de567f2430c30f5b0d2b0 # v3.13.0
         with:
           distribution: temurin
           java-version: 17
       - name: Submit Dependency Snapshot
-        uses: advanced-security/maven-dependency-submission-action@c5ad0fd6b977364190852883b46728f25a9617c3 # v3.0.2
+        uses: advanced-security/maven-dependency-submission-action@fcd7eab6b6d22946badc98d1e62665cdee93e0ae # v3.0.3
