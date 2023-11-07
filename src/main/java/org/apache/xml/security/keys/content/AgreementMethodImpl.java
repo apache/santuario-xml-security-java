@@ -187,9 +187,9 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
             appendSelf((ElementProxy) keyDerivationMethod);
             addReturnToSelf();
         } else {
-            LOG.log(Level.WARNING, "KeyDerivationMethod is set but is not an instance of ElementProxy. The DOM node is lost upon serialization.");
+            LOG.log(Level.WARNING, "KeyDerivationMethod [{0}] is set but is not an instance of ElementProxy. " +
+                    "The DOM node is lost upon serialization.", keyDerivationMethod);
         }
-
     }
 
     /**

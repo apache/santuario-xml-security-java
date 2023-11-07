@@ -151,4 +151,5 @@ public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
     public String getBaseLocalName() {
         return EncryptionConstants._TAG_CONCATKDFPARAMS;
     }
+
 }

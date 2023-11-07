@@ -36,14 +36,14 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
         RECIPIENT
     }
 
-    KeyDerivationParameter KeyDerivationParameter;
-    ActorType actorType;
-    String keyAgreementAlgorithm;
-    PublicKey originatorPublicKey;
-    PrivateKey originatorPrivateKey;
+    private final KeyDerivationParameter KeyDerivationParameter;
+    private final  ActorType actorType;
+    private final String keyAgreementAlgorithm;
 
-    PublicKey recipientPublicKey;
-    PrivateKey recipientPrivateKey;
+    private PublicKey originatorPublicKey;
+    private PrivateKey originatorPrivateKey;
+    private PublicKey recipientPublicKey;
+    private PrivateKey recipientPrivateKey;
 
 
     public KeyAgreementParameterSpec(ActorType actorType, String keyAgreementAlgorithm, KeyDerivationParameter keyDerivationParameter) {

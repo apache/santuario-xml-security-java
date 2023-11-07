@@ -28,6 +28,8 @@ import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+import static java.lang.System.Logger.Level.DEBUG;
+
 
 /**
  * The class provides testing utility methods to test XMLSEC functionality with various JDK version. Where possible
@@ -40,6 +42,7 @@ import java.util.Base64;
  *
  */
 public class KeyTestUtils {
+    private static final System.Logger LOG = System.getLogger(KeyTestUtils.class.getName());
     /**
      * The enum of the prepared test keys in resource folder <code>KEY_RESOURCE_PATH</code>.
      */
@@ -83,7 +86,7 @@ public class KeyTestUtils {
         switch (keyType.getAlgorithm()){
             case EC:{
                 keyPairGenerator = provider == null ? KeyPairGenerator.getInstance(keyAlgorithm) :
-                        KeyPairGenerator.getInstance(keyType.getAlgorithm().getJceName(), provider);
+                        KeyPairGenerator.getInstance(keyAlgorithm, provider);
                 ECGenParameterSpec kpgparams = new ECGenParameterSpec(keyType.getName());
                 keyPairGenerator.initialize(kpgparams);
                 break;
@@ -101,6 +104,15 @@ public class KeyTestUtils {
         return keyPairGenerator.generateKeyPair();
     }
 
+    public static KeyPair generateKeyPairIfSupported(KeyUtils.KeyType keyType){
+        KeyPair keyPair = null;
+        try {
+            keyPair = generateKeyPair(keyType);
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidParameterSpecException e) {
+            LOG.log(DEBUG, "Key algorithm [{0}]] is not supported! Error message: [{}]", keyType, e.getMessage());
+        }
+        return keyPair;
+    }
 
     public static PublicKey loadPublicKey(String keyName, String algorithm) throws Exception {
         byte[] keyBytes = getKeyResourceAsByteArray(keyName);

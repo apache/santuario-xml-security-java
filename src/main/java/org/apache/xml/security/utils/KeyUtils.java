@@ -47,8 +47,8 @@ public class KeyUtils {
         EC("EC", "1.2.840.10045.2.1"),
         DSA("DSA", "1.2.840.10040.4.1"),
         RSA("RSA", "1.2.840.113549.1.1.1"),
-        XDH("XDH", ""),
-        EdDSA("EdDSA", "");
+        XDH("XDH", null),
+        EdDSA("EdDSA", null);
         private final String jceName;
         private final String oid;
 
@@ -96,13 +96,9 @@ public class KeyUtils {
         SECP256R1("secp256r1", "NIST P-256,X9.62 prime256v1", KeyAlgorithmType.EC, "1.2.840.10045.3.1.7"),
         SECP384R1("secp384r1", "NIST P-384", KeyAlgorithmType.EC, "1.3.132.0.34"),
         SECP521R1("secp521r1", "NIST P-521", KeyAlgorithmType.EC, "1.3.132.0.35"),
-        C2TNB191V1("c2tnb191v1", "X9.62", KeyAlgorithmType.EC, "1.2.840.10045.3.0.5"),
-        C2TNB191V3("c2tnb191v3", "X9.62", KeyAlgorithmType.EC, "1.2.840.10045.3.0.7"),
-        C2TNB239V1("c2tnb239v1", "X9.62", KeyAlgorithmType.EC, "1.2.840.10045.3.0.11"),
-        C2TNB239V2("c2tnb239v2", "X9.62", KeyAlgorithmType.EC, "1.2.840.10045.3.0.12"),
-        C2TNB239V3("c2tnb239v3", "X9.62", KeyAlgorithmType.EC, "1.2.840.10045.3.0.13"),
-        C2TNB359V1("c2tnb359v1", "X9.62", KeyAlgorithmType.EC, "1.2.840.10045.3.0.18"),
-        C2TNB431R1("c2tnb431r1", "X9.62", KeyAlgorithmType.EC, "1.2.840.10045.3.0.20"),
+        BRAINPOOLP256R1("brainpoolP256r1", "RFC 5639", KeyAlgorithmType.EC, "1.3.36.3.3.2.8.1.1.7"),
+        BRAINPOOLP384R1("brainpoolP384r1", "RFC 5639", KeyAlgorithmType.EC, "1.3.36.3.3.2.8.1.1.11"),
+        BRAINPOOLP512R1("brainpoolP512r1", "RFC 5639", KeyAlgorithmType.EC, "1.3.36.3.3.2.8.1.1.13"),
         X25519("x25519", "RFC 7748", KeyAlgorithmType.XDH, "1.3.101.110"),
         X448("x448", "RFC 7748", KeyAlgorithmType.XDH, "1.3.101.111"),
         ED25519("ed25519", "RFC 8032", KeyAlgorithmType.EdDSA, "1.3.101.112"),

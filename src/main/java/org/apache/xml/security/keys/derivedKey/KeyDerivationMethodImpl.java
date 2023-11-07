@@ -26,6 +26,8 @@ import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.StringJoiner;
+
 /**
  * Class KeyDerivationMethodImpl is an DOM implementation of the KeyDerivationMethod
  *
@@ -95,5 +97,12 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
     @Override
     public String getBaseLocalName() {
         return EncryptionConstants._TAG_KEYDERIVATIONMETHOD;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", KeyDerivationMethodImpl.class.getSimpleName() + "[", "]")
+                .add("concatKDFParams=" + concatKDFParams)
+                .toString();
     }
 }

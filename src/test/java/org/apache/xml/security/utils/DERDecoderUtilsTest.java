@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.InvalidParameterSpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
@@ -65,18 +64,14 @@ class DERDecoderUtilsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = KeyUtils.KeyType.class,
-            names = "^(?!C2TNB).*", mode = EnumSource.Mode.MATCH_ALL // exclude C2TNB keys
-    )
-    void testGetAlgorithmIdBytesForGeneratedKeys(KeyUtils.KeyType testKey) throws DERDecodingException,
-            InvalidAlgorithmParameterException, NoSuchAlgorithmException, InvalidParameterSpecException {
-        String keyAlgorithm = testKey.getAlgorithm().getJceName();
-        Assumptions.assumeTrue(JDKTestUtils.isAlgorithmSupported(keyAlgorithm, true), "Algorithm ["
-                + keyAlgorithm + "] not supported by JDK or auxiliary provider! Skipping test.");
+    @EnumSource(value = KeyUtils.KeyType.class)
+    void testGetAlgorithmIdBytesForGeneratedKeys(KeyUtils.KeyType testKey) throws DERDecodingException {
         if (!JDKTestUtils.isAlgorithmSupportedByJDK(testKey.getAlgorithm().getJceName())) {
             JDKTestUtils.registerAuxiliaryProvider();
         }
-        KeyPair keyPair = KeyTestUtils.generateKeyPair(testKey);
+        KeyPair keyPair = KeyTestUtils.generateKeyPairIfSupported(testKey);
+        Assumptions.assumeTrue(keyPair != null, "Key algorithm [" + testKey + "] not supported by JDK or auxiliary provider! Skipping test.");
+
         String oid = DERDecoderUtils.getAlgorithmIdFromPublicKey(keyPair.getPublic());
         assertEquals(testKey.getOid(), oid);
     }

@@ -24,8 +24,8 @@ import java.security.spec.AlgorithmParameterSpec;
  * This class contains the basic parameters used for key derivation.
  */
 public class KeyDerivationParameter implements AlgorithmParameterSpec {
-    protected final String algorithm;
-    protected final int keyBitLength;
+    private final String algorithm;
+    private final int keyBitLength;
 
     public KeyDerivationParameter(String algorithm, int keyLength) {
         this.algorithm = algorithm;

@@ -28,12 +28,12 @@ import org.apache.xml.security.utils.EncryptionConstants;
  */
 public class ConcatKeyDerivationParameter extends KeyDerivationParameter {
 
-    String digestAlgorithm;
-    String algorithmID;
-    String partyUInfo;
-    String partyVInfo;
-    String suppPubInfo;
-    String suppPrivInfo;
+    private String digestAlgorithm;
+    private String algorithmID;
+    private String partyUInfo;
+    private String partyVInfo;
+    private String suppPubInfo;
+    private String suppPrivInfo;
 
     /**
      * Constructor ConcatKeyDerivationParameter with default SHA256 digest algorithm

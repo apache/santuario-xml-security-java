@@ -39,7 +39,7 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
     /** JCA algorithm key types supported by this implementation. */
     private static final String[] supportedKeyTypes = { "RSA", "DSA", "EC",
             "XDH", "X25519", "X448",
-            "EdDSA", "Ed25519,", "Ed448"};
+            "EdDSA", "Ed25519", "Ed448"};
 
     /**
      * Constructor DEREncodedKeyValue

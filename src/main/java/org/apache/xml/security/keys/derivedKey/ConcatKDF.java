@@ -41,7 +41,7 @@ public class ConcatKDF implements DerivationAlgorithm {
 
     private static final System.Logger LOG = System.getLogger(ConcatKDF.class.getName());
 
-    String algorithmURI;
+    private final String algorithmURI;
 
     /**
      * Constructor ConcatKDF with digest algorithmURI parameter such as http://www.w3.org/2001/04/xmlenc#sha256,
@@ -93,7 +93,7 @@ public class ConcatKDF implements DerivationAlgorithm {
 
         int iDigestLength = digest.getDigestLength();
         if (genKeyLength / iDigestLength > (long) Integer.MAX_VALUE) {
-            LOG.log(Level.DEBUG, "Key size is to long to be derived with hash algorithm [{0}]", algorithmURI);
+            LOG.log(Level.ERROR, "Key size is to long to be derived with hash algorithm [{0}]", algorithmURI);
             throw new XMLEncryptionException("errorInKeyDerivation");
         }
         int toGenerateSize = (int) genKeyLength;

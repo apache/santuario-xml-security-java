@@ -707,11 +707,14 @@ public final class XMLUtils {
     }
 
     /**
+     * Helper method to get the "number"-th element for a given local
+     * name and namespace: http://www.w3.org/2009/xmlenc11#. If element with given search parameters is not found,
+     * null is returned.
      *
-     * @param sibling
-     * @param nodeName
-     * @param number
-     * @return nodes with the given node name
+     * @param sibling the sibling node from which to start searching
+     * @param nodeName the local name of the element to search for
+     * @param number the index of the element to search for
+     * @return node with the given node name or null if not found.
      */
     public static Element selectXenc11Node(Node sibling, String nodeName, int number) {
         while (sibling != null) {

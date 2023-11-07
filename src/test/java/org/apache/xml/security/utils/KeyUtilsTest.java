@@ -66,28 +66,22 @@ class KeyUtilsTest {
      * @throws Exception if the key cannot be loaded
      */
     @ParameterizedTest
-    @EnumSource(value = KeyUtils.KeyType.class,
-            names = "^(?!C2TNB).*", mode = EnumSource.Mode.MATCH_ALL // exclude C2TNB keys
-    )
+    @EnumSource(value = KeyUtils.KeyType.class)
     void generateEphemeralDHKeyPair(KeyUtils.KeyType keyType) throws Exception {
-        // if the algorithm is not supported by JDK, we need to use auxiliary provider
-        String keyAlgorithm = keyType.getAlgorithm().getJceName();
-        Assumptions.assumeTrue(JDKTestUtils.isAlgorithmSupported(keyAlgorithm, true), "Algorithm ["
-                + keyAlgorithm + "] not supported by JDK or auxiliary provider! Skipping test.");
 
         Provider testAuxiliaryProvider = JDKTestUtils.isAlgorithmSupportedByJDK(keyType.name()) ? null : JDKTestUtils.getAuxiliaryProvider();
-        KeyPair keys = KeyTestUtils.generateKeyPair(keyType);
-        Assertions.assertNotNull(keys);
+        KeyPair keyPair = KeyTestUtils.generateKeyPairIfSupported(keyType);
+        Assumptions.assumeTrue(keyPair != null, "Key algorithm [" + keyType + "] not supported by JDK or auxiliary provider! Skipping test.");
+
 
         // test DH key generation
-        KeyPair ephenmeralKeyPair = KeyUtils.generateEphemeralDHKeyPair(keys.getPublic(), testAuxiliaryProvider);
+        KeyPair ephenmeralKeyPair = KeyUtils.generateEphemeralDHKeyPair(keyPair.getPublic(), testAuxiliaryProvider);
         String ephemeralKeyOId = DERDecoderUtils.getAlgorithmIdFromPublicKey(ephenmeralKeyPair.getPublic());
 
         // test if the ephemeral key is generated with the same algorithm as the original key
         Assertions.assertNotNull(ephenmeralKeyPair);
-        Assertions.assertNotEquals(keys.getPublic(), ephenmeralKeyPair.getPublic());
-        Assertions.assertEquals(keys.getPublic().getAlgorithm(), ephenmeralKeyPair.getPublic().getAlgorithm());
+        Assertions.assertNotEquals(keyPair.getPublic(), ephenmeralKeyPair.getPublic());
+        Assertions.assertEquals(keyPair.getPublic().getAlgorithm(), ephenmeralKeyPair.getPublic().getAlgorithm());
         Assertions.assertEquals(keyType.getOid(), ephemeralKeyOId);
     }
-
 }

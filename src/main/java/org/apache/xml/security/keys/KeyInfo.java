@@ -42,11 +42,7 @@ import org.apache.xml.security.keys.keyresolver.KeyResolverException;
 import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
 import org.apache.xml.security.keys.storage.StorageResolver;
 import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.ElementProxy;
-import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.SignatureElementProxy;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.*;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -367,13 +363,20 @@ public class KeyInfo extends ElementProxy {
     }
 
     /**
-     * Method add
+     * Method add AgreementMethod to the KeyInfo
      *
-     * @param agreementMethod
+     * @param agreementMethod the AgreementMethod to be added. The AgreementMethod must extend
+     *                        class {@link org.apache.xml.security.utils.ElementProxy}
      */
-    public void add(AgreementMethodImpl agreementMethod) {
-        appendSelf(agreementMethod);
-        addReturnToSelf();
+    public void add(AgreementMethod agreementMethod)  {
+
+        if (agreementMethod instanceof ElementProxy) {
+            appendSelf((ElementProxy)agreementMethod);
+            addReturnToSelf();
+        } else {
+            Object[] exArgs = {EncryptionConstants._TAG_AGREEMENTMETHOD, agreementMethod.getClass().getName()};
+            throw new IllegalArgumentException(I18n.translate("KeyValue.IllegalArgument", exArgs));
+        }
     }
 
     /**

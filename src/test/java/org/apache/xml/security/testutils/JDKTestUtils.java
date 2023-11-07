@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.testutils;
 
-import org.apache.xml.security.encryption.XMLCipher;
 import java.lang.System.Logger.Level;
 import java.lang.reflect.Constructor;
 import java.security.Provider;
@@ -61,7 +60,6 @@ public class JDKTestUtils {
 
     private static  Set<String>  SUPPORTED_ALGORITHMS = Stream.of(Security.getProviders())
             .flatMap(provider -> provider.getServices().stream())
-           // .filter(s -> "Cipher".equals(s.getType()))
             .map(Provider.Service::getAlgorithm)
             .map(String::toLowerCase)
             .collect(Collectors.toSet());
