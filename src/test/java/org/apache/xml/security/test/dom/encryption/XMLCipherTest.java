@@ -42,6 +42,7 @@ import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.encryption.CipherData;
 import org.apache.xml.security.encryption.EncryptedData;
@@ -329,7 +330,8 @@ class XMLCipherTest {
         cipherEncKey.setSecureValidation(true);
         // create key agreement parameters
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameter keyDerivationParameter = new ConcatKeyDerivationParameter(keyBitLen);
+        KeyDerivationParameter keyDerivationParameter = new ConcatKeyDerivationParameter(keyBitLen,
+                MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameterSpec(
                 KeyAgreementParameterSpec.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,

@@ -58,7 +58,7 @@ public class JDKTestUtils {
                     new AbstractMap.SimpleImmutableEntry<>("x448", 11))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-    private static  Set<String>  SUPPORTED_ALGORITHMS = Stream.of(Security.getProviders())
+    private static final Set<String> SUPPORTED_ALGORITHMS = Stream.of(Security.getProviders())
             .flatMap(provider -> provider.getServices().stream())
             .map(Provider.Service::getAlgorithm)
             .map(String::toLowerCase)
@@ -78,13 +78,11 @@ public class JDKTestUtils {
         if (auxiliaryProviderInitialized) {
             return auxiliaryProvider;
         }
-
-        Constructor<?> cons;
         try {
             String providerClassName = System.getProperty(TEST_PROVIDER_CLASSNAME_PROPERTY, TEST_PROVIDER_CLASSNAME_DEFAULT);
             LOG.log(Level.INFO, "Initialize the auxiliary security provider: [{0}]",  providerClassName);
             Class<?> c = Class.forName(providerClassName);
-            cons = c.getConstructor(new Class[] {});
+            Constructor<?> cons = c.getConstructor();
             auxiliaryProvider = (Provider)cons.newInstance();
             supportedAuxiliaryProviderAlgorithms = auxiliaryProvider.getServices().stream()
                     .map(Provider.Service::getAlgorithm)
@@ -139,7 +137,7 @@ public class JDKTestUtils {
             return true;
         }
         // double check in all supported algorithms ...
-        LOG.log(Level.INFO, "Algorithm [{0}] is NOT supported", alg, iJDKVersion);
+        LOG.log(Level.INFO, "Algorithm [{0}] is NOT supported!", alg);
         return false;
     }
 

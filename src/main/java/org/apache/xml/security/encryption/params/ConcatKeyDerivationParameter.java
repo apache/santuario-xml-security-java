@@ -36,15 +36,6 @@ public class ConcatKeyDerivationParameter extends KeyDerivationParameter {
     private String suppPrivInfo;
 
     /**
-     * Constructor ConcatKeyDerivationParameter with default SHA256 digest algorithm
-     *
-     * @param keyBitLength the length of the derived key in bits
-     */
-    public ConcatKeyDerivationParameter(int keyBitLength) {
-        this(keyBitLength, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
-    }
-
-    /**
      * Constructor ConcatKeyDerivationParameter with specified digest algorithm
      *
      * @param keyBitLength the length of the derived key in bits
