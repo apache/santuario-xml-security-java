@@ -49,7 +49,7 @@ public class JDKTestUtils {
     private static boolean auxiliaryProviderInitialized = false;
     private static  Set<String> supportedAuxiliaryProviderAlgorithms = null;
 
-    private static Map<String, Integer> javaAlgSupportFrom = Stream.of(
+    private static final Map<String, Integer> javaAlgSupportFrom = Stream.of(
                     new AbstractMap.SimpleImmutableEntry<>("eddsa", 16),
                     new AbstractMap.SimpleImmutableEntry<>("ed25519", 16),
                     new AbstractMap.SimpleImmutableEntry<>("ed448", 16),
