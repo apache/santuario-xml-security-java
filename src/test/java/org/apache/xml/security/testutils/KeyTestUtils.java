@@ -109,7 +109,7 @@ public class KeyTestUtils {
         try {
             keyPair = generateKeyPair(keyType);
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidParameterSpecException e) {
-            LOG.log(DEBUG, "Key algorithm [{0}]] is not supported! Error message: [{}]", keyType, e.getMessage());
+            LOG.log(DEBUG, "Key algorithm [{0}] is not supported! Error message: [{1}]", keyType, e.getMessage());
         }
         return keyPair;
     }
