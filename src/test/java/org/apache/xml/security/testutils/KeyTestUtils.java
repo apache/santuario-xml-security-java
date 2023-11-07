@@ -53,9 +53,9 @@ public class KeyTestUtils {
         X25519("x25519.key", "XDH", "1.3.101.110"),
         ED25519("ed25519.key", "EdDSA", "1.3.101.112");
 
-        String filename;
-        String algorithm;
-        String oid;
+        private final String filename;
+        private final String algorithm;
+        private final String oid;
 
         TestKeys(String filename, String algorithm, String oid) {
             this.filename = filename;
