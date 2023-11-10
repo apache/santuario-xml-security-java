@@ -49,7 +49,7 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
      *
      * @param element the element to use as source
      * @param baseURI the URI of the resource where the XML instance was stored
-     * @throws XMLSecurityException
+     * @throws XMLSecurityException if a parsing error occurs
      */
     public KeyDerivationMethodImpl(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);

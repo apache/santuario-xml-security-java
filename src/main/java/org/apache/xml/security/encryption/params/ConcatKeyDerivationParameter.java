@@ -50,7 +50,7 @@ public class ConcatKeyDerivationParameter extends KeyDerivationParameter {
         return digestAlgorithm;
     }
 
-    public void setDigestAlgorithm(String digestAlgorithm) {
+    public final void setDigestAlgorithm(String digestAlgorithm) {
         this.digestAlgorithm = digestAlgorithm == null? MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256 : digestAlgorithm;
     }
 
