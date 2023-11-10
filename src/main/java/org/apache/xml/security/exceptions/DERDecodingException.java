@@ -22,48 +22,26 @@ package org.apache.xml.security.exceptions;
  * This Exception is thrown if decoding of ANS1 (DER) data fails.
  *
  */
-public class DERDecodingException extends XMLSecurityException {
+public class DERDecodingException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * Constructor DERDecodingException
      *
-     * @param msgID
+     * @param message the message to display when this exception is thrown
      */
-    public DERDecodingException(String msgID) {
-        super(msgID);
+    public DERDecodingException(String message) {
+        super(message);
     }
 
-    /**
+   /**
      * Constructor DERDecodingException
      *
-     * @param msgID
-     * @param exArgs
+     * @param message the message to display when this exception is thrown
+     * @param cause the cause of this exception
      */
-    public DERDecodingException(String msgID, Object[] exArgs) {
-        super(msgID, exArgs);
-    }
-
-    /**
-     * Constructor DERDecodingException
-     *
-     * @param originalException
-     * @param msgID
-     */
-    public DERDecodingException(Exception originalException, String msgID) {
-        super(originalException, msgID);
-    }
-
-
-    /**
-     * Constructor DERDecodingException
-     *
-     * @param originalException
-     * @param msgID
-     * @param exArgs
-     */
-    public DERDecodingException(Exception originalException, String msgID, Object[] exArgs) {
-        super(originalException, msgID, exArgs);
-    }
+   public DERDecodingException(String message, Throwable cause) {
+       super(message, cause);
+   }
 }

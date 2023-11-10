@@ -105,7 +105,7 @@ public class DERDecoderUtils {
             LOG.log(System.Logger.Level.DEBUG, "DER decoding algorithm id bytes");
             return derEncodedIS.readNBytes(length);
         } catch (IOException ex) {
-            throw new DERDecodingException(ex, "Error occurred while reading the input stream.");
+            throw new DERDecodingException("Error occurred while reading the input stream.", ex);
         }
     }
 
@@ -124,8 +124,8 @@ public class DERDecoderUtils {
                 alg = decodeOID(keyAlgOidBytes);
             }
             return alg;
-        } catch (IOException e) {
-            throw new DERDecodingException("Error reading public key");
+        } catch (IOException ex) {
+            throw new DERDecodingException("Error reading public key", ex);
         }
     }
 

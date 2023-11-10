@@ -33,7 +33,7 @@ import java.util.StringJoiner;
  *
  */
 public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements KeyDerivationMethod {
-    ConcatKDFParamsImpl concatKDFParams;
+    private ConcatKDFParamsImpl concatKDFParams;
 
     /**
      * Constructor KeyDerivationMethodImpl creates a new KeyDerivationMethodImpl instance.

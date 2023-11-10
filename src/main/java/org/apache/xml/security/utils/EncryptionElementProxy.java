@@ -38,7 +38,7 @@ public abstract class EncryptionElementProxy extends ElementProxy {
      */
     public EncryptionElementProxy(Document doc) {
         if (doc == null) {
-            throw new RuntimeException("Document is null");
+            throw new IllegalArgumentException("Document is null");
         }
 
         setDocument(doc);
