@@ -23,6 +23,8 @@ import org.apache.xml.security.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.StringJoiner;
+
 /**
  * Class ConcatKDFParamsImpl is an DOM representation of the ConcatKDFParams.
  */
@@ -55,7 +57,7 @@ public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
      */
     public void setAlgorithmId(String algorithm) {
         if (algorithm != null) {
-            setLocalIdAttribute(EncryptionConstants._ATT_ALGORITHM_ID, algorithm);
+            setLocalAttribute(EncryptionConstants._ATT_ALGORITHM_ID, algorithm);
         }
     }
 
@@ -70,7 +72,7 @@ public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
      */
     public void setPartyUInfo(String partyUInfo) {
         if (partyUInfo != null) {
-            setLocalIdAttribute(EncryptionConstants._ATT_PARTYUINFO, partyUInfo);
+            setLocalAttribute(EncryptionConstants._ATT_PARTYUINFO, partyUInfo);
         }
     }
 
@@ -85,7 +87,7 @@ public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
      */
     public void setPartyVInfo(String partyVInfo) {
         if (partyVInfo != null) {
-            setLocalIdAttribute(EncryptionConstants._ATT_PARTYVINFO, partyVInfo);
+            setLocalAttribute(EncryptionConstants._ATT_PARTYVINFO, partyVInfo);
         }
     }
 
@@ -100,7 +102,7 @@ public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
      */
     public void setSuppPubInfo(String suppPubInfo) {
         if (suppPubInfo != null) {
-            setLocalIdAttribute(EncryptionConstants._ATT_SUPPPUBINFO, suppPubInfo);
+            setLocalAttribute(EncryptionConstants._ATT_SUPPPUBINFO, suppPubInfo);
         }
     }
 
@@ -116,7 +118,7 @@ public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
 
     public void setSuppPrivInfo(String suppPrivInfo) {
         if (suppPrivInfo != null) {
-            setLocalIdAttribute(EncryptionConstants._ATT_SUPPPRIVINFO, suppPrivInfo);
+            setLocalAttribute(EncryptionConstants._ATT_SUPPPRIVINFO, suppPrivInfo);
         }
     }
 
@@ -152,4 +154,10 @@ public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
         return EncryptionConstants._TAG_CONCATKDFPARAMS;
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", ConcatKDFParamsImpl.class.getSimpleName() + "[", "]")
+                .add("baseURI='" + baseURI + "'")
+                .toString();
+    }
 }

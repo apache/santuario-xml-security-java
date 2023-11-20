@@ -200,14 +200,14 @@ public class ConcatKDF implements DerivationAlgorithm {
         }
         String kdfP = kdfParameter.trim();
         int paramLen = kdfP.length();
-        // bit string mus have two chars following by first byte defining the number of padding bits
+        // bit string must have two chars following by first byte defining the number of padding bits
         if (paramLen < 4) {
             LOG.log(Level.ERROR, "ConcatKDF parameter is to short");
-            throw new XMLEncryptionException( "errorInKeyDerivation");
+            throw new XMLEncryptionException( "KeyDerivation.ToShortParameter", kdfParameter);
         }
         if (paramLen % 2 != 0) {
             LOG.log(Level.ERROR, "Invalid length of ConcatKDF parameter [{0}]!", kdfP);
-            throw new XMLEncryptionException( "errorInKeyDerivation");
+            throw new XMLEncryptionException( "KeyDerivation.InvalidParameter", kdfParameter);
         }
         int iPadding;
         String strPadding = kdfP.substring(0, 2);
@@ -215,12 +215,12 @@ public class ConcatKDF implements DerivationAlgorithm {
             iPadding = Integer.parseInt(strPadding, 16);
         } catch (NumberFormatException e) {
             LOG.log(Level.ERROR, "Invalid padding number: [{0}]! Number is not Hexadecimal!", strPadding);
-            throw new XMLEncryptionException( "errorInKeyDerivation", e);
+            throw new XMLEncryptionException(e, "KeyDerivation.InvalidParameter", new Object[]{kdfParameter});
         }
 
         if (iPadding != 0) {
-            LOG.log(Level.ERROR, "Padded ConcatKDF parameters ara not supported");
-            throw new XMLEncryptionException( "errorInKeyDerivation");
+            LOG.log(Level.ERROR, "Padded ConcatKDF parameters are not supported");
+            throw new XMLEncryptionException( "KeyDerivation.NotSupportedParameter", kdfParameter);
         }
         // skip first two chars
         kdfP = kdfP.substring(2);
