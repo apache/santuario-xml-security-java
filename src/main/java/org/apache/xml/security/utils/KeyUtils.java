@@ -25,7 +25,7 @@ import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.encryption.params.KeyDerivationParameter;
 import org.apache.xml.security.exceptions.DERDecodingException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.derivedKey.ConcatKDF;
+import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDF;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -208,7 +208,7 @@ public class KeyUtils {
             String algorithm = publicKey.getAlgorithm();
             if ("EC".equalsIgnoreCase(algorithm)) {
                 LOG.log(Level.WARNING, "EC keys are detected for key agreement algorithm! " +
-                        "Cryptographic algorithm may not be secure, consider using a different algorithm (and keys). ");
+                        "Cryptographic algorithm may not be secure, consider using a different algorithm (and keys).");
             }
             algorithm = algorithm + (algorithm.equalsIgnoreCase("EC") ? "DH" : "");
             KeyAgreement keyAgreement = KeyAgreement.getInstance(algorithm);

@@ -40,7 +40,6 @@ import java.util.Map;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -53,6 +52,7 @@ import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.EncryptedData;
 import org.apache.xml.security.encryption.EncryptedKey;
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.encryption.keys.KeyInfoEncExtension;
 import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.encryption.params.KeyDerivationParameter;
@@ -784,16 +784,16 @@ class XMLEncryption11Test {
      * Take a key, encryption type and a file, find an encrypted element
      * decrypt it and return the resulting document
      *
-     * @param filename File to decrypt from
-     * @param key The Key to use for decryption
+     * @param decKey The Key to use for decryption
+     * @param encCert The certificate used to encrypt the key
      */
-    private Document decryptElement(File file, Key rsaKey, X509Certificate rsaCert) throws Exception {
+    private Document decryptElement(File file, Key decKey, X509Certificate encCert) throws Exception {
         // Parse the document in question
         Document doc;
         try (FileInputStream inputStream = new FileInputStream(file)) {
             doc = XMLUtils.read(inputStream, false);
         }
-        return decryptElement(doc, rsaKey, rsaCert);
+        return decryptElement(doc, decKey, encCert);
     }
 
     /**
@@ -802,10 +802,11 @@ class XMLEncryption11Test {
      * Take a key, encryption type and a document, find an encrypted element
      * decrypt it and return the resulting document
      *
-     * @param filename File to decrypt from
-     * @param key The Key to use for decryption
+     * @param doc the XML document wrrapping the encrypted data
+     * @param decKey The Key to use for decryption
+     * @param encCert The certificate used to encrypt the key
      */
-    private Document decryptElement(Document doc, Key rsaKey, X509Certificate rsaCert) throws Exception {
+    private Document decryptElement(Document doc, Key decKey, X509Certificate encCert) throws Exception {
         // Create the XMLCipher element
         XMLCipher cipher = XMLCipher.getInstance();
 
@@ -816,7 +817,7 @@ class XMLEncryption11Test {
 
         KeyInfo ki = encryptedData.getKeyInfo();
         EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
-        KeyInfo kiek = encryptedKey.getKeyInfo();
+        KeyInfoEncExtension kiek = (KeyInfoEncExtension)encryptedKey.getKeyInfo();
         if (kiek.containsAgreementMethod()){
             AgreementMethod agreementMethod = kiek.itemAgreementMethod(0);
             kiek = agreementMethod.getRecipientKeyInfo();
@@ -824,10 +825,10 @@ class XMLEncryption11Test {
         X509Data certData = kiek.itemX509Data(0);
         XMLX509Certificate xcert = certData.itemCertificate(0);
         X509Certificate cert = xcert.getX509Certificate();
-        assertEquals(rsaCert, cert);
+        assertEquals(encCert, cert);
 
         XMLCipher cipher2 = XMLCipher.getInstance();
-        cipher2.init(XMLCipher.UNWRAP_MODE, rsaKey);
+        cipher2.init(XMLCipher.UNWRAP_MODE, decKey);
         Key key = cipher2.decryptKey(encryptedKey, encryptedData.getEncryptionMethod().getAlgorithm());
 
         cipher.init(XMLCipher.DECRYPT_MODE, key);
@@ -858,7 +859,7 @@ class XMLEncryption11Test {
 
         KeyInfo ki = encryptedData.getKeyInfo();
         EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
-        KeyInfo kiek = encryptedKey.getKeyInfo();
+        KeyInfoEncExtension kiek = (KeyInfoEncExtension)encryptedKey.getKeyInfo();
         if (kiek.containsAgreementMethod()){
             AgreementMethod agreementMethod = kiek.itemAgreementMethod(0);
             kiek = agreementMethod.getRecipientKeyInfo();
@@ -939,15 +940,15 @@ class XMLEncryption11Test {
 
         KeyInfo builderKeyInfo = encryptedKey.getKeyInfo();
         if (builderKeyInfo == null) {
-            builderKeyInfo = new KeyInfo(doc);
+            builderKeyInfo = new KeyInfoEncExtension(doc);
             encryptedKey.setKeyInfo(builderKeyInfo);
         }
 
         X509Data x509Data = new X509Data(doc);
         x509Data.addCertificate(cert);
-
-        if (encryptedKey.getKeyInfo().lengthAgreementMethod()>0) {
-            AgreementMethod agreementMethod = encryptedKey.getKeyInfo().itemAgreementMethod(0);
+        if (builderKeyInfo instanceof KeyInfoEncExtension
+                && ((KeyInfoEncExtension)builderKeyInfo).lengthAgreementMethod()>0) {
+            AgreementMethod agreementMethod = ((KeyInfoEncExtension)builderKeyInfo).itemAgreementMethod(0);
             agreementMethod.getRecipientKeyInfo().add(x509Data);
         } else {
             builderKeyInfo.add(x509Data);

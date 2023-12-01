@@ -22,8 +22,8 @@ import java.security.PublicKey;
 import java.util.Iterator;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.OriginatorKeyInfo;
-import org.apache.xml.security.keys.RecipientKeyInfo;
+import org.apache.xml.security.encryption.keys.OriginatorKeyInfo;
+import org.apache.xml.security.encryption.keys.RecipientKeyInfo;
 import org.w3c.dom.Element;
 
 /**

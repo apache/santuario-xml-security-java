@@ -37,8 +37,8 @@ import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.encryption.params.KeyDerivationParameter;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.derivedKey.ConcatKDFParamsImpl;
-import org.apache.xml.security.keys.derivedKey.KeyDerivationMethodImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.KeyUtils;
 

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.xml.security.keys;
+package org.apache.xml.security.encryption.keys;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.utils.EncryptionConstants;
@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
  * element extends ds:KeyInfo with namespace xenc  (http://www.w3.org/2001/04/xmlenc#) amd is used to describe
  * the recipient's key.
  */
-public class  RecipientKeyInfo extends KeyInfo {
+public class  RecipientKeyInfo extends KeyInfoEncExtension {
 
     public RecipientKeyInfo(Document doc) {
         super(doc);

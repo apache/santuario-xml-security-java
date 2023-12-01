@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.crypto.SecretKey;
 
-import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.EncryptedKey;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.XMLEncryptionException;
@@ -363,23 +362,6 @@ public class KeyInfo extends ElementProxy {
     }
 
     /**
-     * Method add AgreementMethod to the KeyInfo
-     *
-     * @param agreementMethod the AgreementMethod to be added. The AgreementMethod must extend
-     *                        class {@link org.apache.xml.security.utils.ElementProxy}
-     */
-    public void add(AgreementMethod agreementMethod)  {
-
-        if (agreementMethod instanceof ElementProxy) {
-            appendSelf((ElementProxy)agreementMethod);
-            addReturnToSelf();
-        } else {
-            Object[] exArgs = {EncryptionConstants._TAG_AGREEMENTMETHOD, agreementMethod.getClass().getName()};
-            throw new IllegalArgumentException(I18n.translate("KeyValue.IllegalArgument", exArgs));
-        }
-    }
-
-    /**
      * Method addKeyInfoReference
      *
      * @param URI
@@ -491,15 +473,6 @@ public class KeyInfo extends ElementProxy {
      */
     public int lengthKeyInfoReference() {
         return this.length(Constants.SignatureSpec11NS, Constants._TAG_KEYINFOREFERENCE);
-    }
-
-    /**
-     * Method lengthAgreementMethod
-     *
-     * @return the number of the AgreementMethod tags
-     */
-    public int lengthAgreementMethod() {
-        return this.length(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_AGREEMENTMETHOD);
     }
 
     /**
@@ -696,24 +669,6 @@ public class KeyInfo extends ElementProxy {
     }
 
     /**
-     * Method itemKeyValue
-     *
-     * @param i
-     * @return the asked KeyValue element, null if the index is too big
-     * @throws XMLSecurityException
-     */
-    public AgreementMethod itemAgreementMethod(int i) throws XMLSecurityException {
-        Element e =
-                XMLUtils.selectXencNode(
-                        getFirstChild(), EncryptionConstants._TAG_AGREEMENTMETHOD, i);
-
-        if (e != null) {
-            return new AgreementMethodImpl(e);
-        }
-        return null;
-    }
-
-    /**
      * Method itemKeyInfoReference
      *
      * @param i
@@ -858,15 +813,6 @@ public class KeyInfo extends ElementProxy {
         return this.lengthKeyInfoReference() > 0;
     }
 
-
-    /**
-     * Method containAgreementMethod
-     *
-     * @return If the KeyInfo contains a AgreementMethod node
-     */
-    public boolean containsAgreementMethod() {
-        return this.lengthAgreementMethod() > 0;
-    }
 
     /**
      * This method returns the public key.

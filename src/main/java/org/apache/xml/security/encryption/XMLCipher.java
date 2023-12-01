@@ -53,10 +53,11 @@ import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.encryption.keys.KeyInfoEncExtension;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.keys.content.AgreementMethodImpl;
+import org.apache.xml.security.encryption.keys.content.AgreementMethodImpl;
 import org.apache.xml.security.keys.keyresolver.KeyResolverException;
 import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
 import org.apache.xml.security.keys.keyresolver.implementations.EncryptedKeyResolver;
@@ -1441,7 +1442,7 @@ public final class XMLCipher {
                 KeyAgreementParameterSpec keyAgreementParameter = (KeyAgreementParameterSpec) params;
                 AgreementMethodImpl agreementMethod = new AgreementMethodImpl(contextDocument, keyAgreementParameter);
 
-                KeyInfo keyInfo = new KeyInfo(contextDocument);
+                KeyInfoEncExtension keyInfo = new KeyInfoEncExtension(contextDocument);
                 keyInfo.add(agreementMethod);
                 ek.setKeyInfo(keyInfo);
             }
@@ -1482,7 +1483,8 @@ public final class XMLCipher {
                 try {
                     String keyWrapAlg = encryptedKey.getEncryptionMethod().getAlgorithm();
                     String keyType = JCEMapper.getJCEKeyAlgorithmFromURI(keyWrapAlg);
-                    if (!ki.containsAgreementMethod() && ("RSA".equals(keyType) || "EC".equals(keyType))) {
+                    if ( !(ki instanceof KeyInfoEncExtension && ((KeyInfoEncExtension)ki).containsAgreementMethod())
+                            && ("RSA".equals(keyType) || "EC".equals(keyType))) {
                         key = ki.getPrivateKey();
                     } else {
                         key = ki.getSecretKey();
@@ -1573,7 +1575,7 @@ public final class XMLCipher {
                     encMethod.getMGFAlgorithm(), encMethod.getOAEPparams());
         }
 
-        KeyInfo keyInfo = encryptedKey.getKeyInfo();
+        KeyInfoEncExtension keyInfo = encryptedKey.getKeyInfo() instanceof KeyInfoEncExtension ? (KeyInfoEncExtension) encryptedKey.getKeyInfo(): null;
         if (keyInfo != null && keyInfo.containsAgreementMethod()) {
             // resolve the agreement method
             LOG.log(Level.DEBUG,"EncryptedKey key is using Key agreement data");
@@ -2383,7 +2385,7 @@ public final class XMLCipher {
          */
         KeyInfo newKeyInfo(Element element) throws XMLEncryptionException {
             try {
-                KeyInfo ki = new KeyInfo(element, null);
+                KeyInfoEncExtension ki = new KeyInfoEncExtension(element, null);
                 ki.setSecureValidation(secureValidation);
                 if (internalKeyResolvers != null) {
                     int size = internalKeyResolvers.size();

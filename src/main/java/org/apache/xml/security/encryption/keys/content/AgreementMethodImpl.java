@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.xml.security.keys.content;
+package org.apache.xml.security.encryption.keys.content;
 
 import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.KeyDerivationMethod;
@@ -24,10 +24,11 @@ import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.keys.OriginatorKeyInfo;
-import org.apache.xml.security.keys.RecipientKeyInfo;
-import org.apache.xml.security.keys.derivedKey.ConcatKDFParamsImpl;
-import org.apache.xml.security.keys.derivedKey.KeyDerivationMethodImpl;
+import org.apache.xml.security.encryption.keys.OriginatorKeyInfo;
+import org.apache.xml.security.encryption.keys.RecipientKeyInfo;
+import org.apache.xml.security.keys.content.KeyInfoContent;
+import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
 import org.apache.xml.security.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
