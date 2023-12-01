@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
  * element extends ds:KeyInfo with namespace xenc  (http://www.w3.org/2001/04/xmlenc#) amd is  used to convey
  * the originator's public key.
  */
-public class OriginatorKeyInfo extends KeyInfoEncExtension {
+public class OriginatorKeyInfo extends KeyInfoEnc {
 
     public OriginatorKeyInfo(Document doc) {
         super(doc);

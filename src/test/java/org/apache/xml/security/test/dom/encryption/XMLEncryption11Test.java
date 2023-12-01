@@ -52,7 +52,7 @@ import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.EncryptedData;
 import org.apache.xml.security.encryption.EncryptedKey;
 import org.apache.xml.security.encryption.XMLCipher;
-import org.apache.xml.security.encryption.keys.KeyInfoEncExtension;
+import org.apache.xml.security.encryption.keys.KeyInfoEnc;
 import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.encryption.params.KeyDerivationParameter;
@@ -817,7 +817,7 @@ class XMLEncryption11Test {
 
         KeyInfo ki = encryptedData.getKeyInfo();
         EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
-        KeyInfoEncExtension kiek = (KeyInfoEncExtension)encryptedKey.getKeyInfo();
+        KeyInfoEnc kiek = (KeyInfoEnc)encryptedKey.getKeyInfo();
         if (kiek.containsAgreementMethod()){
             AgreementMethod agreementMethod = kiek.itemAgreementMethod(0);
             kiek = agreementMethod.getRecipientKeyInfo();
@@ -859,7 +859,7 @@ class XMLEncryption11Test {
 
         KeyInfo ki = encryptedData.getKeyInfo();
         EncryptedKey encryptedKey = ki.itemEncryptedKey(0);
-        KeyInfoEncExtension kiek = (KeyInfoEncExtension)encryptedKey.getKeyInfo();
+        KeyInfoEnc kiek = (KeyInfoEnc)encryptedKey.getKeyInfo();
         if (kiek.containsAgreementMethod()){
             AgreementMethod agreementMethod = kiek.itemAgreementMethod(0);
             kiek = agreementMethod.getRecipientKeyInfo();
@@ -940,15 +940,15 @@ class XMLEncryption11Test {
 
         KeyInfo builderKeyInfo = encryptedKey.getKeyInfo();
         if (builderKeyInfo == null) {
-            builderKeyInfo = new KeyInfoEncExtension(doc);
+            builderKeyInfo = new KeyInfoEnc(doc);
             encryptedKey.setKeyInfo(builderKeyInfo);
         }
 
         X509Data x509Data = new X509Data(doc);
         x509Data.addCertificate(cert);
-        if (builderKeyInfo instanceof KeyInfoEncExtension
-                && ((KeyInfoEncExtension)builderKeyInfo).lengthAgreementMethod()>0) {
-            AgreementMethod agreementMethod = ((KeyInfoEncExtension)builderKeyInfo).itemAgreementMethod(0);
+        if (builderKeyInfo instanceof KeyInfoEnc
+                && ((KeyInfoEnc)builderKeyInfo).lengthAgreementMethod()>0) {
+            AgreementMethod agreementMethod = ((KeyInfoEnc)builderKeyInfo).itemAgreementMethod(0);
             agreementMethod.getRecipientKeyInfo().add(x509Data);
         } else {
             builderKeyInfo.add(x509Data);

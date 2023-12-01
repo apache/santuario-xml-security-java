@@ -23,14 +23,13 @@ import org.apache.xml.security.utils.EncryptionConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * The RecipientKeyInfo element is used in the <code>ds:KeyInfo</code> with AgreementMethod elements.
  * @see <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Alg-KeyAgreement">KeyAgreement</a>. The RecipientKeyInfo
  * element extends ds:KeyInfo with namespace xenc  (http://www.w3.org/2001/04/xmlenc#) amd is used to describe
  * the recipient's key.
  */
-public class  RecipientKeyInfo extends KeyInfoEncExtension {
+public class RecipientKeyInfo extends KeyInfoEnc {
 
     public RecipientKeyInfo(Document doc) {
         super(doc);

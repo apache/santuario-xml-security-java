@@ -37,23 +37,22 @@ import java.lang.System.Logger.Level;
  * The {@link org.apache.xml.security.keys.KeyInfo} implements XML structures defined in XML Signature standards,
  * and this class extends it for handling XML Element types defined by the XML encryption standards,
  * such as AgreementMethod.
- * KeyInfoEncExtension
  */
-public class KeyInfoEncExtension extends KeyInfo {
+public class KeyInfoEnc extends KeyInfo {
 
-    private static final Logger LOG = System.getLogger(KeyInfoEncExtension.class.getName());
+    private static final Logger LOG = System.getLogger(KeyInfoEnc.class.getName());
 
     /**
      * @see KeyInfo
      */
-    public KeyInfoEncExtension(Document doc) {
+    public KeyInfoEnc(Document doc) {
         super(doc);
     }
 
     /**
      * @see KeyInfo
      */
-    public KeyInfoEncExtension(Element element, String baseURI) throws XMLSecurityException {
+    public KeyInfoEnc(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);
     }
 
@@ -85,11 +84,11 @@ public class KeyInfoEncExtension extends KeyInfo {
     }
 
     /**
-     * Method itemKeyValue
+     * Method itemAgreementMethod
      *
      * @param i index of the AgreementMethod element
-     * @return the asked KeyValue element, null if the index is too big
-     * @throws XMLSecurityException
+     * @return the i(th) AgreementMethod proxy element or null if the index is too big
+     * @throws XMLSecurityException if the element with AgreementMethod exists but with wrong namespace
      */
     public AgreementMethod itemAgreementMethod(int i) throws XMLSecurityException {
         Element e = XMLUtils.selectXencNode(

@@ -51,7 +51,7 @@ import org.apache.xml.security.encryption.EncryptionMethod;
 import org.apache.xml.security.encryption.EncryptionProperties;
 import org.apache.xml.security.encryption.EncryptionProperty;
 import org.apache.xml.security.encryption.XMLCipher;
-import org.apache.xml.security.encryption.keys.KeyInfoEncExtension;
+import org.apache.xml.security.encryption.keys.KeyInfoEnc;
 import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.encryption.params.KeyDerivationParameter;
@@ -339,7 +339,7 @@ class XMLCipherTest {
                 keyDerivationParameter);
         // encrypt transport key with KeyAgreement
         EncryptedKey encryptedKey = cipherEncKey.encryptKey(d, ephemeralSymmetricKey, parameterSpec, null);
-        assertEquals(1,  ((KeyInfoEncExtension)encryptedKey.getKeyInfo()).lengthAgreementMethod());
+        assertEquals(1,  ((KeyInfoEnc)encryptedKey.getKeyInfo()).lengthAgreementMethod());
 
 
         // encrypt data
