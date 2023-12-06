@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- * <p>
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -38,20 +38,26 @@ public class ConcatKeyDerivationParameter extends KeyDerivationParameter {
     /**
      * Constructor ConcatKeyDerivationParameter with specified digest algorithm
      *
-     * @param keyBitLength the length of the derived key in bits
+     * @param keyBitLength    the length of the derived key in bits
      * @param digestAlgorithm the digest algorithm to use
      */
     public ConcatKeyDerivationParameter(int keyBitLength, String digestAlgorithm) {
         super(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF, keyBitLength);
-        setDigestAlgorithm(digestAlgorithm);
+        this.digestAlgorithm = digestAlgorithm;
     }
 
+    /**
+     * Method return the digest algorithm. In case of algorithm is not set, the "default"
+     * algorithm SHA256 digest algorithm is returned.
+     *
+     * @return the digest algorithm
+     */
     public String getDigestAlgorithm() {
-        return digestAlgorithm;
+        return digestAlgorithm == null ? MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256 : digestAlgorithm;
     }
 
-    public final void setDigestAlgorithm(String digestAlgorithm) {
-        this.digestAlgorithm = digestAlgorithm == null? MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256 : digestAlgorithm;
+    public void setDigestAlgorithm(String digestAlgorithm) {
+        this.digestAlgorithm = digestAlgorithm;
     }
 
     public String getAlgorithmID() {

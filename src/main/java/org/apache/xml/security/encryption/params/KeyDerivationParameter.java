@@ -21,9 +21,10 @@ package org.apache.xml.security.encryption.params;
 import java.security.spec.AlgorithmParameterSpec;
 
 /**
- * This class contains the basic parameters used for key derivation.
+ * Abstract key derivation class contains the basic parameters used for the key derivation.
+ * The class should be extended to provide algorithm specific parameters.
  */
-public class KeyDerivationParameter implements AlgorithmParameterSpec {
+public abstract class KeyDerivationParameter implements AlgorithmParameterSpec {
     private final String algorithm;
     private final int keyBitLength;
 

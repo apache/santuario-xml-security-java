@@ -93,7 +93,9 @@ public class KeyTestUtils {
             }
             case DSA:
             case RSA:
+            case RSASSA_PSS:
             case EdDSA:
+            case DH:
             case XDH:{
                 keyPairGenerator = provider == null ? KeyPairGenerator.getInstance(keyType.getName()) :
                         KeyPairGenerator.getInstance(keyType.getName(), provider);

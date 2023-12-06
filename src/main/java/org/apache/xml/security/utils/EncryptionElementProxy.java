@@ -40,19 +40,16 @@ public abstract class EncryptionElementProxy extends ElementProxy {
         if (doc == null) {
             throw new IllegalArgumentException("Document is null");
         }
-
         setDocument(doc);
         setElement(XMLUtils.createElementInEncryptionSpace(doc, this.getBaseLocalName()));
         String prefix = ElementProxy.getDefaultPrefix(this.getBaseNamespace());
         if (prefix != null && !prefix.isEmpty()) {
-            getElement().setAttribute( "xmlns:" + prefix, this.getBaseNamespace());
+            getElement().setAttribute("xmlns:" + prefix, this.getBaseNamespace());
         }
-
-
     }
 
     /**
-     * Constructor Signature11ElementProxy
+     * Constructor EncryptionElementProxy
      *
      * @param element <code>Encryption Element</code>
      * @param baseURI the namespace URI of element
@@ -60,7 +57,6 @@ public abstract class EncryptionElementProxy extends ElementProxy {
      */
     public EncryptionElementProxy(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);
-
     }
 
     /** {@inheritDoc} */

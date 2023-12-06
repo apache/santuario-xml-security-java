@@ -20,9 +20,7 @@ package org.apache.xml.security.test.dom.keys;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.KeyFactory;
-import java.security.Provider;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.spec.X509EncodedKeySpec;
 
 import org.apache.xml.security.keys.content.DEREncodedKeyValue;
@@ -50,6 +48,8 @@ class DEREncodedKeyValueTest {
     private final PublicKey ecKeyControl;
     private final PublicKey edecKeyControl;
     private final PublicKey xecKeyControl;
+    private final PublicKey dhKeyControl;
+    private final PublicKey rsaSsaPssKeyControl;
 
     public DEREncodedKeyValueTest() throws Exception {
         rsaKeyControl = loadPublicKey("rsa.key", "RSA");
@@ -57,6 +57,8 @@ class DEREncodedKeyValueTest {
         ecKeyControl = loadPublicKey("ec.key", "EC");
         edecKeyControl = loadPublicKey("ed25519.key", "EdDSA");
         xecKeyControl = loadPublicKey("x25519.key", "XDH");
+        dhKeyControl = loadPublicKey("dh.key", "DiffieHellman");
+        rsaSsaPssKeyControl = loadPublicKey("rsassa-pss.key", "RSASSA-PSS");
     }
 
     @AfterEach
@@ -146,6 +148,32 @@ class DEREncodedKeyValueTest {
     }
 
     @Test
+    void testDiffieHellmanPublicKeyFromElement() throws Exception {
+        Assumptions.assumeTrue(dhKeyControl != null, "Skip tests since DH Key is not supported");
+
+        Document doc = loadXML("DEREncodedKeyValue-DH.xml");
+        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        Element element = (Element) nl.item(0);
+
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
+        assertNotNull(dhKeyControl.getAlgorithm(), derEncodedKeyValue.getPublicKey().getAlgorithm());
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
+    }
+
+    @Test
+    void testRsaSsaPssKeyControlPublicKeyFromElement() throws Exception {
+        Assumptions.assumeTrue(rsaSsaPssKeyControl != null, "Skip tests since RSASSA-PSS Key is not supported");
+
+        Document doc = loadXML("DEREncodedKeyValue-RSASSA-PSS.xml");
+        NodeList nl = doc.getElementsByTagNameNS(Constants.SignatureSpec11NS, Constants._TAG_DERENCODEDKEYVALUE);
+        Element element = (Element) nl.item(0);
+
+        DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(element, "");
+        assertNotNull(rsaSsaPssKeyControl.getAlgorithm(), derEncodedKeyValue.getPublicKey().getAlgorithm());
+        assertEquals(ID_CONTROL, derEncodedKeyValue.getId());
+    }
+
+    @Test
     void testRSAPublicKeyFromKey() throws Exception {
         DEREncodedKeyValue derEncodedKeyValue = new DEREncodedKeyValue(TestUtils.newDocument(), rsaKeyControl);
         assertEquals(rsaKeyControl, derEncodedKeyValue.getPublicKey());
@@ -168,9 +196,7 @@ class DEREncodedKeyValueTest {
 
     @Test
     void testEdECPublicKeyFromKey() throws Exception {
-
         Assumptions.assumeTrue(edecKeyControl != null, "Skip tests since EdEC Key is not supported");
-
         if (!JDKTestUtils.isAlgorithmSupportedByJDK(edecKeyControl.getAlgorithm())) {
             JDKTestUtils.registerAuxiliaryProvider();
         }

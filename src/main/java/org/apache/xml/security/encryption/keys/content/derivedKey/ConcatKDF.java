@@ -203,7 +203,7 @@ public class ConcatKDF implements DerivationAlgorithm {
         // bit string must have two chars following by first byte defining the number of padding bits
         if (paramLen < 4) {
             LOG.log(Level.ERROR, "ConcatKDF parameter is to short");
-            throw new XMLEncryptionException( "KeyDerivation.ToShortParameter", kdfParameter);
+            throw new XMLEncryptionException( "KeyDerivation.TooShortParameter", kdfParameter);
         }
         if (paramLen % 2 != 0) {
             LOG.log(Level.ERROR, "Invalid length of ConcatKDF parameter [{0}]!", kdfP);

@@ -47,6 +47,8 @@ public class KeyUtils {
         EC("EC", "1.2.840.10045.2.1"),
         DSA("DSA", "1.2.840.10040.4.1"),
         RSA("RSA", "1.2.840.113549.1.1.1"),
+        RSASSA_PSS("RSASSA-PSS", "1.2.840.113549.1.1.10"),
+        DH("DiffieHellman", "1.2.840.113549.1.3.1"),
         XDH("XDH", null),
         EdDSA("EdDSA", null);
         private final String jceName;
@@ -73,6 +75,8 @@ public class KeyUtils {
     public enum KeyType {
         DSA("DSA", "RFC 8017", KeyAlgorithmType.DSA, "1.2.840.10040.4.1"),
         RSA("RSA", "RFC 8017", KeyAlgorithmType.RSA, "1.2.840.113549.1.1.1"),
+        RSASSA_PSS("RSASSA-PSS", "RFC 3447", KeyAlgorithmType.RSASSA_PSS, "1.2.840.113549.1.1.10"),
+        DH("DH", "PKCS #3", KeyAlgorithmType.DH, "1.2.840.113549.1.3.1"),
         SECT163K1("sect163k1", "NIST K-163", KeyAlgorithmType.EC, "1.3.132.0.1"),
         SECT163R1("sect163r1", "", KeyAlgorithmType.EC, "1.3.132.0.2"),
         SECT163R2("sect163r2", "NIST B-163", KeyAlgorithmType.EC, "1.3.132.0.15"),

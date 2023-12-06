@@ -24,7 +24,6 @@ import org.w3c.dom.Element;
 
 /**
  * Class Encryption11ElementProxy
- *
  */
 public abstract class Encryption11ElementProxy extends ElementProxy {
 
@@ -40,12 +39,11 @@ public abstract class Encryption11ElementProxy extends ElementProxy {
         if (doc == null) {
             throw new RuntimeException("Document is null");
         }
-
         setDocument(doc);
         setElement(XMLUtils.createElementInEncryption11Space(doc, this.getBaseLocalName()));
         String prefix = ElementProxy.getDefaultPrefix(this.getBaseNamespace());
         if (prefix != null && prefix.length() > 0) {
-            getElement().setAttribute( "xmlns:" + prefix, this.getBaseNamespace());
+            getElement().setAttribute("xmlns:" + prefix, this.getBaseNamespace());
         }
     }
 

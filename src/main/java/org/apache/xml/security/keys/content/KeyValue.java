@@ -37,7 +37,6 @@ import org.w3c.dom.Element;
  * (section 6.4). The KeyValue element may include externally defined public
  * keys values represented as PCDATA or element types from an external
  * namespace.
- *
  */
 public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
 
@@ -122,7 +121,7 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
      *
      * @return the public key type can be KeyValue encoding is supported then it returns true else false
      */
-    public static boolean isSupportedKeyType(PublicKey publicKey){
+    public static boolean isSupportedKeyType(PublicKey publicKey) {
 
         return publicKey instanceof java.security.interfaces.DSAPublicKey
                 || publicKey instanceof java.security.interfaces.RSAPublicKey
