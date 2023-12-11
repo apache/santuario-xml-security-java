@@ -19,7 +19,7 @@
 package org.apache.xml.security.exceptions;
 
 /**
- * This Exception is thrown if decoding of ANS1 (DER) data fails.
+ * This Exception is thrown if decoding of ASN.1 (DER) data fails.
  *
  */
 public class DERDecodingException extends Exception {

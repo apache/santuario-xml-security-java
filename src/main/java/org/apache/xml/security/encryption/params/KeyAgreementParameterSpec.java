@@ -30,6 +30,12 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
     /**
      * This enum defines the actor type of the KeyAgreement algorithm. The actor type defines which public and which
      * private key is expected to be present for the KeyAgreement algorithm to define derived key.
+     * <ul>
+     *     <li>ORIGINATOR: The key agreement is used by originator of the message therefore the originator private key and
+     *     the recipient public key are expected to be present.</li>
+     *     <li>RECIPIENT: The key agreement is used by recipient of the message therefore the recipient private key and
+     *     the originator public key are expected to be present.</li>
+     * </ul>
      */
     public enum ActorType {
         ORIGINATOR,
@@ -78,6 +84,9 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
     }
 
     public void setOriginatorPrivateKey(PrivateKey originatorPrivateKey) {
+        if (actorType != ActorType.ORIGINATOR) {
+            throw new IllegalStateException("Cannot set originator private key when actor type is not ORIGINATOR");
+        }
         this.originatorPrivateKey = originatorPrivateKey;
     }
 
@@ -86,6 +95,9 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
     }
 
     public void setRecipientPublicKey(PublicKey recipientPublicKey) {
+        if (actorType != ActorType.ORIGINATOR) {
+            throw new IllegalStateException("Cannot set recipient public key when actor type is not ORIGINATOR");
+        }
         this.recipientPublicKey = recipientPublicKey;
     }
 
@@ -94,6 +106,9 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
     }
 
     public void setRecipientPrivateKey(PrivateKey recipientPrivateKey) {
+        if (actorType != ActorType.RECIPIENT) {
+            throw new IllegalStateException("Cannot set recipient private key when actor type is not RECIPIENT");
+        }
         this.recipientPrivateKey = recipientPrivateKey;
     }
 
