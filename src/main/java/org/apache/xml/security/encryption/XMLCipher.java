@@ -1378,40 +1378,32 @@ public final class XMLCipher {
             c = contextCipher;
         }
 
-        AlgorithmParameterSpec chiperSpec = null;
-        KeyPair origninatorKeyPair = null;
+        AlgorithmParameterSpec cipherSpec = null;
         Key wrapKey = this.key;
         if (params instanceof OAEPParameterSpec) {
-            chiperSpec = params;
-            wrapKey = this.key;
+            cipherSpec = params;
         } else if (params instanceof KeyAgreementParameterSpec) {
             KeyAgreementParameterSpec keyAgreementParameter = (KeyAgreementParameterSpec) params;
-            PublicKey recipientPublicKey = (PublicKey) this.key;
-            if (keyAgreementParameter.getRecipientPublicKey() == null) {
-                keyAgreementParameter.setRecipientPublicKey(recipientPublicKey);
-            }
-            if (keyAgreementParameter.getOriginatorPrivateKey() == null) {
-                origninatorKeyPair = KeyUtils.generateEphemeralDHKeyPair(recipientPublicKey, null);
-                keyAgreementParameter.setOriginatorKeyPair(origninatorKeyPair);
-            }
-
+            validateAndUpdateKeyAgreementParameterKeys(keyAgreementParameter);
+            // Generate a key using the key Agreement Parameters for the wrap algorithm
             wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey(keyAgreementParameter);
+        } else if (params != null) {
+            throw new XMLEncryptionException("encryption.UnsupportedAlgorithmParameterSpec", params.getClass().getName());
         }
 
         // Now perform the encryption
         try {
-
             if (random != null) {
-                if (chiperSpec == null) {
+                if (cipherSpec == null) {
                     c.init(Cipher.WRAP_MODE, wrapKey, random);
                 } else {
-                    c.init(Cipher.WRAP_MODE, wrapKey, chiperSpec, random);
+                    c.init(Cipher.WRAP_MODE, wrapKey, cipherSpec, random);
                 }
             } else {
-                if (chiperSpec == null) {
+                if (cipherSpec == null) {
                     c.init(Cipher.WRAP_MODE, wrapKey);
                 } else {
-                    c.init(Cipher.WRAP_MODE, wrapKey, chiperSpec);
+                    c.init(Cipher.WRAP_MODE, wrapKey, cipherSpec);
                 }
             }
             encryptedBytes = c.wrap(key);
@@ -1547,6 +1539,44 @@ public final class XMLCipher {
         LOG.log(Level.DEBUG, "Decryption of key type {0} OK", algorithm);
 
         return ret;
+    }
+
+    /**
+     * Method validates and updates if needed the KeyAgreementParameterSpec with the required keys.
+     *
+     * @param keyAgreementParameter KeyAgreementParameterSpec to be validated and updated
+     *                              with the required keys if needed
+     */
+    public void validateAndUpdateKeyAgreementParameterKeys(KeyAgreementParameterSpec keyAgreementParameter) throws XMLEncryptionException {
+        if (keyAgreementParameter == null) {
+            return;
+        }
+        // check if the recipient's public key is set in keyAgreementParameter, if not, use the recipient's public key
+        // specified in XMLCipher instance init method.
+        if (keyAgreementParameter.getRecipientPublicKey() == null && this.key != null) {
+            if (this.key instanceof PublicKey) {
+                LOG.log(Level.DEBUG, "Recipient's public key is not set in keyAgreementParameter, " +
+                        "use the recipient's public key specified in XMLCipher instance init method.");
+                keyAgreementParameter.setRecipientPublicKey((PublicKey) this.key);
+            } else {
+                throw new XMLEncryptionException("algorithms.WrongKeyForThisOperation",
+                        this.key.getClass().getName(), "java.security.PublicKey");
+            }
+        }
+
+        // check if the originator's private key is still null
+        if (keyAgreementParameter.getRecipientPublicKey() == null) {
+            // recipient's public key is mandatory for key agreement algorithm.
+            throw new XMLEncryptionException("encryption.nokey");
+        }
+
+        if (keyAgreementParameter.getOriginatorPrivateKey() == null) {
+            LOG.log(Level.DEBUG, "Originator's private key is not set in keyAgreementParameter, " +
+                    "generate an ephemeral key for the originator's private key.");
+            KeyPair originatorKeyPair = KeyUtils.generateEphemeralDHKeyPair(
+                    keyAgreementParameter.getRecipientPublicKey(), null);
+            keyAgreementParameter.setOriginatorKeyPair(originatorKeyPair);
+        }
     }
 
     /**
