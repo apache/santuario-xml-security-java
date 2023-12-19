@@ -54,7 +54,7 @@ import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.encryption.keys.KeyInfoEnc;
-import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
+import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.encryption.keys.content.AgreementMethodImpl;
@@ -1382,8 +1382,8 @@ public final class XMLCipher {
         Key wrapKey = this.key;
         if (params instanceof OAEPParameterSpec) {
             cipherSpec = params;
-        } else if (params instanceof KeyAgreementParameterSpec) {
-            KeyAgreementParameterSpec keyAgreementParameter = (KeyAgreementParameterSpec) params;
+        } else if (params instanceof KeyAgreementParameters) {
+            KeyAgreementParameters keyAgreementParameter = (KeyAgreementParameters) params;
             validateAndUpdateKeyAgreementParameterKeys(keyAgreementParameter);
             // Generate a key using the key Agreement Parameters for the wrap algorithm
             wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey(keyAgreementParameter);
@@ -1430,8 +1430,8 @@ public final class XMLCipher {
                     byte[] pSourceParams = ((PSource.PSpecified) oaepSpec.getPSource()).getValue();
                     method.setOAEPparams(pSourceParams);
                 }
-            } else if (params instanceof KeyAgreementParameterSpec) {
-                KeyAgreementParameterSpec keyAgreementParameter = (KeyAgreementParameterSpec) params;
+            } else if (params instanceof KeyAgreementParameters) {
+                KeyAgreementParameters keyAgreementParameter = (KeyAgreementParameters) params;
                 AgreementMethodImpl agreementMethod = new AgreementMethodImpl(contextDocument, keyAgreementParameter);
 
                 KeyInfoEnc keyInfo = new KeyInfoEnc(contextDocument);
@@ -1528,8 +1528,8 @@ public final class XMLCipher {
             } else if (params instanceof OAEPParameterSpec) {
                 c.init(Cipher.UNWRAP_MODE, key, params);
             }
-            if (params instanceof KeyAgreementParameterSpec) {
-                Key wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey((KeyAgreementParameterSpec) params);
+            if (params instanceof KeyAgreementParameters) {
+                Key wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey((KeyAgreementParameters) params);
                 c.init(Cipher.UNWRAP_MODE, wrapKey);
             }
             ret = c.unwrap(encryptedBytes, jceKeyAlgorithm, Cipher.SECRET_KEY);
@@ -1547,7 +1547,7 @@ public final class XMLCipher {
      * @param keyAgreementParameter KeyAgreementParameterSpec to be validated and updated
      *                              with the required keys if needed
      */
-    public void validateAndUpdateKeyAgreementParameterKeys(KeyAgreementParameterSpec keyAgreementParameter) throws XMLEncryptionException {
+    public void validateAndUpdateKeyAgreementParameterKeys(KeyAgreementParameters keyAgreementParameter) throws XMLEncryptionException {
         if (keyAgreementParameter == null) {
             return;
         }

@@ -34,7 +34,7 @@ import javax.crypto.spec.PSource;
 
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
-import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
+import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
@@ -195,9 +195,9 @@ public final class XMLCipherUtil {
      * @param agreementMethod        agreement method
      * @param keyAgreementPrivateKey private key to derive the shared secret in case of Diffie-Hellman key agreements
      */
-    public static KeyAgreementParameterSpec constructRecipientKeyAgreementParameters(String keyWrapAlgoURI,
-                                                                                 AgreementMethod agreementMethod,
-                                                                                 PrivateKey keyAgreementPrivateKey
+    public static KeyAgreementParameters constructRecipientKeyAgreementParameters(String keyWrapAlgoURI,
+                                                                                  AgreementMethod agreementMethod,
+                                                                                  PrivateKey keyAgreementPrivateKey
     ) throws XMLSecurityException {
         String agreementAlgorithmURI = agreementMethod.getAlgorithm();
         int keyLength = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgoURI);
@@ -209,7 +209,7 @@ public final class XMLCipherUtil {
         KeyDerivationParameters kdp = constructKeyDerivationParameter(keyDerivationMethod, keyLength);
 
         return constructAgreementParameters(
-                agreementAlgorithmURI, KeyAgreementParameterSpec.ActorType.RECIPIENT, kdp,
+                agreementAlgorithmURI, KeyAgreementParameters.ActorType.RECIPIENT, kdp,
                 keyAgreementPrivateKey, agreementMethod.getOriginatorKeyInfo().getPublicKey());
     }
 
@@ -221,15 +221,15 @@ public final class XMLCipherUtil {
      * @param keyAgreementPrivateKey private key to derive the shared secret in case of Diffie-Hellman key agreements
      * @param keyAgreementPublicKey  public key to derive the shared secret in case of Diffie-Hellman key agreements
      */
-    public static KeyAgreementParameterSpec constructAgreementParameters(String agreementAlgorithmURI,
-                                                                     KeyAgreementParameterSpec.ActorType actorType,
-                                                                     KeyDerivationParameters keyDerivationParameter,
-                                                                     PrivateKey keyAgreementPrivateKey,
-                                                                     PublicKey keyAgreementPublicKey) {
-        KeyAgreementParameterSpec ecdhKeyAgreementParameters = new KeyAgreementParameterSpec(
+    public static KeyAgreementParameters constructAgreementParameters(String agreementAlgorithmURI,
+                                                                      KeyAgreementParameters.ActorType actorType,
+                                                                      KeyDerivationParameters keyDerivationParameter,
+                                                                      PrivateKey keyAgreementPrivateKey,
+                                                                      PublicKey keyAgreementPublicKey) {
+        KeyAgreementParameters ecdhKeyAgreementParameters = new KeyAgreementParameters(
                 actorType,
                 agreementAlgorithmURI, keyDerivationParameter);
-        if (actorType == KeyAgreementParameterSpec.ActorType.RECIPIENT  ) {
+        if (actorType == KeyAgreementParameters.ActorType.RECIPIENT  ) {
             ecdhKeyAgreementParameters.setRecipientPrivateKey(keyAgreementPrivateKey);
             ecdhKeyAgreementParameters.setOriginatorPublicKey(keyAgreementPublicKey);
         } else {

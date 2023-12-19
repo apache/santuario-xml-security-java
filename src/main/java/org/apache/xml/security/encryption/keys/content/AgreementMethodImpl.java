@@ -22,7 +22,7 @@ import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.KeyDerivationMethod;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
-import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
+import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.encryption.keys.OriginatorKeyInfo;
 import org.apache.xml.security.encryption.keys.RecipientKeyInfo;
@@ -59,16 +59,16 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     private String algorithmURI;
 
     /**
-     *  Constructor AgreementMethodImpl for generating AgreementMethod from scratch based on {@link KeyAgreementParameterSpec}.
+     *  Constructor AgreementMethodImpl for generating AgreementMethod from scratch based on {@link KeyAgreementParameters}.
      *  The constructor generates {@link KeyDerivationMethod} if given and {@link OriginatorKeyInfo} based on originator
      *  public key for ECDH-ES key agreement. It generates a placeholder element for RecipientKeyInfo. The recipient key info value
      *  must be set later.
      *
      * @param doc the {@link Document} in which <code>AgreementMethod</code> will be placed
-     * @param keyAgreementParameter the {@link KeyAgreementParameterSpec} from which <code>AgreementMethod</code> will be generated
+     * @param keyAgreementParameter the {@link KeyAgreementParameters} from which <code>AgreementMethod</code> will be generated
      * @throws XMLEncryptionException
      */
-    public AgreementMethodImpl(Document doc, KeyAgreementParameterSpec keyAgreementParameter) throws XMLEncryptionException {
+    public AgreementMethodImpl(Document doc, KeyAgreementParameters keyAgreementParameter) throws XMLEncryptionException {
         this(doc, keyAgreementParameter.getKeyAgreementAlgorithm());
 
         if (keyAgreementParameter.getKeyDerivationParameter() != null) {
@@ -282,15 +282,15 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     }
 
     /**
-     * Method createKeyDerivationMethod creates a {@link KeyDerivationMethod} based on {@link KeyAgreementParameterSpec}.
+     * Method createKeyDerivationMethod creates a {@link KeyDerivationMethod} based on {@link KeyAgreementParameters}.
      * The method supports only {@link ConcatKDFParams} for now.
      * @see <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
      *
-     * @param keyAgreementParameter the {@link KeyAgreementParameterSpec} from which {@link KeyDerivationMethod} will be generated.
-     * @return the {@link KeyDerivationMethod} based on {@link KeyAgreementParameterSpec}
+     * @param keyAgreementParameter the {@link KeyAgreementParameters} from which {@link KeyDerivationMethod} will be generated.
+     * @return the {@link KeyDerivationMethod} based on {@link KeyAgreementParameters}
      * @throws XMLEncryptionException if Key derivation algorithm is not supported
      */
-    private KeyDerivationMethod createKeyDerivationMethod(KeyAgreementParameterSpec keyAgreementParameter) throws XMLEncryptionException {
+    private KeyDerivationMethod createKeyDerivationMethod(KeyAgreementParameters keyAgreementParameter) throws XMLEncryptionException {
         ConcatKDFParams kdfParameters = (ConcatKDFParams)
                 keyAgreementParameter.getKeyDerivationParameter();
 

@@ -21,7 +21,7 @@ package org.apache.xml.security.utils;
 import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
-import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
+import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.DERDecodingException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
@@ -203,7 +203,7 @@ public class KeyUtils {
      * @throws XMLEncryptionException if the secret key cannot be generated as: Key agreement is not supported,
      * wrong key types, etc.
      */
-    public static SecretKey aesWrapKeyWithDHGeneratedKey(KeyAgreementParameterSpec parameterSpec)
+    public static SecretKey aesWrapKeyWithDHGeneratedKey(KeyAgreementParameters parameterSpec)
             throws XMLEncryptionException {
         try {
             PublicKey publicKey = parameterSpec.getAgreementPublicKey();

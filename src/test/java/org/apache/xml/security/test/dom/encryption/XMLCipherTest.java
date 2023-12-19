@@ -53,7 +53,7 @@ import org.apache.xml.security.encryption.EncryptionProperty;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.keys.KeyInfoEnc;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
-import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
+import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.parser.XMLParserException;
@@ -333,8 +333,8 @@ class XMLCipherTest {
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
         KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen,
                 MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
-        AlgorithmParameterSpec parameterSpec = new KeyAgreementParameterSpec(
-                KeyAgreementParameterSpec.ActorType.ORIGINATOR,
+        AlgorithmParameterSpec parameterSpec = new KeyAgreementParameters(
+                KeyAgreementParameters.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
                 keyDerivationParameter);
         // encrypt transport key with KeyAgreement

@@ -26,7 +26,7 @@ import java.security.spec.AlgorithmParameterSpec;
 /**
  * This class is used to pass parameters to the KeyAgreement algorithm.
  */
-public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
+public class KeyAgreementParameters implements AlgorithmParameterSpec {
     /**
      * This enum defines the actor type of the KeyAgreement algorithm. The actor type defines which public and which
      * private key is expected to be present for the KeyAgreement algorithm to define derived key.
@@ -52,7 +52,7 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
     private PrivateKey recipientPrivateKey;
 
 
-    public KeyAgreementParameterSpec(ActorType actorType, String keyAgreementAlgorithm, KeyDerivationParameters keyDerivationParameter) {
+    public KeyAgreementParameters(ActorType actorType, String keyAgreementAlgorithm, KeyDerivationParameters keyDerivationParameter) {
         this.actorType = actorType;
         this.KeyDerivationParameter = keyDerivationParameter;
         this.keyAgreementAlgorithm = keyAgreementAlgorithm;
