@@ -21,7 +21,7 @@ package org.apache.xml.security.encryption.keys.content;
 import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.KeyDerivationMethod;
 import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.encryption.keys.OriginatorKeyInfo;
@@ -283,7 +283,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
 
     /**
      * Method createKeyDerivationMethod creates a {@link KeyDerivationMethod} based on {@link KeyAgreementParameterSpec}.
-     * The method supports only {@link ConcatKeyDerivationParameter} for now.
+     * The method supports only {@link ConcatKDFParams} for now.
      * @see <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
      *
      * @param keyAgreementParameter the {@link KeyAgreementParameterSpec} from which {@link KeyDerivationMethod} will be generated.
@@ -291,7 +291,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
      * @throws XMLEncryptionException if Key derivation algorithm is not supported
      */
     private KeyDerivationMethod createKeyDerivationMethod(KeyAgreementParameterSpec keyAgreementParameter) throws XMLEncryptionException {
-        ConcatKeyDerivationParameter kdfParameters = (ConcatKeyDerivationParameter)
+        ConcatKDFParams kdfParameters = (ConcatKDFParams)
                 keyAgreementParameter.getKeyDerivationParameter();
 
         KeyDerivationMethodImpl keyDerivationMethod = new KeyDerivationMethodImpl(getDocument());
@@ -307,11 +307,11 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     }
 
     /**
-     * Method getConcatKDFParams creates a {@link ConcatKDFParamsImpl} based on {@link ConcatKeyDerivationParameter}.
-     * @param kdfParameters the {@link ConcatKeyDerivationParameter} from which {@link ConcatKDFParamsImpl} will be generated.
+     * Method getConcatKDFParams creates a {@link ConcatKDFParamsImpl} based on {@link ConcatKDFParams}.
+     * @param kdfParameters the {@link ConcatKDFParams} from which {@link ConcatKDFParamsImpl} will be generated.
      * @return the {@link ConcatKDFParamsImpl}
      */
-    private ConcatKDFParamsImpl getConcatKDFParams(ConcatKeyDerivationParameter kdfParameters) {
+    private ConcatKDFParamsImpl getConcatKDFParams(ConcatKDFParams kdfParameters) {
         ConcatKDFParamsImpl concatKDFParams = new ConcatKDFParamsImpl(getDocument());
         concatKDFParams.setDigestMethod(kdfParameters.getDigestAlgorithm());
         // set parameters

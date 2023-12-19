@@ -22,11 +22,11 @@ package org.apache.xml.security.encryption.params;
  * Abstract key derivation class contains the basic parameters used for the key derivation.
  * The class should be extended to provide algorithm specific parameters.
  */
-public abstract class KeyDerivationParameter {
+public abstract class KeyDerivationParameters {
     private final String algorithm;
     private final int keyBitLength;
 
-    public KeyDerivationParameter(String algorithm, int keyLength) {
+    public KeyDerivationParameters(String algorithm, int keyLength) {
         this.algorithm = algorithm;
         this.keyBitLength = keyLength;
     }

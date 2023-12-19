@@ -20,9 +20,9 @@ package org.apache.xml.security.utils;
 
 import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
 import org.apache.xml.security.encryption.XMLEncryptionException;
-import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
-import org.apache.xml.security.encryption.params.KeyDerivationParameter;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.DERDecodingException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDF;
@@ -256,7 +256,7 @@ public class KeyUtils {
      * @return the derived key encryption key
      * @throws XMLSecurityException if the key derivation algorithm is not supported
      */
-    public static byte[] deriveKeyEncryptionKey(byte[] sharedSecret, KeyDerivationParameter keyDerivationParameter)
+    public static byte[] deriveKeyEncryptionKey(byte[] sharedSecret, KeyDerivationParameters keyDerivationParameter)
             throws XMLSecurityException {
         int iKeySize = keyDerivationParameter.getKeyBitLength()/8;
         String keyDerivationAlgorithm = keyDerivationParameter.getAlgorithm();
@@ -264,7 +264,7 @@ public class KeyUtils {
             throw new XMLEncryptionException( "unknownAlgorithm",
                     keyDerivationAlgorithm);
         }
-        ConcatKeyDerivationParameter ckdfParameter = (ConcatKeyDerivationParameter) keyDerivationParameter;
+        ConcatKDFParams ckdfParameter = (ConcatKDFParams) keyDerivationParameter;
 
 
         // get parameters

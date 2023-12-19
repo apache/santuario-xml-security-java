@@ -31,9 +31,9 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
      * This enum defines the actor type of the KeyAgreement algorithm. The actor type defines which public and which
      * private key is expected to be present for the KeyAgreement algorithm to define derived key.
      * <ul>
-     *     <li>ORIGINATOR: The key agreement is used by originator of the message therefore the originator private key and
+     *     <li>ORIGINATOR: The key agreement is used by originator of the message. Therefore, the originator private key and
      *     the recipient public key are expected to be present.</li>
-     *     <li>RECIPIENT: The key agreement is used by recipient of the message therefore the recipient private key and
+     *     <li>RECIPIENT: The key agreement is used by recipient of the message. Therefore, the recipient private key and
      *     the originator public key are expected to be present.</li>
      * </ul>
      */
@@ -42,7 +42,7 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
         RECIPIENT
     }
 
-    private final KeyDerivationParameter KeyDerivationParameter;
+    private final KeyDerivationParameters KeyDerivationParameter;
     private final  ActorType actorType;
     private final String keyAgreementAlgorithm;
 
@@ -52,13 +52,13 @@ public class KeyAgreementParameterSpec implements AlgorithmParameterSpec {
     private PrivateKey recipientPrivateKey;
 
 
-    public KeyAgreementParameterSpec(ActorType actorType, String keyAgreementAlgorithm, KeyDerivationParameter keyDerivationParameter) {
+    public KeyAgreementParameterSpec(ActorType actorType, String keyAgreementAlgorithm, KeyDerivationParameters keyDerivationParameter) {
         this.actorType = actorType;
         this.KeyDerivationParameter = keyDerivationParameter;
         this.keyAgreementAlgorithm = keyAgreementAlgorithm;
     }
 
-    public KeyDerivationParameter getKeyDerivationParameter() {
+    public KeyDerivationParameters getKeyDerivationParameter() {
         return KeyDerivationParameter;
     }
 

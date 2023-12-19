@@ -52,9 +52,9 @@ import org.apache.xml.security.encryption.EncryptionProperties;
 import org.apache.xml.security.encryption.EncryptionProperty;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.keys.KeyInfoEnc;
-import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
-import org.apache.xml.security.encryption.params.KeyDerivationParameter;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.test.dom.TestUtils;
@@ -331,7 +331,7 @@ class XMLCipherTest {
         cipherEncKey.setSecureValidation(true);
         // create key agreement parameters
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameter keyDerivationParameter = new ConcatKeyDerivationParameter(keyBitLen,
+        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen,
                 MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameterSpec(
                 KeyAgreementParameterSpec.ActorType.ORIGINATOR,

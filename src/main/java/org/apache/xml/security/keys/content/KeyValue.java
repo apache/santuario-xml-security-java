@@ -116,10 +116,10 @@ public class KeyValue extends SignatureElementProxy implements KeyInfoContent {
     }
 
     /**
-     * Method getPublicKey verifies that the key xml KeyValue encoding is supported for the given key type. If the
+     * Verifies that the XML KeyValue encoding is supported for the given key type. If the
      * encoding is supported, it returns true else false.
      *
-     * @return the public key type can be KeyValue encoding is supported then it returns true else false
+     * @return true if the public key has a KeyValue encoding, false otherwise.
      */
     public static boolean isSupportedKeyType(PublicKey publicKey) {
 

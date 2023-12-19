@@ -26,7 +26,7 @@ import org.apache.xml.security.utils.EncryptionConstants;
  * @see <A HREF="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">XML Encryption Syntax and Processing Version 1.1, 5.8.1
  * The ConcatKDF Key Derivation Algorithm</A>
  */
-public class ConcatKeyDerivationParameter extends KeyDerivationParameter {
+public class ConcatKDFParams extends KeyDerivationParameters {
 
     private String digestAlgorithm;
     private String algorithmID;
@@ -41,7 +41,7 @@ public class ConcatKeyDerivationParameter extends KeyDerivationParameter {
      * @param keyBitLength    the length of the derived key in bits
      * @param digestAlgorithm the digest algorithm to use
      */
-    public ConcatKeyDerivationParameter(int keyBitLength, String digestAlgorithm) {
+    public ConcatKDFParams(int keyBitLength, String digestAlgorithm) {
         super(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF, keyBitLength);
         this.digestAlgorithm = digestAlgorithm;
     }

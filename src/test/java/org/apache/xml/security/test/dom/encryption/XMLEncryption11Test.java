@@ -53,9 +53,9 @@ import org.apache.xml.security.encryption.EncryptedData;
 import org.apache.xml.security.encryption.EncryptedKey;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.encryption.keys.KeyInfoEnc;
-import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
-import org.apache.xml.security.encryption.params.KeyDerivationParameter;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.keys.content.x509.XMLX509Certificate;
@@ -573,7 +573,7 @@ class XMLEncryption11Test {
 
 
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameter keyDerivationParameter = new ConcatKeyDerivationParameter(keyBitLen, kdfAlgorithm);
+        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen, kdfAlgorithm);
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameterSpec(
                 KeyAgreementParameterSpec.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
@@ -675,7 +675,7 @@ class XMLEncryption11Test {
 
 
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameter keyDerivationParameter = new ConcatKeyDerivationParameter(keyBitLen, kdfAlgorithm);
+        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen, kdfAlgorithm);
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameterSpec(
                 KeyAgreementParameterSpec.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,

@@ -33,9 +33,9 @@ import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
 import org.apache.xml.security.algorithms.JCEMapper;
-import org.apache.xml.security.encryption.params.ConcatKeyDerivationParameter;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameterSpec;
-import org.apache.xml.security.encryption.params.KeyDerivationParameter;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
 import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
@@ -206,7 +206,7 @@ public final class XMLCipherUtil {
         if (keyDerivationMethod == null) {
             throw new XMLEncryptionException("Key Derivation Algorithm is not specified");
         }
-        KeyDerivationParameter kdp = constructKeyDerivationParameter(keyDerivationMethod, keyLength);
+        KeyDerivationParameters kdp = constructKeyDerivationParameter(keyDerivationMethod, keyLength);
 
         return constructAgreementParameters(
                 agreementAlgorithmURI, KeyAgreementParameterSpec.ActorType.RECIPIENT, kdp,
@@ -223,7 +223,7 @@ public final class XMLCipherUtil {
      */
     public static KeyAgreementParameterSpec constructAgreementParameters(String agreementAlgorithmURI,
                                                                      KeyAgreementParameterSpec.ActorType actorType,
-                                                                     KeyDerivationParameter keyDerivationParameter,
+                                                                     KeyDerivationParameters keyDerivationParameter,
                                                                      PrivateKey keyAgreementPrivateKey,
                                                                      PublicKey keyAgreementPublicKey) {
         KeyAgreementParameterSpec ecdhKeyAgreementParameters = new KeyAgreementParameterSpec(
@@ -248,7 +248,7 @@ public final class XMLCipherUtil {
      * @return KeyDerivationParameter object
      * @throws XMLSecurityException if the keyDerivationMethod is not supported
      */
-    public static KeyDerivationParameter constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod, int keyBitLength) throws XMLSecurityException {
+    public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod, int keyBitLength) throws XMLSecurityException {
         String keyDerivationAlgorithm = keyDerivationMethod.getAlgorithm();
         if (!EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(keyDerivationAlgorithm)) {
             throw new XMLEncryptionException("unknownAlgorithm", keyDerivationAlgorithm);
@@ -269,8 +269,8 @@ public final class XMLCipherUtil {
      * @param digestMethod digest method
      * @return ConcatKeyDerivationParameter object
      */
-    public static ConcatKeyDerivationParameter constructConcatKeyDerivationParameter(int keyBitLength,
-                                                                                 String digestMethod){
+    public static ConcatKDFParams constructConcatKeyDerivationParameter(int keyBitLength,
+                                                                        String digestMethod){
         return constructConcatKeyDerivationParameter(keyBitLength, digestMethod, null, null, null, null, null);
     }
 
@@ -286,15 +286,15 @@ public final class XMLCipherUtil {
      * @param suppPrivInfo suppPrivInfo
      * @return ConcatKeyDerivationParameter object
      */
-    public static ConcatKeyDerivationParameter constructConcatKeyDerivationParameter(int keyBitLength,
-                                                                                 String digestMethod,
-                                                                                 String algorithmId,
-                                                                                 String partyUInfo,
-                                                                                 String partyVInfo,
-                                                                                 String suppPubInfo,
-                                                                                 String suppPrivInfo) {
+    public static ConcatKDFParams constructConcatKeyDerivationParameter(int keyBitLength,
+                                                                        String digestMethod,
+                                                                        String algorithmId,
+                                                                        String partyUInfo,
+                                                                        String partyVInfo,
+                                                                        String suppPubInfo,
+                                                                        String suppPrivInfo) {
 
-        ConcatKeyDerivationParameter kdp = new ConcatKeyDerivationParameter(keyBitLength, digestMethod);
+        ConcatKDFParams kdp = new ConcatKDFParams(keyBitLength, digestMethod);
         kdp.setAlgorithmID(algorithmId);
         kdp.setPartyUInfo(partyUInfo);
         kdp.setPartyVInfo(partyVInfo);
