@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 /**
  * The OriginatorKeyInfo element is used in the <code>ds:KeyInfo</code> with AgreementMethod elements.
  * @see <a href="https://www.w3.org/TR/xmlenc-core1/#sec-Alg-KeyAgreement">KeyAgreement</a>. The OriginatorKeyInfo
- * element extends ds:KeyInfo with namespace xenc  (http://www.w3.org/2001/04/xmlenc#) amd is  used to convey
+ * element extends ds:KeyInfo with namespace xenc (http://www.w3.org/2001/04/xmlenc#) and is used to convey
  * the originator's public key.
  */
 public class OriginatorKeyInfo extends KeyInfoEnc {

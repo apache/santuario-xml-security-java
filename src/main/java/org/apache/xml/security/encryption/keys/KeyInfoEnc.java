@@ -102,9 +102,9 @@ public class KeyInfoEnc extends KeyInfo {
     }
 
     /**
-     * Method containAgreementMethod
+     * Method containsAgreementMethod returns true if the KeyInfo contains a AgreementMethod node
      *
-     * @return If the KeyInfo contains a AgreementMethod node
+     * @return true if the KeyInfo contains a AgreementMethod node else false
      */
     public boolean containsAgreementMethod() {
         return this.lengthAgreementMethod() > 0;

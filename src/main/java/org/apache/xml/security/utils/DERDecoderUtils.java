@@ -64,19 +64,23 @@ public class DERDecoderUtils {
      * Simple method parses an ASN.1 encoded byte array. The encoding uses "DER", a BER/1 subset, that means a triple { typeId, length, data }.
      * with the following structure:
      * <p>
-     * PublicKeyInfo ::= SEQUENCE {
-     * algorithm   AlgorithmIdentifier,
-     * PublicKey   BIT STRING
-     * }
+     * <pre>
+     *  PublicKeyInfo ::= SEQUENCE {
+     *      algorithm   AlgorithmIdentifier,
+     *      PublicKey   BIT STRING
+     *  }
+     * </pre>
      * <p>
      * Where AlgorithmIdentifier is formatted as:
-     * AlgorithmIdentifier ::= SEQUENCE {
-     * algorithm   OBJECT IDENTIFIER,
-     * parameters  ANY DEFINED BY algorithm OPTIONAL
-     * }
-     *
+     * <pre>
+     *  AlgorithmIdentifier ::= SEQUENCE {
+     *      algorithm   OBJECT IDENTIFIER,
+     *      parameters  ANY DEFINED BY algorithm OPTIONAL
+     *  }
+     *</pre>
      * @param derEncodedIS the DER-encoded input stream to decode.
-     * @throws DERDecodingException if the given array is null.
+     * @throws DERDecodingException in case of decoding error or if given InputStream is null or empty.
+     * @throws IOException if an I/O error occurs.
      */
     public static byte[] getAlgorithmIdBytes(InputStream derEncodedIS) throws DERDecodingException, IOException {
         if (derEncodedIS == null || derEncodedIS.available() <= 0) {
@@ -96,7 +100,7 @@ public class DERDecoderUtils {
      * <p>
      * @param derEncodedIS the DER-encoded input stream to decode.
      * @return the object identifier as a byte array.
-     * @throws DERDecodingException if the given array is null.
+     * @throws DERDecodingException if parse error occurs.
      */
     public static byte[] readObjectIdentifier(InputStream derEncodedIS) throws DERDecodingException {
         try {
@@ -109,12 +113,19 @@ public class DERDecoderUtils {
         }
     }
 
-
+    /**
+     * The method extracts the algorithm OID from the public key and returns it as "dot encoded" OID string.
+     *
+     * @param publicKey the public key for which method returns algorithm ID.
+     * @return String representing the algorithm ID.
+     * @throws DERDecodingException if the algorithm ID cannot be determined.
+     */
     public static String getAlgorithmIdFromPublicKey(PublicKey publicKey) throws DERDecodingException {
         String keyFormat = publicKey.getFormat();
         if (!("X.509".equalsIgnoreCase(keyFormat)
                 || "X509".equalsIgnoreCase(keyFormat))) {
-            throw new DERDecodingException("Unknown key format [" + keyFormat + "]! Support for X.509-encoded public keys only!");
+            throw new DERDecodingException("Unknown key format [" + keyFormat
+                    + "]! Support for X.509-encoded public keys only!");
         }
         try (InputStream inputStream = new ByteArrayInputStream(publicKey.getEncoded())) {
             byte[] keyAlgOidBytes = getAlgorithmIdBytes(inputStream);
@@ -154,6 +165,7 @@ public class DERDecoderUtils {
      * @return the length, -1 for indefinite length.
      * @throws DERDecodingException if the current position is at the end of the array or there is
      *                              an incomplete length specification.
+     * @throws IOException          if an I/O error occurs.
      */
     public static int readLength(InputStream derEncodedIs) throws DERDecodingException, IOException {
         if (derEncodedIs.available() <= 0) {

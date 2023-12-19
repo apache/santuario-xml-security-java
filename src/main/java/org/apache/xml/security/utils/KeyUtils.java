@@ -266,13 +266,8 @@ public class KeyUtils {
         }
         ConcatKDFParams ckdfParameter = (ConcatKDFParams) keyDerivationParameter;
 
-
         // get parameters
-        String digestAlgorithm =ckdfParameter.getDigestAlgorithm();
-        if (digestAlgorithm == null) {
-            LOG.log(Level.DEBUG, "Missing ConcatKDFParams Digest algorithm for key derivation with algorithm [{0}]", keyDerivationAlgorithm);
-            throw new XMLEncryptionException("errorInKeyDerivation");
-        }
+        String digestAlgorithm = ckdfParameter.getDigestAlgorithm();
 
         String algorithmID = ckdfParameter.getAlgorithmID();
         String partyUInfo = ckdfParameter.getPartyUInfo();

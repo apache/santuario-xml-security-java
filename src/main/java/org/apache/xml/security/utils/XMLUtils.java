@@ -717,17 +717,7 @@ public final class XMLUtils {
      * @return node with the given node name or null if not found.
      */
     public static Element selectXenc11Node(Node sibling, String nodeName, int number) {
-        while (sibling != null) {
-            if (EncryptionConstants.EncryptionSpec11NS.equals(sibling.getNamespaceURI())
-                    && sibling.getLocalName().equals(nodeName)) {
-                if (number == 0){
-                    return (Element)sibling;
-                }
-                number--;
-            }
-            sibling = sibling.getNextSibling();
-        }
-        return null;
+        return selectNode(sibling, EncryptionConstants.EncryptionSpec11NS, nodeName, number);
     }
 
     /**
