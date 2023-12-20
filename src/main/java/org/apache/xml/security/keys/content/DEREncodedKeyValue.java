@@ -37,7 +37,10 @@ import org.w3c.dom.Element;
 public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyInfoContent {
 
     /** JCA algorithm key types supported by this implementation. */
-    private static final String[] supportedKeyTypes = { "RSA", "DSA", "EC"};
+    private static final String[] supportedKeyTypes = { "RSA", "DSA", "EC",
+            "DiffieHellman", "DH", "XDH", "X25519", "X448",
+            "EdDSA", "Ed25519", "Ed448",
+            "RSASSA-PSS"};
 
     /**
      * Constructor DEREncodedKeyValue
@@ -140,5 +143,4 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
             throw new XMLSecurityException(e, "DEREncodedKeyValue.UnsupportedPublicKey", exArgs);
         }
     }
-
 }

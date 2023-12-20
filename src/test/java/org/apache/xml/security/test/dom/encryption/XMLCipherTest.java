@@ -28,12 +28,10 @@ import java.io.InputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.*;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -44,6 +42,7 @@ import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.encryption.CipherData;
 import org.apache.xml.security.encryption.EncryptedData;
@@ -52,14 +51,24 @@ import org.apache.xml.security.encryption.EncryptionMethod;
 import org.apache.xml.security.encryption.EncryptionProperties;
 import org.apache.xml.security.encryption.EncryptionProperty;
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.encryption.keys.KeyInfoEnc;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
+import org.apache.xml.security.encryption.params.KeyAgreementParameters;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.apache.xml.security.testutils.JDKTestUtils;
+import org.apache.xml.security.testutils.KeyTestUtils;
 import org.apache.xml.security.transforms.params.XPathContainer;
 import org.apache.xml.security.utils.EncryptionConstants;
+import org.apache.xml.security.utils.KeyUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -128,6 +137,13 @@ class XMLCipherTest {
             JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null;
     }
 
+    @AfterEach
+    public void afterTest() throws Exception {
+        // remove the dynamically installed provider
+        if (JDKTestUtils.getAuxiliaryProvider()!=null) {
+            Security.removeProvider(JDKTestUtils.getAuxiliaryProvider().getName());
+        }
+    }
     /**
      * Test encryption using a generated AES 128 bit key that is
      * encrypted using a AES 192 bit key.  Then reverse using the KEK
@@ -266,6 +282,92 @@ class XMLCipherTest {
                 + "necessary algorithms not available"
             );
         }
+    }
+
+    /**
+     * Test that encrypt and decrypt using ECDH-ES for key encryption
+     * <p/>
+     * @throws Exception Thrown when there is any problem in signing or verification
+     */
+    @ParameterizedTest
+    @EnumSource(value = KeyUtils.KeyType.class, mode = EnumSource.Mode.INCLUDE,
+            names = {"SECP256R1", "SECP384R1", "SECP521R1", "X25519", "X448"})
+    void testAES128ElementEcdhEsKWCipher(KeyUtils.KeyType keyType) throws Exception {
+        // Skip test for IBM JDK
+        Assumptions.assumeTrue(haveISOPadding,
+                "Test testAES128ElementEcdhEsKWCipher for key ["+keyType+"] was skipped as necessary algorithms not available!" );
+        Assumptions.assumeTrue(JDKTestUtils.isAlgorithmSupported(keyType.getAlgorithm().getJceName(), true),
+                "Test testAES128ElementEcdhEsKWCipher for key ["+keyType+"] was skipped as necessary algorithms not available!" );
+
+        // init parameters encrypted key object
+        String dataEncryptionAlgorithm = XMLCipher.AES_256_GCM;
+        String keyWrapAlgorithm = XMLCipher.AES_128_KeyWrap;
+        int transportKeyBitLength = 128;
+
+        // prepare the test document
+        Document d = document(); // source
+        Document ed = null;
+        Document dd = null;
+        Element e = (Element) d.getElementsByTagName(element()).item(index());
+        Element ee = null;
+        String source = null;
+        String target = null;
+
+        source = toString(d);
+
+        // Generate test recipient key pair
+        KeyPair recipientKeyPair = KeyTestUtils.generateKeyPair(keyType);
+        PrivateKey privRecipientKey = recipientKeyPair.getPrivate();
+        PublicKey pubRecipientKey = recipientKeyPair.getPublic();
+
+        // Generate a traffic key
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(transportKeyBitLength);
+        Key ephemeralSymmetricKey = keygen.generateKey();
+
+
+        XMLCipher cipherEncKey = XMLCipher.getInstance(keyWrapAlgorithm);
+        cipherEncKey.init(XMLCipher.WRAP_MODE, pubRecipientKey);
+        cipherEncKey.setSecureValidation(true);
+        // create key agreement parameters
+        int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
+        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen,
+                MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        AlgorithmParameterSpec parameterSpec = new KeyAgreementParameters(
+                KeyAgreementParameters.ActorType.ORIGINATOR,
+                EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
+                keyDerivationParameter);
+        // encrypt transport key with KeyAgreement
+        EncryptedKey encryptedKey = cipherEncKey.encryptKey(d, ephemeralSymmetricKey, parameterSpec, null);
+        assertEquals(1,  ((KeyInfoEnc)encryptedKey.getKeyInfo()).lengthAgreementMethod());
+
+
+        // encrypt data
+        XMLCipher cipherEncData = XMLCipher.getInstance(dataEncryptionAlgorithm);
+        cipherEncData.init(XMLCipher.ENCRYPT_MODE, ephemeralSymmetricKey);
+        EncryptedData builder = cipherEncData.getEncryptedData();
+        // add encrypted key to key info in encrypted data
+        KeyInfo builderKeyInfo = builder.getKeyInfo();
+        if (builderKeyInfo == null) {
+            builderKeyInfo = new KeyInfo(d);
+            builder.setKeyInfo(builderKeyInfo);
+        }
+        builderKeyInfo.add(encryptedKey);
+
+        ed = cipherEncData.doFinal(d, e);
+
+        Files.write(Paths.get("target","test-enc-"+keyType.name()+".xml"), toString(ed).getBytes());
+
+        //decrypt
+        ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
+        XMLCipher cipherDecData = XMLCipher.getInstance(dataEncryptionAlgorithm);
+        cipherDecData.init(XMLCipher.DECRYPT_MODE, null);
+        cipherDecData.setKEK(privRecipientKey);
+        cipherDecData.setSecureValidation(true);
+        dd = cipherDecData.doFinal(ed, ee);
+
+        target = toString(dd);
+        assertEquals(source, target);
     }
 
     /**

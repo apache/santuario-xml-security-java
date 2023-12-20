@@ -1,0 +1,13 @@
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Id="abc123">
+MIICKDCCARsGCSqGSIb3DQEDATCCAQwCggEBAP//////////yQ/aoiFowjTExmKLgNwc0SkCTgiK
+Z8x0Agu+pjsTmyJRSgh5jjQE3e+VGbPNOkMbMCsKbfJfFDdP4TVtbVHCReSFtXZiXn7G9ExC6aY3
+7WsL/1y29Aa37e44a/taiZ+lrp8kEXxLH+ZJKGZR7ORbPcIAfLihY78FmNpINhxV05ppFj+o/STP
+X4NlXSPco62WHGLzViCFUrue1SkHcJaWbWcMNU5KvJgE8XRsCMoYIXwykF5GLjbOO+OedywYDoYD
+myeDouwHoo+1xV3wb0xSyd4ry/aVWBcYOZVJfOqVauUV0iYYmPoFEBVyjlqKrKpo//////////8C
+AQICAgDgA4IBBQACggEAXKjl1y9YiSWiTjc4cpHrl69VKckJluniOgxKl52b5n5Wg+uuDAQHw6GO
+8+ZruzDUGfTxyLsw5ZKV9FW8Q2tYjGUANuokKhBx7TNc+wWwy8azLULhTuD75cRHxoCti7FDvg/a
+klcJtBFu7Dm6udx2UgYjFSt08hYCinuTeORDC2UQ6/WWfuTLcgZjOItNLHw5QwXyt9v6YiVN/jRs
+XjuFGZCxLZZzUv8Ow5gjqfdkXtXfs87ez16KcSZS/L66Q+GxbxevMwHVyYqNLSQIA/PK8tSxMZp1
+K97wH+Hynxq9bjAEUc9O1MkHYaSxHZhB7+Ig9GjU2AO0u9oVLq/fQ3z/Ug==</dsig11:DEREncodedKeyValue>
+</ds:KeyInfo>
