@@ -23,6 +23,7 @@ import org.apache.xml.security.encryption.KeyDerivationMethod;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameters;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.encryption.keys.OriginatorKeyInfo;
 import org.apache.xml.security.encryption.keys.RecipientKeyInfo;
@@ -66,7 +67,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
      *
      * @param doc the {@link Document} in which <code>AgreementMethod</code> will be placed
      * @param keyAgreementParameter the {@link KeyAgreementParameters} from which <code>AgreementMethod</code> will be generated
-     * @throws XMLEncryptionException
+     * @throws XMLEncryptionException if the Key derivation algorithm is not supported or invalid parameters are given.
      */
     public AgreementMethodImpl(Document doc, KeyAgreementParameters keyAgreementParameter) throws XMLEncryptionException {
         this(doc, keyAgreementParameter.getKeyAgreementAlgorithm());
@@ -110,7 +111,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
      * Constructor AgreementMethodImpl based on XML {@link Element}.
      *
      * @param element the XML {@link Element} containing AgreementMethod information
-     * @throws XMLSecurityException
+     * @throws XMLSecurityException if the AgreementMethod element has invalid XML structure
      */
     public AgreementMethodImpl(Element element) throws XMLSecurityException {
         super(element, EncryptionConstants.EncryptionSpecNS);
@@ -291,14 +292,14 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
      * @throws XMLEncryptionException if Key derivation algorithm is not supported
      */
     private KeyDerivationMethod createKeyDerivationMethod(KeyAgreementParameters keyAgreementParameter) throws XMLEncryptionException {
-        ConcatKDFParams kdfParameters = (ConcatKDFParams)
-                keyAgreementParameter.getKeyDerivationParameter();
+        KeyDerivationParameters kdfParameters = keyAgreementParameter.getKeyDerivationParameter();
 
         KeyDerivationMethodImpl keyDerivationMethod = new KeyDerivationMethodImpl(getDocument());
         keyDerivationMethod.setAlgorithm(kdfParameters.getAlgorithm());
 
-        if (EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(kdfParameters.getAlgorithm())) {
-            ConcatKDFParamsImpl concatKDFParams = getConcatKDFParams(kdfParameters);
+        if (kdfParameters instanceof ConcatKDFParams
+                && EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(kdfParameters.getAlgorithm())) {
+            ConcatKDFParamsImpl concatKDFParams = getConcatKDFParams((ConcatKDFParams)kdfParameters);
             keyDerivationMethod.setConcatKDFParams(concatKDFParams);
         } else {
             throw new XMLEncryptionException("Unsupported Key Derivation Algorithm");

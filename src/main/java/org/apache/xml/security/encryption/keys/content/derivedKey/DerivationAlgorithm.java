@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
-import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
@@ -30,13 +29,12 @@ public interface DerivationAlgorithm {
      * Derives a key from the given secret and other info. The initial derived key is size of
      * offset + keyLength.
      *
-     *
      * @param secret    The "shared" secret to use for key derivation (e.g. the secret key)
      * @param otherInfo as specified in [SP800-56A] the optional  attributes:  AlgorithmID, PartyUInfo, PartyVInfo, SuppPubInfo and SuppPrivInfo attributes  are concatenated to form a bit string “OtherInfo” that is used with the key derivation function.
      * @param offset    the starting position in derived keying material of size: offset + keyLength
      * @param keyLength The length of the key to derive
      * @return The derived key
-     * @throws XMLEncryptionException if something goes wrong during the key derivation
+     * @throws XMLSecurityException if something goes wrong during the key derivation
      */
     byte[] deriveKey(byte[] secret, byte[] otherInfo, int offset,
                      long keyLength) throws XMLSecurityException;

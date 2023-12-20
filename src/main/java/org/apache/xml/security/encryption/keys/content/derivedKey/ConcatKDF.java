@@ -29,18 +29,16 @@ import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Key DerivationAlgorithm implementation, defined in Section 5.8.1 of NIST SP 800-56A [SP800-56A], and is equivalent
  * to the KDF3 function defined in ANSI X9.44-2007 [ANSI-X9-44-2007] when the contents of the OtherInfo parameter
  * is structured as in NIST SP 800-56A.
  * <p>
- * Identifier:  http://www.w3.org/2009/xmlenc11#ConcatKDF
+ * Identifier of the key derivation algorithm:  http://www.w3.org/2009/xmlenc11#ConcatKDF
  */
 public class ConcatKDF implements DerivationAlgorithm {
 
     private static final System.Logger LOG = System.getLogger(ConcatKDF.class.getName());
-
     private final String algorithmURI;
 
     /**
@@ -51,15 +49,12 @@ public class ConcatKDF implements DerivationAlgorithm {
         this.algorithmURI = algorithmURI;
     }
 
-
     /**
      * Default Constructor which sets the default digest algorithmURI parameter:  http://www.w3.org/2001/04/xmlenc#sha256,
      */
     public ConcatKDF() {
         this(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
     }
-
-
 
     /**
      * Key DerivationAlgorithm implementation as defined in Section 5.8.1 of NIST SP 800-56A [SP800-56A]
@@ -167,7 +162,7 @@ public class ConcatKDF implements DerivationAlgorithm {
      * @param parameters the parameters to concatenate
      * @return the concatenated parameters as byte array
      */
-    public static byte[] concatParameters(final String... parameters) throws XMLEncryptionException {
+    private static byte[] concatParameters(final String... parameters) throws XMLEncryptionException {
 
         List<byte[]> byteParams = new ArrayList<>();
         for (String parameter : parameters) {
@@ -175,20 +170,20 @@ public class ConcatKDF implements DerivationAlgorithm {
             byteParams.add(bytes);
         }
         // get bytearrays size
-        int iSize = byteParams.stream().map(ConcatKDF::getSize).reduce(0, (a, b) -> a + b);
+        int iSize = byteParams.stream().map(ConcatKDF::getSize).reduce(0, Integer::sum);
 
         ByteBuffer buffer = ByteBuffer
                 .allocate(iSize);
-        byteParams.stream().forEach(buffer::put);
+        byteParams.forEach(buffer::put);
         return buffer.array();
     }
-
 
     /**
      * The method validates the bitstring parameter structure and returns byte array of the parameter.
      * <p/>
-     * The bitstring is divided into octets using big-endian encoding. Parameter starts with two characters (hex number) defining the number of padding bits followed by hex-string.
-     * the length of the bitstring is not a multiple of 8 then add padding bits (value 0) as necessary to the last octet to make it a multiple of 8.
+     * The bitstring is divided into octets using big-endian encoding. Parameter starts with two characters (hex number)
+     * defining the number of padding bits followed by hex-string. The length of the bitstring is not a multiple of 8
+     * then add padding bits (value 0) as necessary to the last octet to make it a multiple of 8.
      *
      * @param kdfParameter the parameter to parse
      * @return the parsed parameter as byte array
@@ -234,6 +229,11 @@ public class ConcatKDF implements DerivationAlgorithm {
         return data;
     }
 
+    /**
+     * Method returns the size of the array or 0 if the array is null.
+     * @param array the array to get the size from
+     * @return the size of the array or 0 if the array is null.
+     */
     private static int getSize(byte[] array) {
         return array == null ? 0 : array.length;
     }
