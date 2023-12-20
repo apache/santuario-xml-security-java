@@ -1,0 +1,7 @@
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+
+<dsig11:DEREncodedKeyValue xmlns:dsig11="http://www.w3.org/2009/xmldsig11#" Id="abc123">
+MCowBQYDK2VuAyEA5qmpaxEkMbX1AZid5NLABb/nlCViLeazazCrNStnmjs=
+</dsig11:DEREncodedKeyValue>
+
+</ds:KeyInfo>
