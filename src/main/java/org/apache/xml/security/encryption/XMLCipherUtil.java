@@ -21,6 +21,7 @@ package org.apache.xml.security.encryption;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
 import org.apache.xml.security.encryption.keys.content.derivedKey.HKDFParamsImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KDFParams;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.HKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameters;
@@ -270,54 +271,56 @@ public final class XMLCipherUtil {
     /**
      * Construct a KeyDerivationParameter object from the given keyDerivationMethod and keyBitLength
      *
-     * @param keyDerivationMethod element to parse
-     * @param keyBitLength        expected derived key length
-     * @return KeyDerivationParameter object
-     * @throws XMLSecurityException if the keyDerivationMethod is not supported
+     * @param keyDerivationMethod element with the key derivation method data
+     * @param keyBitLength  expected derived key length
+     * @return KeyDerivationParameters data
+     * @throws XMLSecurityException if the keyDerivationMethod is not supported or invalid parameters are provided
      */
     public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod, int keyBitLength) throws XMLSecurityException {
         String keyDerivationAlgorithm = keyDerivationMethod.getAlgorithm();
+        KDFParams kdfParams = keyDerivationMethod.getKDFParams();
         if (EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(keyDerivationAlgorithm)) {
-            ConcatKDFParamsImpl concatKDFParams = (ConcatKDFParamsImpl) keyDerivationMethod.getKDFParams();
+            if (! (kdfParams instanceof ConcatKDFParamsImpl)) {
+                throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, ConcatKDFParamsImpl.class.getName());
+            }
+
+            ConcatKDFParamsImpl concatKDFParams = (ConcatKDFParamsImpl) kdfParams;
 
             return constructConcatKeyDerivationParameter(keyBitLength, concatKDFParams.getDigestMethod(), concatKDFParams.getAlgorithmId(),
                     concatKDFParams.getPartyUInfo(), concatKDFParams.getPartyVInfo(),
                     concatKDFParams.getSuppPubInfo(), concatKDFParams.getSuppPrivInfo());
 
         } else if (EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF.equals(keyDerivationAlgorithm)) {
-            HKDFParamsImpl hKDFParams = (HKDFParamsImpl) keyDerivationMethod.getKDFParams();
+            if (! (kdfParams instanceof HKDFParamsImpl)) {
+
+                throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, HKDFParamsImpl.class.getName());
+            }
+            HKDFParamsImpl hKDFParams = (HKDFParamsImpl) kdfParams;
             return constructHKDFKeyDerivationParameter(keyBitLength,
                     hKDFParams.getPRFAlgorithm(),
-                    hKDFParams.getSalt() != null ? Base64.getDecoder().decode(hKDFParams.getSalt()) : new byte[0],
-                    hKDFParams.getInfo() != null ? Base64.getDecoder().decode(hKDFParams.getInfo()) : new byte[0]);
+                    hKDFParams.getSalt() != null ? Base64.getDecoder().decode(hKDFParams.getSalt()) : null,
+                    hKDFParams.getInfo() != null ? Base64.getDecoder().decode(hKDFParams.getInfo()) : null);
         }
         throw new XMLEncryptionException("unknownAlgorithm", keyDerivationAlgorithm);
     }
 
 
     /**
-     * Construct a ConcatKeyDerivationParameter object from the key length and digest method.
+     * Construct a ConcatKeyDerivationParameter object from the given parameters as specified in the XML Encryption 1.1
+     * and NIST SP 800-56Ar2 specifications. (In a key establishment transaction, the participants,
+     * parties U and V, are considered to be the first and second parties)
      *
      * @param keyBitLength expected derived key length
-     * @param digestMethod digest method
-     * @return ConcatKeyDerivationParameter object
-     */
-    public static ConcatKDFParams constructConcatKeyDerivationParameter(int keyBitLength,
-                                                                        String digestMethod) {
-        return constructConcatKeyDerivationParameter(keyBitLength, digestMethod, null, null, null, null, null);
-    }
-
-    /**
-     * Construct a ConcatKeyDerivationParameter object from the given parameters
-     *
-     * @param keyBitLength expected derived key length
-     * @param digestMethod digest method
-     * @param algorithmId  algorithm id
-     * @param partyUInfo   partyUInfo
-     * @param partyVInfo   partyVInfo
-     * @param suppPubInfo  suppPubInfo
-     * @param suppPrivInfo suppPrivInfo
-     * @return ConcatKeyDerivationParameter object
+     * @param digestMethod digest method element identifies the digest algorithm used by the KDF
+     * @param algorithmId  algorithm id indicates how the derived keying material will be parsed and for which
+     *                     algorithm(s) the derived secret keying material will be used.
+     * @param partyUInfo   partyUInfo containing public information about party
+     * @param partyVInfo   partyVInfo containing public information about party
+     * @param suppPubInfo  suppPubInfo An optional subfield, which could be null that contains additional, mutually
+     *                     known public information
+     * @param suppPrivInfo suppPrivInfo An optional subfield, which could be null, that contains additional, mutually
+     * known private information
+     * @return ConcatKeyDerivationParameter parameters used as input to the Concatenation Key Derivation Function
      */
     public static ConcatKDFParams constructConcatKeyDerivationParameter(int keyBitLength,
                                                                         String digestMethod,
@@ -360,27 +363,5 @@ public final class XMLCipherUtil {
                     + Character.digit(hexString.charAt(i+1), 16));
         }
         return data;
-    }
-
-    /**
-     * Method byteArrayToHex converts byte array to hex string.
-     *
-     * @param ba the byte array to convert
-     * @return the hex string of the byte array
-     */
-    public static String byteArrayToHex(byte[] ba) {
-        if (ba == null) {
-            return null;
-        }
-        if (ba.length == 0) {
-            return "";
-        }
-
-        StringBuilder buffer = new StringBuilder(ba.length * 2);
-        for (byte b : ba) {
-            buffer.append(Character.forDigit((b >> 4) & 0xF, 16));
-            buffer.append(Character.forDigit((b & 0xF), 16));
-        }
-        return buffer.toString();
     }
 }

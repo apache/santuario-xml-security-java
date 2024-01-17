@@ -61,7 +61,7 @@ public class HKDF implements DerivationAlgorithm {
     public HKDF(String hmacHashAlgorithmURI, byte[] salt) throws XMLSecurityException {
         this.hmacHashAlgorithmURI = hmacHashAlgorithmURI;
         LOG.log(DEBUG, "Init HmacHash AlgorithmURI: [{}]", hmacHashAlgorithmURI);
-        hmac = initHMac(salt);
+        hmac = initHMac(salt, true);
     }
 
     /**
@@ -113,7 +113,7 @@ public class HKDF implements DerivationAlgorithm {
 
     public byte[] expandKey(byte[] prk, byte[] info, int offset, long keyLength) throws XMLSecurityException {
         // prepare for expanding the key
-        Mac hMac = initHMac(prk);
+        Mac hMac = initHMac(prk, false);
         int iMacLength = hMac.getMacLength();
 
         int toGenerateSize = (int) keyLength;
@@ -145,10 +145,12 @@ public class HKDF implements DerivationAlgorithm {
      * init secret/salt or an empty byte array if initSecret parameter is null or empty.
      *
      * @param initSecret the secret/salt to initialize the hmac
+     * @param initPRK  if true, the salt is initialized with a string of zero octets as long as the hash function output
+     *                 see [RFC5869] Section 2.2
      * @return Initialized Mac object
      * @throws XMLSecurityException if the key derivation initialization fails for any reason
      */
-    private Mac initHMac(byte[] initSecret) throws XMLSecurityException {
+    private Mac initHMac(byte[] initSecret, boolean initPRK) throws XMLSecurityException {
         String jceAlgorithm = null;
         Mac mac;
         try {
@@ -159,8 +161,9 @@ public class HKDF implements DerivationAlgorithm {
             throw new XMLSecurityException(e, "KeyDerivation.NotSupportedParameter", new Object[]{jceAlgorithm});
         }
 
-        if (initSecret == null || initSecret.length == 0) {
-            LOG.log(DEBUG, "Init Mac with hash algorithm [{}] with empty salt!", jceAlgorithm);
+        if (initPRK && (initSecret == null || initSecret.length == 0)) {
+            //  If "initSecret"/salt is not provided, a string of zero octets as long as the hash function output is used
+            LOG.log(DEBUG, "Init Mac with hmac algorithm [{}] and empty salt!", jceAlgorithm);
             initSecret = new byte[mac.getMacLength()];
         }
         SecretKeySpec secret_key = new SecretKeySpec(initSecret, jceAlgorithm);
