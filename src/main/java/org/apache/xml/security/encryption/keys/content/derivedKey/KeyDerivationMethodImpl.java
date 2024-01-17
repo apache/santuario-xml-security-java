@@ -20,20 +20,22 @@ package org.apache.xml.security.encryption.keys.content.derivedKey;
 
 import org.apache.xml.security.encryption.KeyDerivationMethod;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.utils.Encryption11ElementProxy;
-import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.XMLUtils;
+import org.apache.xml.security.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.StringJoiner;
+
+import static java.lang.System.Logger.Level.DEBUG;
 
 /**
  * Class KeyDerivationMethodImpl is an DOM implementation of the KeyDerivationMethod
  *
  */
 public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements KeyDerivationMethod {
-    private ConcatKDFParamsImpl concatKDFParams;
+    protected static final System.Logger LOG = System.getLogger(KeyDerivationMethodImpl.class.getName());
+
+    private KDFParams kdfParams;
 
     /**
      * Constructor KeyDerivationMethodImpl creates a new KeyDerivationMethodImpl instance.
@@ -71,28 +73,42 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
         return getLocalAttribute(EncryptionConstants._ATT_ALGORITHM);
     }
 
-    public ConcatKDFParamsImpl getConcatKDFParams() throws XMLSecurityException {
 
-        if (concatKDFParams != null) {
-            return concatKDFParams;
+    @Override
+    public KDFParams getKDFParams() throws XMLSecurityException {
+
+        if (kdfParams != null) {
+            LOG.log(DEBUG, "Returning cached KDFParams");
+            return kdfParams;
         }
 
-        Element concatKDFParamsElement =
-                XMLUtils.selectXenc11Node(getElement().getFirstChild(), EncryptionConstants._TAG_CONCATKDFPARAMS, 0);
-
-        if (concatKDFParamsElement == null) {
-            return null;
+        String kdfAlgorithm = getAlgorithm();
+        if (EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(kdfAlgorithm)) {
+            Element concatKDFParamsElement =
+                    XMLUtils.selectXenc11Node(getElement().getFirstChild(),
+                            EncryptionConstants._TAG_CONCATKDFPARAMS, 0);
+            kdfParams = new ConcatKDFParamsImpl(concatKDFParamsElement, getBaseURI());
+        } else if (EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF.equals(kdfAlgorithm)) {
+            Element hkdfParamsElement =
+                    XMLUtils.selectNode(getElement().getFirstChild(),
+                            Constants.XML_DSIG_NS_MORE_21_04,
+                            EncryptionConstants._TAG_HKDFPARAMS, 0);
+            kdfParams = new HKDFParamsImpl(hkdfParamsElement, Constants.XML_DSIG_NS_MORE_07_05);
         }
-        concatKDFParams = new ConcatKDFParamsImpl(concatKDFParamsElement, getBaseURI());
 
-        return concatKDFParams;
+        return kdfParams;
     }
 
-    public void setConcatKDFParams(ConcatKDFParamsImpl concatKDFParams) {
-        this.concatKDFParams = concatKDFParams;
-        appendSelf(concatKDFParams);
-        addReturnToSelf();
+    public void setKDFParams(KDFParams kdfParams) {
+        this.kdfParams = kdfParams;
+        if (kdfParams instanceof ElementProxy) {
+            appendSelf((ElementProxy)kdfParams);
+            addReturnToSelf();
+        } else {
+            LOG.log(DEBUG, "Could not append KDFParams because it does not implement ElementProxy");
+        }
     }
+
 
     @Override
     public String getBaseLocalName() {
@@ -102,7 +118,7 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
     @Override
     public String toString() {
         return new StringJoiner(", ", KeyDerivationMethodImpl.class.getSimpleName() + "[", "]")
-                .add("concatKDFParams=" + concatKDFParams)
+                .add("kdfParams=" + kdfParams)
                 .toString();
     }
 }

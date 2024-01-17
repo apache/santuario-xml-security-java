@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
+    vc:minVersion="1.1" 
+    xmlns:rfc4051="http://www.w3.org/2001/04/xmldsig-more"
+    targetNamespace="http://www.w3.org/2001/04/xmldsig-more">
+
+    <!-- Added in section 3.1 of this specification -->
+
+    <xs:element name="PKCS7signedData" type="xs:base64Binary"/>
+
+</xs:schema>

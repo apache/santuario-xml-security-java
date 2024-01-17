@@ -28,7 +28,7 @@ import java.util.StringJoiner;
 /**
  * Class ConcatKDFParamsImpl is an DOM representation of the ConcatKDFParams.
  */
-public class ConcatKDFParamsImpl extends Encryption11ElementProxy {
+public class ConcatKDFParamsImpl extends Encryption11ElementProxy implements KDFParams {
 
 
     /**
