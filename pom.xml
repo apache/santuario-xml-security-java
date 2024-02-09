@@ -96,12 +96,12 @@
         <jaxb.runtime>4.0.3</jaxb.runtime>
         <jetty.version>11.0.16</jetty.version>
         <jmh.version>1.37</jmh.version>
-        <junit.version>5.10.1</junit.version>
-        <slf4j.version>2.0.9</slf4j.version>
+        <junit.version>5.10.2</junit.version>
+        <slf4j.version>2.0.12</slf4j.version>
         <xalan.version>2.7.3</xalan.version>
         <xmlunit.version>2.9.1</xmlunit.version>
         <xml.bind.api.version>4.0.1</xml.bind.api.version>
-        <woodstox.core.version>6.5.1</woodstox.core.version>
+        <woodstox.core.version>6.6.0</woodstox.core.version>
 
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.outputTimestamp>2023-11-24T14:32:28Z</project.build.outputTimestamp>
@@ -303,7 +303,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.0.1</version>
                     <configuration>
                         <useReleaseProfile>false</useReleaseProfile>
                         <preparationGoals>clean install</preparationGoals>
@@ -315,7 +315,7 @@
                 <plugin>
                     <groupId>org.cyclonedx</groupId>
                     <artifactId>cyclonedx-maven-plugin</artifactId>
-                    <version>2.7.10</version>
+                    <version>2.7.11</version>
                     <executions>
                         <execution>
                             <id>make-bom</id>
@@ -335,7 +335,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.1</version>
                 <configuration>
                     <rules>
                         <requireMavenVersion>
@@ -439,7 +439,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.12.1</version>
                 <configuration>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
@@ -456,7 +456,7 @@
                         <path>
                             <groupId>com.google.errorprone</groupId>
                             <artifactId>error_prone_core</artifactId>
-                            <version>2.23.0</version>
+                            <version>2.24.1</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -464,7 +464,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>5.1.8</version>
+                <version>5.1.9</version>
                 <extensions>true</extensions>
                 <configuration>
                     <niceManifest>true</niceManifest>
@@ -524,7 +524,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.2.5</version>
                 <configuration>
                     <reportFormat>brief</reportFormat>
                     <includes>
@@ -554,7 +554,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>3.2.5</version>
                 <configuration>
                     <argLine>${maven.test.argLine}</argLine>
                     <skipExec>${skipIT}</skipExec>
@@ -646,7 +646,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <goals>
