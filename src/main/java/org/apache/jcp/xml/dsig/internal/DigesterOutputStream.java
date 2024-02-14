@@ -41,7 +41,6 @@ import org.apache.xml.security.utils.UnsyncByteArrayOutputStream;
 public class DigesterOutputStream extends OutputStream {
     private static final Logger LOG = System.getLogger(DigesterOutputStream.class.getName());
 
-
     private final boolean buffer;
     private UnsyncByteArrayOutputStream bos;
     private final MessageDigest md;

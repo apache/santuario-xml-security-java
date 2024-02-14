@@ -142,7 +142,6 @@ public class XMLSecurityException extends Exception {
         this(originalException, msgID, exArgs);
     }
 
-
     /**
      * Method getMsgID
      *

@@ -22,7 +22,6 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * Purpose of this class is to enable the XML Parser to keep track of ID
  * attributes. This is done by 'registering' attributes of type ID at the

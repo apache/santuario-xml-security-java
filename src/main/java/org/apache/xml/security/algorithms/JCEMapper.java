@@ -28,7 +28,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.JavaUtils;
 import org.w3c.dom.Element;
 
-
 /**
  * This class maps algorithm identifier URIs to JAVA JCE class names.
  */

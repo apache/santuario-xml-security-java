@@ -58,7 +58,6 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
         }
     }
 
-
     /** {@inheritDoc} */
     @Override
     public void error(SAXParseException ex) throws SAXException {
@@ -69,7 +68,6 @@ public class IgnoreAllErrorHandler implements ErrorHandler {
             throw ex;
         }
     }
-
 
     /** {@inheritDoc} */
     @Override

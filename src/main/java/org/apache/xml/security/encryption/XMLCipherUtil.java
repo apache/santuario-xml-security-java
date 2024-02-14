@@ -215,7 +215,6 @@ public final class XMLCipherUtil {
         }
     }
 
-
     /**
      * Construct an KeyAgreementParameterSpec object from the given parameters
      *
@@ -304,7 +303,6 @@ public final class XMLCipherUtil {
         throw new XMLEncryptionException("unknownAlgorithm", keyDerivationAlgorithm);
     }
 
-
     /**
      * Construct a ConcatKeyDerivationParameter object from the given parameters as specified in the XML Encryption 1.1
      * and NIST SP 800-56Ar2 specifications. (In a key establishment transaction, the participants,
@@ -339,6 +337,17 @@ public final class XMLCipherUtil {
         return kdp;
     }
 
+    /**
+     * Construct a HKDFParams object from the given parameters as specified in the rfc5869 specification.
+     *
+     * @param keyBitLength The length of the derived key in bits (for example, 128 or 256)
+     * @param hmacHashAlgorithm The HMAC hash algorithm to use for the key derivation. If null, the default algorithm
+     *                          hmac-sha256 is used.
+     * @param salt The salt value (a non-secret random value) used in the key derivation. If parameter is null,
+     *             the string of hmac-length zeros is used when deriving the key.
+     * @param info The context and application specific information (can be null)
+     * @return HKDFParams parameters used as input to the HMAC-based Extract-and-Expand Key Derivation Function.
+     */
     public static HKDFParams constructHKDFKeyDerivationParameter(int keyBitLength,
                                                                  String hmacHashAlgorithm,
                                                                  byte[] salt,
@@ -353,9 +362,15 @@ public final class XMLCipherUtil {
      * Method hexStringToByteArray converts hex string to byte array.
      *
      * @param hexString the hex string to convert
-     * @return the byte array of the hex string
+     * @return the byte array of the input param, empty array if the hex string is empty, or null if input param is null
      */
     public static byte[] hexStringToByteArray(String hexString) {
+        if (hexString == null){
+            return null;
+        }
+        if (hexString.isEmpty()) {
+            return new byte[0];
+        }
         int len = hexString.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {

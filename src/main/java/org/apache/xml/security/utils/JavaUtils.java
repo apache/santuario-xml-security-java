@@ -43,7 +43,6 @@ public final class JavaUtils {
         // we don't allow instantiation
     }
 
-
     /**
      * Method getBytesFromFile
      *
@@ -86,7 +85,6 @@ public final class JavaUtils {
             LOG.log(Level.DEBUG, "writeBytesToFilename got null byte[] pointed");
         }
     }
-
 
     /**
      * This method reads all bytes from the given InputStream till EOF and

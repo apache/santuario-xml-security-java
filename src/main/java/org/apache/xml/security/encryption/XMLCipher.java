@@ -2588,7 +2588,6 @@ public final class XMLCipher {
         }
 
 
-
         private class CipherDataImpl implements CipherData {
             private static final String valueMessage =
                 "Data type is reference type.";

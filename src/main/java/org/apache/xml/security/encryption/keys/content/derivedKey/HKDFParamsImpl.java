@@ -31,14 +31,12 @@ import org.w3c.dom.Element;
  */
 public class HKDFParamsImpl extends ElementProxy implements KDFParams {
 
-
     /**
      * Constructor creates a new HKDFParamsImpl instance.
      *
      * @param doc the Document in which to create the DOM tree
      */
     public HKDFParamsImpl(Document doc) {
-
         super(doc);
     }
 
@@ -61,8 +59,6 @@ public class HKDFParamsImpl extends ElementProxy implements KDFParams {
     public void setPRFAlgorithm(String hmacHashAlgorithm) {
         Element targetElement =
                 XMLUtils.selectNode(getElement().getFirstChild(), getBaseNamespace(),  EncryptionConstants._TAG_PRF, 0);
-
-
 
         if (hmacHashAlgorithm == null) {
             LOG.log(System.Logger.Level.DEBUG, "HMAC Hash Method is null!");

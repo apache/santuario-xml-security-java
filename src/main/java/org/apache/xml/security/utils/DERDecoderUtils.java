@@ -192,7 +192,6 @@ public class DERDecoderUtils {
         return new BigInteger(1, intSizeBytes).intValue();
     }
 
-
     /**
      * The first two nodes of the OID are encoded onto a single byte.
      * The first node is multiplied by the decimal 40 and the result is added to the value of the second node.

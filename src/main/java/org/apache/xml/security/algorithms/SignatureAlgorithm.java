@@ -197,7 +197,6 @@ public class SignatureAlgorithm extends Algorithm {
         }
     }
 
-
     /**
      * Proxy method for {@link java.security.Signature#sign()}
      * which is executed on the internal {@link java.security.Signature} object.

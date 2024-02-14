@@ -140,7 +140,6 @@ public class NameSpaceSymbTable {
         }
     }
 
-
     /**
      * Gets the attribute node that defines the binding for the prefix.
      * @param prefix the prefix to obtain the attribute.

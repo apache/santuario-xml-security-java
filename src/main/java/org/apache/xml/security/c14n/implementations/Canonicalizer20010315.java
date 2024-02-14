@@ -70,7 +70,6 @@ public abstract class Canonicalizer20010315 extends CanonicalizerBase {
         this.c14n11 = c14n11;
     }
 
-
     /**
      * Always throws a CanonicalizationException because this is inclusive c14n.
      *

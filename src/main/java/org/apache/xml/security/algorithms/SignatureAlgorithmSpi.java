@@ -154,7 +154,6 @@ public abstract class SignatureAlgorithmSpi {
     protected abstract void engineSetParameter(AlgorithmParameterSpec params)
         throws XMLSignatureException;
 
-
     /**
      * Method engineGetContextFromElement
      *

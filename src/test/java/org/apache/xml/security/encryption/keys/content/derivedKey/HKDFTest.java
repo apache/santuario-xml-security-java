@@ -19,16 +19,14 @@
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
 
-import org.apache.xml.security.binding.xmldsig.DigestMethodType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import javax.xml.crypto.dsig.DigestMethod;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
+import static org.apache.xml.security.encryption.XMLCipherUtil.hexStringToByteArray;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -92,8 +90,8 @@ class HKDFTest {
         byte[] infoBytes = hexStringToByteArray(info);
         byte[] ikmBytes = hexStringToByteArray(ikm);
 
-        byte[] expectedPRK =hexStringToByteArray(prk);
-        byte[] expectedOKM =hexStringToByteArray(okm);
+        byte[] expectedPRK = hexStringToByteArray(prk);
+        byte[] expectedOKM = hexStringToByteArray(okm);
         String hMacHashAlgorithmURI = getHMacHashForHashUri(hash);
         HKDF hkdf = new HKDF(hMacHashAlgorithmURI, saltBytes);
         byte[] extractedKey = hkdf.extractKey(ikmBytes);
@@ -103,26 +101,14 @@ class HKDFTest {
         assertArrayEquals(expectedOKM, derivedKey);
     }
 
-
-    public static byte[] hexStringToByteArray(String value){
-        if (value == null){
-            return null;
-        }
-        if (value.isEmpty()) {
-            return new byte[0];
-        }
-        int paramLen = value.length();
-        byte[] data = new byte[paramLen / 2];
-
-        for (int i = 0; i < paramLen; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(value.charAt(i), 16) << 4)
-                    + Character.digit(value.charAt(i + 1), 16));
-        }
-        return data;
-    }
-
-
-    private static String getHMacHashForHashUri(String hashAlgorithm)  {
+    /**
+     * Helper method to get corresponding MacHash algorithm URI for the given hash algorithm URI.
+     *
+     * @param hashAlgorithm the hash algorithm URI
+     * @return the MacHash algorithm URI value.
+     * @throws IllegalArgumentException if the hash algorithm is not supported.
+     */
+    private static String getHMacHashForHashUri(String hashAlgorithm) {
 
         switch (hashAlgorithm) {
             case DigestMethod.SHA1:

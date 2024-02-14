@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.stax.securityEvent;
 
-
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**

@@ -178,7 +178,6 @@ public class XMLSignatureInputDebugger {
         int currentNodeType = currentNode.getNodeType();
         switch (currentNodeType) {
 
-
         case Node.ENTITY_NODE:
         case Node.NOTATION_NODE:
         case Node.DOCUMENT_FRAGMENT_NODE:

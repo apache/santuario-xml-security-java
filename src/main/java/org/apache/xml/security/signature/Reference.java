@@ -213,7 +213,6 @@ public class Reference extends SignatureElementProxy {
         addReturnToSelf();
     }
 
-
     /**
      * Build a {@link Reference} from an {@link Element}
      *
@@ -684,7 +683,6 @@ public class Reference extends SignatureElementProxy {
         }
     }
 
-
     /**
      * Method calculateDigest
      *
@@ -774,7 +772,6 @@ public class Reference extends SignatureElementProxy {
         return XMLUtils.decode(content);
     }
 
-
     /**
      * Tests reference validation is success or false
      *
@@ -807,7 +804,6 @@ public class Reference extends SignatureElementProxy {
     public String getBaseLocalName() {
         return Constants._TAG_REFERENCE;
     }
-
 
     private static void close(Closeable closeable) throws ReferenceNotInitializedException {
         try {

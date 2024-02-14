@@ -39,7 +39,6 @@ public class HelperNodeList implements NodeList {
         this(false);
     }
 
-
     /**
      * @param allNodesMustHaveSameParent
      */

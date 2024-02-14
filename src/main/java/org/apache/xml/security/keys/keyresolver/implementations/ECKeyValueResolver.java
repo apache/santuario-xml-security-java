@@ -78,7 +78,6 @@ public class ECKeyValueResolver extends KeyResolverSpi {
         return null;
     }
 
-
     /** {@inheritDoc} */
     @Override
     protected X509Certificate engineResolveX509Certificate(

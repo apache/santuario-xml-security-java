@@ -18,7 +18,6 @@
  */
 package org.apache.xml.security.utils;
 
-
 /**
  * A Factory to return a JDKXPathAPI instance.
  */

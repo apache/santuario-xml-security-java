@@ -32,7 +32,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 
-
 /**
  * Main configuration class to supply keys etc.
  * This class is subject to change in the future.

@@ -43,7 +43,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-
 /**
  * This class does the configuration of the library. This includes creating
  * the mapping of Canonicalization and Transform algorithms. Initialization is
