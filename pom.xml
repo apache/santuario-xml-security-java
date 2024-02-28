@@ -101,7 +101,7 @@
         <xalan.version>2.7.3</xalan.version>
         <xmlunit.version>2.9.1</xmlunit.version>
         <xml.bind.api.version>4.0.1</xml.bind.api.version>
-        <woodstox.core.version>6.6.0</woodstox.core.version>
+        <woodstox.core.version>6.6.1</woodstox.core.version>
 
         <maven.compiler.release>11</maven.compiler.release>
         <project.build.outputTimestamp>2024-02-16T07:32:37Z</project.build.outputTimestamp>
