@@ -75,6 +75,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -1010,6 +1011,46 @@ class XMLCipherTest {
         Element encryptedData = (Element) encrypted.getElementsByTagNameNS(EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDDATA).item(0);
 
         xmlCipher.decryptToByteArray(encryptedData);
+    }
+
+    @Test
+    void testEncryptForDataExceeding8192bytes() throws Exception {
+        boolean bcAtFirstPosition = false;
+        if (Security.getProvider("BC") == null) {
+            // Use reflection to add new BouncyCastleProvider
+            try {
+                Class<?> bouncyCastleProviderClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                Provider bouncyCastleProvider = (Provider)bouncyCastleProviderClass.getConstructor().newInstance();
+                Security.insertProviderAt(bouncyCastleProvider, 1);
+                bcAtFirstPosition = true;
+            } catch (ReflectiveOperationException e) {
+                // BouncyCastle not installed, ignore
+            }
+        }
+        Assumptions.assumeTrue(bcAtFirstPosition);
+
+        KeyGenerator generator = KeyGenerator.getInstance("AES", "BC");
+        generator.init(128);
+        SecretKey key = generator.generateKey();
+
+        XMLCipher cipher = XMLCipher.getInstance(XMLCipher.AES_128_GCM);
+        cipher.init(XMLCipher.ENCRYPT_MODE, key);
+
+        Document document = document();
+        byte[] dataToEncrypt = new byte[8193];
+        for (int i = 0; i < 8193; i++) {
+            dataToEncrypt[i] = (byte) i;
+        }
+        EncryptedData encryptedData = cipher.encryptData(document, null, new ByteArrayInputStream(dataToEncrypt));
+
+        XMLCipher decipher = XMLCipher.getInstance(XMLCipher.AES_128);
+        decipher.init(XMLCipher.DECRYPT_MODE, key);
+        String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+        assertEquals(XMLCipher.AES_128_GCM, algorithm);
+        byte[] decryptedByteArray = decipher.decryptToByteArray(decipher.martial(encryptedData));
+        assertArrayEquals(dataToEncrypt, decryptedByteArray);
+
+        Security.removeProvider("BC");
     }
 
     @Test
