@@ -1049,6 +1049,8 @@ class XMLCipherTest {
         assertEquals(XMLCipher.AES_128_GCM, algorithm);
         byte[] decryptedByteArray = decipher.decryptToByteArray(decipher.martial(encryptedData));
         assertArrayEquals(dataToEncrypt, decryptedByteArray);
+
+        Security.removeProvider("BC");
     }
 
     @Test
