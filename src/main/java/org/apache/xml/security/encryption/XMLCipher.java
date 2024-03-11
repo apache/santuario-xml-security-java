@@ -1148,7 +1148,9 @@ public class XMLCipher {
                 try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                     while ((numBytes = serializedData.read(buf)) != -1) {
                         byte[] data = c.update(buf, 0, numBytes);
-                        baos.write(data);
+                        if (data != null) {
+                            baos.write(data);
+                        }
                     }
                     baos.write(c.doFinal());
                     encryptedBytes = baos.toByteArray();
