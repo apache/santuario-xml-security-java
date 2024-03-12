@@ -237,6 +237,33 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
             RSAPublicKeySpec spec = new RSAPublicKeySpec(modulus, exponent);
             return (RSAPublicKey) generatePublicKey(rsakf, spec);
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof KeyValue)) {
+                return false;
+            }
+            // This equality test allows RSA keys that have different
+            // algorithms (ex: RSA and RSASSA-PSS) to be equal as long
+            // as the key is the same.
+            try {
+                PublicKey otherKey = ((KeyValue)obj).getPublicKey();
+                if (!(otherKey instanceof RSAPublicKey)) {
+                    return false;
+                }
+                RSAPublicKey otherRSAKey = (RSAPublicKey)otherKey;
+                RSAPublicKey rsaKey = (RSAPublicKey)getPublicKey();
+                return rsaKey.getPublicExponent().equals(
+                            otherRSAKey.getPublicExponent())
+                        && rsaKey.getModulus().equals(otherRSAKey.getModulus());
+            } catch (KeyException ke) {
+                // no practical way to determine if the keys are equal
+                return false;
+            }
+        }
     }
 
     static final class DSA extends DOMKeyValue<DSAPublicKey> {
