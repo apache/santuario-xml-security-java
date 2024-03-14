@@ -75,8 +75,8 @@ class PKSignatureAlgorithmTest {
     private final SignatureMethod ecdsaSha1, ecdsaSha224, ecdsaSha256,
             ecdsaSha384, ecdsaSha512, ecdsaRipemd160;
     private final XMLSignatureFactory fac;
-    private final KeyPair rsaKeyPair, ecKeyPair;
-    private final KeyInfo rsaki;
+    private final KeyPair rsaKeyPair, rsaPssKeyPair, ecKeyPair;
+    private final KeyInfo rsaki, rsaPsski;
     private KeyInfo ecki;
     private boolean ecAlgParamsSupport = true;
     private static int javaVersion;
@@ -168,6 +168,10 @@ class PKSignatureAlgorithmTest {
         rsaKpg.initialize(2048);
         rsaKeyPair = rsaKpg.genKeyPair();
 
+        KeyPairGenerator rsaPssKpg = KeyPairGenerator.getInstance("RSASSA-PSS");
+        rsaPssKpg.initialize(2048);
+        rsaPssKeyPair = rsaPssKpg.genKeyPair();
+
         KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
         ecKpg.initialize(256);
         ecKeyPair = ecKpg.genKeyPair();
@@ -175,6 +179,8 @@ class PKSignatureAlgorithmTest {
         KeyInfoFactory kifac = fac.getKeyInfoFactory();
         rsaki = kifac.newKeyInfo(Collections.singletonList
                                  (kifac.newKeyValue(rsaKeyPair.getPublic())), "DSig.KeyInfo_1");
+        rsaPsski = kifac.newKeyInfo(Collections.singletonList
+                                 (kifac.newKeyValue(rsaPssKeyPair.getPublic())), "DSig.KeyInfo_1");
 
         boolean isIBM = "IBM Corporation".equals(System.getProperty("java.vendor"));
         if (!isIBM) {
@@ -285,14 +291,14 @@ class PKSignatureAlgorithmTest {
 
     @Test
     void testRSA_PSS() throws Exception {
-        test_create_signature_enveloping(rsaPss, sha1, rsaki,
-                rsaKeyPair.getPrivate(), kvks);
+        test_create_signature_enveloping(rsaPss, sha1, rsaPsski,
+                rsaPssKeyPair.getPrivate(), kvks);
     }
 
     @Test
     void testRSA_PSS_SHA512() throws Exception {
-        test_create_signature_enveloping(rsaPssSha512, sha1, rsaki,
-                rsaKeyPair.getPrivate(), kvks);
+        test_create_signature_enveloping(rsaPssSha512, sha1, rsaPsski,
+                rsaPssKeyPair.getPrivate(), kvks);
     }
 
     @Test
@@ -379,5 +385,4 @@ class PKSignatureAlgorithmTest {
         assertEquals(sig, sig2);
         assertTrue(sig2.validate(dvc));
     }
-
 }
