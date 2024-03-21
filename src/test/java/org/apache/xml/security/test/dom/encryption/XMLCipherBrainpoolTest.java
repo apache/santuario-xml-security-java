@@ -228,7 +228,7 @@ class XMLCipherBrainpoolTest {
         c14n.canonicalizeSubtree(n, baos);
         baos.flush();
 
-        return baos.toString(StandardCharsets.UTF_8);
+        return baos.toString(StandardCharsets.UTF_8.name());
     }
 
     private Document document() throws XMLParserException, IOException {
