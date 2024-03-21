@@ -813,6 +813,7 @@ public class KeyInfo extends ElementProxy {
         return this.lengthKeyInfoReference() > 0;
     }
 
+
     /**
      * This method returns the public key.
      *
@@ -1222,6 +1223,7 @@ public class KeyInfo extends ElementProxy {
         }
         this.storageResolvers.add(storageResolver);
     }
+
 
     /** {@inheritDoc} */
     @Override

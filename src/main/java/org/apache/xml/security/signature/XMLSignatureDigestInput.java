@@ -31,6 +31,7 @@ public class XMLSignatureDigestInput extends XMLSignatureInput {
 
     private final String digest;
 
+
     /**
      * @param base64Digest
      */
@@ -38,25 +39,30 @@ public class XMLSignatureDigestInput extends XMLSignatureInput {
         this.digest = base64Digest;
     }
 
+
     @Override
     public boolean hasUnprocessedInput() {
         return false;
     }
+
 
     @Override
     public InputStream getUnprocessedInput() {
         return null;
     }
 
+
     @Override
     protected Node convertToNode()  {
         return null;
     }
 
+
     @Override
     public void write(OutputStream diOs, boolean c14n11) {
         // does nothing
     }
+
 
     @Override
     public String getPreCalculatedDigest() {

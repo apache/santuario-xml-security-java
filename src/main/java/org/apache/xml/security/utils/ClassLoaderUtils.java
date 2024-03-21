@@ -189,11 +189,13 @@ public final class ClassLoaderUtils {
             ret.add(urls.nextElement());
         }
 
+
         if (ret.isEmpty() && resourceName.charAt(0) != '/') {
             return getResources('/' + resourceName, callingClass);
         }
         return ret;
     }
+
 
     /**
      * This is a convenience method to load a resource as a stream. <p></p> The

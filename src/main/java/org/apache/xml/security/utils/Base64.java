@@ -402,6 +402,7 @@ public final class Base64 {
                 byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
                 byte val3 = ((b3 & SIGN) == 0) ? (byte)(b3 >> 6) : (byte)((b3) >> 6 ^ 0xfc);
 
+
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
                 encodedData[encodedIndex++] = lookUpBase64Alphabet[(l << 2) | val3];
@@ -425,6 +426,7 @@ public final class Base64 {
 
             byte val2 = ((b2 & SIGN) == 0) ? (byte)(b2 >> 4) : (byte)((b2) >> 4 ^ 0xf0);
             byte val3 = ((b3 & SIGN) == 0) ? (byte)(b3 >> 6) : (byte)((b3) >> 6 ^ 0xfc);
+
 
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val1];
             encodedData[encodedIndex++] = lookUpBase64Alphabet[val2 | (k << 4)];
@@ -525,6 +527,7 @@ public final class Base64 {
              //if found "no data" just return null
             throw new Base64DecodingException("decoding.general");
         }
+
 
         byte d3, d4;
         b3 = base64Alphabet[d3 = base64Data[dataIndex++]];

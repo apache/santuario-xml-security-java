@@ -98,6 +98,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
         return new Curve(name, oid, curve, g, bigInt(n), h);
     }
 
+
     /**
      * Constructor DSAKeyValue
      *

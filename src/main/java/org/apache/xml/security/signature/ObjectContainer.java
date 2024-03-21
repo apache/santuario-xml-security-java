@@ -25,6 +25,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+
 /**
  * Handles <code>&lt;ds:Object&gt;</code> elements
  * <code>Object</code> {@link Element} supply facility which can contain any kind data

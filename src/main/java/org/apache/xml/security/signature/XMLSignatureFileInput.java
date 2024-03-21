@@ -43,6 +43,7 @@ public class XMLSignatureFileInput extends XMLSignatureStreamInput {
         super(new BufferedInputStream(Files.newInputStream(file), 8192));
     }
 
+
     /**
      * Construct a XMLSignatureInput from a File
      * <p>

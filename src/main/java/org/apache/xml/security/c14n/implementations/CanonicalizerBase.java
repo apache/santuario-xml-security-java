@@ -185,6 +185,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
         }
     }
 
+
     /**
      * Method canonicalizeSubTree, this function is a recursive one.
      *
@@ -295,6 +296,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
             sibling = currentNode.getNextSibling();
         } while(true);
     }
+
 
     private void engineCanonicalizeXPathNodeSetInternal(Node doc, OutputStream writer)
         throws CanonicalizationException {

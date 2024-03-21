@@ -109,6 +109,7 @@ public abstract class ElementProxy {
      */
     public abstract String getBaseLocalName();
 
+
     protected Element createElementForFamilyLocal(
         String namespace, String localName
     ) {
@@ -129,6 +130,7 @@ public abstract class ElementProxy {
         }
         return result;
     }
+
 
     /**
      * This method creates an Element in a given namespace with a given localname.

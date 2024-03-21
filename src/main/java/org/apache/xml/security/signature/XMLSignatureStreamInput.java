@@ -38,6 +38,7 @@ public class XMLSignatureStreamInput extends XMLSignatureInput implements AutoCl
 
     private InputStream inputStream;
 
+
     /**
      * Construct a XMLSignatureInput from an {@link InputStream}.
      * <p>
@@ -50,10 +51,12 @@ public class XMLSignatureStreamInput extends XMLSignatureInput implements AutoCl
         this.inputStream = inputStream;
     }
 
+
     @Override
     public boolean hasUnprocessedInput() {
         return inputStream != null;
     }
+
 
     @Override
     public InputStream getUnprocessedInput() {

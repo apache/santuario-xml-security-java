@@ -90,6 +90,7 @@ public class EncryptedKeyResolver extends KeyResolverSpi {
         return XMLUtils.elementIsInEncryptionSpace(element, EncryptionConstants._TAG_ENCRYPTEDKEY);
     }
 
+
     /** {@inheritDoc} */
     @Override
     protected PublicKey engineResolvePublicKey(

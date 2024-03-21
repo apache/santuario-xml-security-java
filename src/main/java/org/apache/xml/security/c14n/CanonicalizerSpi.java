@@ -115,4 +115,6 @@ public abstract class CanonicalizerSpi {
     public abstract void engineCanonicalizeSubTree(
             Node rootNode, String inclusiveNamespaces, boolean propagateDefaultNamespace, OutputStream writer)
             throws CanonicalizationException;
+
+
 }

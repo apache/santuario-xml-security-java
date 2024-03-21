@@ -112,8 +112,7 @@ public class KeyUtils {
         X25519("x25519", "RFC 7748", KeyAlgorithmType.XDH, "1.3.101.110"),
         X448("x448", "RFC 7748", KeyAlgorithmType.XDH, "1.3.101.111"),
         ED25519("ed25519", "RFC 8032", KeyAlgorithmType.EdDSA, "1.3.101.112"),
-        ED448("ed448", "RFC 8032", KeyAlgorithmType.EdDSA, "1.3.101.113"),
-        ;
+        ED448("ed448", "RFC 8032", KeyAlgorithmType.EdDSA, "1.3.101.113");
 
         private final String name;
         private final String origin;
@@ -177,7 +176,6 @@ public class KeyUtils {
                 KeyType keyType = KeyType.getByOid(keyOId);
                 keyPairGenerator = createKeyPairGenerator(keyType == null ? keyOId : keyType.getName(), provider);
             }
-
             return keyPairGenerator.generateKeyPair();
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | DERDecodingException e) {
             throw new XMLEncryptionException(e);
@@ -223,7 +221,6 @@ public class KeyUtils {
             byte[] secret = keyAgreement.generateSecret();
             byte[] kek = deriveKeyEncryptionKey(secret, parameterSpec.getKeyDerivationParameter());
             return new SecretKeySpec(kek, "AES");
-
         } catch (XMLSecurityException | NoSuchAlgorithmException | InvalidKeyException e) {
             throw new XMLEncryptionException(e);
         }

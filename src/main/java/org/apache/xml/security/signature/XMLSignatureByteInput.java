@@ -52,15 +52,18 @@ public class XMLSignatureByteInput extends XMLSignatureInput {
         this.bytes = input;
     }
 
+
     @Override
     public boolean hasUnprocessedInput() {
         return bytes != null;
     }
 
+
     @Override
     public InputStream getUnprocessedInput() {
         return bytes == null ? null : new ByteArrayInputStream(bytes);
     }
+
 
     @Override
     public void write(OutputStream outputStream, boolean c14n11) throws CanonicalizationException, IOException {
@@ -70,6 +73,7 @@ public class XMLSignatureByteInput extends XMLSignatureInput {
         outputStream.write(bytes);
         outputStream.flush();
     }
+
 
     @Override
     protected Node convertToNode() throws XMLParserException, IOException {

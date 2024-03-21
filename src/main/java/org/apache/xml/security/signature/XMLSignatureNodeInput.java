@@ -41,20 +41,24 @@ public class XMLSignatureNodeInput extends XMLSignatureInput {
         super(rootNode);
     }
 
+
     @Override
     public boolean hasUnprocessedInput() {
         return false;
     }
+
 
     @Override
     public InputStream getUnprocessedInput() {
         return null;
     }
 
+
     @Override
     protected Node convertToNode() throws XMLParserException, IOException {
         return null;
     }
+
 
     @Override
     public void write(OutputStream output, boolean c14n11) throws CanonicalizationException, IOException {

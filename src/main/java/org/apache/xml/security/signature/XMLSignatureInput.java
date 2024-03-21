@@ -66,6 +66,7 @@ public abstract class XMLSignatureInput {
     protected XMLSignatureInput() {
     }
 
+
     /**
      * Construct a XMLSignatureInput from a subtree rooted by rootNode. This
      * method included the node and <I>all</I> its descendants in the output.
@@ -76,6 +77,7 @@ public abstract class XMLSignatureInput {
         this.subNode = rootNode;
     }
 
+
     /**
      * Construct a XMLSignatureInput from a {@link Set} of {@link Node}s.
      *
@@ -84,6 +86,7 @@ public abstract class XMLSignatureInput {
     protected XMLSignatureInput(Set<Node> nodeSet) {
         this.inputNodeSet = nodeSet;
     }
+
 
     /**
      * @return true if this instance still can provide the unprocessed input
@@ -106,6 +109,7 @@ public abstract class XMLSignatureInput {
      */
     protected abstract Node convertToNode() throws XMLParserException, IOException;
 
+
     /**
      * Writes the data to the output stream.
      *
@@ -116,6 +120,7 @@ public abstract class XMLSignatureInput {
     public void write(OutputStream output) throws CanonicalizationException, IOException {
         write(output, false);
     }
+
 
     /**
      * Writes the data to the output stream.
@@ -129,6 +134,7 @@ public abstract class XMLSignatureInput {
      */
     public abstract void write(OutputStream output, boolean c14n11) throws CanonicalizationException, IOException;
 
+
     /**
      * Get the Input NodeSet.
      *
@@ -137,6 +143,7 @@ public abstract class XMLSignatureInput {
     public Set<Node> getInputNodeSet() {
         return inputNodeSet;
     }
+
 
     /**
      * Returns the node set from input which was specified as the parameter of
@@ -152,6 +159,7 @@ public abstract class XMLSignatureInput {
     public Set<Node> getNodeSet() throws XMLParserException, IOException {
         return getNodeSet(false);
     }
+
 
     /**
      * Returns the node set from input which was specified as the parameter
@@ -186,6 +194,7 @@ public abstract class XMLSignatureInput {
         throw new RuntimeException("getNodeSet() called but no input data present");
     }
 
+
     /**
      * Gets the node of this XMLSignatureInput
      *
@@ -194,6 +203,7 @@ public abstract class XMLSignatureInput {
     public Node getSubNode() {
         return subNode;
     }
+
 
     /**
      * @param filter
@@ -207,6 +217,7 @@ public abstract class XMLSignatureInput {
         nodeFilters.add(filter);
     }
 
+
     /**
      * @return the node filters
      */
@@ -214,12 +225,14 @@ public abstract class XMLSignatureInput {
         return nodeFilters;
     }
 
+
     /**
      * @param nodeSet
      */
     public final void setNodeSet(boolean nodeSet) {
         isNodeSet = nodeSet;
     }
+
 
     /**
      * Returns the byte array from input which was specified as the parameter of
@@ -242,6 +255,7 @@ public abstract class XMLSignatureInput {
         return null;
     }
 
+
     /**
      * @return true if the {@link #XMLSignatureInput(Set)} was used or the node set was parsed from
      *         an input coming from another constructor.
@@ -249,6 +263,7 @@ public abstract class XMLSignatureInput {
     public boolean isNodeSet() {
         return isNodeSet || inputNodeSet != null;
     }
+
 
     /**
      * Determines if the object has been set up with an Element
@@ -259,6 +274,7 @@ public abstract class XMLSignatureInput {
         return subNode != null && inputNodeSet == null && !isNodeSet;
     }
 
+
     /**
      * @return String given through constructor. Null by default, see extensions of this class.
      */
@@ -266,12 +282,14 @@ public abstract class XMLSignatureInput {
         return null;
     }
 
+
     /**
      * @return the exclude node of this XMLSignatureInput
      */
     public Node getExcludeNode() {
         return excludeNode;
     }
+
 
     /**
      * Sets the exclude node of this XMLSignatureInput
@@ -282,12 +300,14 @@ public abstract class XMLSignatureInput {
         this.excludeNode = excludeNode;
     }
 
+
     /**
      * @return Returns the excludeComments.
      */
     public boolean isExcludeComments() {
         return excludeComments;
     }
+
 
     /**
      * @param excludeComments The excludeComments to set.
@@ -296,6 +316,7 @@ public abstract class XMLSignatureInput {
         this.excludeComments = excludeComments;
     }
 
+
     /**
      * @return Source URI
      */
@@ -303,12 +324,14 @@ public abstract class XMLSignatureInput {
         return sourceURI;
     }
 
+
     /**
      * @param sourceURI
      */
     public void setSourceURI(String sourceURI) {
         this.sourceURI = sourceURI;
     }
+
 
     /**
      * Some Transforms may require explicit MIME type, charset (IANA registered "character set"),
@@ -325,6 +348,7 @@ public abstract class XMLSignatureInput {
         return mimeType;
     }
 
+
     /**
      * Some Transforms may require explicit MIME type, charset (IANA registered "character set"),
      * or other such information concerning the data they are receiving from an earlier Transform
@@ -340,12 +364,14 @@ public abstract class XMLSignatureInput {
         this.mimeType = mimeType;
     }
 
+
     /**
      * @return true if the structure needs to be expanded.
      */
     public boolean isNeedsToBeExpanded() {
         return needsToBeExpanded;
     }
+
 
     /**
      * Set if the structure needs to be expanded.
@@ -356,12 +382,14 @@ public abstract class XMLSignatureInput {
         this.needsToBeExpanded = needsToBeExpanded;
     }
 
+
     /**
      * @return true by default, enabled validation in r/w operations
      */
     public boolean isSecureValidation() {
         return secureValidation;
     }
+
 
     /**
      * Set to false to disable validation in r/w operations.
@@ -372,12 +400,14 @@ public abstract class XMLSignatureInput {
         this.secureValidation = secureValidation;
     }
 
+
     /**
      * @return true if {@link #setOutputStream} has been called with a non-null OutputStream
      */
     public boolean isOutputStreamSet() {
         return outputStream != null;
     }
+
 
     /**
      * @param outputStream this stream will be ignored in {@link #write(OutputStream)} method
@@ -386,12 +416,14 @@ public abstract class XMLSignatureInput {
         this.outputStream = outputStream;
     }
 
+
     /**
      * @return {@link OutputStream} set in {@link #setOutputStream(OutputStream)}
      */
     public OutputStream getOutputStream() {
         return this.outputStream;
     }
+
 
     /**
      * Creates a short description of this instance.
@@ -416,6 +448,7 @@ public abstract class XMLSignatureInput {
         }
         return className + "/OctetStream//" + getSourceURI();
     }
+
 
     /**
      * Canonicalizes this object to the output stream.
