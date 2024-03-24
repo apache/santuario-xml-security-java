@@ -27,12 +27,15 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.extension.SignatureProcessor;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.transforms.Transforms;
@@ -212,6 +215,13 @@ public final class XMLSignature extends SignatureElementProxy {
             Constants.XML_DSIG_NS_MORE_07_05 + "rsa-pss";
 
     private static final Logger LOG = System.getLogger(XMLSignature.class.getName());
+
+    // list of SignatureProcessor which are invoked before the signature is generated
+    // as example signature metadata generation such as XAdES
+    List<SignatureProcessor> preProcessors = new ArrayList<>();
+    // list of SignatureProcessor which are invoked after the signature is generated
+    // as example timestamping
+    List<SignatureProcessor> postProcessors = new ArrayList<>();
 
     /** ds:Signature.ds:SignedInfo element */
     private final SignedInfo signedInfo;
@@ -615,6 +625,27 @@ public final class XMLSignature extends SignatureElementProxy {
     }
 
     /**
+     * Add signature processor which is invoked before the signature is generated. Purpose of the
+     * pre-processor is to validate and make everything ready before signature is executed as
+     * to add additional data to the signature.
+     *
+     * @param processor the signature pre-processor
+     */
+    public void addPreProcessor(SignatureProcessor processor) {
+        preProcessors.add(processor);
+    }
+
+    /**
+     * Add signature processor which is invoked after the signature is generated. Example of post-processor
+     * is timestamping of the signature.
+     *
+     * @param processor the signature processor
+     */
+    public void addPostProcessor(SignatureProcessor processor) {
+        postProcessors.add(processor);
+    }
+
+    /**
      * Sets the <code>Id</code> attribute
      *
      * @param id Id value for the id attribute on the Signature Element
@@ -622,6 +653,9 @@ public final class XMLSignature extends SignatureElementProxy {
     public void setId(String id) {
         if (id != null) {
             setLocalIdAttribute(Constants._ATT_ID, id);
+            getElement().setIdAttributeNS(null, Constants._ATT_ID, true);
+        } else {
+            getElement().removeAttributeNS(null, Constants._ATT_ID);
         }
     }
 
@@ -631,7 +665,41 @@ public final class XMLSignature extends SignatureElementProxy {
      * @return the <code>Id</code> attribute
      */
     public String getId() {
-        return getLocalAttribute(Constants._ATT_ID);
+        return getElement().hasAttribute(Constants._ATT_ID)?
+                getLocalAttribute(Constants._ATT_ID):null;
+    }
+
+    /**
+     * Sets the <code>Id</code> attribute to the SignatureValue Element. If the SignatureValue does not exist
+     * the attribute is not set.
+     */
+    public void setSignatureValueId(String id) {
+
+        if (signatureValueElement == null) {
+            // should not happen since the SignatureValue element is created in the constructor
+            LOG.log(Level.WARNING, "SignatureValue element is not available, cannot set id attribute [{}]", id);
+            return;
+        }
+        if (id == null) {
+            signatureValueElement.removeAttributeNS(null, Constants._ATT_ID);
+            return;
+        }
+        // set the attribute
+        signatureValueElement.setAttributeNS(null, Constants._ATT_ID, id);
+        signatureValueElement.setIdAttributeNS(null, Constants._ATT_ID, true);
+    }
+    /**
+     * Returns the <code>Id</code> attribute from the SignatureValue Element. If the SignatureValue does not exist
+     * or does not have an Id attribute, <code>null</code> is returned.
+     *
+     * @return the <code>Id</code> attribute from the SignatureValue Element
+     */
+    public String getSignatureValueId() {
+        if (signatureValueElement == null) {
+            return null;
+        }
+        Attr signatureValueAttr = signatureValueElement.getAttributeNodeNS(null, Constants._ATT_ID);
+        return signatureValueAttr == null ? null : signatureValueAttr.getValue();
     }
 
     /**
@@ -781,6 +849,9 @@ public final class XMLSignature extends SignatureElementProxy {
             );
         }
 
+        for (SignatureProcessor preProcessor : preProcessors) {
+            preProcessor.processSignature(this);
+        }
         //Create a SignatureAlgorithm object
         SignedInfo si = this.getSignedInfo();
         SignatureAlgorithm sa = si.getSignatureAlgorithm();
@@ -802,6 +873,9 @@ public final class XMLSignature extends SignatureElementProxy {
             throw ex;
         } catch (XMLSecurityException | IOException ex) {
             throw new XMLSignatureException(ex);
+        }
+        for (SignatureProcessor p : postProcessors) {
+            p.processSignature(this);
         }
     }
 

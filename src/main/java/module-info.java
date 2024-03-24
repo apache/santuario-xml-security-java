@@ -63,6 +63,8 @@ module org.apache.santuario.xmlsec {
     opens org.apache.xml.security;
     opens org.apache.xml.security.binding.excc14n;
     opens org.apache.xml.security.binding.xmldsig;
+    opens org.apache.xml.security.binding.xmldsig.xades.v132;
+    opens org.apache.xml.security.binding.xmldsig.xades.v141;
     opens org.apache.xml.security.binding.xmldsig11;
     opens org.apache.xml.security.binding.xmlenc;
     opens org.apache.xml.security.binding.xmlenc11;
@@ -74,4 +76,6 @@ module org.apache.santuario.xmlsec {
     opens org.apache.xml.security.keys.storage.implementations;
     opens org.apache.xml.security.transforms.implementations;
     opens org.apache.xml.security.utils.resolver.implementations;
+    opens org.apache.xml.security.utils.jaxb;
+    exports org.apache.xml.security.extension.exceptions;
 }
