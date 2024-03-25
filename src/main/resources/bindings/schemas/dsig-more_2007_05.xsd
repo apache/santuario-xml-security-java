@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
+    vc:minVersion="1.1" 
+    xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+    xmlns:rfc6931="http://www.w3.org/2007/05/xmldsig-more#"
+    targetNamespace="http://www.w3.org/2007/05/xmldsig-more#">
+
+    <xs:import namespace="http://www.w3.org/2000/09/xmldsig#"
+        schemaLocation="./xmldsig-core-schema.xsd"/>
+
+    <!-- Added in section 2.3.9 -->
+
+    <xs:element name="RSAPSSParams" type="rfc6931:RSAPSSParamsType">
+        <xs:annotation>
+            <xs:documentation> Top level element that can be used in xs:any namespace="#other"
+                wildcard of ds:SignatureMethod content. </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:complexType name="RSAPSSParamsType">
+        <xs:sequence>
+            <xs:element ref="ds:DigestMethod" minOccurs="0"/>
+            <xs:element name="MaskGenerationFunction" type="rfc6931:MaskGenerationFunctionType"
+                minOccurs="0"/>
+            <xs:element name="SaltLength" type="xs:int" minOccurs="0"/>
+            <xs:element name="TrailerField" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MaskGenerationFunctionType">
+        <xs:sequence>
+            <xs:element ref="ds:DigestMethod" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="Algorithm" type="xs:anyURI"
+            default="http://www.w3.org/2007/05/xmldsig-more#MGF1"/>
+    </xs:complexType>
+
+</xs:schema>

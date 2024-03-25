@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
+    vc:minVersion="1.1" 
+    xmlns:rfc9231="http://www.w3.org/2021/04/xmldsig-more#"
+    xmlns:xenc11="http://www.w3.org/2009/xmlenc11#"
+    targetNamespace="http://www.w3.org/2021/04/xmldsig-more#">
+
+
+    <xs:import namespace="http://www.w3.org/2009/xmlenc11#"
+        schemaLocation="./xenc-schema-11.xsd"/>
+
+    <!-- Needed for 2.6.7 -->
+
+    <xs:element name="Nonce" type="xs:hexBinary"/>
+    <xs:element name="Counter" type="xs:hexBinary"/>
+
+    <!-- Needed for 2.6.8 -->
+
+    <xs:element name="ADD" type="xs:string"/>
+    
+    <!-- Added in section 2.8.1 -->
+    
+    <xs:element name="HKDFParams" type="rfc9231:HKDFParamsType"/>
+    
+    <xs:complexType name="HKDFParamsType">
+        <xs:sequence>
+            <xs:element name="PRF" type="xenc11:PRFAlgorithmIdentifierType"/>
+            <xs:element name="Salt" minOccurs="0" maxOccurs="1" type="xs:base64Binary"/>
+            <xs:element name="Info" minOccurs="0" maxOccurs="1" type="xs:base64Binary"/>
+            <xs:element name="KeyLength" minOccurs="0" maxOccurs="1" type="xs:positiveInteger"/>
+        </xs:sequence>
+    </xs:complexType>    
+
+</xs:schema>

@@ -19,6 +19,7 @@
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.encryption.XMLCipherUtil;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
@@ -217,16 +218,9 @@ public class ConcatKDF implements DerivationAlgorithm {
             LOG.log(Level.ERROR, "Padded ConcatKDF parameters are not supported");
             throw new XMLEncryptionException( "KeyDerivation.NotSupportedParameter", kdfParameter);
         }
-        // skip first two chars
+        // skip first two chars since they are padding bytes,
         kdfP = kdfP.substring(2);
-        paramLen = kdfP.length();
-        byte[] data = new byte[paramLen / 2];
-
-        for (int i = 0; i < paramLen; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(kdfP.charAt(i), 16) << 4)
-                    + Character.digit(kdfP.charAt(i + 1), 16));
-        }
-        return data;
+        return XMLCipherUtil.hexStringToByteArray(kdfP);
     }
 
     /**

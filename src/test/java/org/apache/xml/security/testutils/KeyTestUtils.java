@@ -138,4 +138,5 @@ public class KeyTestUtils {
     public static InputStream getKeyResourceAsInputStream(String fileName) {
         return KeyTestUtils.class.getResourceAsStream(KEY_RESOURCE_PATH + fileName);
     }
+
 }

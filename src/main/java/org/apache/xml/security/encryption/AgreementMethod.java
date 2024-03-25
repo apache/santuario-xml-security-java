@@ -91,7 +91,6 @@ public interface AgreementMethod {
      */
     void setKANonce(byte[] kanonce);
 
-
     /**
      * Returns KeyDerivationMethod information used in the <code>AgreementMethod</code>.
      * @return The KeyDerivationMethod information regarding the <code>AgreementMethod</code>.

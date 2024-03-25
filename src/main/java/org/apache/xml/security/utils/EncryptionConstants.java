@@ -60,7 +60,6 @@ public final class EncryptionConstants {
     /** Tag of Attr PartyVInfo**/
     public static final String _ATT_SUPPPRIVINFO = "SuppPrivInfo";
 
-
     /** Tag of Element CarriedKeyName **/
     public static final String _TAG_CARRIEDKEYNAME = "CarriedKeyName";
 
@@ -126,6 +125,18 @@ public final class EncryptionConstants {
 
     /** Tag of Element ConcatKDFParams **/
     public static final String _TAG_CONCATKDFPARAMS = "ConcatKDFParams";
+
+    /** Tag of Element HKDFParams **/
+    public static final String _TAG_HKDFPARAMS = "HKDFParams";
+
+    /** Tag of Element PRF pseudorandom function (PRF) **/
+    public static final String _TAG_PRF = "PRF";
+
+    /** Tag of Element Info **/
+    public static final String _TAG_INFO = "Info";
+
+    /** Tag of Element KEY LENGTH **/
+    public static final String _TAG_KEYLENGTH = "KeyLength";
 
     /** Field ENCRYPTIONSPECIFICATION_URL */
     public static final String ENCRYPTIONSPECIFICATION_URL =
@@ -217,6 +228,12 @@ public final class EncryptionConstants {
     public static final String ALGO_ID_KEYAGREEMENT_ECDH_ES =
             EncryptionConstants.EncryptionSpec11NS + "ECDH-ES";
 
+    public static final String ALGO_ID_KEYAGREEMENT_X25519 =
+            Constants.XML_DSIG_NS_MORE_21_04 + "x25519";
+
+    public static final String ALGO_ID_KEYAGREEMENT_X448 =
+            Constants.XML_DSIG_NS_MORE_21_04 + "x448";
+
     /** Symmetric Key Wrap - REQUIRED TRIPLEDES KeyWrap */
     public static final String ALGO_ID_KEYWRAP_TRIPLEDES =
         EncryptionConstants.EncryptionSpecNS + "kw-tripledes";
@@ -288,6 +305,10 @@ public final class EncryptionConstants {
     /** Key derivation function ConcatKDF */
     public static final String ALGO_ID_KEYDERIVATION_CONCATKDF =
             EncryptionConstants.EncryptionSpec11NS + "ConcatKDF";
+
+    /** Key derivation function HKDF */
+    public static final String ALGO_ID_KEYDERIVATION_HKDF =
+            Constants.XML_DSIG_NS_MORE_21_04 + "hkdf";
 
     private EncryptionConstants() {
         // we don't allow instantiation

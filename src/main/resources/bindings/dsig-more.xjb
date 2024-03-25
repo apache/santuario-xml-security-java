@@ -1,0 +1,20 @@
+<bindings xmlns="https://jakarta.ee/xml/ns/jaxb"
+          xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          version="3.0">
+    <bindings schemaLocation="schemas/dsig-more_2001_04.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="org.apache.xml.security.binding.xmldsigmore"/>
+        </schemaBindings>
+    </bindings>
+    <bindings schemaLocation="schemas/dsig-more_2007_05.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="org.apache.xml.security.binding.xmldsigmore"/>
+        </schemaBindings>
+    </bindings>
+    <bindings schemaLocation="schemas/dsig-more_2021_04.xsd" node="/xs:schema">
+        <schemaBindings>
+            <package name="org.apache.xml.security.binding.xmldsigmore"/>
+        </schemaBindings>
+    </bindings>
+</bindings>
