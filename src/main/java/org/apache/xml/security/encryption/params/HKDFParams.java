@@ -18,14 +18,14 @@
  */
 package org.apache.xml.security.encryption.params;
 
-import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.EncryptionConstants;
 
 /**
- * Class HMacKeyDerivationParameter (HKDF parameter) is used to specify parameters for the HMAC-based Extract-and-Expand
- * Key Derivation Function.
- * @see <A HREF="https://datatracker.ietf.org/doc/html/rfc5869">HMAC-based Extract-and-Expand Key Derivation Function (HKDF)</A>
+ * Class HMacKeyDerivationParameter (HKDF parameter) is used to specify
+ * parameters for the HMAC-based Extract-and-Expand Key Derivation Function.
+ * @see <A HREF="https://datatracker.ietf.org/doc/html/rfc5869">HMAC-based
+ * Extract-and-Expand Key Derivation Function (HKDF)</A>
  */
 public class HKDFParams extends KeyDerivationParameters {
 
@@ -34,10 +34,10 @@ public class HKDFParams extends KeyDerivationParameters {
     private byte[] info;
 
     /**
-     * Constructor HMacKeyDerivationParameter with specified digest algorithm
+     * Constructor HMacKeyDerivationParameter with specified digest algorithm.
      *
      * @param keyBitLength the length of the derived key in bits
-     * @param hmacHashAlgorithm the HMAC hash algorithm to use for the key derivation.
+     * @param hmacHashAlgorithm the HMAC hash algorithm to use for the key derivation
      */
     public HKDFParams(int keyBitLength, String hmacHashAlgorithm) {
         super(EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF, keyBitLength);
@@ -45,8 +45,8 @@ public class HKDFParams extends KeyDerivationParameters {
     }
 
     /**
-     * Method return the digest algorithm. In case of algorithm is not set, the "default"
-     * algorithm hmac-sha256 hmac algorithm is returned.
+     * Method return the digest algorithm. In case of algorithm is not set, the
+     * "default" algorithm hmac-sha256 hmac algorithm is returned.
      *
      * @return the hmac algorithm
      */

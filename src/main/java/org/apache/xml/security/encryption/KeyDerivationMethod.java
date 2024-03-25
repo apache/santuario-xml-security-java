@@ -23,9 +23,11 @@ import org.apache.xml.security.encryption.keys.content.derivedKey.KDFParams;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
- * The key derivation is to generate new cryptographic key material from existing key material such as the shared
- * secret and any other (private or public) information. The purpose of the key derivation is an extension of a given
- * but limited set of original key materials and to limit the use (exposure) of such key material.
+ * The key derivation is to generate new cryptographic key material from existing
+ * key material such as the shared secret and any other (private or public)
+ * information. The purpose of the key derivation is an extension of a given
+ * but limited set of original key materials and to limit the use (exposure)
+ * of such key material.
  *
  * The Schema for KeyDerivationMethod is as follows:
  * <pre>
@@ -41,19 +43,20 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 public interface KeyDerivationMethod {
 
     /**
-     * Returns the algorithm URI of this <code>KeyDerivationMethod</code>.
+     * Returns the algorithm URI of this <code>KeyDerivationMethod</code>
      *
      * @return the algorithm URI of this <code>KeyDerivationMethod</code>
      */
     String getAlgorithm();
 
     /**
-     * Returns the KDF parameters used by the key derivation algorithm. Currently supported types are
+     * Returns the KDF parameters used by the key derivation algorithm.
+     * Currently supported types are:
      * {@link org.apache.xml.security.encryption.params.ConcatKDFParams} and
-     * {@link org.apache.xml.security.encryption.params.HKDFParams}.
+     * {@link org.apache.xml.security.encryption.params.HKDFParams}
      *
      * @return the KDFParams used by the key derivation algorithm
-     * @throws XMLSecurityException if the KDFParams cannot be created.
+     * @throws XMLSecurityException if the KDFParams cannot be created
      */
     KDFParams getKDFParams() throws XMLSecurityException;
 
