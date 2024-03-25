@@ -34,17 +34,23 @@ import javax.xml.crypto.dsig.spec.XPathFilter2ParameterSpec;
 import javax.xml.crypto.dsig.spec.XPathFilterParameterSpec;
 import javax.xml.crypto.dsig.spec.XPathType;
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
+import javax.xml.namespace.QName;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import org.w3c.dom.*;
 
 /**
  * Useful static DOM utility methods.
  *
  */
 public final class DOMUtils {
+
+    // most common attributes for id attribute names in XML
+    private static final List<String> ID_ATTRIBUTE_NAMES = List.of("Id", "ID", "id");
+
 
     // class cannot be instantiated
     private DOMUtils() {}
@@ -421,5 +427,66 @@ public final class DOMUtils {
             return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI);
         }
         return false;
+    }
+
+    /**
+     * This method convert JAXB object to XML Element value and add it to the
+     * target node. The root object of JAXB object has name as defined in
+     * objectQName.
+     * The method also sets ID flag to IDs in the XML structure.
+     *
+     * @param target      the node to which the XML structure should be added
+     * @param obj         the object to be converted to Element value
+     * @param objectQName the QName of the object root element
+     * @return the created XML structure as a Node
+     * @throws JAXBException if an error occurs during the marshalling
+     */
+    public static Node objectToXMLStructure(Node target, Object obj, QName objectQName) throws JAXBException {
+
+        JAXBContext jc = JAXBContext.newInstance(obj.getClass());
+        Marshaller jaxbMarshaller = jc.createMarshaller();
+        JAXBElement<?> jaxbElement = new JAXBElement(
+                objectQName,
+                obj.getClass(), obj);
+        jaxbMarshaller.marshal(jaxbElement, target);
+        // set idness to all elements so that they can be used as references
+        setIdFlagToIdAttributes(target);
+        return target.getFirstChild();
+    }
+
+    /**
+     * This method declares all attributes with names: ID, id Id to be a
+     * user-determined ID attribute. This affects the value of
+     * <code>Attr.isId</code> and the behavior of
+     * <code>Document.getElementById</code>.
+     *
+     * @param n Node to start from setting id attributes as Id attribute
+     */
+    public static void setIdFlagToIdAttributes(Node n) {
+        setIdFlagToIdAttributes(n, ID_ATTRIBUTE_NAMES);
+    }
+
+    /**
+     * This method declares all attributes with names in idAttributes to be a
+     * user-determined ID attribute. This affects the value of
+     * <code>Attr.isId</code> and the behavior of
+     * <code>Document.getElementById</code>.
+     *
+     * @param n Node to start from setting id attributes as Id attribute
+     * @param idAttributes List of attribute names to be set as Id attribute
+     */
+    public static void setIdFlagToIdAttributes(Node n, List<String> idAttributes) {
+        if (n.getNodeType() == Node.ELEMENT_NODE) {
+            Element e = (Element) n;
+            idAttributes.forEach(id -> {
+                if (e.hasAttribute(id)) {
+                    e.setIdAttribute(id, true);
+                }
+            });
+            NodeList l = e.getChildNodes();
+            for (int i = 0; i < l.getLength(); i++) {
+                setIdFlagToIdAttributes(l.item(i), idAttributes);
+            }
+        }
     }
 }

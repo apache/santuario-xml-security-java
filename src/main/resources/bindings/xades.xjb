@@ -1,0 +1,23 @@
+<bindings xmlns="https://jakarta.ee/xml/ns/jaxb"
+          xmlns:xsi="http://www.w3.org/2000/10/XMLSchema-instance"
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+          xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+          jaxb:extensionBindingPrefixes="xjc"
+          version="3.0">
+    <bindings schemaLocation="schemas/XAdES01903v141-202107.xsd">
+        <schemaBindings>
+            <package name="org.apache.xml.security.binding.xmldsig.xades.v141"/>
+        </schemaBindings>
+    </bindings>
+    <bindings schemaLocation="schemas/XAdES01903v132-201601.xsd">
+        <!-- use OffsetDateTime instead of XMLGregorianCalendar -->
+        <bindings multiple="true" node="//xsd:element[@type='xsd:dateTime']">
+            <xjc:javaType name="java.time.OffsetDateTime" adapter="org.apache.xml.security.utils.jaxb.OffsetDateTimeAdapter" />
+        </bindings>
+
+        <schemaBindings>
+            <package name="org.apache.xml.security.binding.xmldsig.xades.v132"/>
+        </schemaBindings>
+    </bindings>
+</bindings>

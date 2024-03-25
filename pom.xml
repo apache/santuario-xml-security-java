@@ -366,6 +366,7 @@
                                 <schemaInclude>bindings/schemas/xenc-schema.xsd</schemaInclude>
                                 <schemaInclude>bindings/schemas/xenc-schema-11.xsd</schemaInclude>
                                 <schemaInclude>bindings/schemas/rsa-pss.xsd</schemaInclude>
+                                <schemaInclude>bindings/schemas/XAdES01903v141-202107.xsd</schemaInclude>
                             </schemaIncludes>
                             <bindingDirectory>${basedir}/src/main/resources/bindings/</bindingDirectory>
                             <bindingIncludes>
@@ -377,6 +378,7 @@
                                 <bindingInclude>security-config.xjb</bindingInclude>
                                 <bindingInclude>xop.xjb</bindingInclude>
                                 <bindingInclude>rsa-pss.xjb</bindingInclude>
+                                <bindingInclude>xades.xjb</bindingInclude>
                             </bindingIncludes>
                             <catalog>${basedir}/src/main/resources/bindings/bindings.cat</catalog>
                             <forceRegenerate>false</forceRegenerate>
