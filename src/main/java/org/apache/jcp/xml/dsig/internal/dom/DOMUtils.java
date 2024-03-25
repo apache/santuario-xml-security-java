@@ -40,7 +40,6 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
-import org.apache.xml.security.binding.xmldsig.xades.v132.QualifyingPropertiesType;
 import org.w3c.dom.*;
 
 /**
@@ -446,9 +445,9 @@ public final class DOMUtils {
 
         JAXBContext jc = JAXBContext.newInstance(obj.getClass());
         Marshaller jaxbMarshaller = jc.createMarshaller();
-        JAXBElement<QualifyingPropertiesType> jaxbElement = new JAXBElement(
+        JAXBElement<?> jaxbElement = new JAXBElement(
                 objectQName,
-                QualifyingPropertiesType.class, obj);
+                obj.getClass(), obj);
         jaxbMarshaller.marshal(jaxbElement, target);
         // set idness to all elements so that they can be used as references
         setIdFlagToIdAttributes(target);
