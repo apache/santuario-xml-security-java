@@ -40,11 +40,17 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.apache.xml.security.testutils.JDKTestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
@@ -99,6 +105,35 @@ class ECDSASignatureTest {
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_224,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_256,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_384,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_512
+    })
+    void testECDSSupportedAlgorithms(String algorithm) throws Exception {
+        //
+        // This test fails with the IBM JDK
+        //
+        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
+            return;
+        }
+        Assumptions.assumeTrue(JDKTestUtils.isAuxiliaryProviderRegistered() ||
+                isJDK16up, "ECDSA_SHA3 signatures not supported");
+
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        try (FileInputStream inputStream = new FileInputStream(ECDSA_JKS)) {
+            keyStore.load(inputStream, ECDSA_JKS_PASSWORD.toCharArray());
+        }
+
+        X509Certificate x509 = (X509Certificate) keyStore.getCertificate("secp256r1");
+        PrivateKey privateKey = (PrivateKey) keyStore.getKey("secp256r1", ECDSA_JKS_PASSWORD.toCharArray());
+        byte[] signedXml = doSign(privateKey, x509, x509.getPublicKey(), algorithm);
+        MatcherAssert.assertThat(new String(signedXml), CoreMatchers.containsString(algorithm));
+        doVerify(signedXml);
+    }
+
     // Failing with more recent BouncyCastle libraries
     @Test
     @Disabled
@@ -135,6 +170,10 @@ class ECDSASignatureTest {
     }
 
     private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey) throws Exception {
+        return doSign(privateKey, x509, publicKey, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256);
+    }
+
+    private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey, String signatureAlgorithmURI) throws Exception {
         org.w3c.dom.Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -149,7 +188,7 @@ class ECDSASignatureTest {
         );
 
         SignatureAlgorithm signatureAlgorithm =
-            new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
+            new SignatureAlgorithm(doc, signatureAlgorithmURI);
         XMLSignature sig =
             new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
 

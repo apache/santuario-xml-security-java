@@ -37,12 +37,16 @@ import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.algorithms.implementations.SignatureBaseRSA;
+import org.apache.xml.security.algorithms.implementations.SignatureECDSA;
 import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.test.dom.TestUtils;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.w3c.dom.Document;
 
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
@@ -221,5 +225,32 @@ class SignatureAlgorithmTest {
                 SignatureAlgorithm.register(XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
                         SignatureBaseRSA.SignatureRSASHA256.class.getName())
         );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            XMLSignature.ALGO_ID_SIGNATURE_EDDSA_ED25519,
+            XMLSignature.ALGO_ID_SIGNATURE_EDDSA_ED448,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA224,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA384,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_224,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_256,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_384,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_512,
+            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_RIPEMD160,
+    })
+    void testAlreadyRegisteredExceptionFromString(String algorithmURI) {
+        String algorithmMockName = SignatureECDSA.SignatureECDSASHA3_224.class.getName();
+
+        AlgorithmAlreadyRegisteredException exception =
+            assertThrows(AlgorithmAlreadyRegisteredException.class, () ->
+                SignatureAlgorithm.register(algorithmURI,
+                        algorithmMockName)
+        );
+
+        MatcherAssert.assertThat(exception.getMessage(), org.hamcrest.Matchers.containsString(algorithmURI));
     }
 }
