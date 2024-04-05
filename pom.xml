@@ -470,7 +470,18 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <version>0.8.12</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <includes>
+                        <include>org/apache/xml/security/**</include>
+                        <include>org/apache/jcp/xml/dsig/internal/**</include>
+                    </includes>
+                    <formats>
+                        <!-- Eclipse uses exec files, SonarQube uses xml reports -->
+                        <format>XML</format>
+                    </formats>
+                </configuration>
                 <executions>
                     <execution>
                         <id>jacoco-agent-for-unit-tests</id>
