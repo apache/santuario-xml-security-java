@@ -51,6 +51,7 @@ import org.apache.xml.security.encryption.EncryptionMethod;
 import org.apache.xml.security.encryption.EncryptionProperties;
 import org.apache.xml.security.encryption.EncryptionProperty;
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.encryption.XMLCipherUtil;
 import org.apache.xml.security.encryption.keys.KeyInfoEnc;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameters;
@@ -369,6 +370,74 @@ class XMLCipherTest {
 
         target = toString(dd);
         assertEquals(source, target);
+    }
+
+    /**
+     * Test decryption using key agreement method processing and manual key derivation
+     * where KeyAgreementMethod is present in EncryptedKey, but it is not used for decryption
+     * because decryption key is provided manually. The test ensures legacy behavior is preserved
+     * where some implementations implemented it own key agreement method processing
+     * and XMLCipher is used just for key unwrapping.
+     *
+     * <p/>
+     * @throws Exception Thrown when there is any problem in signing or verification
+     */
+    @Test
+    void testDecryptionSkipKeyAgreementMethodProcessing() throws Exception {
+
+        // init parameters encrypted key object
+        String keyWrapAlgorithm = XMLCipher.AES_128_KeyWrap;
+        int transportKeyBitLength = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
+
+        // Generate test recipient key pair
+        KeyPair recipientKeyPair = KeyTestUtils.generateKeyPair(KeyUtils.KeyType.SECP256R1);
+        PrivateKey privRecipientKey = recipientKeyPair.getPrivate();
+        PublicKey pubRecipientKey = recipientKeyPair.getPublic();
+
+        // Generate a traffic key
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(transportKeyBitLength);
+        Key ephemeralSymmetricKey = keygen.generateKey();
+
+        XMLCipher cipherEncKey = XMLCipher.getInstance(keyWrapAlgorithm);
+        cipherEncKey.init(XMLCipher.WRAP_MODE, pubRecipientKey);
+        cipherEncKey.setSecureValidation(true);
+        // create key agreement parameters
+        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(transportKeyBitLength,
+                MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        KeyAgreementParameters parameterSpec = new KeyAgreementParameters(
+                KeyAgreementParameters.ActorType.ORIGINATOR,
+                EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
+                keyDerivationParameter);
+
+        // Generate EncryptedKey with KeyAgreementMethod
+        Document doc = TestUtils.newDocument();
+        EncryptedKey encryptedKey = cipherEncKey.encryptKey(doc, ephemeralSymmetricKey, parameterSpec, null);
+        // assert that KeyAgreementMethod is present
+        assertEquals(1, ((KeyInfoEnc) encryptedKey.getKeyInfo()).lengthAgreementMethod());
+
+        // decrypt EncryptedKey key handled by xmlsec.
+        XMLCipher kwCipherWithKeyAgreement = XMLCipher.getInstance();
+        kwCipherWithKeyAgreement.init(XMLCipher.UNWRAP_MODE, privRecipientKey);
+        Key symmetricKeyWithKeyAgreement = kwCipherWithKeyAgreement.decryptKey(
+                encryptedKey, encryptedKey.getEncryptionMethod().getAlgorithm()
+        );
+        assertEquals(ephemeralSymmetricKey, symmetricKeyWithKeyAgreement);
+
+        // decrypt EncryptedKey key manually (skip KeyAgreementMethod processing)
+        // derive encrypted key manually
+        KeyAgreementParameters params = XMLCipherUtil.constructRecipientKeyAgreementParameters(keyWrapAlgorithm,
+                ((KeyInfoEnc) encryptedKey.getKeyInfo()).itemAgreementMethod(0), privRecipientKey);
+        Key keyWrappingKey = KeyUtils.aesWrapKeyWithDHGeneratedKey(params);
+
+        // use manually derived key to decrypt EncryptedKey
+        XMLCipher kwCipherManually = XMLCipher.getInstance();
+        kwCipherManually.init(XMLCipher.UNWRAP_MODE, keyWrappingKey);
+
+        Key symmetricKeyManualDecryption = kwCipherManually.decryptKey(
+                encryptedKey, encryptedKey.getEncryptionMethod().getAlgorithm()
+        );
+        assertEquals(ephemeralSymmetricKey, symmetricKeyManualDecryption);
     }
 
     /**
