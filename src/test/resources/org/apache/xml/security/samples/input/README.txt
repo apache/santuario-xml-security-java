@@ -25,5 +25,13 @@ keytool -genkeypair -keystore ecbrainpool.p12 -alias brainpoolP512r1 -keyalg EC 
     -dname "CN=brainpoolP512r1, OU=eDeliveryAS4-2.0,OU=wss4j,O=apache,C=EU" \
     -validity 3650
 
+
+====
+ecdsa.jks
+
+keytool -genkeypair -keystore ecdsa.jks -alias secp256r1 -keyalg EC -groupname secp256r1 \
+        -storepass security -keypass security \
+        -dname "CN=secp256r1,OU=ecdsa, OU=xmlsec,O=apache,C=EU" \
+        -validity 3650
 =====
 
