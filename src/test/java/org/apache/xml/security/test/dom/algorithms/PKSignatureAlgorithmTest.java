@@ -45,6 +45,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -56,7 +58,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * A test to make sure that the various Public Key Signature algorithms are working
  */
 public class PKSignatureAlgorithmTest {
-
     private static KeyPair rsaKeyPair, ecKeyPair;
     private static boolean bcInstalled;
     private static int javaVersion;
@@ -462,6 +463,31 @@ public class PKSignatureAlgorithmTest {
         localNames.add("PaymentInfo");
 
         sign(XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA512, document, localNames, ecKeyPair.getPrivate());
+        // XMLUtils.outputDOM(document, System.out);
+        verify(document, ecKeyPair.getPublic(), localNames);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_224,
+        XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_256,
+        XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_384,
+        XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_512
+    })
+    void testECDSA_SHA3(String algorithm) throws Exception {
+        // support added in JDK16 see:
+        // https://seanjmullan.org/blog/2021/03/18/jdk16
+        // https://www.oracle.com/java/technologies/javase/16all-relnotes.html
+        Assumptions.assumeTrue(bcInstalled || javaVersion >=16);
+
+        // Read in plaintext document
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
+
+        List<String> localNames = new ArrayList<>();
+        localNames.add("PaymentInfo");
+
+        sign(algorithm, document, localNames, ecKeyPair.getPrivate());
         // XMLUtils.outputDOM(document, System.out);
         verify(document, ecKeyPair.getPublic(), localNames);
     }
