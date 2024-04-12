@@ -67,6 +67,8 @@ import org.apache.xml.security.test.stax.utils.XmlReaderToWriter;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -156,6 +158,60 @@ class XMLEncryption11Test {
         // Perform decryption
         Document dd = decryptElement(ed, rsaKey);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
+        checkDecryptedDoc(dd, true);
+    }
+
+    /**
+     * The http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p identifier defines the
+     * mask generation function as the fixed value of MGF1 with SHA1. In this case
+     * the optional xenc11:MGF element of the xenc:EncryptionMethod element
+     * MUST NOT be provided. For the http://www.w3.org/2009/xmlenc11#rsa-oaep
+     * identifier, the mask generation function must be defined by the xenc11:MGF
+     * element.
+     */
+    @ParameterizedTest
+    @CsvSource({
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p,,0",
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p,'',0",
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p, http://www.w3.org/2009/xmlenc11#mgf1sha1,0",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha1,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha256,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha224,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha384,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha512,1",
+    })
+    void testRsaOaepMgfElement(String rsaOaepURI, String mgfAlgURI, int prfCount) throws Exception {
+        assumeFalse(isIBMJdK);
+
+        KeyStore keyStore = loadKeyStore("org/w3c/www/interop/xmlenc-core-11/RSA-2048_SHA256WithRSA.jks");
+        KeyStore.PrivateKeyEntry pkEntry = (KeyStore.PrivateKeyEntry)
+                keyStore.getEntry("importkey", new KeyStore.PasswordProtection("passwd".toCharArray()));
+        PrivateKey rsaKey = pkEntry.getPrivateKey();
+        X509Certificate x509Certificate = (X509Certificate) pkEntry.getCertificate();
+
+        // Perform encryption
+        String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
+
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(256);
+        SecretKey sessionKey = keygen.generateKey();
+
+        SecurePart securePart =
+                new SecurePart(new QName("urn:example:po", "PurchaseOrder"), SecurePart.Modifier.Element);
+
+        Document ed = encryptDocument(filename, securePart, x509Certificate.getPublicKey(),
+                rsaOaepURI, null, mgfAlgURI,
+                sessionKey, "http://www.w3.org/2009/xmlenc11#aes128-gcm",
+                null);
+
+        NodeList mfgElements = ed.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, "MGF");
+        assertEquals(prfCount, mfgElements.getLength());
+
+        if (prfCount == 1) {
+            assertEquals(mgfAlgURI, ((Element) mfgElements.item(0)).getAttribute("Algorithm"));
+        }
+        // Perform decryption
+        Document dd = decryptElement(ed, rsaKey);
         checkDecryptedDoc(dd, true);
     }
 
@@ -556,7 +612,7 @@ class XMLEncryption11Test {
             assertEquals(1, digestMethodElements.getLength());
             assertEquals(digestMethodAlgo, ((Element) digestMethodElements.item(0)).getAttribute("Algorithm"));
         }
-        if (mgfAlgo != null) {
+        if (mgfAlgo != null && !XMLSecurityConstants.NS_XENC_RSAOAEPMGF1P.equals(encryptedKeyAlgo)) {
             NodeList mfgElements = document.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, "MGF");
             assertEquals(1, mfgElements.getLength());
             assertEquals(mgfAlgo, ((Element) mfgElements.item(0)).getAttribute("Algorithm"));

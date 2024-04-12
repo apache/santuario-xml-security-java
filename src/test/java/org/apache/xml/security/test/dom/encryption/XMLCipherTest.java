@@ -58,6 +58,7 @@ import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.parser.XMLParserException;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.testutils.JDKTestUtils;
 import org.apache.xml.security.testutils.KeyTestUtils;
@@ -69,6 +70,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -370,6 +372,60 @@ class XMLCipherTest {
 
         target = toString(dd);
         assertEquals(source, target);
+    }
+
+    /**
+     * The http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p identifier defines the
+     * mask generation function as the fixed value of MGF1 with SHA1. In this case
+     * the optional xenc11:MGF element of the xenc:EncryptionMethod element
+     * MUST NOT be provided. For the http://www.w3.org/2009/xmlenc11#rsa-oaep
+     * identifier, the mask generation function must be defined by the xenc11:MGF
+     * element.
+     */
+    @ParameterizedTest
+    @CsvSource({
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p,,0",
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p,'',0",
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p, http://www.w3.org/2009/xmlenc11#mgf1sha1,0",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha1,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha256,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha224,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha384,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha512,1",
+    })
+    void testAES128ElementRsaOaepKWCipher(String keyWrapAlgorithmURI, String mgf1URI, int mgfElementCount) throws Exception {
+        // Skip test for IBM JDK
+        Assumptions.assumeTrue(haveISOPadding,
+                "Test testAES128ElementRsaOaepKWCipher was skipped as necessary algorithms not available!" );
+        // init parameters encrypted key object
+        int transportKeyBitLength = 128;
+
+        // prepare the test document
+        Document d = TestUtils.newDocument(); // source
+
+        // Generate test recipient key pair
+        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        KeyPair kp = rsaKeygen.generateKeyPair();
+        PublicKey pub = kp.getPublic();
+
+        // Generate a traffic key
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(transportKeyBitLength);
+        Key ephemeralSymmetricKey = keygen.generateKey();
+
+        XMLCipher cipherEncKey = XMLCipher.getInstance(keyWrapAlgorithmURI);
+        cipherEncKey.init(XMLCipher.WRAP_MODE, pub);
+        cipherEncKey.setSecureValidation(true);
+        // encrypt transport key with KeyAgreement
+        EncryptedKey encryptedKey =  cipherEncKey.encryptKey(d, ephemeralSymmetricKey,mgf1URI,null);
+        Element enckeyDoc = cipherEncKey.martial(encryptedKey);
+
+        NodeList mfgElements = enckeyDoc.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, EncryptionConstants._TAG_MGF);
+        assertEquals(mgfElementCount, mfgElements.getLength());
+        assertEquals(keyWrapAlgorithmURI, encryptedKey.getEncryptionMethod().getAlgorithm());
+        if (mgfElementCount > 0) {
+            assertEquals(mgf1URI, encryptedKey.getEncryptionMethod().getMGFAlgorithm());
+        }
     }
 
     /**

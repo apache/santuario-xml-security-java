@@ -3227,7 +3227,8 @@ public final class XMLCipher {
                     );
                     result.appendChild(digestElement);
                 }
-                if (mgfAlgorithm != null) {
+
+                if (mgfAlgorithm != null && !XMLCipher.RSA_OAEP.equals(algorithm)) {
                     Element mgfElement =
                         XMLUtils.createElementInEncryption11Space(
                             contextDocument, EncryptionConstants._TAG_MGF
