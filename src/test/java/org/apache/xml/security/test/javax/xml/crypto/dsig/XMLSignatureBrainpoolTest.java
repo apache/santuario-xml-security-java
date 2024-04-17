@@ -38,7 +38,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 /**
  * Unit test for brainpool javax.xml.crypto.dsig.XMLSignature creation. The tests
  * require BouncyCastle provider to be activated. Please note also the setting of
- * the system property "org.jcp.xml.dsig.internal.dom.SignatureProvider" to
+ * the DOMSignContext property "org.jcp.xml.dsig.internal.dom.SignatureProvider" to
  * provide signature provider for the XMLSignature creation. SunJCE provider does
  * not support brainpool curves signatures from JDK 15+
  * <p />
@@ -78,7 +78,7 @@ class XMLSignatureBrainpoolTest  extends XMLSignatureAbstract {
 
     @Override
     char[] getKeyPassword() {
-        return ECDSA_KS_TYPE.toCharArray();
+        return ECDSA_KS_PASSWORD.toCharArray();
     }
 
     @ParameterizedTest

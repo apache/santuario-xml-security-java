@@ -4,27 +4,48 @@ please document creation procedure or source here.
 ====
 ecbrainpool.p12
 
-Following commands are used to generate self-signed certificates/keys for brainpool curves:
- brainpoolP256r1, brainpoolP384r1, brainpoolP512r1
- To generate certificate used JDK 11 - 15  and remove curve from jdk.disabled.namedCurves property
- in the java.security file. (For generating ecbrainpool.p12 the jdk-11.0.22 was used)
-To generated for brainpoolP256r1, brainpoolP384r1, brainpoolP512r1 use the following command:
+Install latest OpenSSL 3.2.0 [23 Nov 2023], or just check the support brainpool EC.
+(https://www.openssl.org/news/openssl-3.2-notes.html)
 
-keytool -genkeypair -keystore ecbrainpool.p12 -alias brainpoolP256r1 -keyalg EC  -groupname brainpoolP256r1 \
-    -storepass security -keypass security  \
-    -dname "CN=brainpoolP256r1, OU=eDeliveryAS4-2.0,OU=wss4j,O=apache,C=EU" \
-    -validity 3650
+openssl ecparam -list_curves
 
-keytool -genkeypair -keystore ecbrainpool.p12 -alias brainpoolP384r1 -keyalg EC  -groupname brainpoolP384r1 \
-    -storepass security -keypass security  \
-    -dname "CN=brainpoolP384r1, OU=eDeliveryAS4-2.0,OU=wss4j,O=apache,C=EU" \
-    -validity 3650
+To generate the certificate for the brainpool curves, use the following script:
+create-brainpool-keystore.sh
+-----
+#!/bin/bash
 
-keytool -genkeypair -keystore ecbrainpool.p12 -alias brainpoolP512r1 -keyalg EC  -groupname brainpoolP512r1 \
-    -storepass security -keypass security  \
-    -dname "CN=brainpoolP512r1, OU=eDeliveryAS4-2.0,OU=wss4j,O=apache,C=EU" \
-    -validity 3650
+ALL_CERTS="brainpoolP256r1 brainpoolP384r1 brainpoolP512r1"
+KS_FILENAME="brainpool.p12"
+PASSPHRASE="security"
 
+
+for cert in ${ALL_CERTS}; \
+do \
+    echo "Generating certificate for ${cert}"; \
+    openssl ecparam -name ${cert} -genkey -noout -out ${cert}.pem
+    openssl ec -in ${cert}.pem -pubout -out ${cert}.pub
+    openssl req -x509 -nodes -sha256 -days 3650 \
+        -subj "/CN=${cert}/OU=eDeliveryAS4-2.0/OU=santuario/O=apache/C=EU" \
+        -addext "keyUsage=digitalSignature,keyEncipherment,dataEncipherment,cRLSign,keyCertSign" \
+        -addext "extendedKeyUsage=serverAuth,clientAuth" \
+        -key ${cert}.pem -out ${cert}.crt
+
+    echo "importing ${cert} to keystore";
+    openssl pkcs12 -export -out ${cert}.pfx -name ${cert} \
+            -inkey ${cert}.pem -in ${cert}.crt -passout pass:${PASSPHRASE}
+
+
+   echo "Merge ${cert} to common keystore";
+   /opt/java/jdk-17.0.9/bin/keytool -importkeystore -destkeystore ${KS_FILENAME} -deststoretype PKCS12 \
+        -destkeypass ${PASSPHRASE} -deststorepass ${PASSPHRASE} \
+        -srckeystore ${cert}.pfx -srcstoretype PKCS12  \
+        -srcstorepass ${PASSPHRASE}  -srckeypass ${PASSPHRASE} \
+        -destalias ${cert} -srcalias ${cert}
+
+  echo "clean temp files for the ${cert}";
+  rm -f ${cert}.pem ${cert}.pub ${cert}.crt ${cert}.pfx;
+done
+-----
 
 ====
 ecdsa.jks
@@ -34,4 +55,5 @@ keytool -genkeypair -keystore ecdsa.jks -alias secp256r1 -keyalg EC -groupname s
         -dname "CN=secp256r1,OU=ecdsa, OU=xmlsec,O=apache,C=EU" \
         -validity 3650
 =====
+
 
