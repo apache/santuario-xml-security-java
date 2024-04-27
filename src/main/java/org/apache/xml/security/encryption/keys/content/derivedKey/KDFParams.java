@@ -19,7 +19,7 @@
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
 /**
- * Marker interface for all KDFParams implementations
+ * Marker interface for all KDFParams implementations.
  */
 public interface KDFParams {
 

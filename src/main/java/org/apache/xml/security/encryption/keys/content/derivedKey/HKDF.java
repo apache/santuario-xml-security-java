@@ -19,7 +19,9 @@
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
 import org.apache.xml.security.encryption.XMLCipherUtil;
+import org.apache.xml.security.encryption.params.HKDFParams;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.utils.I18n;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -30,7 +32,8 @@ import java.security.NoSuchAlgorithmException;
 import static java.lang.System.Logger.Level.DEBUG;
 
 /**
- * The implementation of the HMAC-based Extract-and-Expand Key Derivation Function (HKDF) as defined in RFC 5869.
+ * The implementation of the HMAC-based Extract-and-Expand Key Derivation Function (HKDF)
+ * as defined in <a href="https://datatracker.ietf.org/doc/html/rfc5869">RFC 5869</a>.
  * <p>
  * The HKDF algorithm is defined as follows:
  * <pre>
@@ -45,52 +48,58 @@ import static java.lang.System.Logger.Level.DEBUG;
  * ...
  * </pre>
  */
-public class HKDF implements DerivationAlgorithm {
+public class HKDF implements DerivationAlgorithm<HKDFParams> {
+
 
     private static final System.Logger LOG = System.getLogger(HKDF.class.getName());
-    private final String hmacHashAlgorithmURI;
-    private final Mac hmac;
 
     /**
-     * Constructor HKDF initializes the Mac object with the given algorithmURI and salt.
+     * Derive a key using the HMAC-based Extract-and-Expand Key Derivation Function (HKDF)
+     * as defined in <a href="https://datatracker.ietf.org/doc/html/rfc5869">RFC 5869</a>.
      *
-     * @param hmacHashAlgorithmURI the Hash algorithm
-     * @param salt               the salt value to initialize the MAC algorithm.
-     * @throws XMLSecurityException if the key derivation initialization fails for any reason
-     */
-    public HKDF(String hmacHashAlgorithmURI, byte[] salt) throws XMLSecurityException {
-        this.hmacHashAlgorithmURI = hmacHashAlgorithmURI;
-        LOG.log(DEBUG, "Init HmacHash AlgorithmURI: [{}]", hmacHashAlgorithmURI);
-        hmac = initHMac(salt, true);
-    }
-
-    /**
-     * Derives a key from the given secret and info. Method extracts the key and then expands it to the keyLength.
-     *
-     * @param secret    The "shared" secret to use for key derivation
-     * @param info      The "info" parameter for key derivation describing purpose or derivation key context
-     * @param offset    the starting position in derived keying material of size: offset + keyLength
-     * @param keyLength The length of the key to derive
-     * @return the derived key using HKDF for the given parameters.
-     * @throws XMLSecurityException if the key derivation fails for any reason
+     * @param secret The "shared" secret to use for key derivation
+     * @param params The key derivation parameters (salt, info, key length, ...)
+     * @return The derived key of the specified length in bytes defined in the params
+     * @throws IllegalArgumentException if the parameters are missing
+     * @throws XMLSecurityException     if the hmac hash algorithm is not supported
      */
     @Override
-    public byte[] deriveKey(byte[] secret, byte[] info, int offset, long keyLength) throws XMLSecurityException {
+    public byte[] deriveKey(byte[] secret, HKDFParams params) throws XMLSecurityException {
+        // check if the parameters are set
+        if (params == null) {
+            throw new IllegalArgumentException(I18n.translate("KeyDerivation.MissingParameters"));
+        }
 
-        byte[] prk = extractKey(secret);
-        return expandKey(prk, info, offset, keyLength);
+        String jceAlgorithmName;
+        try {
+            jceAlgorithmName = XMLCipherUtil.getJCEMacHashForUri(params.getHmacHashAlgorithm());
+        } catch (NoSuchAlgorithmException e) {
+            throw new XMLSecurityException(e, "KeyDerivation.NotSupportedParameter", new Object[]{params.getHmacHashAlgorithm()});
+        }
+
+        byte[] prk = extractKey(jceAlgorithmName, params.getSalt(), secret);
+        return expandKey(jceAlgorithmName, prk, params.getInfo(), params.getKeyLength());
     }
 
     /**
-     * The extracted pseudo-random based on HMAC-Hash function. Salt is set at class initialization.
-     * Calculation of the  extracted key: <pre>PRK = HMAC-Hash(salt, IKM)</pre>
+     * The method "extracts" the pseudo-random key (PRK) based on HMAC-Hash function
+     * (optional) salt value (a non-secret random value) and the shared secret/input
+     * keying material (IKM).
+     * Calculation of the  extracted key:
+     * <pre>PRK = HMAC-Hash(salt, IKM)</pre>
      *
-     * @param secret the shared secret (IKM) to use for key derivation
-     * @return the pseudo-random key
+     * @param jceAlgorithmName the java JCE HMAC algorithm name to use for key derivation
+     *                         (e.g. HmacSHA256, HmacSHA384, HmacSHA512)
+     * @param salt             the optional salt value (a non-secret random value);
+     * @param secret           the shared secret/input keying material (IKM) to use for
+     *                         key derivation
+     * @return the pseudo-random key bytes
+     * @throws XMLSecurityException if the jceAlgorithmName is not supported
      */
-    public byte[] extractKey(byte[] secret) {
-        hmac.reset();
-        return hmac.doFinal(secret);
+    public byte[] extractKey(String jceAlgorithmName, byte[] salt, byte[] secret) throws XMLSecurityException {
+        Mac hMac = initHMac(jceAlgorithmName, salt, true);
+        hMac.reset();
+        return hMac.doFinal(secret);
     }
 
     /**
@@ -103,17 +112,17 @@ public class HKDF implements DerivationAlgorithm {
      *  ...
      *  </pre>
      *
-     * @param prk       pseudo-random key
-     * @param info      used to derive the key
-     * @param offset    in bytes of the derived key
-     * @param keyLength in bytes of the derived key
-     * @return the derived key OKM
-     * @throws XMLSecurityException in case the key derivation fails for any reason
+     * @param jceHmacAlgorithmName the java JCE HMAC algorithm name to use to expand
+     *                             the key (e.g. HmacSHA256, HmacSHA384, HmacSHA512)
+     * @param prk                  pseudo-random key derived from the shared secret
+     * @param info                 used to derive the key
+     * @param keyLength            key length in bytes of the derived key
+     * @return the output keying material (OKM) size of keyLength octets
+     * @throws XMLSecurityException if the jceHmacAlgorithmName is not supported
      */
-
-    public byte[] expandKey(byte[] prk, byte[] info, int offset, long keyLength) throws XMLSecurityException {
+    public byte[] expandKey(String jceHmacAlgorithmName, byte[] prk, byte[] info, long keyLength) throws XMLSecurityException {
         // prepare for expanding the key
-        Mac hMac = initHMac(prk, false);
+        Mac hMac = initHMac(jceHmacAlgorithmName, prk, false);
         int iMacLength = hMac.getMacLength();
 
         int toGenerateSize = (int) keyLength;
@@ -129,13 +138,9 @@ public class HKDF implements DerivationAlgorithm {
             hMac.update((byte) counter);
             prevResult = hMac.doFinal();
             result.put(prevResult, 0, Math.min(toGenerateSize, iMacLength));
-            // ger ready for next iteration
+            // get ready for next iteration
             toGenerateSize -= iMacLength;
             counter++;
-        }
-        if (offset > 0) {
-            result.position(offset);
-            return result.slice().array();
         }
         return result.array();
     }
@@ -144,31 +149,31 @@ public class HKDF implements DerivationAlgorithm {
      * Method initializes a Message Authentication Code (MAC) object using the
      * init secret/salt or an empty byte array if initSecret parameter is null or empty.
      *
-     * @param initSecret the secret/salt to initialize the hmac
-     * @param initPRK  if true, the salt is initialized with a string of zero octets as long as the hash function output
-     *                 see [RFC5869] Section 2.2
+     * @param jceAlgorithmName the java JCE HMAC algorithm name to use to init Mac
+     * @param initSecret       the secret/salt to initialize the hmac
+     * @param initPRK          if true, the salt is initialized with a string of zero octets
+     *                         as long as the hash function output see [RFC5869] Section 2.2
      * @return Initialized Mac object
-     * @throws XMLSecurityException if the key derivation initialization fails for any reason
+     * @throws XMLSecurityException if the hmac algorithm is not supported or if it
+     *  fails to initialize
      */
-    private Mac initHMac(byte[] initSecret, boolean initPRK) throws XMLSecurityException {
-        String jceAlgorithm = null;
+    private Mac initHMac(String jceAlgorithmName, byte[] initSecret, boolean initPRK) throws XMLSecurityException {
         Mac mac;
         try {
-            jceAlgorithm = XMLCipherUtil.getJCEMacHashForUri(hmacHashAlgorithmURI);
-            LOG.log(DEBUG, "Init Mac with hash algorithm: [{}]", jceAlgorithm);
-            mac = Mac.getInstance(jceAlgorithm);
+            LOG.log(DEBUG, "Init Mac with hash algorithm: [{}]", jceAlgorithmName);
+            mac = Mac.getInstance(jceAlgorithmName);
         } catch (NoSuchAlgorithmException e) {
-            throw new XMLSecurityException(e, "KeyDerivation.NotSupportedParameter", new Object[]{jceAlgorithm});
+            throw new XMLSecurityException(e, "KeyDerivation.NotSupportedParameter", new Object[]{jceAlgorithmName});
         }
 
         if (initPRK && (initSecret == null || initSecret.length == 0)) {
             //  If "initSecret"/salt is not provided, a string of zero octets as long as the hash function output is used
-            LOG.log(DEBUG, "Init Mac with hmac algorithm [{}] and empty salt!", jceAlgorithm);
+            LOG.log(DEBUG, "Init Mac with hmac algorithm [{}] and empty salt!", jceAlgorithmName);
             initSecret = new byte[mac.getMacLength()];
         }
-        SecretKeySpec secret_key = new SecretKeySpec(initSecret, jceAlgorithm);
+        SecretKeySpec secretKey = new SecretKeySpec(initSecret, jceAlgorithmName);
         try {
-            mac.init(secret_key);
+            mac.init(secretKey);
         } catch (InvalidKeyException e) {
             throw new XMLSecurityException(e);
         }

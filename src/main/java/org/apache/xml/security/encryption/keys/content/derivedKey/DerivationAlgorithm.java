@@ -18,38 +18,22 @@
  */
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
 /**
- * Interface is supported by classes to implement key derivation algorithms.
+ * The DerivationAlgorithm is the base interface for all key derivation algorithms
+ * implementation.
  */
-public interface DerivationAlgorithm {
-
-    /**
-     * Derives a key from the given secret and other info. The initial derived key is size of
-     * offset + keyLength.
-     *
-     * @param secret    The "shared" secret to use for key derivation (e.g. the secret key)
-     * @param otherInfo as specified in [SP800-56A] the optional  attributes:  AlgorithmID, PartyUInfo, PartyVInfo, SuppPubInfo and SuppPrivInfo attributes  are concatenated to form a bit string “OtherInfo” that is used with the key derivation function.
-     * @param offset    the starting position in derived keying material of size: offset + keyLength
-     * @param keyLength The length of the key to derive
-     * @return The derived key
-     * @throws XMLSecurityException if something goes wrong during the key derivation
-     */
-    byte[] deriveKey(byte[] secret, byte[] otherInfo, int offset,
-                     long keyLength) throws XMLSecurityException;
-
+public interface DerivationAlgorithm<T extends KeyDerivationParameters> {
 
     /**
      * Derives a key from the given secret and other info.
+     *
      * @param secret The "shared" secret to use for key derivation (e.g. the secret key)
-     * @param otherInfo as specified in [SP800-56A] the optional  attributes:  AlgorithmID, PartyUInfo, PartyVInfo, SuppPubInfo and SuppPrivInfo attributes  are concatenated to form a bit string “OtherInfo” that is used with the key derivation function.
-     * @param keyLength The length of the key to derive
-     * @return The derived key
-     * @throws XMLSecurityException if something goes wrong during the key derivation
+     * @param params The key derivation parameters implementing the KeyDerivationParameters interface
+     * @return Byte array of the derived key
+     * @throws XMLSecurityException in case of derivation error or invalid parameters
      */
-    default byte[] deriveKey(byte[] secret, byte[] otherInfo,
-                     long keyLength) throws XMLSecurityException {
-        return deriveKey(secret, otherInfo, 0, keyLength);
-    }
+    byte[] deriveKey(byte[] secret, T params) throws XMLSecurityException;
 }

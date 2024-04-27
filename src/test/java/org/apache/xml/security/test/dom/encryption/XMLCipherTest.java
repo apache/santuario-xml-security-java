@@ -347,8 +347,10 @@ class XMLCipherTest {
         cipherEncKey.setSecureValidation(true);
         // create key agreement parameters
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen,
-                MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        KeyDerivationParameters keyDerivationParameter = ConcatKDFParams
+                .createBuilder(keyBitLen, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256)
+                .build();
+
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameters(
                 KeyAgreementParameters.ActorType.ORIGINATOR,
                 keyAgreementMethod,
@@ -440,10 +442,11 @@ class XMLCipherTest {
         cipherEncKey.setSecureValidation(true);
         // create key agreement parameters
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        HKDFParams keyDerivationParameter = new HKDFParams(keyBitLen,
-                XMLSignature.ALGO_ID_MAC_HMAC_SHA256);
-        keyDerivationParameter.setInfo("test-info-data".getBytes(StandardCharsets.UTF_8));
-        keyDerivationParameter.setSalt(SecureRandom.getSeed(32));
+        HKDFParams keyDerivationParameter = HKDFParams.createBuilder(keyBitLen,
+                XMLSignature.ALGO_ID_MAC_HMAC_SHA256)
+                .salt(SecureRandom.getSeed(32))
+                .info("test-info-data".getBytes(StandardCharsets.UTF_8))
+                .build();
 
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameters(
                 KeyAgreementParameters.ActorType.ORIGINATOR,

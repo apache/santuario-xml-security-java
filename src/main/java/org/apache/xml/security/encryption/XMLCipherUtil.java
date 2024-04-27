@@ -243,7 +243,8 @@ public final class XMLCipherUtil {
     /**
      * Construct an KeyAgreementParameterSpec object from the given parameters
      *
-     * @param agreementAlgorithmURI  agreement algorithm
+     * @param agreementAlgorithmURI  agreement algorithm URI
+     * @param actorType              the actor type (originator or recipient)
      * @param keyDerivationParameter key derivation parameters (e.g. ConcatKDFParams for ConcatKDF key derivation)
      * @param keyAgreementPrivateKey private key to derive the shared secret in case of Diffie-Hellman key agreements
      * @param keyAgreementPublicKey  public key to derive the shared secret in case of Diffie-Hellman key agreements
@@ -271,91 +272,40 @@ public final class XMLCipherUtil {
      * Construct a KeyDerivationParameter object from the given keyDerivationMethod and keyBitLength
      *
      * @param keyDerivationMethod element with the key derivation method data
-     * @param keyBitLength  expected derived key length
+     * @param keyBitLength        expected derived key length in bits
      * @return KeyDerivationParameters data
-     * @throws XMLSecurityException if the keyDerivationMethod is not supported or invalid parameters are provided
+     * @throws XMLSecurityException if the invalid key derivation parameters are provide
+     * @throws XMLEncryptionException if the invalid key derivation is not supported
      */
-    public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod, int keyBitLength) throws XMLSecurityException {
+    public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod,
+                                                                          int keyBitLength) throws XMLSecurityException {
         String keyDerivationAlgorithm = keyDerivationMethod.getAlgorithm();
         KDFParams kdfParams = keyDerivationMethod.getKDFParams();
         if (EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(keyDerivationAlgorithm)) {
-            if (! (kdfParams instanceof ConcatKDFParamsImpl)) {
+            if (!(kdfParams instanceof ConcatKDFParamsImpl)) {
                 throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, ConcatKDFParamsImpl.class.getName());
             }
-
             ConcatKDFParamsImpl concatKDFParams = (ConcatKDFParamsImpl) kdfParams;
-
-            return constructConcatKeyDerivationParameter(keyBitLength, concatKDFParams.getDigestMethod(), concatKDFParams.getAlgorithmId(),
-                    concatKDFParams.getPartyUInfo(), concatKDFParams.getPartyVInfo(),
-                    concatKDFParams.getSuppPubInfo(), concatKDFParams.getSuppPrivInfo());
+            return ConcatKDFParams.createBuilder(keyBitLength, concatKDFParams.getDigestMethod())
+                    .algorithmID(concatKDFParams.getAlgorithmId())
+                    .partyUInfo(concatKDFParams.getPartyUInfo())
+                    .partyVInfo(concatKDFParams.getPartyVInfo())
+                    .suppPubInfo(concatKDFParams.getSuppPubInfo())
+                    .suppPrivInfo(concatKDFParams.getSuppPrivInfo())
+                    .build();
 
         } else if (EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF.equals(keyDerivationAlgorithm)) {
-            if (! (kdfParams instanceof HKDFParamsImpl)) {
+            if (!(kdfParams instanceof HKDFParamsImpl)) {
 
                 throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, HKDFParamsImpl.class.getName());
             }
             HKDFParamsImpl hKDFParams = (HKDFParamsImpl) kdfParams;
-            return constructHKDFKeyDerivationParameter(keyBitLength,
-                    hKDFParams.getPRFAlgorithm(),
-                    hKDFParams.getSalt() != null ? Base64.getDecoder().decode(hKDFParams.getSalt()) : null,
-                    hKDFParams.getInfo() != null ? Base64.getDecoder().decode(hKDFParams.getInfo()) : null);
+            return HKDFParams.createBuilder(keyBitLength, hKDFParams.getPRFAlgorithm())
+                    .salt(hKDFParams.getSalt() != null ? Base64.getDecoder().decode(hKDFParams.getSalt()) : null)
+                    .info(hKDFParams.getInfo() != null ? Base64.getDecoder().decode(hKDFParams.getInfo()) : null)
+                    .build();
         }
         throw new XMLEncryptionException("unknownAlgorithm", keyDerivationAlgorithm);
-    }
-
-    /**
-     * Construct a ConcatKeyDerivationParameter object from the given parameters as specified in the XML Encryption 1.1
-     * and NIST SP 800-56Ar2 specifications. (In a key establishment transaction, the participants,
-     * parties U and V, are considered to be the first and second parties)
-     *
-     * @param keyBitLength expected derived key length
-     * @param digestMethod digest method element identifies the digest algorithm used by the KDF
-     * @param algorithmId  algorithm id indicates how the derived keying material will be parsed and for which
-     *                     algorithm(s) the derived secret keying material will be used.
-     * @param partyUInfo   partyUInfo containing public information about party
-     * @param partyVInfo   partyVInfo containing public information about party
-     * @param suppPubInfo  suppPubInfo An optional subfield, which could be null that contains additional, mutually
-     *                     known public information
-     * @param suppPrivInfo suppPrivInfo An optional subfield, which could be null, that contains additional, mutually
-     * known private information
-     * @return ConcatKeyDerivationParameter parameters used as input to the Concatenation Key Derivation Function
-     */
-    public static ConcatKDFParams constructConcatKeyDerivationParameter(int keyBitLength,
-                                                                        String digestMethod,
-                                                                        String algorithmId,
-                                                                        String partyUInfo,
-                                                                        String partyVInfo,
-                                                                        String suppPubInfo,
-                                                                        String suppPrivInfo) {
-
-        ConcatKDFParams kdp = new ConcatKDFParams(keyBitLength, digestMethod);
-        kdp.setAlgorithmID(algorithmId);
-        kdp.setPartyUInfo(partyUInfo);
-        kdp.setPartyVInfo(partyVInfo);
-        kdp.setSuppPubInfo(suppPubInfo);
-        kdp.setSuppPrivInfo(suppPrivInfo);
-        return kdp;
-    }
-
-    /**
-     * Construct a HKDFParams object from the given parameters as specified in the rfc5869 specification.
-     *
-     * @param keyBitLength The length of the derived key in bits (for example, 128 or 256)
-     * @param hmacHashAlgorithm The HMAC hash algorithm to use for the key derivation. If null, the default algorithm
-     *                          hmac-sha256 is used.
-     * @param salt The salt value (a non-secret random value) used in the key derivation. If parameter is null,
-     *             the string of hmac-length zeros is used when deriving the key.
-     * @param info The context and application specific information (can be null)
-     * @return HKDFParams parameters used as input to the HMAC-based Extract-and-Expand Key Derivation Function.
-     */
-    public static HKDFParams constructHKDFKeyDerivationParameter(int keyBitLength,
-                                                                 String hmacHashAlgorithm,
-                                                                 byte[] salt,
-                                                                 byte[] info) {
-        HKDFParams kdp = new HKDFParams(keyBitLength, hmacHashAlgorithm);
-        kdp.setSalt(salt);
-        kdp.setInfo(info);
-        return kdp;
     }
 
     /**

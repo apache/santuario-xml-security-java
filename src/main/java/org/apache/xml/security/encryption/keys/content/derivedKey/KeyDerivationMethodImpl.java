@@ -29,8 +29,7 @@ import java.util.StringJoiner;
 import static java.lang.System.Logger.Level.DEBUG;
 
 /**
- * Class KeyDerivationMethodImpl is an DOM implementation of the KeyDerivationMethod
- *
+ * Class KeyDerivationMethodImpl is an DOM implementation of the KeyDerivationMethod.
  */
 public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements KeyDerivationMethod {
     protected static final System.Logger LOG = System.getLogger(KeyDerivationMethodImpl.class.getName());
@@ -47,7 +46,7 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
     }
 
     /**
-     * Constructor KeyDerivationMethodImpl from existing XML element
+     * Constructor KeyDerivationMethodImpl from existing XML element.
      *
      * @param element the element to use as source
      * @param baseURI the URI of the resource where the XML instance was stored
@@ -58,9 +57,9 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
     }
 
     /**
-     * Sets the <code>Algorithm</code> attribute
+     * Sets the <code>Algorithm</code> attribute.
      *
-     * @param algorithm ID
+     * @param algorithm URI
      */
     public void setAlgorithm(String algorithm) {
         if (algorithm != null) {
@@ -74,6 +73,15 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
     }
 
 
+    /**
+     * Method returns the KDFParams object  of this KeyDerivationMethod Element.
+     * If the KDFParams object is not set/cached, it tries to parse it (and cache it)
+     * from the KeyDerivationMethod Element. If the KDFParams cannot be parsed/or the
+     * Key derivation function URI is not supported, an XMLSecurityException is thrown.
+     *
+     * @return the Key derivation function parameters.
+     * @throws XMLSecurityException if the KDFParams cannot be created or the KDF URI is not supported.
+     */
     @Override
     public KDFParams getKDFParams() throws XMLSecurityException {
 
@@ -94,8 +102,9 @@ public class KeyDerivationMethodImpl extends Encryption11ElementProxy implements
                             Constants.XML_DSIG_NS_MORE_21_04,
                             EncryptionConstants._TAG_HKDFPARAMS, 0);
             kdfParams = new HKDFParamsImpl(hkdfParamsElement, Constants.XML_DSIG_NS_MORE_07_05);
+        } else {
+            throw new XMLSecurityException("KeyDerivation.NotSupportedParameter",  new Object[] {kdfAlgorithm});
         }
-
         return kdfParams;
     }
 

@@ -19,6 +19,7 @@
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
 
+import org.apache.xml.security.encryption.params.HKDFParams;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,10 +93,17 @@ class HKDFTest {
 
         byte[] expectedPRK = hexStringToByteArray(prk);
         byte[] expectedOKM = hexStringToByteArray(okm);
+        String hmacJCEName = getHMacHashForHashJCEName(hash);
         String hMacHashAlgorithmURI = getHMacHashForHashUri(hash);
-        HKDF hkdf = new HKDF(hMacHashAlgorithmURI, saltBytes);
-        byte[] extractedKey = hkdf.extractKey(ikmBytes);
-        byte[] derivedKey = hkdf.deriveKey(ikmBytes, infoBytes, 0, length);
+
+        HKDFParams params = HKDFParams.createBuilder(length * 8, hMacHashAlgorithmURI)
+                .salt(saltBytes)
+                .info(infoBytes)
+                .build();
+
+        HKDF testInstance = new HKDF();
+        byte[] extractedKey = testInstance.extractKey(hmacJCEName, saltBytes, ikmBytes);
+        byte[] derivedKey = testInstance.deriveKey(ikmBytes,  params);
 
         assertArrayEquals(expectedPRK, extractedKey);
         assertArrayEquals(expectedOKM, derivedKey);
@@ -123,6 +131,34 @@ class HKDFTest {
                 return XMLSignature.ALGO_ID_MAC_HMAC_SHA512;
             case DigestMethod.RIPEMD160:
                 return XMLSignature.ALGO_ID_MAC_HMAC_RIPEMD160;
+            default:
+                throw new IllegalArgumentException("Unknown/not supported hash algorithm: [" + hashAlgorithm + "]  for MacHash algorithm");
+        }
+    }
+
+    /**
+     * Helper method to get corresponding MacHash JCE algorithm name for the
+     * given hash algorithm URI.
+     *
+     * @param hashAlgorithm the hash algorithm URI
+     * @return the MacHash algorithm URI value.
+     * @throws IllegalArgumentException if the hash algorithm is not supported.
+     */
+    private static String getHMacHashForHashJCEName(String hashAlgorithm) {
+
+        switch (hashAlgorithm) {
+            case DigestMethod.SHA1:
+                return "HmacSHA1";
+            case DigestMethod.SHA224:
+                return "HmacSHA224";
+            case DigestMethod.SHA256:
+                return "HmacSHA256";
+            case DigestMethod.SHA384:
+                return "HmacSHA384";
+            case DigestMethod.SHA512:
+                return "HmacSHA512";
+            case DigestMethod.RIPEMD160:
+                return "HmacRIPEMD160";
             default:
                 throw new IllegalArgumentException("Unknown/not supported hash algorithm: [" + hashAlgorithm + "]  for MacHash algorithm");
         }
