@@ -22,7 +22,7 @@ import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.utils.EncryptionConstants;
 
 /**
- * Class ConcatKeyDerivationParameter is used to specify parameters for the
+ * Class ConcatKDFParams is used to specify parameters for the
  * ConcatKDF key derivation algorithm.
  *
  * @see <A HREF="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">XML Encryption
@@ -38,7 +38,7 @@ public class ConcatKDFParams extends KeyDerivationParameters {
     private String suppPrivInfo;
 
     /**
-     * Constructor ConcatKeyDerivationParameter with specified digest algorithm
+     * Constructor ConcatKDFParams with specified digest algorithm
      *
      * @param keyBitLength    the length of the derived key in bits
      * @param digestAlgorithm the digest algorithm to use
