@@ -99,7 +99,7 @@
         <junit.version>5.10.2</junit.version>
         <slf4j.version>2.0.13</slf4j.version>
         <xalan.version>2.7.3</xalan.version>
-        <xmlunit.version>2.9.1</xmlunit.version>
+        <xmlunit.version>2.10.0</xmlunit.version>
         <xml.bind.api.version>4.0.2</xml.bind.api.version>
         <woodstox.core.version>6.6.2</woodstox.core.version>
 
