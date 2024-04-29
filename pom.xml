@@ -579,7 +579,7 @@
         <bcprov.version>1.78.1</bcprov.version>
         <hamcrest.version>2.2</hamcrest.version>
         <xmlunit.version>2.10.0</xmlunit.version>
-        <commons.codec.version>1.16.0</commons.codec.version>
+        <commons.codec.version>1.17.0</commons.codec.version>
         <woodstox.core.version>6.5.0</woodstox.core.version>
         <jetty.version>9.4.53.v20231009</jetty.version>
         <xmlsec.jaxb.context.class />
