@@ -18,143 +18,108 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.PublicKey;
+import java.security.SecureRandom;
+import java.security.Security;
 import java.security.cert.X509Certificate;
-
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
-import org.apache.xml.security.testutils.JDKTestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
+import org.apache.xml.security.utils.KeyUtils;
 import org.apache.xml.security.utils.XMLUtils;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.w3c.dom.Element;
-
-import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 
 /**
- * Tests that creates and verifies ECDSA signatures.
+ * Tests that creates and verifies EC signatures with brainpool curves.
  *
  */
-class ECDSASignatureTest {
+class ECBrainpoolSignatureTest {
 
     private static final String ECDSA_JKS =
-        "src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks";
+        "src/test/resources/org/apache/xml/security/samples/input/ecbrainpool.jks";
     private static final String ECDSA_JKS_PASSWORD = "security";
-    private boolean isJDK16up;
+    private static boolean bcInstalled;
 
-    public ECDSASignatureTest() throws Exception {
-
-        //String id = "http://apache.org/xml/properties/dom/document-class-name";
-        //dbf.setAttribute(id, IndexedDocument.class.getName());
-
+    public ECBrainpoolSignatureTest() throws Exception {
         org.apache.xml.security.Init.init();
-        try {
-            int javaVersion = Integer.getInteger("java.specification.version", 0);
-            isJDK16up = javaVersion >= 16;
-        } catch (NumberFormatException ex) {
-            // ignore
+
+        //
+        // If the BouncyCastle provider is not installed, then try to load it
+        // via reflection.
+        //
+        if (Security.getProvider("BC") == null) {
+            Constructor<?> cons = null;
+            try {
+                Class<?> c = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                cons = c.getConstructor(new Class[] {});
+            } catch (Exception e) {
+                //ignore
+            }
+            if (cons != null) {
+                Provider provider = (Provider)cons.newInstance();
+                Security.insertProviderAt(provider, 2);
+                bcInstalled = true;
+            }
         }
+    }
+
+    @AfterAll
+    public static void cleanup() throws Exception {
+        Security.removeProvider("BC");
     }
 
     @Test
     void testOne() throws Exception {
+        Assumptions.assumeTrue(bcInstalled);
         //
         // This test fails with the IBM JDK
         //
         if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
             return;
         }
-        // https://bugs.openjdk.java.net/browse/JDK-8251547
-        assumeTrue(!isJDK16up);
 
         KeyStore keyStore = KeyStore.getInstance("JKS");
-        try (FileInputStream inputStream = new FileInputStream(ECDSA_JKS)) {
-            keyStore.load(inputStream, ECDSA_JKS_PASSWORD.toCharArray());
-        }
+        keyStore.load(new FileInputStream(ECDSA_JKS), ECDSA_JKS_PASSWORD.toCharArray());
 
-        PrivateKey privateKey = (PrivateKey) keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
+        PrivateKey privateKey =
+            (PrivateKey)keyStore.getKey("ECDSA", ECDSA_JKS_PASSWORD.toCharArray());
 
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
         doVerify(doSign(privateKey, (X509Certificate)keyStore.getCertificate("ECDSA"), null));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_224,
-            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_256,
-            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_384,
-            XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA3_512
+    @CsvSource({"BRAINPOOLP256R1,ECDH", "BRAINPOOLP384R1,ECDH", "BRAINPOOLP512R1,ECDH",
+            "BRAINPOOLP256R1,ECDSA", "BRAINPOOLP384R1,ECDSA", "BRAINPOOLP512R1,ECDSA"
     })
-    void testECDSSupportedAlgorithms(String algorithm) throws Exception {
-        //
-        // This test fails with the IBM JDK
-        //
-        if ("IBM Corporation".equals(System.getProperty("java.vendor"))) {
-            return;
-        }
-        Assumptions.assumeTrue(JDKTestUtils.isAuxiliaryProviderRegistered() ||
-                isJDK16up, "ECDSA_SHA3 signatures not supported");
-
-        KeyStore keyStore = KeyStore.getInstance("JKS");
-        try (FileInputStream inputStream = new FileInputStream(ECDSA_JKS)) {
-            keyStore.load(inputStream, ECDSA_JKS_PASSWORD.toCharArray());
-        }
-
-        X509Certificate x509 = (X509Certificate) keyStore.getCertificate("secp256r1");
-        PrivateKey privateKey = (PrivateKey) keyStore.getKey("secp256r1", ECDSA_JKS_PASSWORD.toCharArray());
-        byte[] signedXml = doSign(privateKey, x509, x509.getPublicKey(), algorithm);
-        MatcherAssert.assertThat(new String(signedXml), CoreMatchers.containsString(algorithm));
-        doVerify(signedXml);
-    }
-
-    // Failing with more recent BouncyCastle libraries
-    @Test
-    @Disabled
-    void testTwo() throws Exception {
-        File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/ecdsaSignature.xml");
-        try (InputStream is = new FileInputStream(file)) {
-            doVerify(is);
-        }
-    }
-
-    @Test
-    @Disabled
-    void testThree()  throws Exception {
-        File file = resolveFile("src/test/resources/at/buergerkarte/testresp.xml");
-        try (InputStream is = new FileInputStream(file)) {
-            doVerify(is);
-        }
-    }
-
-    @Test
-    void testKeyValue() throws Exception {
+    void testKeyValue(KeyUtils.KeyType keyType, String algorithm) throws Exception {
+        Assumptions.assumeTrue(bcInstalled);
         //
         // This test fails with the IBM JDK
         //
@@ -162,18 +127,19 @@ class ECDSASignatureTest {
             return;
         }
 
-        KeyPairGenerator ecKpg = KeyPairGenerator.getInstance("EC");
-        ecKpg.initialize(256);
-        KeyPair ecKeyPair = ecKpg.genKeyPair();
+        java.security.spec.ECGenParameterSpec bSpec =
+                new java.security.spec.ECGenParameterSpec(keyType.getName());
 
-        doVerify(doSign(ecKeyPair.getPrivate(), null, ecKeyPair.getPublic()));
+        final SecureRandom secureRandom = new SecureRandom ();
+        final KeyPairGenerator bGenerator = KeyPairGenerator.getInstance (algorithm, "BC");
+        bGenerator.initialize (bSpec, secureRandom);
+
+        final KeyPair keyPair = bGenerator.genKeyPair ();
+
+        doVerify(doSign(keyPair.getPrivate(), null, keyPair.getPublic()));
     }
 
     private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey) throws Exception {
-        return doSign(privateKey, x509, publicKey, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA256);
-    }
-
-    private byte[] doSign(PrivateKey privateKey, X509Certificate x509, PublicKey publicKey, String signatureAlgorithmURI) throws Exception {
         org.w3c.dom.Document doc = TestUtils.newDocument();
         doc.appendChild(doc.createComment(" Comment before "));
         Element root = doc.createElementNS("", "RootElement");
@@ -188,7 +154,7 @@ class ECDSASignatureTest {
         );
 
         SignatureAlgorithm signatureAlgorithm =
-            new SignatureAlgorithm(doc, signatureAlgorithmURI);
+            new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_ECDSA_SHA1);
         XMLSignature sig =
             new XMLSignature(doc, null, signatureAlgorithm.getElement(), canonElem);
 
@@ -254,13 +220,13 @@ class ECDSASignatureTest {
      * Create an X.509 Certificate and associated private key using the Elliptic Curve
      * DSA algorithm, and store in a KeyStore. This method was used to generate the
      * keystore used for this test
-     * ("src/test/resources/org/apache/xml/security/samples/input/ecdsa.jks").
+     * ("src/test/resources/org/apache/xml/security/samples/input/ecbrainpool.jks").
+     *
     private static void setUpKeyAndCertificate() throws Exception {
-        java.security.spec.ECGenParameterSpec ecGenParameterSpec =
-            new java.security.spec.ECGenParameterSpec("B-409");
+        final ECNamedCurveParameterSpec ecGenParameterSpec = ECNamedCurveTable.getParameterSpec (KeyType.BRAINPOOLP256R1.getName());
 
         java.security.KeyPairGenerator kpg =
-            java.security.KeyPairGenerator.getInstance("ECDH");
+            java.security.KeyPairGenerator.getInstance("ECDH", "BC");
 
         kpg.initialize(ecGenParameterSpec, new java.security.SecureRandom());
 
@@ -318,6 +284,6 @@ class ECDSASignatureTest {
         );
 
     }
-     */
+*/
 
 }

@@ -60,6 +60,7 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.KeyName;
 import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.testutils.JDKTestUtils;
 import org.apache.xml.security.testutils.KeyTestUtils;
@@ -71,6 +72,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -111,19 +113,19 @@ class XMLCipherTest {
     public XMLCipherTest() throws Exception {
         basedir = System.getProperty("basedir",".");
         documentName = System.getProperty("org.apache.xml.enc.test.doc",
-                basedir + "/pom.xml");
+                                          basedir + "/pom.xml");
         elementName = System.getProperty("org.apache.xml.enc.test.elem", "project");
         elementIndex = System.getProperty("org.apache.xml.enc.test.idx", "0");
 
         tstBase64EncodedString =
-                "YmNkZWZnaGlqa2xtbm9wcRrPXjQ1hvhDFT+EdesMAPE4F6vlT+y0HPXe0+nAGLQ8";
+            "YmNkZWZnaGlqa2xtbm9wcRrPXjQ1hvhDFT+EdesMAPE4F6vlT+y0HPXe0+nAGLQ8";
 
         // Determine if we have ISO 10126 Padding - needed for Bulk AES or
         // 3DES encryption
 
         haveISOPadding = false;
         String algorithmId =
-                JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
+            JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128);
 
         if (algorithmId != null) {
             try {
@@ -138,7 +140,7 @@ class XMLCipherTest {
         }
 
         haveKeyWraps =
-                JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null;
+            JCEMapper.translateURItoJCEID(EncryptionConstants.ALGO_ID_KEYWRAP_AES128) != null;
     }
 
     @AfterEach
@@ -209,8 +211,8 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
-                            + "necessary algorithms not available"
+                "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
@@ -282,8 +284,8 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testAES256ElementRSAKWCipherUsingKEK skipped as "
-                            + "necessary algorithms not available"
+                "Test testAES256ElementRSAKWCipherUsingKEK skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
@@ -491,6 +493,60 @@ class XMLCipherTest {
     }
 
     /**
+     * The http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p identifier defines the
+     * mask generation function as the fixed value of MGF1 with SHA1. In this case
+     * the optional xenc11:MGF element of the xenc:EncryptionMethod element
+     * MUST NOT be provided. For the http://www.w3.org/2009/xmlenc11#rsa-oaep
+     * identifier, the mask generation function must be defined by the xenc11:MGF
+     * element.
+     */
+    @ParameterizedTest
+    @CsvSource({
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p,,0",
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p,'',0",
+            "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p, http://www.w3.org/2009/xmlenc11#mgf1sha1,0",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha1,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha256,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha224,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha384,1",
+            "http://www.w3.org/2009/xmlenc11#rsa-oaep, http://www.w3.org/2009/xmlenc11#mgf1sha512,1",
+    })
+    void testAES128ElementRsaOaepKWCipher(String keyWrapAlgorithmURI, String mgf1URI, int mgfElementCount) throws Exception {
+        // Skip test for IBM JDK
+        Assumptions.assumeTrue(haveISOPadding,
+                "Test testAES128ElementRsaOaepKWCipher was skipped as necessary algorithms not available!" );
+        // init parameters encrypted key object
+        int transportKeyBitLength = 128;
+
+        // prepare the test document
+        Document d = TestUtils.newDocument(); // source
+
+        // Generate test recipient key pair
+        KeyPairGenerator rsaKeygen = KeyPairGenerator.getInstance("RSA");
+        KeyPair kp = rsaKeygen.generateKeyPair();
+        PublicKey pub = kp.getPublic();
+
+        // Generate a traffic key
+        KeyGenerator keygen = KeyGenerator.getInstance("AES");
+        keygen.init(transportKeyBitLength);
+        Key ephemeralSymmetricKey = keygen.generateKey();
+
+        XMLCipher cipherEncKey = XMLCipher.getInstance(keyWrapAlgorithmURI);
+        cipherEncKey.init(XMLCipher.WRAP_MODE, pub);
+        cipherEncKey.setSecureValidation(true);
+        // encrypt transport key with KeyAgreement
+        EncryptedKey encryptedKey =  cipherEncKey.encryptKey(d, ephemeralSymmetricKey,mgf1URI,null);
+        Element enckeyDoc = cipherEncKey.martial(encryptedKey);
+
+        NodeList mfgElements = enckeyDoc.getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, EncryptionConstants._TAG_MGF);
+        assertEquals(mgfElementCount, mfgElements.getLength());
+        assertEquals(keyWrapAlgorithmURI, encryptedKey.getEncryptionMethod().getAlgorithm());
+        if (mgfElementCount > 0) {
+            assertEquals(mgf1URI, encryptedKey.getEncryptionMethod().getMGFAlgorithm());
+        }
+    }
+
+    /**
      * Test encryption using a generated AES 192 bit key that is
      * encrypted using a 3DES key.  Then reverse by decrypting
      * EncryptedKey by hand
@@ -573,8 +629,8 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testAES192Element3DESKWCipher skipped as "
-                            + "necessary algorithms not available"
+                "Test testAES192Element3DESKWCipher skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
@@ -617,7 +673,7 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testTripleDesElementCipher skipped as necessary algorithms not available"
+                "Test testTripleDesElementCipher skipped as necessary algorithms not available"
             );
         }
     }
@@ -625,10 +681,10 @@ class XMLCipherTest {
     @Test
     void testAes128ElementCipher() throws Exception {
         byte[] bits128 = {
-                (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
-                (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
-                (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
-                (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
+                          (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
+                          (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
+                          (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
+                          (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
         Key key = new SecretKeySpec(bits128, "AES");
 
         Document d = document(); // source
@@ -661,7 +717,7 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testAes128ElementCipher skipped as necessary algorithms not available"
+                "Test testAes128ElementCipher skipped as necessary algorithms not available"
             );
         }
     }
@@ -669,12 +725,12 @@ class XMLCipherTest {
     @Test
     void testAes192ElementCipher() throws Exception {
         byte[] bits192 = {
-                (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
-                (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
-                (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
-                (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
-                (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
-                (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
+                          (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
+                          (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
+                          (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
+                          (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
+                          (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
+                          (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
         Key key = new SecretKeySpec(bits192, "AES");
 
         Document d = document(); // source
@@ -713,14 +769,14 @@ class XMLCipherTest {
     @Test
     void testAes265ElementCipher() throws Exception {
         byte[] bits256 = {
-                (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
-                (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
-                (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
-                (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
-                (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
-                (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
-                (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
-                (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
+                          (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
+                          (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
+                          (byte) 0x08, (byte) 0x09, (byte) 0x0A, (byte) 0x0B,
+                          (byte) 0x0C, (byte) 0x0D, (byte) 0x0E, (byte) 0x0F,
+                          (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
+                          (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
+                          (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
+                          (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
         Key key = new SecretKeySpec(bits256, "AES");
 
         Document d = document(); // source
@@ -795,8 +851,8 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testTripleDesDocumentCipher skipped as "
-                            + "necessary algorithms not available"
+                "Test testTripleDesDocumentCipher skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
@@ -853,8 +909,8 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testTripleDesDocumentCipher skipped as "
-                            + "necessary algorithms not available"
+                "Test testTripleDesDocumentCipher skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
@@ -875,30 +931,30 @@ class XMLCipherTest {
             cipher = XMLCipher.getInstance();
 
             EncryptedData ed =
-                    cipher.createEncryptedData(CipherData.REFERENCE_TYPE,
-                            "#CipherTextId");
+                cipher.createEncryptedData(CipherData.REFERENCE_TYPE,
+                                           "#CipherTextId");
             EncryptionMethod em =
-                    cipher.createEncryptionMethod(XMLCipher.AES_128);
+                cipher.createEncryptionMethod(XMLCipher.AES_128);
 
             ed.setEncryptionMethod(em);
 
             org.apache.xml.security.encryption.Transforms xencTransforms =
-                    cipher.createTransforms(d);
+                cipher.createTransforms(d);
             ed.getCipherData().getCipherReference().setTransforms(xencTransforms);
             org.apache.xml.security.transforms.Transforms dsTransforms =
-                    xencTransforms.getDSTransforms();
+                xencTransforms.getDSTransforms();
 
             // An XPath transform
             XPathContainer xpc = new XPathContainer(d);
             xpc.setXPath("self::text()[parent::CipherText[@Id=\"CipherTextId\"]]");
             dsTransforms.addTransform(
-                    org.apache.xml.security.transforms.Transforms.TRANSFORM_XPATH,
-                    xpc.getElementPlusReturns()
+                org.apache.xml.security.transforms.Transforms.TRANSFORM_XPATH,
+                xpc.getElementPlusReturns()
             );
 
             // Add a Base64 Transforms
             dsTransforms.addTransform(
-                    org.apache.xml.security.transforms.Transforms.TRANSFORM_BASE64_DECODE
+                org.apache.xml.security.transforms.Transforms.TRANSFORM_BASE64_DECODE
             );
 
             Element ee = cipher.martial(d, ed);
@@ -921,11 +977,11 @@ class XMLCipherTest {
             byte[] decryptBytes = cipherDecrypt.decryptToByteArray(ee);
 
             assertEquals("A test encrypted secret",
-                    new String(decryptBytes, StandardCharsets.US_ASCII));
+                        new String(decryptBytes, StandardCharsets.US_ASCII));
         } else {
             LOG.log(Level.WARNING,
-                    "Test testSameDocumentCipherReference skipped as "
-                            + "necessary algorithms not available"
+                "Test testSameDocumentCipherReference skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
@@ -1030,8 +1086,8 @@ class XMLCipherTest {
             assertNull(n);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testPhysicalRepresentation skipped as "
-                            + "necessary algorithms not available"
+                "Test testPhysicalRepresentation skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
@@ -1044,10 +1100,10 @@ class XMLCipherTest {
         }
 
         byte[] bits128 = {
-                (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
-                (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
-                (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
-                (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
+                          (byte) 0x10, (byte) 0x11, (byte) 0x12, (byte) 0x13,
+                          (byte) 0x14, (byte) 0x15, (byte) 0x16, (byte) 0x17,
+                          (byte) 0x18, (byte) 0x19, (byte) 0x1A, (byte) 0x1B,
+                          (byte) 0x1C, (byte) 0x1D, (byte) 0x1E, (byte) 0x1F};
         Key key = new SecretKeySpec(bits128, "AES");
 
         Document d = document(); // source
@@ -1059,7 +1115,7 @@ class XMLCipherTest {
 
         // serialize element ...
         Canonicalizer canon =
-                Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS);
+            Canonicalizer.getInstance(Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         canon.canonicalizeSubtree(e, baos);
         baos.close();
@@ -1089,7 +1145,7 @@ class XMLCipherTest {
     @Test
     void testEncryptedKeyWithRecipient() throws Exception {
         String filename =
-                "src/test/resources/org/apache/xml/security/encryption/encryptedKey.xml";
+            "src/test/resources/org/apache/xml/security/encryption/encryptedKey.xml";
         if (basedir != null && basedir.length() != 0) {
             filename = basedir + "/" + filename;
         }
@@ -1099,12 +1155,12 @@ class XMLCipherTest {
         keyCipher.init(XMLCipher.UNWRAP_MODE, null);
 
         NodeList ekList =
-                document.getElementsByTagNameNS(
-                        EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDKEY
-                );
+            document.getElementsByTagNameNS(
+                EncryptionConstants.EncryptionSpecNS, EncryptionConstants._TAG_ENCRYPTEDKEY
+            );
         for (int i = 0; i < ekList.getLength(); i++) {
             EncryptedKey ek =
-                    keyCipher.loadEncryptedKey(document, (Element) ekList.item(i));
+                keyCipher.loadEncryptedKey(document, (Element) ekList.item(i));
             assertNotNull(ek.getRecipient());
         }
     }
@@ -1235,8 +1291,8 @@ class XMLCipherTest {
             assertEquals(source, target);
         } else {
             LOG.log(Level.WARNING,
-                    "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
-                            + "necessary algorithms not available"
+                "Test testAES128ElementAES192KWCipherUsingKEK skipped as "
+                + "necessary algorithms not available"
             );
         }
     }
