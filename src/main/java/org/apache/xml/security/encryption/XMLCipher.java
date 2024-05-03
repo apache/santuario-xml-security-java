@@ -1624,12 +1624,12 @@ public class XMLCipher {
                                                                    String encryptionAlgorithm) throws XMLSecurityException {
 
         if (keyInfo == null || !keyInfo.containsAgreementMethod() ) {
-            LOG.log(Level.DEBUG,"EncryptedKey key does not contain AgreementMethod data");
+            LOG.debug("EncryptedKey key does not contain AgreementMethod data");
             return null;
         }
 
         if (!(this.key instanceof PrivateKey)) {
-            LOG.log(Level.INFO,"The EncryptedKey key is using Key agreement data, " +
+            LOG.info("The EncryptedKey key is using Key agreement data, " +
                     "but provided key is not a PrivateKey. Skipping Key Agreement data processing.");
             // do not throw error because of the legacy reasons to allow users to resolve
             // the encryption Key manually and provide the derived key to XMLCipher
@@ -1637,7 +1637,7 @@ public class XMLCipher {
             return null;
         }
         // resolve the agreement method
-        LOG.log(Level.DEBUG,"EncryptedKey key is using Key agreement data");
+        LOG.debug("EncryptedKey key is using Key agreement data");
         AgreementMethod agreementMethod = keyInfo.itemAgreementMethod(0);
         return XMLCipherUtil.constructRecipientKeyAgreementParameters(encryptionAlgorithm,
                 agreementMethod, (PrivateKey) this.key);
