@@ -274,13 +274,18 @@ public final class XMLCipherUtil {
      * @param keyDerivationMethod element with the key derivation method data
      * @param keyBitLength        expected derived key length in bits
      * @return KeyDerivationParameters data
-     * @throws XMLSecurityException if the invalid key derivation parameters are provide
-     * @throws XMLEncryptionException if the invalid key derivation is not supported
+     * @throws XMLEncryptionException throwen in case if KDFParams cannot be created or the
+     * KDF URI is not supported or the key derivation parameters are invalid.
      */
     public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod,
-                                                                          int keyBitLength) throws XMLSecurityException {
+                                                                          int keyBitLength) throws XMLEncryptionException {
         String keyDerivationAlgorithm = keyDerivationMethod.getAlgorithm();
-        KDFParams kdfParams = keyDerivationMethod.getKDFParams();
+        KDFParams kdfParams;
+        try {
+            kdfParams = keyDerivationMethod.getKDFParams();
+        } catch (XMLSecurityException e) {
+            throw new XMLEncryptionException(e);
+        }
         if (EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(keyDerivationAlgorithm)) {
             if (!(kdfParams instanceof ConcatKDFParamsImpl)) {
                 throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, ConcatKDFParamsImpl.class.getName());
@@ -296,7 +301,6 @@ public final class XMLCipherUtil {
 
         } else if (EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF.equals(keyDerivationAlgorithm)) {
             if (!(kdfParams instanceof HKDFParamsImpl)) {
-
                 throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, HKDFParamsImpl.class.getName());
             }
             HKDFParamsImpl hKDFParams = (HKDFParamsImpl) kdfParams;
