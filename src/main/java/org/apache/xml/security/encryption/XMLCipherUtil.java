@@ -269,13 +269,14 @@ public final class XMLCipherUtil {
     }
 
     /**
-     * Construct a KeyDerivationParameter object from the given keyDerivationMethod and keyBitLength
+     * Construct a KeyDerivationParameter object from the given keyDerivationMethod data
+     * and keyBitLength.
      *
      * @param keyDerivationMethod element with the key derivation method data
      * @param keyBitLength        expected derived key length in bits
      * @return KeyDerivationParameters data
-     * @throws XMLEncryptionException throwen in case if KDFParams cannot be created or the
-     * KDF URI is not supported or the key derivation parameters are invalid.
+     * @throws XMLEncryptionException if KDFParams cannot be created or the
+     * KDF URI is not supported or the key derivation parameters are invalid
      */
     public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod,
                                                                           int keyBitLength) throws XMLEncryptionException {
