@@ -578,8 +578,9 @@ class XMLCipherTest {
         cipherEncKey.init(XMLCipher.WRAP_MODE, pubRecipientKey);
         cipherEncKey.setSecureValidation(true);
         // create key agreement parameters
-        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(transportKeyBitLength,
-                MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        KeyDerivationParameters keyDerivationParameter = ConcatKDFParams
+                .createBuilder(transportKeyBitLength, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256)
+                .build();
         KeyAgreementParameters parameterSpec = new KeyAgreementParameters(
                 KeyAgreementParameters.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
