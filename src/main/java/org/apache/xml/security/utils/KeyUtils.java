@@ -265,9 +265,9 @@ public class KeyUtils {
 
         String keyDerivationAlgorithm = keyDerivationParameter.getAlgorithm();
         if (keyDerivationParameter instanceof HKDFParams) {
-            return deriveKeyEncryptionKey(sharedSecret, (HKDFParams) keyDerivationParameter);
+            return deriveKeyWithHKDF(sharedSecret, (HKDFParams) keyDerivationParameter);
         } else if (keyDerivationParameter instanceof ConcatKDFParams) {
-            return deriveKeyEncryptionKey(sharedSecret, (ConcatKDFParams) keyDerivationParameter);
+            return deriveKeyWithConcatKDF(sharedSecret, (ConcatKDFParams) keyDerivationParameter);
         }
 
         throw new XMLEncryptionException("KeyDerivation.UnsupportedAlgorithm", keyDerivationAlgorithm,
@@ -284,7 +284,7 @@ public class KeyUtils {
      * @throws XMLSecurityException if the key derivation parameters are invalid or
      *       the hmac algorithm is not supported.
      */
-    public static byte[] deriveKeyEncryptionKey(byte[] sharedSecret, HKDFParams hkdfParameter)
+    public static byte[] deriveKeyWithHKDF(byte[] sharedSecret, HKDFParams hkdfParameter)
             throws XMLSecurityException {
 
         if (!EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF.equals(hkdfParameter.getAlgorithm())){
@@ -306,7 +306,7 @@ public class KeyUtils {
      * @throws XMLSecurityException if the key derivation parameters are invalid or
      *        the hash algorithm is not supported.
      */
-    public static byte[] deriveKeyEncryptionKey(byte[] sharedSecret, ConcatKDFParams ckdfParameter)
+    public static byte[] deriveKeyWithConcatKDF(byte[] sharedSecret, ConcatKDFParams ckdfParameter)
             throws XMLSecurityException {
 
         if (!EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(ckdfParameter.getAlgorithm())){
