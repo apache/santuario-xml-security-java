@@ -1477,8 +1477,7 @@ public final class XMLCipher {
                 try {
                     String keyWrapAlg = encryptedKey.getEncryptionMethod().getAlgorithm();
                     String keyType = JCEMapper.getJCEKeyAlgorithmFromURI(keyWrapAlg);
-                    if ( !(ki instanceof KeyInfoEnc && ((KeyInfoEnc)ki).containsAgreementMethod())
-                            && ("RSA".equals(keyType) || "EC".equals(keyType))) {
+                    if ( "RSA".equals(keyType) || "EC".equals(keyType)) {
                         key = ki.getPrivateKey();
                     } else {
                         key = ki.getSecretKey();
@@ -1608,14 +1607,41 @@ public final class XMLCipher {
         }
 
         KeyInfoEnc keyInfo = encryptedKey.getKeyInfo() instanceof KeyInfoEnc ? (KeyInfoEnc) encryptedKey.getKeyInfo(): null;
-        if (keyInfo != null && keyInfo.containsAgreementMethod()) {
-            // resolve the agreement method
-            LOG.log(Level.DEBUG,"EncryptedKey key is using Key agreement data");
-            AgreementMethod agreementMethod = keyInfo.itemAgreementMethod(0);
-            return XMLCipherUtil.constructRecipientKeyAgreementParameters(encryptionAlgorithm,
-                    agreementMethod, (PrivateKey) this.key);
+        return constructKeyAgreementParameters(keyInfo, encryptionAlgorithm);
+    }
+
+    /**
+     * The method validates whether key agreement data is present and checks if
+     * the provided key is of type PrivateKey. If both conditions are met, it
+     * proceeds to extract the KeyAgreementParameters for key derivation; otherwise, it returns null
+     *
+     * @param keyInfo   the KeyInfoEnc object containing the key agreement data
+     * @param encryptionAlgorithm the encryption algorithm
+     *
+     * @return KeyAgreementParameters object containing the key agreement data
+     *       or null if the key agreement data is not present or the provided key is not a PrivateKey
+     */
+    private KeyAgreementParameters constructKeyAgreementParameters(KeyInfoEnc keyInfo,
+                                                                   String encryptionAlgorithm) throws XMLSecurityException {
+
+        if (keyInfo == null || !keyInfo.containsAgreementMethod() ) {
+            LOG.log(Level.DEBUG,"EncryptedKey key does not contain AgreementMethod data");
+            return null;
         }
-        return null;
+
+        if (!(this.key instanceof PrivateKey)) {
+            LOG.log(Level.INFO,"The EncryptedKey key is using Key agreement data, " +
+                    "but provided key is not a PrivateKey. Skipping Key Agreement data processing.");
+            // do not throw error because of the legacy reasons to allow users to resolve
+            // the encryption Key manually and provide the derived key to XMLCipher
+            // @see <A HREF="https://issues.apache.org/jira/browse/SANTUARIO-616">SANTUARIO-616</A>
+            return null;
+        }
+        // resolve the agreement method
+        LOG.log(Level.DEBUG,"EncryptedKey key is using Key agreement data");
+        AgreementMethod agreementMethod = keyInfo.itemAgreementMethod(0);
+        return XMLCipherUtil.constructRecipientKeyAgreementParameters(encryptionAlgorithm,
+                agreementMethod, (PrivateKey) this.key);
     }
 
     /**
