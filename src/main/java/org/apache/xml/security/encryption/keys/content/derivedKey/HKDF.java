@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- * <p>
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,7 +18,7 @@
  */
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
-import org.apache.xml.security.encryption.XMLCipherUtil;
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.params.HKDFParams;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.utils.I18n;
@@ -70,11 +70,9 @@ public class HKDF implements DerivationAlgorithm<HKDFParams> {
             throw new IllegalArgumentException(I18n.translate("KeyDerivation.MissingParameters"));
         }
 
-        String jceAlgorithmName;
-        try {
-            jceAlgorithmName = XMLCipherUtil.getJCEMacHashForUri(params.getHmacHashAlgorithm());
-        } catch (NoSuchAlgorithmException e) {
-            throw new XMLSecurityException(e, "KeyDerivation.NotSupportedParameter", new Object[]{params.getHmacHashAlgorithm()});
+        String jceAlgorithmName = JCEMapper.translateURItoJCEID(params.getHmacHashAlgorithm());
+        if (jceAlgorithmName == null) {
+            throw new XMLSecurityException("KeyDerivation.NotSupportedParameter", new Object[]{params.getHmacHashAlgorithm()});
         }
 
         byte[] prk = extractKey(jceAlgorithmName, params.getSalt(), secret);

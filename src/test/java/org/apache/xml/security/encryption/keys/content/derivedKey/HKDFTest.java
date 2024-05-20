@@ -35,6 +35,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * in RFC 5869, Appendix A. Test Vectors
  */
 class HKDFTest {
+    private static final System.Logger LOG = System.getLogger(HKDFTest.class.getName());
+
+    static {
+        org.apache.xml.security.Init.init();
+    }
 
     @ParameterizedTest(name = "{index}. {0}")
     @CsvSource({
@@ -87,6 +92,7 @@ class HKDFTest {
                     "2c91117204d745f3500d636a62f64f0ab3bae548aa53d423b0d1f27ebba6f5e5673a081d70cce7acfc48",
     })
     void deriveKey(String name, String hash, String ikm, String salt, String info, int length, String prk, String okm) throws XMLSecurityException {
+        LOG.log(System.Logger.Level.DEBUG, "Execute HKDF Test Case: [{0}]", name);
         byte[] saltBytes = hexStringToByteArray(salt);
         byte[] infoBytes = hexStringToByteArray(info);
         byte[] ikmBytes = hexStringToByteArray(ikm);

@@ -27,7 +27,6 @@ import org.apache.xml.security.encryption.params.HKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.KeyUtils;
 
@@ -184,34 +183,6 @@ public final class XMLCipherUtil {
             default:
                 LOG.log(Level.WARNING, "Unknown hash algorithm: [{0}]  for MGF1", digestAlgorithm);
                 return EncryptionConstants.MGF1_SHA1;
-        }
-    }
-
-    /**
-     * Get the JCE hmac algorithm name for the given digest uri
-     *
-     * @param hmacAlgorithmURI the digest algorithm
-     * @return the JCE hmac name algorithm
-     * @throws IllegalArgumentException if the digest algorithm is not supported/unknown
-     */
-    public static String getJCEMacHashForUri(String hmacAlgorithmURI) throws NoSuchAlgorithmException {
-
-        LOG.log(Level.DEBUG, "Get JCE HMac name for algorithm URI [{0}]", hmacAlgorithmURI);
-        switch (hmacAlgorithmURI) {
-            case XMLSignature.ALGO_ID_MAC_HMAC_SHA1:
-                return "HmacSHA1";
-            case XMLSignature.ALGO_ID_MAC_HMAC_SHA224:
-                return "HmacSHA224";
-            case XMLSignature.ALGO_ID_MAC_HMAC_SHA256:
-                return "HmacSHA256";
-            case XMLSignature.ALGO_ID_MAC_HMAC_SHA384:
-                return "HmacSHA384";
-            case XMLSignature.ALGO_ID_MAC_HMAC_SHA512:
-                return "HmacSHA512";
-            case XMLSignature.ALGO_ID_MAC_HMAC_RIPEMD160:
-                return "HMACRIPEMD160";
-            default:
-                throw new NoSuchAlgorithmException("Unknown/not supported hash algorithm: [" + hmacAlgorithmURI + "]  for MacHash algorithm");
         }
     }
 
