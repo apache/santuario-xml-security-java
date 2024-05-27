@@ -18,46 +18,45 @@
  */
 package org.apache.xml.security.encryption;
 
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.security.AccessController;
-import java.security.PrivateKey;
-import java.security.PrivilegedAction;
-import java.security.PublicKey;
-import java.security.spec.AlgorithmParameterSpec;
-import java.security.spec.MGF1ParameterSpec;
+import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.HKDFParamsImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KDFParams;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
+import org.apache.xml.security.encryption.params.HKDFParams;
+import org.apache.xml.security.encryption.params.KeyAgreementParameters;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
+import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.utils.EncryptionConstants;
+import org.apache.xml.security.utils.KeyUtils;
 
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
-
-import org.apache.xml.security.algorithms.JCEMapper;
-import org.apache.xml.security.encryption.params.ConcatKDFParams;
-import org.apache.xml.security.encryption.params.KeyAgreementParameters;
-import org.apache.xml.security.encryption.params.KeyDerivationParameters;
-import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
-import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
-import org.apache.xml.security.utils.EncryptionConstants;
-import org.apache.xml.security.utils.KeyUtils;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.security.*;
+import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.MGF1ParameterSpec;
+import java.util.Base64;
 
 public final class XMLCipherUtil {
 
     private static final Logger LOG = System.getLogger(XMLCipherUtil.class.getName());
 
     private static final boolean gcmUseIvParameterSpec =
-        AccessController.doPrivileged((PrivilegedAction<Boolean>)
-            () -> Boolean.getBoolean("org.apache.xml.security.cipher.gcm.useIvParameterSpec"));
+            AccessController.doPrivileged((PrivilegedAction<Boolean>)
+                    () -> Boolean.getBoolean("org.apache.xml.security.cipher.gcm.useIvParameterSpec"));
 
     /**
      * Build an <code>AlgorithmParameterSpec</code> instance used to initialize a <code>Cipher</code> instance
      * for block cipher encryption and decryption.
      *
      * @param algorithm the XML encryption algorithm URI
-     * @param iv the initialization vector
+     * @param iv        the initialization vector
      * @return the newly constructed AlgorithmParameterSpec instance, appropriate for the
-     *         specified algorithm
+     * specified algorithm
      */
     public static AlgorithmParameterSpec constructBlockCipherParameters(String algorithm, byte[] iv) {
         if (EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM.equals(algorithm)
@@ -140,7 +139,7 @@ public final class XMLCipherUtil {
     public static MGF1ParameterSpec constructMGF1Parameter(String mgh1AlgorithmURI) {
         LOG.log(Level.DEBUG, "Creating MGF1ParameterSpec for [{0}]", mgh1AlgorithmURI);
         if (mgh1AlgorithmURI == null || mgh1AlgorithmURI.isEmpty()) {
-            LOG.log(Level.WARNING,"MGF1 algorithm URI is null or empty. Using SHA-1 as default.");
+            LOG.log(Level.WARNING, "MGF1 algorithm URI is null or empty. Using SHA-1 as default.");
             return new MGF1ParameterSpec("SHA-1");
         }
 
@@ -187,7 +186,6 @@ public final class XMLCipherUtil {
         }
     }
 
-
     /**
      * Construct an KeyAgreementParameterSpec object from the given parameters
      *
@@ -216,7 +214,8 @@ public final class XMLCipherUtil {
     /**
      * Construct an KeyAgreementParameterSpec object from the given parameters
      *
-     * @param agreementAlgorithmURI  agreement algorithm
+     * @param agreementAlgorithmURI  agreement algorithm URI
+     * @param actorType              the actor type (originator or recipient)
      * @param keyDerivationParameter key derivation parameters (e.g. ConcatKDFParams for ConcatKDF key derivation)
      * @param keyAgreementPrivateKey private key to derive the shared secret in case of Diffie-Hellman key agreements
      * @param keyAgreementPublicKey  public key to derive the shared secret in case of Diffie-Hellman key agreements
@@ -229,7 +228,7 @@ public final class XMLCipherUtil {
         KeyAgreementParameters ecdhKeyAgreementParameters = new KeyAgreementParameters(
                 actorType,
                 agreementAlgorithmURI, keyDerivationParameter);
-        if (actorType == KeyAgreementParameters.ActorType.RECIPIENT  ) {
+        if (actorType == KeyAgreementParameters.ActorType.RECIPIENT) {
             ecdhKeyAgreementParameters.setRecipientPrivateKey(keyAgreementPrivateKey);
             ecdhKeyAgreementParameters.setOriginatorPublicKey(keyAgreementPublicKey);
         } else {
@@ -241,65 +240,69 @@ public final class XMLCipherUtil {
     }
 
     /**
-     * Construct a KeyDerivationParameter object from the given keyDerivationMethod and keyBitLength
+     * Construct a KeyDerivationParameter object from the given keyDerivationMethod data
+     * and keyBitLength.
      *
-     * @param keyDerivationMethod element to parse
-     * @param keyBitLength        expected derived key length
-     * @return KeyDerivationParameter object
-     * @throws XMLSecurityException if the keyDerivationMethod is not supported
+     * @param keyDerivationMethod element with the key derivation method data
+     * @param keyBitLength        expected derived key length in bits
+     * @return KeyDerivationParameters data
+     * @throws XMLEncryptionException if KDFParams cannot be created or the
+     * KDF URI is not supported or the key derivation parameters are invalid
      */
-    public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod, int keyBitLength) throws XMLSecurityException {
+    public static KeyDerivationParameters constructKeyDerivationParameter(KeyDerivationMethod keyDerivationMethod,
+                                                                          int keyBitLength) throws XMLEncryptionException {
         String keyDerivationAlgorithm = keyDerivationMethod.getAlgorithm();
-        if (!EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(keyDerivationAlgorithm)) {
-            throw new XMLEncryptionException("unknownAlgorithm", keyDerivationAlgorithm);
+        KDFParams kdfParams;
+        try {
+            kdfParams = keyDerivationMethod.getKDFParams();
+        } catch (XMLSecurityException e) {
+            throw new XMLEncryptionException(e);
         }
-        ConcatKDFParamsImpl concatKDFParams = ((KeyDerivationMethodImpl) keyDerivationMethod).getConcatKDFParams();
+        if (EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(keyDerivationAlgorithm)) {
+            if (!(kdfParams instanceof ConcatKDFParamsImpl)) {
+                throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, ConcatKDFParamsImpl.class.getName());
+            }
+            ConcatKDFParamsImpl concatKDFParams = (ConcatKDFParamsImpl) kdfParams;
+            return ConcatKDFParams.createBuilder(keyBitLength, concatKDFParams.getDigestMethod())
+                    .algorithmID(concatKDFParams.getAlgorithmId())
+                    .partyUInfo(concatKDFParams.getPartyUInfo())
+                    .partyVInfo(concatKDFParams.getPartyVInfo())
+                    .suppPubInfo(concatKDFParams.getSuppPubInfo())
+                    .suppPrivInfo(concatKDFParams.getSuppPrivInfo())
+                    .build();
 
-        return  constructConcatKeyDerivationParameter(keyBitLength, concatKDFParams.getDigestMethod(), concatKDFParams.getAlgorithmId(),
-                concatKDFParams.getPartyUInfo(), concatKDFParams.getPartyVInfo(),
-                concatKDFParams.getSuppPubInfo(),concatKDFParams.getSuppPrivInfo());
-
+        } else if (EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF.equals(keyDerivationAlgorithm)) {
+            if (!(kdfParams instanceof HKDFParamsImpl)) {
+                throw new XMLEncryptionException("KeyDerivation.InvalidParametersType", keyDerivationAlgorithm, HKDFParamsImpl.class.getName());
+            }
+            HKDFParamsImpl hKDFParams = (HKDFParamsImpl) kdfParams;
+            return HKDFParams.createBuilder(keyBitLength, hKDFParams.getPRFAlgorithm())
+                    .salt(hKDFParams.getSalt() != null ? Base64.getDecoder().decode(hKDFParams.getSalt()) : null)
+                    .info(hKDFParams.getInfo() != null ? Base64.getDecoder().decode(hKDFParams.getInfo()) : null)
+                    .build();
+        }
+        throw new XMLEncryptionException("unknownAlgorithm", keyDerivationAlgorithm);
     }
 
-
     /**
-     * Construct a ConcatKeyDerivationParameter object from the key length and digest method.
+     * Method hexStringToByteArray converts hex string to byte array.
      *
-     * @param keyBitLength expected derived key length
-     * @param digestMethod digest method
-     * @return ConcatKeyDerivationParameter object
+     * @param hexString the hex string to convert
+     * @return the byte array of the input param, empty array if the hex string is empty, or null if input param is null
      */
-    public static ConcatKDFParams constructConcatKeyDerivationParameter(int keyBitLength,
-                                                                        String digestMethod){
-        return constructConcatKeyDerivationParameter(keyBitLength, digestMethod, null, null, null, null, null);
-    }
-
-    /**
-     * Construct a ConcatKeyDerivationParameter object from the given parameters
-     *
-     * @param keyBitLength expected derived key length
-     * @param digestMethod digest method
-     * @param algorithmId algorithm id
-     * @param partyUInfo partyUInfo
-     * @param partyVInfo partyVInfo
-     * @param suppPubInfo suppPubInfo
-     * @param suppPrivInfo suppPrivInfo
-     * @return ConcatKeyDerivationParameter object
-     */
-    public static ConcatKDFParams constructConcatKeyDerivationParameter(int keyBitLength,
-                                                                        String digestMethod,
-                                                                        String algorithmId,
-                                                                        String partyUInfo,
-                                                                        String partyVInfo,
-                                                                        String suppPubInfo,
-                                                                        String suppPrivInfo) {
-
-        ConcatKDFParams kdp = new ConcatKDFParams(keyBitLength, digestMethod);
-        kdp.setAlgorithmID(algorithmId);
-        kdp.setPartyUInfo(partyUInfo);
-        kdp.setPartyVInfo(partyVInfo);
-        kdp.setSuppPubInfo(suppPubInfo);
-        kdp.setSuppPrivInfo(suppPrivInfo);
-        return kdp;
+    public static byte[] hexStringToByteArray(String hexString) {
+        if (hexString == null){
+            return null;
+        }
+        if (hexString.isEmpty()) {
+            return new byte[0];
+        }
+        int len = hexString.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
+                    + Character.digit(hexString.charAt(i+1), 16));
+        }
+        return data;
     }
 }

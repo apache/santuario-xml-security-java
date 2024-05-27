@@ -26,7 +26,7 @@ public abstract class KeyDerivationParameters {
     private final String algorithm;
     private final int keyBitLength;
 
-    public KeyDerivationParameters(String algorithm, int keyLength) {
+    protected KeyDerivationParameters(String algorithm, int keyLength) {
         this.algorithm = algorithm;
         this.keyBitLength = keyLength;
     }
@@ -35,7 +35,22 @@ public abstract class KeyDerivationParameters {
         return algorithm;
     }
 
+    /**
+     * The length of the derived key in bits.
+     * @return
+     */
     public int getKeyBitLength() {
         return keyBitLength;
+    }
+
+    /**
+     * The length of the derived key in bytes needed to store the key in bitSize.
+     * For example: if the key is 9 bits long, the length of the key in bytes is 2, but
+     * the key is stored in 8 bits the length in bytes is 1.
+
+     * @return the length of the derived key in bytes
+     */
+    public int getKeyLength() {
+        return keyBitLength / 8 + (keyBitLength % 8 == 0 ? 0 : 1);
     }
 }

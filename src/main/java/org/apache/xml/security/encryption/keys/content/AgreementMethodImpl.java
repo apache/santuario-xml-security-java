@@ -21,15 +21,18 @@ package org.apache.xml.security.encryption.keys.content;
 import org.apache.xml.security.encryption.AgreementMethod;
 import org.apache.xml.security.encryption.KeyDerivationMethod;
 import org.apache.xml.security.encryption.XMLEncryptionException;
+import org.apache.xml.security.encryption.keys.OriginatorKeyInfo;
+import org.apache.xml.security.encryption.keys.RecipientKeyInfo;
+import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.HKDFParamsImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KDFParams;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
+import org.apache.xml.security.encryption.params.HKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
-import org.apache.xml.security.encryption.keys.OriginatorKeyInfo;
-import org.apache.xml.security.encryption.keys.RecipientKeyInfo;
 import org.apache.xml.security.keys.content.KeyInfoContent;
-import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDFParamsImpl;
-import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
 import org.apache.xml.security.utils.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,15 +42,15 @@ import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.PublicKey;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 
 /**
- * The implementation of the AgreementMethod interface. The element contains a information about
+ * The implementation of the AgreementMethod interface. The element contains information about
  * the key agreement algorithm for deriving the encryption key.
- *
  */
 public class AgreementMethodImpl extends EncryptionElementProxy implements KeyInfoContent, AgreementMethod {
     protected static final Logger LOG = System.getLogger(AgreementMethodImpl.class.getName());
@@ -60,12 +63,12 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     private String algorithmURI;
 
     /**
-     *  Constructor AgreementMethodImpl for generating AgreementMethod from scratch based on {@link KeyAgreementParameters}.
-     *  The constructor generates {@link KeyDerivationMethod} if given and {@link OriginatorKeyInfo} based on originator
-     *  public key for ECDH-ES key agreement. It generates a placeholder element for RecipientKeyInfo. The recipient key info value
-     *  must be set later.
+     * Constructor AgreementMethodImpl for generating AgreementMethod from scratch based on {@link KeyAgreementParameters}.
+     * The constructor generates {@link KeyDerivationMethod} if given and {@link OriginatorKeyInfo} based on originator
+     * public key for ECDH-ES key agreement. It generates a placeholder element for RecipientKeyInfo. The recipient key info value
+     * must be set later.
      *
-     * @param doc the {@link Document} in which <code>AgreementMethod</code> will be placed
+     * @param doc                   the {@link Document} in which <code>AgreementMethod</code> will be placed
      * @param keyAgreementParameter the {@link KeyAgreementParameters} from which <code>AgreementMethod</code> will be generated
      * @throws XMLEncryptionException if the Key derivation algorithm is not supported or invalid parameters are given.
      */
@@ -77,7 +80,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
             setKeyDerivationMethod(keyDerivationMethod);
         }
         // if ephemeral static key agreement then add originator public key automatically
-        if (EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES.equals(keyAgreementParameter.getKeyAgreementAlgorithm())) {
+        if (keyAgreementParameter.getOriginatorPublicKey() != null) {
             setOriginatorPublicKey(keyAgreementParameter.getOriginatorPublicKey());
         }
         // set recipient key info holder
@@ -164,6 +167,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     public KeyDerivationMethod getKeyDerivationMethod() throws XMLSecurityException {
 
         if (keyDerivationMethod != null) {
+            LOG.log(Level.DEBUG, "Returning cached KeyDerivationMethod");
             return keyDerivationMethod;
         }
 
@@ -171,11 +175,10 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
                 XMLUtils.selectXenc11Node(getElement().getFirstChild(), EncryptionConstants._TAG_KEYDERIVATIONMETHOD, 0);
 
         if (keyDerivationMethodElement == null) {
+            LOG.log(Level.DEBUG, "No KeyDerivationMethod element found!");
             return null;
         }
         keyDerivationMethod = new KeyDerivationMethodImpl(keyDerivationMethodElement, baseURI);
-
-
         return keyDerivationMethod;
     }
 
@@ -200,6 +203,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     @Override
     public OriginatorKeyInfo getOriginatorKeyInfo() throws XMLSecurityException {
         if (originatorKeyInfo != null) {
+            LOG.log(Level.DEBUG, "Returning cached OriginatorKeyInfo");
             return originatorKeyInfo;
         }
 
@@ -207,6 +211,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
                 XMLUtils.selectXencNode(getElement().getFirstChild(), EncryptionConstants._TAG_ORIGINATORKEYINFO, 0);
 
         if (originatorKeyInfoElement == null) {
+            LOG.log(Level.DEBUG, "No OriginatorKeyInfo element found!");
             return null;
         }
         originatorKeyInfo = new OriginatorKeyInfo(originatorKeyInfoElement, baseURI);
@@ -229,7 +234,6 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
      */
     @Override
     public void setOriginatorPublicKey(PublicKey publicKey) {
-
         OriginatorKeyInfo originatorKeyInfo = new OriginatorKeyInfo(getDocument());
         originatorKeyInfo.add(publicKey);
         setOriginatorKeyInfo(originatorKeyInfo);
@@ -241,6 +245,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     @Override
     public RecipientKeyInfo getRecipientKeyInfo() throws XMLSecurityException {
         if (recipientKeyInfo != null) {
+            LOG.log(Level.DEBUG, "Returning cached RecipientKeyInfo");
             return recipientKeyInfo;
         }
 
@@ -248,6 +253,7 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
                 XMLUtils.selectXencNode(getElement().getFirstChild(), EncryptionConstants._TAG_RECIPIENTKEYINFO, 0);
 
         if (recipientKeyInfoElement == null) {
+            LOG.log(Level.DEBUG, "No RecipientKeyInfo element found!");
             return null;
         }
         recipientKeyInfo = new RecipientKeyInfo(recipientKeyInfoElement, baseURI);
@@ -260,7 +266,6 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
      */
     @Override
     public void setRecipientKeyInfo(RecipientKeyInfo keyInfo) {
-
         recipientKeyInfo = keyInfo;
         appendSelf(keyInfo);
         addReturnToSelf();
@@ -283,36 +288,54 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
     }
 
     /**
-     * Method createKeyDerivationMethod creates a {@link KeyDerivationMethod} based on {@link KeyAgreementParameters}.
-     * The method supports only {@link ConcatKDFParams} for now.
-     * @see <a href="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">ConcatKDF</a>
+     * Method creates a {@link KeyDerivationMethod} element based on parameters: {@link KeyAgreementParameters}.
+     * The method supports parameter types {@link ConcatKDFParams} and {@link HKDFParams}.
      *
      * @param keyAgreementParameter the {@link KeyAgreementParameters} from which {@link KeyDerivationMethod} will be generated.
-     * @return the {@link KeyDerivationMethod} based on {@link KeyAgreementParameters}
-     * @throws XMLEncryptionException if Key derivation algorithm is not supported
+     * @return the generated {@link KeyDerivationMethod} element based on {@link KeyAgreementParameters}
+     * @throws XMLEncryptionException   if the Key derivation algorithm is not supported or invalid parameters are given.
+     * @throws IllegalArgumentException if KeyAgreementParameters is missing or wrong class type for derivation algorithm
      */
     private KeyDerivationMethod createKeyDerivationMethod(KeyAgreementParameters keyAgreementParameter) throws XMLEncryptionException {
         KeyDerivationParameters kdfParameters = keyAgreementParameter.getKeyDerivationParameter();
+        if (kdfParameters == null) {
+            throw new IllegalArgumentException("KeyAgreementParameters must have KeyDerivationParameters set!");
+        }
 
         KeyDerivationMethodImpl keyDerivationMethod = new KeyDerivationMethodImpl(getDocument());
         keyDerivationMethod.setAlgorithm(kdfParameters.getAlgorithm());
 
-        if (kdfParameters instanceof ConcatKDFParams
-                && EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(kdfParameters.getAlgorithm())) {
-            ConcatKDFParamsImpl concatKDFParams = getConcatKDFParams((ConcatKDFParams)kdfParameters);
-            keyDerivationMethod.setConcatKDFParams(concatKDFParams);
-        } else {
-            throw new XMLEncryptionException("Unsupported Key Derivation Algorithm");
+        KDFParams kdfParams;
+        switch (kdfParameters.getAlgorithm()) {
+            case EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF:
+                kdfParams = getConcatKDFParams(kdfParameters);
+                break;
+            case EncryptionConstants.ALGO_ID_KEYDERIVATION_HKDF:
+                kdfParams = getHKDFParams(kdfParameters);
+                break;
+            default:
+                throw new XMLEncryptionException("KeyDerivation.UnsupportedAlgorithm",
+                        kdfParameters.getAlgorithm(), kdfParameters.getClass().getName());
         }
+
+        keyDerivationMethod.setKDFParams(kdfParams);
         return keyDerivationMethod;
     }
 
     /**
-     * Method getConcatKDFParams creates a {@link ConcatKDFParamsImpl} based on {@link ConcatKDFParams}.
-     * @param kdfParameters the {@link ConcatKDFParams} from which {@link ConcatKDFParamsImpl} will be generated.
+     * Method creates a {@link ConcatKDFParamsImpl} based on {@link ConcatKDFParams}.
+     *
+     * @param parameter the {@link KeyDerivationParameters} from which {@link ConcatKDFParamsImpl} will be generated.
      * @return the {@link ConcatKDFParamsImpl}
+     * @throws IllegalArgumentException if parameter is not instance of {@link ConcatKDFParams}
      */
-    private ConcatKDFParamsImpl getConcatKDFParams(ConcatKDFParams kdfParameters) {
+    private ConcatKDFParamsImpl getConcatKDFParams(KeyDerivationParameters parameter) {
+
+        if (!(parameter instanceof ConcatKDFParams)) {
+            throw new IllegalArgumentException("KDF Parameter must be instance of ConcatKDFParams");
+        }
+
+        ConcatKDFParams kdfParameters = (ConcatKDFParams) parameter;
         ConcatKDFParamsImpl concatKDFParams = new ConcatKDFParamsImpl(getDocument());
         concatKDFParams.setDigestMethod(kdfParameters.getDigestAlgorithm());
         // set parameters
@@ -322,5 +345,33 @@ public class AgreementMethodImpl extends EncryptionElementProxy implements KeyIn
         concatKDFParams.setSuppPubInfo(kdfParameters.getSuppPubInfo());
         concatKDFParams.setSuppPrivInfo(kdfParameters.getSuppPrivInfo());
         return concatKDFParams;
+    }
+
+    /**
+     * Method creates a {@link HKDFParamsImpl} based on {@link HKDFParams}.
+     *
+     * @param parameter the {@link KeyDerivationParameters} containing HKDF parameters.
+     * @return the {@link HKDFParamsImpl}
+     * @throws IllegalArgumentException if parameter is not instance of {@link HKDFParams}
+     */
+    private HKDFParamsImpl getHKDFParams(KeyDerivationParameters parameter) {
+
+        if (!(parameter instanceof HKDFParams)) {
+            throw new IllegalArgumentException("KDF Parameter must be instance of HKDFParams");
+        }
+        HKDFParams kdfParameters = (HKDFParams) parameter;
+
+        HKDFParamsImpl kdfParams = new HKDFParamsImpl(getDocument());
+        kdfParams.setPRFAlgorithm(kdfParameters.getHmacHashAlgorithm());
+        Base64.Encoder base64Encoder = Base64.getEncoder();
+        if (kdfParameters.getSalt() != null) {
+            kdfParams.setSalt(base64Encoder.encodeToString(kdfParameters.getSalt()));
+        }
+        if (kdfParameters.getInfo() != null) {
+            kdfParams.setInfo(base64Encoder.encodeToString(kdfParameters.getInfo()));
+        }
+        // set parameters
+        kdfParams.setKeyLength(kdfParameters.getKeyBitLength() / 8);
+        return kdfParams;
     }
 }

@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- * <p>
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -19,8 +19,11 @@
 package org.apache.xml.security.encryption.keys.content.derivedKey;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.encryption.XMLCipherUtil;
 import org.apache.xml.security.encryption.XMLEncryptionException;
+import org.apache.xml.security.encryption.params.ConcatKDFParams;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.utils.I18n;
 
 import java.lang.System.Logger.Level;
 import java.nio.ByteBuffer;
@@ -36,62 +39,41 @@ import java.util.List;
  * <p>
  * Identifier of the key derivation algorithm:  http://www.w3.org/2009/xmlenc11#ConcatKDF
  */
-public class ConcatKDF implements DerivationAlgorithm {
+public class ConcatKDF implements DerivationAlgorithm<ConcatKDFParams> {
 
     private static final System.Logger LOG = System.getLogger(ConcatKDF.class.getName());
-    private final String algorithmURI;
 
     /**
-     * Constructor ConcatKDF with digest algorithmURI parameter such as http://www.w3.org/2001/04/xmlenc#sha256,
-     * http://www.w3.org/2001/04/xmlenc#sha512, etc.
-     */
-    public ConcatKDF(String algorithmURI) {
-        this.algorithmURI = algorithmURI;
-    }
-
-    /**
-     * Default Constructor which sets the default digest algorithmURI parameter:  http://www.w3.org/2001/04/xmlenc#sha256,
-     */
-    public ConcatKDF() {
-        this(MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
-    }
-
-    /**
-     * Key DerivationAlgorithm implementation as defined in Section 5.8.1 of NIST SP 800-56A [SP800-56A]
-     * <ul>
-     * <li> reps = ⎡ keydatalen / hashlen⎤.</li>
-     * <li> If reps > (2>32 −1), then ABORT: output an error indicator and stop.</li>
-     * <li> Initialize a 32-bit, big-endian bit string counter as 0000000116.</li>
-     * <li> If counter || Z || OtherInfo is more than max_hash_inputlen bits long, then ABORT: output an error indicator and stop.
-     * <li> For i = 1 to reps by 1, do the following:<ul>
-     *     <li> Compute Hashi = H(counter || Z || OtherInfo).</li>
-     *     <li> Increment counter (modulo 232), treating it as an unsigned 32-bit integer.</li>
-     * </ul></li>
-     * <li> Let Hhash be set to Hashreps if (keydatalen / hashlen) is an integer; otherwise, let Hhash  be set to the
-     * (keydatalen mod hashlen) leftmost bits of Hashreps.</li>
-     * <li>Set DerivedKeyingMaterial = Hash1 || Hash2 || ... || Hashreps-1 || Hhash</li>
-     * </ul>
+     * Derives a key from the shared secret and other concat kdf parameters.
      *
-     * @param secret    The "shared" secret to use for key derivation (e.g. the secret key)
-     * @param otherInfo as specified in [SP800-56A] the optional  attributes:  AlgorithmID, PartyUInfo, PartyVInfo, SuppPubInfo and SuppPrivInfo attributes  are concatenated to form a bit string “OtherInfo” that is used with the key derivation function.
-     * @param offset    the offset parameter is ignored by this implementation.
-     * @param keyLength The length of the key to derive
-     * @return The derived key
-     * @throws XMLEncryptionException if the key length is too long to be derived with the given algorithm
+     * @param sharedSecret The "shared" secret used for the key derivation (e.g. the secret key)
+     * @param concatKDFParams The concat key derivation parameters
+     * @return the derived key bytes
+     * @throws IllegalArgumentException if the concat KDF parameters are not set
+     * @throws XMLSecurityException if the key derivation parameters are invalid
      */
     @Override
-    public byte[] deriveKey(byte[] secret, byte[] otherInfo, int offset, long keyLength) throws XMLSecurityException {
+    public byte[] deriveKey(byte[] sharedSecret, ConcatKDFParams concatKDFParams) throws XMLSecurityException {
 
-        MessageDigest digest = MessageDigestAlgorithm.getDigestInstance(algorithmURI);
+        // check if the parameters are set
+        if (concatKDFParams == null) {
+            throw new IllegalArgumentException(I18n.translate("KeyDerivation.MissingParameters"));
+        }
 
-        long genKeyLength = offset+keyLength;
+        // concatenate the bitstrings in following order algID || partyUInfo || partyVInfo || suppPubInfo || suppPrivInfo
+        final byte[] otherInfo = concatParameters(concatKDFParams.getAlgorithmID(),
+                concatKDFParams.getPartyUInfo(), concatKDFParams.getPartyVInfo(),
+                concatKDFParams.getSuppPubInfo(), concatKDFParams.getSuppPrivInfo());
+
+        // get the digest algorithm
+        MessageDigest digest = MessageDigestAlgorithm.getDigestInstance(concatKDFParams.getDigestAlgorithm());
+        int genKeyLength = concatKDFParams.getKeyLength();
 
         int iDigestLength = digest.getDigestLength();
-        if (genKeyLength / iDigestLength > (long) Integer.MAX_VALUE) {
-            LOG.log(Level.ERROR, "Key size is to long to be derived with hash algorithm [{0}]", algorithmURI);
-            throw new XMLEncryptionException("errorInKeyDerivation");
+        if (genKeyLength / (long) iDigestLength > Integer.MAX_VALUE) {
+            throw new XMLSecurityException("KeyDerivation.InvalidParameter", new Object[]{"key length"} );
         }
-        int toGenerateSize = (int) genKeyLength;
+        int toGenerateSize = genKeyLength;
 
         digest.reset();
         ByteBuffer indexBuffer = ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN);
@@ -104,56 +86,16 @@ public class ConcatKDF implements DerivationAlgorithm {
             indexBuffer.putInt(counter++);
             indexBuffer.position(0);
             digest.update(indexBuffer);
-            digest.update(secret);
+            digest.update(sharedSecret);
             if (otherInfo != null && otherInfo.length > 0) {
                 digest.update(otherInfo);
             }
             result.put(digest.digest(), 0, Math.min(toGenerateSize, iDigestLength));
             toGenerateSize -= iDigestLength;
         }
-        if (offset > 0) {
-            result.position(offset);
-            return result.slice().array();
-        }
+
         return result.array();
     }
-
-    /**
-     * Method concatenate the bitstrings in following order {@code algID || partyUInfo || partyVInfo || suppPubInfo || suppPrivInfo}.
-     * to crate otherInfo as key derivation function input.
-     * If named parameters are null the value is ignored.
-     * Method parses the bitstring firs {{@code @See} https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF} and then concatenates them to a byte array.
-     *
-     * @param sharedSecret The "shared" secret to use for key derivation (e.g. the secret key)
-     * @param algID        A bit string that indicates how the derived keying material will be parsed and for which
-     *                     algorithm(s) the derived secret keying material will be used.
-     * @param partyUInfo   A bit string containing public information that is required by the
-     *                     application using this KDF to be contributed by party U to the key derivation
-     *                     process. At a minimum, PartyUInfo shall include IDU, the identifier of party U. See
-     *                     the notes below..
-     * @param partyVInfo   A bit string containing public information that is required by the
-     *                     application using this KDF to be contributed by party V to the key derivation
-     *                     process. At a minimum, PartyVInfo shall include IDV, the identifier of party V. See
-     *                     the notes below.
-     * @param suppPubInfo  bit string containing additional, mutually-known public information.
-     * @param suppPrivInfo The suppPrivInfo A bit string containing additional, mutually-known public Information.
-     * @param keyLength    The length of the key to derive
-     * @return The resulting other info.
-     */
-    public byte[] deriveKey(final byte[] sharedSecret,
-                            final String algID,
-                            final String partyUInfo,
-                            final String partyVInfo,
-                            final String suppPubInfo,
-                            final String suppPrivInfo,
-                            final long keyLength)
-            throws XMLSecurityException {
-
-        final byte[] otherInfo = concatParameters(algID, partyUInfo, partyVInfo, suppPubInfo, suppPrivInfo);
-
-        return deriveKey(sharedSecret, otherInfo, keyLength);
-    }
-
 
     /**
      * Simple method to concatenate non-padded bitstream ConcatKDF parameters.
@@ -217,22 +159,16 @@ public class ConcatKDF implements DerivationAlgorithm {
             LOG.log(Level.ERROR, "Padded ConcatKDF parameters are not supported");
             throw new XMLEncryptionException( "KeyDerivation.NotSupportedParameter", kdfParameter);
         }
-        // skip first two chars
+        // skip first two chars since they are padding bytes,
         kdfP = kdfP.substring(2);
-        paramLen = kdfP.length();
-        byte[] data = new byte[paramLen / 2];
-
-        for (int i = 0; i < paramLen; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(kdfP.charAt(i), 16) << 4)
-                    + Character.digit(kdfP.charAt(i + 1), 16));
-        }
-        return data;
+        return XMLCipherUtil.hexStringToByteArray(kdfP);
     }
 
     /**
      * Method returns the size of the array or 0 if the array is null.
+     *
      * @param array the array to get the size from
-     * @return the size of the array or 0 if the array is null.
+     * @return the size of the array or 0 if the array is null
      */
     private static int getSize(byte[] array) {
         return array == null ? 0 : array.length;
