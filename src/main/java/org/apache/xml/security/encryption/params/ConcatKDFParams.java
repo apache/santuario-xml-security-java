@@ -22,9 +22,11 @@ import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.utils.EncryptionConstants;
 
 /**
- * Class ConcatKeyDerivationParameter is used to specify parameters for the ConcatKDF key derivation algorithm.
- * @see <A HREF="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">XML Encryption Syntax and Processing Version 1.1, 5.8.1
- * The ConcatKDF Key Derivation Algorithm</A>
+ * Class ConcatKDFParams is used to specify parameters for the
+ * ConcatKDF key derivation algorithm.
+ *
+ * @see <A HREF="https://www.w3.org/TR/xmlenc-core1/#sec-ConcatKDF">XML Encryption
+ * syntax and Processing Version 1.1, 5.8.1 The ConcatKDF Key Derivation Algorithm</A>
  */
 public class ConcatKDFParams extends KeyDerivationParameters {
 
@@ -36,12 +38,12 @@ public class ConcatKDFParams extends KeyDerivationParameters {
     private String suppPrivInfo;
 
     /**
-     * Constructor ConcatKeyDerivationParameter with specified digest algorithm
+     * Constructor ConcatKDFParams with specified digest algorithm
      *
      * @param keyBitLength    the length of the derived key in bits
      * @param digestAlgorithm the digest algorithm to use
      */
-    public ConcatKDFParams(int keyBitLength, String digestAlgorithm) {
+    protected ConcatKDFParams(int keyBitLength, String digestAlgorithm) {
         super(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF, keyBitLength);
         this.digestAlgorithm = digestAlgorithm;
     }
@@ -98,5 +100,73 @@ public class ConcatKDFParams extends KeyDerivationParameters {
 
     public void setSuppPrivInfo(String suppPrivInfo) {
         this.suppPrivInfo = suppPrivInfo;
+    }
+
+    /**
+     * Create a new ConcatKDF key derivation algorithm parameters builder.
+     * @param keyBitLength    the length of the derived key in bits
+     * @param digestAlgorithm the digest algorithm to use
+     * @return a new ConcatKDF builder to configure the key derivation parameters
+     */
+    public static Builder createBuilder(int keyBitLength, String digestAlgorithm) {
+        return new Builder(keyBitLength, digestAlgorithm);
+    }
+
+    /**
+     * The ConcatKDF key derivation algorithm parameters builder.
+     */
+    public static class Builder {
+
+        private int keyBitLength;
+        private String digestAlgorithm;
+        private String algorithmID;
+        private String partyUInfo;
+        private String partyVInfo;
+        private String suppPubInfo;
+        private String suppPrivInfo;
+
+        protected Builder(int keyBitLength, String digestAlgorithm) {
+            this.keyBitLength = keyBitLength;
+            this.digestAlgorithm = digestAlgorithm;
+        }
+
+        public Builder algorithmID(String algorithmID) {
+            this.algorithmID = algorithmID;
+            return this;
+        }
+
+        public Builder partyUInfo(String partyUInfo) {
+            this.partyUInfo = partyUInfo;
+            return this;
+        }
+
+        public Builder partyVInfo(String partyVInfo) {
+            this.partyVInfo = partyVInfo;
+            return this;
+        }
+
+        public Builder suppPubInfo(String suppPubInfo) {
+            this.suppPubInfo = suppPubInfo;
+            return this;
+        }
+
+        public Builder suppPrivInfo(String suppPrivInfo) {
+            this.suppPrivInfo = suppPrivInfo;
+            return this;
+        }
+
+        /**
+         * Method builds the ConcatKDF key derivation algorithm parameters from
+         * the builder configuration.
+         */
+        public ConcatKDFParams build() {
+            ConcatKDFParams params = new ConcatKDFParams(keyBitLength, digestAlgorithm);
+            params.setAlgorithmID(algorithmID);
+            params.setPartyUInfo(partyUInfo);
+            params.setPartyVInfo(partyVInfo);
+            params.setSuppPubInfo(suppPubInfo);
+            params.setSuppPrivInfo(suppPrivInfo);
+            return params;
+        }
     }
 }

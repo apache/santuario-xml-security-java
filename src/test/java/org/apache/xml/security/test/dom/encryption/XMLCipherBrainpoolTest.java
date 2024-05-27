@@ -182,8 +182,9 @@ class XMLCipherBrainpoolTest {
         cipherEncKey.setSecureValidation(true);
         // create key agreement parameters
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen,
-                MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        KeyDerivationParameters keyDerivationParameter = ConcatKDFParams
+                .createBuilder(keyBitLen, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256)
+                .build();
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameters(
                 KeyAgreementParameters.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,

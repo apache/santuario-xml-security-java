@@ -535,7 +535,10 @@ class XMLEncryption11Test extends XMLEncryption11TestAbstract {
 
 
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen, kdfAlgorithm);
+        KeyDerivationParameters keyDerivationParameter = ConcatKDFParams
+                .createBuilder(keyBitLen, kdfAlgorithm)
+                .build();
+
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameters(
                 KeyAgreementParameters.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
@@ -637,7 +640,9 @@ class XMLEncryption11Test extends XMLEncryption11TestAbstract {
 
 
         int keyBitLen = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(keyWrapAlgorithm);
-        KeyDerivationParameters keyDerivationParameter = new ConcatKDFParams(keyBitLen, kdfAlgorithm);
+        KeyDerivationParameters keyDerivationParameter = ConcatKDFParams
+                .createBuilder(keyBitLen, kdfAlgorithm)
+                .build();
         AlgorithmParameterSpec parameterSpec = new KeyAgreementParameters(
                 KeyAgreementParameters.ActorType.ORIGINATOR,
                 EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
