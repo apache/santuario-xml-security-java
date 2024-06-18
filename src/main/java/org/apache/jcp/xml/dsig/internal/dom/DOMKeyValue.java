@@ -550,7 +550,7 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
             DOMUtils.setAttribute(namedCurveElem, "URI", "urn:oid:" + oid);
             String qname = (prefix == null || prefix.length() == 0)
                        ? "xmlns" : "xmlns:" + prefix;
-            namedCurveElem.setAttributeNS("http://www.w3.org/2000/xmlns/",
+            ecKeyValueElem.setAttributeNS("http://www.w3.org/2000/xmlns/",
                                           qname, XMLDSIG_11_XMLNS);
             ecKeyValueElem.appendChild(namedCurveElem);
             String encoded = XMLUtils.encodeToString(ecPublicKey);
