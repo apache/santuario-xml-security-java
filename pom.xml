@@ -554,7 +554,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <argLine>${maven.test.argLine}</argLine>
                     <skipExec>${skipIT}</skipExec>
