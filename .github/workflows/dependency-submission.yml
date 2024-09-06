@@ -3,9 +3,6 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: write
-
 jobs:
   dependency-submission:
     runs-on: ubuntu-latest
