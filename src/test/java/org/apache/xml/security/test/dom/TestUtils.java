@@ -21,9 +21,15 @@ package org.apache.xml.security.test.dom;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.Constants;
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class TestUtils {
 
@@ -70,6 +76,27 @@ public class TestUtils {
 
     public static Document newDocument() throws ParserConfigurationException {
         return DBF.newDocumentBuilder().newDocument();
+    }
+
+    /**
+     * Create a test method to read input XML Fragment bytes and return a Document with root element "ROOT".
+     * The XML fragment are wrapped in a "ROOT" element to make it a valid XML document.
+     *
+     * @param xmlFragment the XML fragment bytes
+     *                    (e.g. "<a>text 2</a><a><b>text 2</b></a>".getBytes())
+     * @return the Document with root element "ROOT"
+     */
+    public static Document xmlFragmentToDocument(byte[] xmlFragment) throws XMLParserException, IOException {
+        if (xmlFragment == null || xmlFragment.length == 0) {
+            throw new IllegalArgumentException("XML fragment cannot be null or empty");
+        }
+
+        String xml = new String(xmlFragment, StandardCharsets.UTF_8);
+        String xmlDocument = "<ROOT>" + xml + "</ROOT>";
+
+        try (ByteArrayInputStream is = new ByteArrayInputStream(xmlDocument.getBytes(StandardCharsets.UTF_8))) {
+            return XMLUtils.read(is, true);
+        }
     }
 
     public static boolean isJava11Compatible() {

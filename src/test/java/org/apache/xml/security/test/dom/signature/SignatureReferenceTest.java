@@ -19,9 +19,12 @@
 package org.apache.xml.security.test.dom.signature;
 
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -32,8 +35,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.Init;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
+import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.Manifest;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
@@ -47,6 +52,7 @@ import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.transforms.params.XPath2FilterContainer;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
@@ -55,6 +61,8 @@ import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -70,6 +78,45 @@ import static org.junit.jupiter.api.Assertions.fail;
  * validated.
  */
 class SignatureReferenceTest {
+
+    private static String testDocument = "\uFEFF<a:app  xmlns:a=\"http://nl.example/\">\n" +
+            "    <a:welcome-message>Hi! This is xpather beta...</a:welcome-message>\n" +
+            "    <a:description>\n" +
+            "        <a:subject>\n" +
+            "      You can enter your xpath query in the top-left panel \n" +
+            "      and it will be instantly executed against this document.\n" +
+            "      Once some results are displayed on the right, you can \n" +
+            "      scroll to them by clicking on them. \n" +
+            "    </a:subject>\n" +
+            "    <a:subject>\n" +
+            "      To generate an xpath query for a specific element,\n" +
+            "      please hold CTRL and hover over it.\n" +
+            "      An xpath is generated heuristically with the aim\n" +
+            "      to be unambiguous and the shortest possible.\n" +
+            "    </a:subject>\n" +
+            "    </a:description>\n" +
+            "  <a:extra-notes>\n" +
+            "    <a:note>\n" +
+            "      None of entered documents leave your computer because all\n" +
+            "      the processing is done by your powerful browser!\n" +
+            "      (of course as long as you do not save your input)\n" +
+            "    </a:note>\n" +
+            "        <a:note>\n" +
+            "      This application is in an early beta version so please\n" +
+            "      be forgiving. XPath 2.0 is supported but namespaces are\n" +
+            "      still being added and they may not fully work yet. \n" +
+            "      Please send your comments to: xpather.com@gmail.com\n" +
+            "    </a:note>\n" +
+            "    <a:note>\n" +
+            "      By default XML mode is used but if a document cannot\n" +
+            "      be parsed as XML then HTML mode kicks in.\n" +
+            "    </a:note>\n" +
+            "    <a:note>\n" +
+            "      Pasting documents bigger than 500kb may cause your\n" +
+            "      browser become sluggish or unresponsive.\n" +
+            "    </a:note>\n" +
+            "  </a:extra-notes>\n" +
+            "</a:app>";
 
     public SignatureReferenceTest() throws Exception {
         Init.init();
@@ -102,6 +149,33 @@ class SignatureReferenceTest {
             (Element) doc.getElementsByTagNameNS("http://ns.example.org/", "root").item(0);
         assertNotNull(originalElement);
         assertEquals(referenceElement, originalElement);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "//*[local-name()='welcome-message'],8D++EatBYa17AXmyfsz9GcB3eyUOMIqYrzz49kBd/UA=",
+        "//*[local-name()='extra-notes'], G9FKDuvl8u7AQug/aqUsdDNQinJ/ZZjyxM8xiznDNXI="})
+    void testSigningTransformationReference(String xpathValue, String expectedDigest) throws Throwable {
+        Document doc = getTestDocument();
+
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+        XPath2FilterContainer xpath = XPath2FilterContainer.newInstanceSubtract(doc, xpathValue);
+        transforms.addTransform(Transforms.TRANSFORM_XPATH2FILTER, xpath.getElementPlusReturns());
+
+        XMLSignature signature = signDocument(doc, transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+
+        PublicKey pubKey = getPublicKey(XmlSecTestEnvironment.getTestKeyStore());
+        assertTrue(signature.checkSignatureValue(pubKey));
+
+        // Check the reference(s)
+        SignedInfo signedInfo = signature.getSignedInfo();
+        Reference reference = signedInfo.item(0);
+        String value = Base64.getEncoder().encodeToString(reference.getDigestValue());
+
+        assertEquals(1, signedInfo.getLength());
+        assertEquals(expectedDigest, value);
     }
 
     // See SANTUARIO-465
@@ -217,17 +291,37 @@ class SignatureReferenceTest {
         return doc;
     }
 
+
+    private static Document getTestDocument() throws XMLParserException {
+        // read document from testDocument string
+        return XMLUtils.read(new ByteArrayInputStream(testDocument.getBytes(StandardCharsets.UTF_8)), true);
+    }
+
     private XMLSignature signDocument(Document doc) throws Throwable {
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+
+        return signDocument(doc, transforms, Constants.ALGO_ID_DIGEST_SHA1);
+    }
+
+    /**
+     * Sign the document with the given transforms and reference digest algorithm. The signature
+     * is created with a DSA key.
+     * @param doc the document to sign
+     * @param transforms the transforms to apply to the references before signing
+     * @param referenceDigestAlgorithm the digest algorithm to use for the references
+     * @return the signature object
+     * @throws Throwable
+     */
+    private XMLSignature signDocument(Document doc, Transforms transforms, String referenceDigestAlgorithm) throws Throwable {
         XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
         Element root = doc.getDocumentElement();
         root.appendChild(sig.getElement());
 
         sig.getSignedInfo().addResourceResolver(new ResolverXPointer());
 
-        Transforms transforms = new Transforms(doc);
-        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
-        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
-        sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
+        sig.addDocument("", transforms, referenceDigestAlgorithm);
         KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
         sig.addKeyInfo(getPublicKey(keyStore));
         sig.sign(getPrivateKey(keyStore));
