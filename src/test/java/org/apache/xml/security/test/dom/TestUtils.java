@@ -35,6 +35,8 @@ public class TestUtils {
 
     private static final DocumentBuilderFactory DBF = DocumentBuilderFactory.newInstance();
     private static final boolean isJava11Compatible;
+    // The class-path to test resources
+    private static final String RESOURCE_PATH = "/org/apache/xml/security/test/javax/xml/crypto/dsig/";
 
     static {
         DBF.setNamespaceAware(true);
@@ -97,6 +99,18 @@ public class TestUtils {
         try (ByteArrayInputStream is = new ByteArrayInputStream(xmlDocument.getBytes(StandardCharsets.UTF_8))) {
             return XMLUtils.read(is, true);
         }
+    }
+
+    /**
+     * Get a test document from a classpath resource.
+     * @param fileName the file name of the resource
+     * @return the Document
+     * @throws XMLParserException if an error occurs while parsing the XML document
+     */
+    public static Document getTestDocumentFromResource(String fileName) throws XMLParserException {
+        // read document from classpath resource
+        return XMLUtils.read(TestUtils.class
+                .getResourceAsStream(RESOURCE_PATH + fileName), true);
     }
 
     public static boolean isJava11Compatible() {

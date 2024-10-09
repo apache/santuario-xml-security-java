@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at
- * <p>
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -56,27 +56,6 @@ class Xpath2TransformationTest {
     static {
         Init.init();
     }
-
-    // Example as defined in <A HREF="https://www.w3.org/TR/xmldsig-filter2/#sec-Examples">4. Examples of Signature Filter Transform Processing</A>
-    private static final String TEST_EXAMPLE_DOCUMENT =
-            "  <Document>\r\n" +
-                    "     <ToBeSigned>\r\n" +
-                    "       <!-- comment -->\r\n" +
-                    "       <Data />\r\n" +
-                    "       <NotToBeSigned>\r\n" +
-                    "         <ReallyToBeSigned>\r\n" +
-                    "           <!-- comment -->\r\n" +
-                    "           <Data />\r\n" +
-                    "         </ReallyToBeSigned>\r\n" +
-                    "       </NotToBeSigned>\r\n" +
-                    "     </ToBeSigned>\r\n" +
-                    "     <ToBeSigned>\r\n" +
-                    "       <Data />\r\n" +
-                    "       <NotToBeSigned>\r\n" +
-                    "         <Data />\r\n" +
-                    "       </NotToBeSigned>\r\n" +
-                    "     </ToBeSigned>\r\n" +
-                    "  </Document>";
 
     @Test
     void testXpath2Transform() throws Exception {
@@ -223,10 +202,7 @@ class Xpath2TransformationTest {
         Map<String, String> filterConfiguration = convertStringToMap(xPathFilter);
         Map<String, String> assertNodeCountByXPaths = convertStringToMap(resultValidationXPath);
 
-        Document testDocument;
-        try (ByteArrayInputStream is = new ByteArrayInputStream(TEST_EXAMPLE_DOCUMENT.getBytes())) {
-            testDocument = XMLUtils.read(is, true);
-        }
+        Document testDocument =  TestUtils.getTestDocumentFromResource("input-santuario-623.xml");
         // create Transform filter
         // create string array of [][] of filterConfiguration
         String[][] filterConfigurationArray = filterConfiguration.entrySet()

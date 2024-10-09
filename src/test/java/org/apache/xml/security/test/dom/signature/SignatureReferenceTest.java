@@ -18,9 +18,6 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -38,7 +35,6 @@ import org.apache.xml.security.Init;
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
-import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.signature.Manifest;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
@@ -79,45 +75,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 class SignatureReferenceTest {
 
-    private static String testDocument = "\uFEFF<a:app  xmlns:a=\"http://nl.example/\">\n" +
-            "    <a:welcome-message>Hi! This is xpather beta...</a:welcome-message>\n" +
-            "    <a:description>\n" +
-            "        <a:subject>\n" +
-            "      You can enter your xpath query in the top-left panel \n" +
-            "      and it will be instantly executed against this document.\n" +
-            "      Once some results are displayed on the right, you can \n" +
-            "      scroll to them by clicking on them. \n" +
-            "    </a:subject>\n" +
-            "    <a:subject>\n" +
-            "      To generate an xpath query for a specific element,\n" +
-            "      please hold CTRL and hover over it.\n" +
-            "      An xpath is generated heuristically with the aim\n" +
-            "      to be unambiguous and the shortest possible.\n" +
-            "    </a:subject>\n" +
-            "    </a:description>\n" +
-            "  <a:extra-notes>\n" +
-            "    <a:note>\n" +
-            "      None of entered documents leave your computer because all\n" +
-            "      the processing is done by your powerful browser!\n" +
-            "      (of course as long as you do not save your input)\n" +
-            "    </a:note>\n" +
-            "        <a:note>\n" +
-            "      This application is in an early beta version so please\n" +
-            "      be forgiving. XPath 2.0 is supported but namespaces are\n" +
-            "      still being added and they may not fully work yet. \n" +
-            "      Please send your comments to: xpather.com@gmail.com\n" +
-            "    </a:note>\n" +
-            "    <a:note>\n" +
-            "      By default XML mode is used but if a document cannot\n" +
-            "      be parsed as XML then HTML mode kicks in.\n" +
-            "    </a:note>\n" +
-            "    <a:note>\n" +
-            "      Pasting documents bigger than 500kb may cause your\n" +
-            "      browser become sluggish or unresponsive.\n" +
-            "    </a:note>\n" +
-            "  </a:extra-notes>\n" +
-            "</a:app>";
-
     public SignatureReferenceTest() throws Exception {
         Init.init();
         ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "ds");
@@ -151,21 +108,31 @@ class SignatureReferenceTest {
         assertEquals(referenceElement, originalElement);
     }
 
+    /**
+     * Test signing and verifying a document with a reference to a specific XPath expression.
+     * For details see <a href="https://issues.apache.org/jira/browse/SANTUARIO-623">SANTUARIO-623</a> (Note the test file from the issue
+     * was replaced and hashes recalculated.)
+     * @param xpathValue the XPath expression  with the transformation <a href="http://www.w3.org/2002/06/xmldsig-filter2">mldsig-filter2</a>
+     * @param expectedDigest the expected digest value
+     * @throws Throwable if an error occurs
+     */
     @ParameterizedTest
     @CsvSource({
-        "//*[local-name()='welcome-message'],8D++EatBYa17AXmyfsz9GcB3eyUOMIqYrzz49kBd/UA=",
-        "//*[local-name()='extra-notes'], G9FKDuvl8u7AQug/aqUsdDNQinJ/ZZjyxM8xiznDNXI="})
+        "//*[local-name()='ToBeSigned'], bZdn277uy+5m4tJ2xU03pY9dH11Hw9zrjp8M76rWdgU=",
+        "//*[local-name()='ReallyToBeSigned'], PiON4xCpziq9v0XlV9wrDCQk3mqkHpZWM6fKPiyUVEY="})
     void testSigningTransformationReference(String xpathValue, String expectedDigest) throws Throwable {
-        Document doc = getTestDocument();
-
+        // given
+        Document doc = TestUtils.getTestDocumentFromResource("input-santuario-623.xml");
+        // configure the transformations and sign the document
         Transforms transforms = new Transforms(doc);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
         transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
         XPath2FilterContainer xpath = XPath2FilterContainer.newInstanceSubtract(doc, xpathValue);
         transforms.addTransform(Transforms.TRANSFORM_XPATH2FILTER, xpath.getElementPlusReturns());
 
+        // when
         XMLSignature signature = signDocument(doc, transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
-
+        // then
         PublicKey pubKey = getPublicKey(XmlSecTestEnvironment.getTestKeyStore());
         assertTrue(signature.checkSignatureValue(pubKey));
 
@@ -291,12 +258,6 @@ class SignatureReferenceTest {
         return doc;
     }
 
-
-    private static Document getTestDocument() throws XMLParserException {
-        // read document from testDocument string
-        return XMLUtils.read(new ByteArrayInputStream(testDocument.getBytes(StandardCharsets.UTF_8)), true);
-    }
-
     private XMLSignature signDocument(Document doc) throws Throwable {
         Transforms transforms = new Transforms(doc);
         transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
@@ -312,7 +273,7 @@ class SignatureReferenceTest {
      * @param transforms the transforms to apply to the references before signing
      * @param referenceDigestAlgorithm the digest algorithm to use for the references
      * @return the signature object
-     * @throws Throwable
+     * @throws Throwable if an error occurs
      */
     private XMLSignature signDocument(Document doc, Transforms transforms, String referenceDigestAlgorithm) throws Throwable {
         XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
