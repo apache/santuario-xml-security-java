@@ -67,7 +67,11 @@ public class XMLSignatureByteInput extends XMLSignatureInput {
 
     @Override
     public void write(OutputStream outputStream, boolean c14n11) throws CanonicalizationException, IOException {
-        if (bytes == null || outputStream == getOutputStream()) {
+        if (outputStream == getOutputStream()) {
+            return;
+        }
+        if (bytes == null) {
+            canonicalize(outputStream, c14n11);
             return;
         }
         outputStream.write(bytes);

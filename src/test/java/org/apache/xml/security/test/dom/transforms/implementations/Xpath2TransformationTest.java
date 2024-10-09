@@ -19,18 +19,39 @@
 package org.apache.xml.security.test.dom.transforms.implementations;
 
 
-import java.io.ByteArrayInputStream;
-
 import org.apache.xml.security.Init;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.signature.XMLSignatureNodeInput;
+import org.apache.xml.security.testutils.Assertions;
+import org.apache.xml.security.test.dom.TestUtils;
+import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.transforms.params.XPath2FilterContainer;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.platform.commons.util.StringUtils;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Tests the XPath2Transformation implementation
+ *
+ * @see <A HREF="http://www.w3.org/TR/xmldsig-filter2/">XPath Filter v2.0 (TR)</A>
+ */
 class Xpath2TransformationTest {
+    private static final String TEST_PARAM_LIST_SEPARATOR = ";";
+    private static final String TEST_PARAM_VALUE_SEPARATOR = "::";
 
     static {
         Init.init();
@@ -157,4 +178,71 @@ class Xpath2TransformationTest {
         }
     }
 
+    /**
+     * Test the XPath2FilterContainer implementation with the example from the specification
+     * <A HREF="https://www.w3.org/TR/xmldsig-filter2/#sec-Examples">4. Examples of Signature
+     * Filter Transform Processing</A>
+     *
+     * @param xPathFilter the filter configuration as a string. The parameter is a list of
+     *                    filters separated by ";" and each filter is a pair of filter type
+     *                    and xpath separated by "::"
+     * @param resultValidationXPath the expected nodes count for each xpath as a string.
+     *                              The parameter is a list of xpaths  separated by ";"
+     *                              and each xpath is a pair of xpath and expected
+     *                              node count separated by "::"
+     * @throws Exception if an error occurs while performing the transformation
+     */
+    @ParameterizedTest
+    @CsvSource({
+            "intersect:://ToBeSigned, //ToBeSigned::2;//Data::4",
+            "intersect:://ToBeSigned;subtract:://NotToBeSigned, //ToBeSigned::2;//Data::2;//NotToBeSigned::0;//ReallyToBeSigned::0",
+            "intersect:://ToBeSigned;subtract:://NotToBeSigned;union:://ReallyToBeSigned, //ToBeSigned::2;//Data::3;//NotToBeSigned::0;//ReallyToBeSigned::1",
+    })
+    void testXPath2TransformExample(String xPathFilter, String resultValidationXPath) throws Exception {
+        Map<String, String> filterConfiguration = convertStringToMap(xPathFilter);
+        Map<String, String> assertNodeCountByXPaths = convertStringToMap(resultValidationXPath);
+
+        Document testDocument =  TestUtils.getTestDocumentFromResource("input-santuario-623.xml");
+        // create Transform filter
+        // create string array of [][] of filterConfiguration
+        String[][] filterConfigurationArray = filterConfiguration.entrySet()
+                .stream()
+                .map(entry -> new String[]{entry.getKey(), entry.getValue()})
+                .toArray(String[][]::new);
+
+        NodeList xpathElements = XPath2FilterContainer.newInstances(testDocument, filterConfigurationArray);
+        Transforms transforms = new Transforms(testDocument);
+        transforms.addTransform(Transforms.TRANSFORM_XPATH2FILTER, xpathElements);
+
+        // when: perform transformation
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        XMLSignatureInput res = transforms.performTransforms(new XMLSignatureNodeInput(testDocument), os);
+
+        // then: validate the result
+        Document resultDocument = TestUtils.xmlFragmentToDocument(res.getBytes());
+        Assertions.assertNodeCountForXPath(resultDocument, assertNodeCountByXPaths);
+    }
+
+    /**
+     * Get map values from string where each entry is separated by "list separator" ';' and
+     * key and value are separated by "value separator": '::'
+     * @param input the input string to convert to map
+     *              (e.g. "intersect:://ToBeSigned;subtract:://NotToBeSigned")
+*    * @return the map of key value pairs.
+     */
+    private Map<String, String> convertStringToMap(String input) {
+        if (StringUtils.isBlank(input)) {
+            return Map.of();
+        }
+
+        String[] entries = input.split(TEST_PARAM_LIST_SEPARATOR);
+        Map<String, String> map = new HashMap<>();
+        for (String entry : entries) {
+            String[] parts = entry.split(TEST_PARAM_VALUE_SEPARATOR);
+            if (parts.length == 2) {
+                map.put(parts[0], parts[1]);
+            }
+        }
+        return map;
+    }
 }

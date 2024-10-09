@@ -18,10 +18,10 @@
  */
 package org.apache.xml.security.test.dom.signature;
 
-
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Base64;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -32,6 +32,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.xml.security.Init;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.Manifest;
@@ -47,6 +48,7 @@ import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.dom.TestUtils;
 import org.apache.xml.security.transforms.Transforms;
+import org.apache.xml.security.transforms.params.XPath2FilterContainer;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.ElementProxy;
 import org.apache.xml.security.utils.XMLUtils;
@@ -55,6 +57,8 @@ import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 import org.apache.xml.security.utils.resolver.implementations.ResolverXPointer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -102,6 +106,43 @@ class SignatureReferenceTest {
             (Element) doc.getElementsByTagNameNS("http://ns.example.org/", "root").item(0);
         assertNotNull(originalElement);
         assertEquals(referenceElement, originalElement);
+    }
+
+    /**
+     * Test signing and verifying a document with a reference to a specific XPath expression.
+     * For details see <a href="https://issues.apache.org/jira/browse/SANTUARIO-623">SANTUARIO-623</a> (Note the test file from the issue
+     * was replaced and hashes recalculated.)
+     * @param xpathValue the XPath expression  with the transformation <a href="http://www.w3.org/2002/06/xmldsig-filter2">mldsig-filter2</a>
+     * @param expectedDigest the expected digest value
+     * @throws Throwable if an error occurs
+     */
+    @ParameterizedTest
+    @CsvSource({
+        "//*[local-name()='ToBeSigned'], bZdn277uy+5m4tJ2xU03pY9dH11Hw9zrjp8M76rWdgU=",
+        "//*[local-name()='ReallyToBeSigned'], PiON4xCpziq9v0XlV9wrDCQk3mqkHpZWM6fKPiyUVEY="})
+    void testSigningTransformationReference(String xpathValue, String expectedDigest) throws Throwable {
+        // given
+        Document doc = TestUtils.getTestDocumentFromResource("input-santuario-623.xml");
+        // configure the transformations and sign the document
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+        XPath2FilterContainer xpath = XPath2FilterContainer.newInstanceSubtract(doc, xpathValue);
+        transforms.addTransform(Transforms.TRANSFORM_XPATH2FILTER, xpath.getElementPlusReturns());
+
+        // when
+        XMLSignature signature = signDocument(doc, transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        // then
+        PublicKey pubKey = getPublicKey(XmlSecTestEnvironment.getTestKeyStore());
+        assertTrue(signature.checkSignatureValue(pubKey));
+
+        // Check the reference(s)
+        SignedInfo signedInfo = signature.getSignedInfo();
+        Reference reference = signedInfo.item(0);
+        String value = Base64.getEncoder().encodeToString(reference.getDigestValue());
+
+        assertEquals(1, signedInfo.getLength());
+        assertEquals(expectedDigest, value);
     }
 
     // See SANTUARIO-465
@@ -218,16 +259,30 @@ class SignatureReferenceTest {
     }
 
     private XMLSignature signDocument(Document doc) throws Throwable {
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
+
+        return signDocument(doc, transforms, Constants.ALGO_ID_DIGEST_SHA1);
+    }
+
+    /**
+     * Sign the document with the given transforms and reference digest algorithm. The signature
+     * is created with a DSA key.
+     * @param doc the document to sign
+     * @param transforms the transforms to apply to the references before signing
+     * @param referenceDigestAlgorithm the digest algorithm to use for the references
+     * @return the signature object
+     * @throws Throwable if an error occurs
+     */
+    private XMLSignature signDocument(Document doc, Transforms transforms, String referenceDigestAlgorithm) throws Throwable {
         XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
         Element root = doc.getDocumentElement();
         root.appendChild(sig.getElement());
 
         sig.getSignedInfo().addResourceResolver(new ResolverXPointer());
 
-        Transforms transforms = new Transforms(doc);
-        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
-        transforms.addTransform(Transforms.TRANSFORM_C14N_WITH_COMMENTS);
-        sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
+        sig.addDocument("", transforms, referenceDigestAlgorithm);
         KeyStore keyStore = XmlSecTestEnvironment.getTestKeyStore();
         sig.addKeyInfo(getPublicKey(keyStore));
         sig.sign(getPrivateKey(keyStore));
