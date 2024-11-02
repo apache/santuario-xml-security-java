@@ -507,7 +507,6 @@ public class XMLSignatureInput {
                     diOs.write(buffer, 0, bytesread);
                 }
             } finally {
-                LOG.debug("Closing input stream after finished reading it");
                 // the stream is closed, and we can remove the inputOctetStreamProxy reference
                 this.inputOctetStreamProxy = null;
             }
