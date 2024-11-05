@@ -576,7 +576,7 @@
         <xalan.version>2.7.3</xalan.version>
         <junit.version>5.11.3</junit.version>
         <log4j.version>2.20.0</log4j.version>
-        <bcprov.version>1.78.1</bcprov.version>
+        <bcprov.version>1.79</bcprov.version>
         <hamcrest.version>2.2</hamcrest.version>
         <xmlunit.version>2.10.0</xmlunit.version>
         <commons.codec.version>1.17.1</commons.codec.version>
