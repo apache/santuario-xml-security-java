@@ -45,8 +45,6 @@ import org.w3c.dom.Node;
  * $todo$ check whether an XMLSignatureInput can be _both_, octet stream _and_ node set?
  */
 public class XMLSignatureInput {
-    private static final org.slf4j.Logger LOG =
-            org.slf4j.LoggerFactory.getLogger(XMLSignatureInput.class);
     /*
      * The XMLSignature Input can be either:
      *   A byteArray like with/or without InputStream.
