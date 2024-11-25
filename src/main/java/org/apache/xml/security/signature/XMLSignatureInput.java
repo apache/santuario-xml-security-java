@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.signature;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,6 +45,8 @@ import org.w3c.dom.Node;
  * $todo$ check whether an XMLSignatureInput can be _both_, octet stream _and_ node set?
  */
 public class XMLSignatureInput {
+    private static final org.slf4j.Logger LOG =
+            org.slf4j.LoggerFactory.getLogger(XMLSignatureInput.class);
     /*
      * The XMLSignature Input can be either:
      *   A byteArray like with/or without InputStream.
@@ -499,13 +502,13 @@ public class XMLSignatureInput {
         } else {
             byte[] buffer = new byte[4 * 1024];
             int bytesread = 0;
-            try {
-                while ((bytesread = inputOctetStreamProxy.read(buffer)) != -1) {
+            try (BufferedInputStream bis = new BufferedInputStream(inputOctetStreamProxy)) {
+                while ((bytesread = bis.read(buffer)) != -1) {
                     diOs.write(buffer, 0, bytesread);
                 }
-            } catch (IOException ex) {
-                inputOctetStreamProxy.close();
-                throw ex;
+            } finally {
+                // the stream is closed, and we can remove the inputOctetStreamProxy reference
+                this.inputOctetStreamProxy = null;
             }
         }
     }
