@@ -22,7 +22,7 @@
     <artifactId>xmlsec</artifactId>
     <packaging>bundle</packaging>
     <name>Apache XML Security for Java</name>
-    <version>2.3.5</version>
+    <version>2.3.6-SNAPSHOT</version>
     <description>
         Apache XML Security for Java supports XML-Signature Syntax and Processing,
         W3C Recommendation 12 February 2002, and XML Encryption Syntax and
@@ -59,7 +59,7 @@
         <connection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</connection>
         <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/santuario-xml-security-java.git</developerConnection>
         <url>https://gitbox.apache.org/repos/asf?p=santuario-xml-security-java.git;a=summary</url>
-      <tag>xmlsec-2.3.5</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <organization>
@@ -591,7 +591,7 @@
 
         <!-- Allow Clirr severity to be overriden by the command-line option -DminSeverity=level -->
         <minSeverity>info</minSeverity>
-        <project.build.outputTimestamp>2024-12-17T14:06:21Z</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2024-12-17T14:12:16Z</project.build.outputTimestamp>
     </properties>
     
     <dependencies>
