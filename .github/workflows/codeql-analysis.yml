@@ -39,7 +39,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@aa578102511db1f4524ed59b8cc2bae4f6e88195
+      uses: github/codeql-action/init@df409f7d9260372bd5f19e5b04e83cb3c43714ae
       with:
         languages: java
         # If you wish to specify custom queries, you can do so here or in a config file.
@@ -68,5 +68,5 @@ jobs:
     #   make release
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@aa578102511db1f4524ed59b8cc2bae4f6e88195
+      uses: github/codeql-action/analyze@df409f7d9260372bd5f19e5b04e83cb3c43714ae
 
