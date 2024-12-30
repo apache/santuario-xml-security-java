@@ -590,7 +590,7 @@
             <plugin>
                  <groupId>org.gaul</groupId>
                  <artifactId>modernizer-maven-plugin</artifactId>
-                 <version>2.6.0</version>
+                 <version>3.0.0</version>
                  <configuration>
                      <javaVersion>${maven.compiler.release}</javaVersion>
                  </configuration>
