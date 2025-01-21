@@ -29,7 +29,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.*;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -377,7 +377,7 @@ class XMLCipherTest {
 
         ed = cipherEncData.doFinal(d, e);
 
-        Files.write(Paths.get("target","test-enc-"+keyType.name()+".xml"), toString(ed).getBytes());
+        Files.write(Path.of("target","test-enc-"+keyType.name()+".xml"), toString(ed).getBytes());
 
         //decrypt
         ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);
@@ -478,7 +478,7 @@ class XMLCipherTest {
 
         org.apache.xml.security.test.javax.xml.crypto.dsig.TestUtils.validateSecurityOrEncryptionElement(ed.getDocumentElement());
 
-        Files.write(Paths.get("target", "test-ka-dh-hkdf-" + keyType.name() + ".xml"), toString(ed).getBytes());
+        Files.write(Path.of("target", "test-ka-dh-hkdf-" + keyType.name() + ".xml"), toString(ed).getBytes());
 
         //decrypt
         ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);

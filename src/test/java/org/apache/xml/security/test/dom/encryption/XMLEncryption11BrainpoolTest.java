@@ -20,7 +20,7 @@ package org.apache.xml.security.test.dom.encryption;
 
 import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -145,7 +145,7 @@ class XMLEncryption11BrainpoolTest extends XMLEncryption11TestAbstract{
         );
 
         if (LOG.isLoggable(System.Logger.Level.DEBUG)) {
-            Files.write(Paths.get("target","test-enc-"+w3cTag+".xml"), toString(doc.getFirstChild()).getBytes());
+            Files.write(Path.of("target","test-enc-"+w3cTag+".xml"), toString(doc.getFirstChild()).getBytes());
             XMLUtils.outputDOM(doc.getFirstChild(), System.out);
         }
         // Perform decryption

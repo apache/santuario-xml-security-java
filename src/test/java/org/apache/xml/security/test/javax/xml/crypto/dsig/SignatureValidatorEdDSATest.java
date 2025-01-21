@@ -19,7 +19,7 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 
@@ -43,7 +43,7 @@ class SignatureValidatorEdDSATest extends EdDSATestAbstract {
     public void before() {
         String base = System.getProperty("basedir", "./");
         testInstance = new SignatureValidator(
-            Paths.get(base, "src", "test", "resources", "javax", "xml", "crypto", "dsig", "eddsa").toFile());
+            Path.of(base, "src", "test", "resources", "javax", "xml", "crypto", "dsig", "eddsa").toFile());
     }
 
     /**
