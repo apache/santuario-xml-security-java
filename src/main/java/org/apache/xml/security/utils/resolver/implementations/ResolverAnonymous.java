@@ -40,7 +40,7 @@ public class ResolverAnonymous extends ResourceResolverSpi {
      * @throws IOException
      */
     public ResolverAnonymous(String filename) throws IOException {
-        this(Paths.get(filename));
+        this(Path.of(filename));
     }
 
     /**

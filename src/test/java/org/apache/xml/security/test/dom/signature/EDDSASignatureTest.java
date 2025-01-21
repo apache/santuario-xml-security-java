@@ -22,7 +22,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -63,7 +63,7 @@ class EDDSASignatureTest extends EdDSATestAbstract {
     void testEd22519() throws Exception {
         Assumptions.assumeTrue(isEdDSASupported());
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
-        keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
+        keyStore.load(Files.newInputStream(Path.of(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
 
         PrivateKey privateKey =
                 (PrivateKey) keyStore.getKey("Ed25519", EDDSA_KS_PASSWORD.toCharArray());
@@ -93,7 +93,7 @@ class EDDSASignatureTest extends EdDSATestAbstract {
     void testEd448() throws Exception {
         Assumptions.assumeTrue(isEdDSASupported());
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
-        keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
+        keyStore.load(Files.newInputStream(Path.of(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
 
         PrivateKey privateKey =
                 (PrivateKey) keyStore.getKey("Ed448", EDDSA_KS_PASSWORD.toCharArray());

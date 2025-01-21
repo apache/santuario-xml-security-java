@@ -22,7 +22,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import org.apache.xml.security.signature.XMLSignatureInput;
 import org.apache.xml.security.signature.XMLSignatureFileInput;
@@ -46,7 +46,7 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
         try {
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
-            XMLSignatureInput result = new XMLSignatureFileInput(Paths.get(uriNew));
+            XMLSignatureInput result = new XMLSignatureFileInput(Path.of(uriNew));
             result.setSecureValidation(context.secureValidation);
             result.setSourceURI(uriNew.toString());
             return result;

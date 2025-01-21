@@ -20,7 +20,7 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -72,7 +72,7 @@ class XMLSignatureBrainpoolTest  extends XMLSignatureAbstract {
     @Override
     KeyStore getKeyStore() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         KeyStore keyStore = KeyStore.getInstance(ECDSA_KS_TYPE);
-        keyStore.load(Files.newInputStream(Paths.get(ECDSA_KS_PATH)), ECDSA_KS_PASSWORD.toCharArray());
+        keyStore.load(Files.newInputStream(Path.of(ECDSA_KS_PATH)), ECDSA_KS_PASSWORD.toCharArray());
         return keyStore;
     }
 
@@ -89,7 +89,7 @@ class XMLSignatureBrainpoolTest  extends XMLSignatureAbstract {
     void createEdDSASignatureTest(String signatureAlgorithm, String alias) throws Exception {
         byte[] buff = doSignWithJcpApi(signatureAlgorithm, alias, true);
         if (LOG.isLoggable(System.Logger.Level.DEBUG)) {
-            Files.write(Paths.get("target","test-sign-"+alias+".xml"), buff);
+            Files.write(Path.of("target","test-sign-"+alias+".xml"), buff);
         }
         Assertions.assertNotNull(buff);
         assertValidSignatureWithJcpApi(buff, true);

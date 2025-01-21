@@ -21,7 +21,7 @@ package org.apache.xml.security.test.dom.encryption;
 import java.io.*;
 import java.lang.System.Logger.Level;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -522,7 +522,7 @@ class XMLEncryption11Test extends XMLEncryption11TestAbstract {
                 encryptionAlgorithm
         );
 
-        Files.write(Paths.get("target","test-enc-"+w3cTag+".xml"), toString(doc.getFirstChild()).getBytes());
+        Files.write(Path.of("target","test-enc-"+w3cTag+".xml"), toString(doc.getFirstChild()).getBytes());
         // XMLUtils.outputDOM(doc.getFirstChild(), System.out);
 
         // Perform decryption
@@ -627,7 +627,7 @@ class XMLEncryption11Test extends XMLEncryption11TestAbstract {
                 new ByteArrayInputStream(testData)
         );
 
-        Files.write(Paths.get("target","test-enc-"+w3cTag+".xml"), toString(doc.getFirstChild()).getBytes());
+        Files.write(Path.of("target","test-enc-"+w3cTag+".xml"), toString(doc.getFirstChild()).getBytes());
         // Perform decryption
         byte[] result  = decryptData(doc, ecKey, (X509Certificate)cert);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);

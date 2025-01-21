@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
@@ -208,7 +208,7 @@ class XMLCipherBrainpoolTest {
 
         ed = cipherEncData.doFinal(d, e);
 
-        Files.write(Paths.get("target","test-enc-"+keyType.name()+".xml"), toString(ed).getBytes());
+        Files.write(Path.of("target","test-enc-"+keyType.name()+".xml"), toString(ed).getBytes());
 
         //decrypt
         ee = (Element) ed.getElementsByTagName("xenc:EncryptedData").item(0);

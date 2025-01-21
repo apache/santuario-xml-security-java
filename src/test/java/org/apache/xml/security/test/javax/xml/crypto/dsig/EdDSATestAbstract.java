@@ -19,7 +19,7 @@
 package org.apache.xml.security.test.javax.xml.crypto.dsig;
 
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.Provider;
 import java.security.Security;
@@ -83,7 +83,7 @@ public abstract class EdDSATestAbstract extends XMLSignatureAbstract {
     @Override
     KeyStore getKeyStore() throws Exception {
         KeyStore keyStore = KeyStore.getInstance(EDDSA_KS_TYPE);
-        keyStore.load(Files.newInputStream(Paths.get(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
+        keyStore.load(Files.newInputStream(Path.of(EDDSA_KS)), EDDSA_KS_PASSWORD.toCharArray());
         return keyStore;
     }
 

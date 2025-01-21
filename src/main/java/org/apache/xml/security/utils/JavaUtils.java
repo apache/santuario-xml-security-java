@@ -26,7 +26,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.security.SecurityPermission;
 
 /**
@@ -56,7 +56,7 @@ public final class JavaUtils {
     @Deprecated(forRemoval = true, since = "4.0.0")
     public static byte[] getBytesFromFile(String filePath)
         throws FileNotFoundException, IOException {
-        try (InputStream inputStream = Files.newInputStream(Paths.get(filePath));
+        try (InputStream inputStream = Files.newInputStream(Path.of(filePath));
             UnsyncByteArrayOutputStream baos = new UnsyncByteArrayOutputStream()) {
             byte[] buf = new byte[8_192];
             int len;
@@ -77,7 +77,7 @@ public final class JavaUtils {
      */
     public static void writeBytesToFilename(String filename, byte[] bytes) {
         if (filename != null && bytes != null) {
-            try (OutputStream outputStream = Files.newOutputStream(Paths.get(filename))) {
+            try (OutputStream outputStream = Files.newOutputStream(Path.of(filename))) {
                 outputStream.write(bytes);
             } catch (IOException ex) {
                 LOG.log(Level.DEBUG, ex.getMessage(), ex);
