@@ -42,7 +42,6 @@ import java.util.Arrays;
  * A set of utility methods to handle keys.
  */
 public class KeyUtils {
-    private static final System.Logger LOG = System.getLogger(KeyUtils.class.getName());
 
     /**
      * Enumeration of Supported key algorithm types.
