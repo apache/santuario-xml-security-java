@@ -166,8 +166,8 @@ public class RFC2253Parser {
 
         String at = str.toUpperCase().trim();
 
-        if (at.startsWith("OID")) {
-            at = at.substring(3);
+        if (at.startsWith("OID.")) {
+            at = at.substring(4);
         }
 
         return at;
