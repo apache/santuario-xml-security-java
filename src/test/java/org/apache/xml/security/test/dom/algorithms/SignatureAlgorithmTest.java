@@ -103,7 +103,7 @@ class SignatureAlgorithmTest {
     @Test
     void testConstructionWithProvider() throws Exception {
         Field algorithmHashField = SignatureAlgorithm.class.getDeclaredField("algorithmHash");
-        algorithmHashField.setAccessible(true);
+        algorithmHashField.setAccessible(true); //NOPMD
         @SuppressWarnings("unchecked")
         Map<String, Class<?>> algorithmHash = (Map<String, Class<?>>)algorithmHashField.get(null);
         assertFalse(algorithmHash.isEmpty());

@@ -663,14 +663,13 @@ public final class DOMReference extends DOMStructure
 
     private static void close(Closeable... closeables) throws XMLSignatureException {
         XMLSignatureException collector = new XMLSignatureException("Close failed!");
-        for (Closeable closeable : closeables) {
-            if (closeable == null) {
-                continue;
-            }
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                collector.addSuppressed(e);
+        for (Closeable closeable : closeables) { //NOPMD
+            if (closeable != null) {
+                try {
+                    closeable.close();
+                } catch (IOException e) {
+                    collector.addSuppressed(e);
+                }
             }
         }
         if (collector.getSuppressed().length > 0) {
