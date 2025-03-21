@@ -241,7 +241,7 @@ public abstract class CanonicalizerBase extends CanonicalizerSpi {
 
             case Node.ELEMENT_NODE :
                 documentLevel = NODE_NOT_BEFORE_OR_AFTER_DOCUMENT_ELEMENT;
-                if (currentNode == excludeNode) {
+                if (currentNode == excludeNode || (excludeNode != null && (excludeNode.isSameNode(currentNode) || currentNode.isSameNode(excludeNode)))) {
                     break;
                 }
                 Element currentElement = (Element)currentNode;
