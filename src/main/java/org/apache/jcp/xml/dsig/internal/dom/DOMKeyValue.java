@@ -264,6 +264,23 @@ public abstract class DOMKeyValue<K extends PublicKey> extends DOMStructure impl
                 return false;
             }
         }
+
+        @Override
+        public int hashCode() {
+            int result = 17;
+            try {
+                if (getPublicKey() != null) {
+                    RSAPublicKey rsaKey = (RSAPublicKey)getPublicKey();
+                    result = 31 * result + rsaKey.getPublicExponent().hashCode();
+                    result = 31 * result + rsaKey.getModulus().hashCode();
+                }
+            } catch (KeyException ke) {
+                // no key available
+                return super.hashCode();
+            }
+            return result;
+        }
+
     }
 
     static final class DSA extends DOMKeyValue<DSAPublicKey> {
