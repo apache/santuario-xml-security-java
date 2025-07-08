@@ -97,7 +97,7 @@
         <log4j.version>2.20.0</log4j.version>
         <slf4j.version>1.7.36</slf4j.version>
         <xalan.version>2.7.3</xalan.version>
-        <xmlunit.version>2.10.2</xmlunit.version>
+        <xmlunit.version>2.10.3</xmlunit.version>
         <xml.bind.api.version>3.0.1</xml.bind.api.version>
         <xml.bind.impl.version>3.0.2</xml.bind.impl.version>
         <woodstox.core.version>6.5.1</woodstox.core.version>
