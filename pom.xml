@@ -90,7 +90,7 @@
     <properties>
         <bcprov.version>1.81</bcprov.version>
         <clirr.version>2.8</clirr.version>
-        <commons.codec.version>1.18.0</commons.codec.version>
+        <commons.codec.version>1.19.0</commons.codec.version>
         <hamcrest.version>2.2</hamcrest.version>
         <jetty.version>9.4.56.v20240826</jetty.version>
         <junit.version>5.13.4</junit.version>
