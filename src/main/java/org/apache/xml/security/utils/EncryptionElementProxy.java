@@ -44,7 +44,7 @@ public abstract class EncryptionElementProxy extends ElementProxy {
         setElement(XMLUtils.createElementInEncryptionSpace(doc, this.getBaseLocalName()));
         String prefix = ElementProxy.getDefaultPrefix(this.getBaseNamespace());
         if (prefix != null && !prefix.isEmpty()) {
-            getElement().setAttribute("xmlns:" + prefix, this.getBaseNamespace());
+            getElement().setAttributeNS(Constants.NamespaceSpecNS, "xmlns:" + prefix, this.getBaseNamespace());
         }
     }
 
