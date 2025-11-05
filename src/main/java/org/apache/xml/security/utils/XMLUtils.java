@@ -57,7 +57,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * DOM and XML accessibility and comfort functions.
  *
  * @implNote
- * Following system properties affect XML formatting:
+ * The following system properties affect XML formatting:
  * <ul>
  *     <li>{@systemProperty org.apache.xml.security.ignoreLineBreaks} - ignores all line breaks,
  *     making a single-line document. Overrides all other formatting options. Default: false</li>
@@ -66,7 +66,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *     <li>{@systemProperty org.apache.xml.security.base64.lineSeparator} - Sets the line separator sequence in base64Binary values.
  *     Possible values: crlf, lf. Default: crlf</li>
  *     <li>{@systemProperty org.apache.xml.security.base64.lineLength} - Sets maximum line length in base64Binary values.
- *     The value is rounded down to nearest multiple of 4. Values less than 4 are ignored. Default: 76</li>
+ *     The value is rounded down to the nearest multiple of 4. Values less than 4 are ignored. Default: 76</li>
  * </ul>
  */
 public final class XMLUtils {
@@ -74,39 +74,14 @@ public final class XMLUtils {
     private static final Logger LOG = System.getLogger(XMLUtils.class.getName());
 
     private static final String IGNORE_LINE_BREAKS_PROP = "org.apache.xml.security.ignoreLineBreaks";
-    private static final String BASE64_IGNORE_LINE_BREAKS_PROP = "org.apache.xml.security.base64.ignoreLineBreaks";
-    private static final String BASE64_LINE_SEPARATOR_PROP = "org.apache.xml.security.base64.lineSeparator";
-    private static final String BASE64_LINE_LENGTH_PROP = "org.apache.xml.security.base64.lineLength";
 
     private static boolean ignoreLineBreaks =
             AccessController.doPrivileged(
                     (PrivilegedAction<Boolean>) () -> Boolean.getBoolean(IGNORE_LINE_BREAKS_PROP));
 
     private static Base64FormattingOptions base64Formatting =
-            AccessController.doPrivileged((PrivilegedAction<Base64FormattingOptions>) () -> {
-                Base64FormattingOptions options = new Base64FormattingOptions();
-                options.setIgnoreLineBreaks(Boolean.getBoolean(BASE64_IGNORE_LINE_BREAKS_PROP));
-
-                String lineSeparator = System.getProperty(BASE64_LINE_SEPARATOR_PROP);
-                if (lineSeparator != null) {
-                    try {
-                        options.setLineSeparator(Base64LineSeparator.valueOf(lineSeparator.toUpperCase()));
-                    } catch (IllegalArgumentException e) {
-                        LOG.log(Level.WARNING, "Illegal value of {0} property ignored: {1}",
-                                BASE64_LINE_SEPARATOR_PROP, lineSeparator);
-                    }
-                }
-
-                Integer lineLength = Integer.getInteger(BASE64_LINE_LENGTH_PROP);
-                if (lineLength != null && lineLength >= 4) {
-                    options.setLineLength(lineLength);
-                } else if (lineLength != null) {
-                    LOG.log(Level.WARNING, "Illegal value of {0} property ignored: {1}",
-                            BASE64_LINE_LENGTH_PROP, lineLength);
-                }
-
-                return options;
-            });
+            AccessController.doPrivileged(
+                    (PrivilegedAction<Base64FormattingOptions>) () -> new Base64FormattingOptions());
 
     private static Base64.Encoder base64Encoder = (ignoreLineBreaks || base64Formatting.isIgnoreLineBreaks()) ?
             Base64.getEncoder() :
@@ -1152,32 +1127,70 @@ public final class XMLUtils {
      * Aggregates formatting options for base64Binary values.
      */
     static class Base64FormattingOptions {
+        private static final String BASE64_IGNORE_LINE_BREAKS_PROP = "org.apache.xml.security.base64.ignoreLineBreaks";
+        private static final String BASE64_LINE_SEPARATOR_PROP = "org.apache.xml.security.base64.lineSeparator";
+        private static final String BASE64_LINE_LENGTH_PROP = "org.apache.xml.security.base64.lineLength";
+
         private boolean ignoreLineBreaks = false;
         private Base64LineSeparator lineSeparator = Base64LineSeparator.CRLF;
         private int lineLength = 76;
 
-        public boolean isIgnoreLineBreaks() {
-            return ignoreLineBreaks;
+        /**
+         * Creates new formatting options by reading system properties.
+         */
+        public Base64FormattingOptions() {
+            String ignoreLineBreaksProp = System.getProperty(BASE64_IGNORE_LINE_BREAKS_PROP);
+            ignoreLineBreaks = Boolean.parseBoolean(ignoreLineBreaksProp);
+            if (XMLUtils.ignoreLineBreaks && ignoreLineBreaksProp != null && !ignoreLineBreaks) {
+                LOG.log(Level.WARNING, "{0} property takes precedence over {1}, line breaks will be ignored",
+                        IGNORE_LINE_BREAKS_PROP, BASE64_IGNORE_LINE_BREAKS_PROP);
+            }
+
+            String lineSeparatorProp = System.getProperty(BASE64_LINE_SEPARATOR_PROP);
+            if (lineSeparatorProp != null) {
+                try {
+                    lineSeparator = Base64LineSeparator.valueOf(lineSeparatorProp.toUpperCase());
+                    if (XMLUtils.ignoreLineBreaks || ignoreLineBreaks) {
+                        LOG.log(Level.WARNING, "Property {0} has no effect since line breaks are ignored",
+                                BASE64_LINE_SEPARATOR_PROP);
+                    }
+                } catch (IllegalArgumentException e) {
+                    LOG.log(Level.WARNING, "Illegal value of {0} property is ignored: {1}",
+                            BASE64_LINE_SEPARATOR_PROP, lineSeparatorProp);
+                }
+            }
+
+            String lineLengthProp = System.getProperty(BASE64_LINE_LENGTH_PROP);
+            if (lineLengthProp != null) {
+                try {
+                    int lineLength = Integer.parseInt(lineLengthProp);
+                    if (lineLength >= 4) {
+                        this.lineLength = lineLength;
+                        if (XMLUtils.ignoreLineBreaks || ignoreLineBreaks) {
+                            LOG.log(Level.WARNING, "Property {0} has no effect since line breaks are ignored",
+                                    BASE64_LINE_LENGTH_PROP);
+                        }
+                    } else {
+                        LOG.log(Level.WARNING, "Illegal value of {0} property is ignored: {1}",
+                                BASE64_LINE_LENGTH_PROP, lineLengthProp);
+                    }
+                } catch (NumberFormatException e) {
+                    LOG.log(Level.WARNING, "Illegal value of {0} property is ignored: {1}",
+                            BASE64_LINE_LENGTH_PROP, lineLengthProp);
+                }
+            }
         }
 
-        public void setIgnoreLineBreaks(boolean ignoreLineBreaks) {
-            this.ignoreLineBreaks = ignoreLineBreaks;
+        public boolean isIgnoreLineBreaks() {
+            return ignoreLineBreaks;
         }
 
         public Base64LineSeparator getLineSeparator() {
             return lineSeparator;
         }
 
-        public void setLineSeparator(Base64LineSeparator lineSeparator) {
-            this.lineSeparator = lineSeparator;
-        }
-
         public int getLineLength() {
             return lineLength;
-        }
-
-        public void setLineLength(int lineLength) {
-            this.lineLength = lineLength;
         }
     }
 
