@@ -1138,7 +1138,7 @@ public final class XMLUtils {
         /**
          * Creates new formatting options by reading system properties.
          */
-        public Base64FormattingOptions() {
+        Base64FormattingOptions() {
             String ignoreLineBreaksProp = System.getProperty(BASE64_IGNORE_LINE_BREAKS_PROP);
             ignoreLineBreaks = Boolean.parseBoolean(ignoreLineBreaksProp);
             if (XMLUtils.ignoreLineBreaks && ignoreLineBreaksProp != null && !ignoreLineBreaks) {
@@ -1204,7 +1204,7 @@ public final class XMLUtils {
             this.bytes = bytes;
         }
 
-        public byte[] getBytes() {
+        byte[] getBytes() {
             return bytes;
         }
     }
