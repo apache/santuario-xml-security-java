@@ -564,6 +564,12 @@ class XMLEncryption11Test extends XMLEncryption11TestAbstract {
         Files.write(Paths.get("target","test-enc-"+w3cTag+".xml"), toString(doc.getFirstChild()).getBytes());
         // XMLUtils.outputDOM(doc.getFirstChild(), System.out);
 
+        // re-read the document and compare both are the same after canonicalization
+        Document doc2 = XMLUtils.read(
+                new ByteArrayInputStream(toString(doc.getFirstChild()).getBytes(java.nio.charset.StandardCharsets.UTF_8)),
+                false);
+        assertEquals(toString(doc.getFirstChild()), toString(doc2.getFirstChild()));
+
         // Perform decryption
         Document dd = decryptElement(doc, ecKey, (X509Certificate)cert);
         // XMLUtils.outputDOM(dd.getFirstChild(), System.out);
