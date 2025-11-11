@@ -18,28 +18,20 @@
  */
 package org.apache.xml.security.utils;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.apache.xml.security.formatting.FormattingChecker;
+import org.apache.xml.security.formatting.FormattingCheckerFactory;
+import org.apache.xml.security.formatting.FormattingTest;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.stream.Collectors;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This test checks {@link XMLUtils} class methods, responsible for Base64 values formatting in XML documents.
- * Since it is a utility class with static methods, and it is configured with system properties,
- * we need to reload the class after system properties are set in each test case.
- * This test uses a special implementation of {@link ClassLoader} to achieve this and calls {@code XMLUtils} methods
- * using reflection.
+ * This is a {@link FormattingTest}, it is expected to be run with different system properties
+ * to check various formatting configurations.
  *
  * There are three methods producing Base64-encoded data in {@code XMLUtils}:
  * <ul>
@@ -48,271 +40,102 @@ import static org.junit.jupiter.api.Assertions.*;
  *     <li>{@link XMLUtils#encodeStream(OutputStream)}</li> (creates a wrapper stream, which applies the same encoding
  *         as {@code encodeToString(byte[])})
  * </ul>
- * In the tests, formatting of the outputs of these methods is checked.
+ * Output of the first two methods is checked using an appropriate {@link FormattingChecker} implementation.
+ * The result of stream encoding is compared to the output of {@code encodeToString} method.
+ *
+ * There are also tests, which check that the corresponding decoding methods can process Base64-encoded data with any
+ * formatting regardless of formatting options.
  */
+@FormattingTest
 public class XMLUtilsTest {
-    private static final byte[] data = new byte[60]; // long enough for a line break in MIME encoding
 
-    private Properties backup;
-    private ClassLoader classLoader;
+    private FormattingChecker formattingChecker = FormattingCheckerFactory.getFormattingChecker();
 
-    @BeforeEach
-    public void createClassLoader() {
-        /* create custom classloader to reload XMLUtils class and its nested classes in each test */
-        ClassLoader parent = getClass().getClassLoader();
-        Collection<Class<?>> classesToReload = List.of(
-                XMLUtils.class,
-                XMLUtils.Base64FormattingOptions.class,
-                XMLUtils.Base64LineSeparator.class
-        );
-        classLoader = new ReloadingClassLoader(parent, classesToReload);
+    /* Base64 encoding of the following bytes is: AQIDBAUGBwg= */
+    private static final byte[] TEST_DATA = new byte[]{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
 
-        /*
-         * XMLUtils instantiates XMLParserImpl, but its package is not exported,
-         * thus unavailable for the new classloader.
-         */
-        ModuleLayer.boot().findModule("org.apache.santuario.xmlsec").orElseThrow()
-                .addOpens("org.apache.xml.security.parser", classLoader.getUnnamedModule());
-    }
-
-    @BeforeEach
-    public void backupProperties() {
-        backup = new Properties();
-        backup.putAll(System.getProperties());
-    }
-
-    @AfterEach
-    public void restoreProperties() {
-        System.setProperties(backup);
+    @Test
+    public void testEncodeToString() {
+        byte[] data =  new byte[60]; // long enough for a line break in MIME encoding
+        String encoded = XMLUtils.encodeToString(data);
+        formattingChecker.checkBase64Value(encoded);
     }
 
     @Test
-    public void testAllPropertiesUnset() throws ReflectiveOperationException, IOException {
-        System.clearProperty("org.apache.xml.security.ignoreLineBreaks");
-        System.clearProperty("org.apache.xml.security.base64.ignoreLineBreaks");
-        System.clearProperty("org.apache.xml.security.base64.lineSeparator");
-        System.clearProperty("org.apache.xml.security.base64.lineLength");
-
-        Class<?> xmlUtilsClass = classLoader.loadClass(XMLUtils.class.getName());
-        String encoded = encodeToString(xmlUtilsClass, data);
-        String elementValue = encodeElementValue(xmlUtilsClass, data);
-        String encodedWithStream = encodeUsingStream(xmlUtilsClass, data);
-
-        assertThat(encoded, containsString("\r\n"));
-        OptionalInt maxLineLength = Arrays.stream(encoded.split("\r\n")).mapToInt(String::length).max();
-        assertTrue(maxLineLength.isPresent());
-        assertEquals(76, maxLineLength.getAsInt());
-
-        assertThat(elementValue, containsString(encoded));
-        assertThat(elementValue, startsWith("\n"));
-        assertThat(elementValue, endsWith("\n"));
-
-        assertEquals(encoded, encodedWithStream);
+    public void testEncodeToStringShort() {
+        byte[] data = new byte[8];
+        String encoded = XMLUtils.encodeToString(data);
+        formattingChecker.checkBase64Value(encoded);
     }
 
     @Test
-    public void testIgnoreLineBreaksSet() throws ReflectiveOperationException, IOException {
-        System.setProperty("org.apache.xml.security.ignoreLineBreaks", "true");
-        System.clearProperty("org.apache.xml.security.base64.ignoreLineBreaks");
-        System.clearProperty("org.apache.xml.security.base64.lineSeparator");
-        System.clearProperty("org.apache.xml.security.base64.lineLength");
-
-        Class<?> xmlUtilsClass = classLoader.loadClass(XMLUtils.class.getName());
-        String encoded = encodeToString(xmlUtilsClass, data);
-        String elementValue = encodeElementValue(xmlUtilsClass, data);
-        String encodedWithStream = encodeUsingStream(xmlUtilsClass, data);
-
-        assertThat(encoded, not(containsString("\r\n")));
-        assertThat(encoded, not(containsString("\n")));
-        assertThat(elementValue, not(containsString("\r\n")));
-        assertThat(elementValue, not(containsString("\n")));
-
-        assertEquals(encoded, encodedWithStream);
+    public void testEncodeElementValue() {
+        byte[] data =  new byte[60]; // long enough for a line break in MIME encoding
+        String encoded = XMLUtils.encodeElementValue(data);
+        formattingChecker.checkBase64ValueWithSpacing(encoded);
     }
 
     @Test
-    public void testIgnoreLineBreaksTakesPrecedence() throws ReflectiveOperationException, IOException {
-        System.setProperty("org.apache.xml.security.ignoreLineBreaks", "true");
-        System.setProperty("org.apache.xml.security.base64.ignoreLineBreaks", "false");
-        System.setProperty("org.apache.xml.security.base64.lineSeparator", "crlf");
-        System.setProperty("org.apache.xml.security.base64.lineLength", "40");
-
-        Class<?> xmlUtilsClass = classLoader.loadClass(XMLUtils.class.getName());
-        String encoded = encodeToString(xmlUtilsClass, data);
-        String elementValue = encodeElementValue(xmlUtilsClass, data);
-        String encodedWithStream = encodeUsingStream(xmlUtilsClass, data);
-
-        assertThat(encoded, not(containsString("\r\n")));
-        assertThat(encoded, not(containsString("\n")));
-        assertThat(elementValue, not(containsString("\r\n")));
-        assertThat(elementValue, not(containsString("\n")));
-
-        assertEquals(encoded, encodedWithStream);
+    public void testEncodeElementValueShort() {
+        byte[] data =  new byte[8];
+        String encoded = XMLUtils.encodeElementValue(data);
+        formattingChecker.checkBase64ValueWithSpacing(encoded);
     }
 
     @Test
-    public void testBase64IgnoreLineBreaksSet() throws ReflectiveOperationException, IOException {
-        System.clearProperty("org.apache.xml.security.ignoreLineBreaks");
-        System.setProperty("org.apache.xml.security.base64.ignoreLineBreaks", "true");
-        System.clearProperty("org.apache.xml.security.base64.lineSeparator");
-        System.clearProperty("org.apache.xml.security.base64.lineLength");
-
-        Class<?> xmlUtilsClass = classLoader.loadClass(XMLUtils.class.getName());
-        String encoded = encodeToString(xmlUtilsClass, data);
-        String elementValue = encodeElementValue(xmlUtilsClass, data);
-        String encodedWithStream = encodeUsingStream(xmlUtilsClass, data);
-
-        assertThat(encoded, not(containsString("\r\n")));
-        assertThat(encoded, not(containsString("\n")));
-        assertThat(elementValue, not(containsString("\r\n")));
-        assertThat(elementValue, not(containsString("\n")));
-
-        assertEquals(encoded, encodedWithStream);
-    }
-
-    @Test
-    public void testBase64IgnoreLineBreaksTakesPrecedence() throws ReflectiveOperationException, IOException {
-        System.clearProperty("org.apache.xml.security.ignoreLineBreaks");
-        System.setProperty("org.apache.xml.security.base64.ignoreLineBreaks", "true");
-        System.setProperty("org.apache.xml.security.base64.lineSeparator", "crlf");
-        System.setProperty("org.apache.xml.security.base64.lineLength", "40");
-
-        Class<?> xmlUtilsClass = classLoader.loadClass(XMLUtils.class.getName());
-        String encoded = encodeToString(xmlUtilsClass, data);
-        String elementValue = encodeElementValue(xmlUtilsClass, data);
-        String encodedWithStream = encodeUsingStream(xmlUtilsClass, data);
-
-        assertThat(encoded, not(containsString("\r\n")));
-        assertThat(encoded, not(containsString("\n")));
-        assertThat(elementValue, not(containsString("\r\n")));
-        assertThat(elementValue, not(containsString("\n")));
-
-        assertEquals(encoded, encodedWithStream);
-    }
-
-    @Test
-    public void testBase64CustomFormatting() throws ReflectiveOperationException, IOException {
-        System.clearProperty("org.apache.xml.security.ignoreLineBreaks");
-        System.clearProperty("org.apache.xml.security.base64.ignoreLineBreaks");
-        System.setProperty("org.apache.xml.security.base64.lineSeparator", "lf");
-        System.setProperty("org.apache.xml.security.base64.lineLength", "40");
-
-        Class<?> xmlUtilsClass = classLoader.loadClass(XMLUtils.class.getName());
-        String encoded = encodeToString(xmlUtilsClass, data);
-        String elementValue = encodeElementValue(xmlUtilsClass, data);
-        String encodedWithStream = encodeUsingStream(xmlUtilsClass, data);
-
-        assertThat(encoded, not(containsString("\r\n")));
-        assertThat(encoded, containsString("\n"));
-        OptionalInt maxLineLength = Arrays.stream(encoded.split("\n")).mapToInt(String::length).max();
-        assertTrue(maxLineLength.isPresent());
-        assertEquals(40, maxLineLength.getAsInt());
-
-        assertThat(elementValue, containsString(encoded));
-        assertThat(elementValue, startsWith("\n"));
-        assertThat(elementValue, endsWith("\n"));
-
-        assertEquals(encoded, encodedWithStream);
-    }
-
-    @Test
-    public void testIllegalPropertiesAreIgnored() throws ReflectiveOperationException, IOException {
-        System.setProperty("org.apache.xml.security.ignoreLineBreaks", "illegal");
-        System.setProperty("org.apache.xml.security.base64.ignoreLineBreaks", "illegal");
-        System.setProperty("org.apache.xml.security.base64.lineSeparator", "illegal");
-        System.setProperty("org.apache.xml.security.base64.lineLength", "illegal");
-
-        Class<?> xmlUtilsClass = classLoader.loadClass(XMLUtils.class.getName());
-        String encoded = encodeToString(xmlUtilsClass, data);
-        String elementValue = encodeElementValue(xmlUtilsClass, data);
-        String encodedWithStream = encodeUsingStream(xmlUtilsClass, data);
-
-        assertThat(encoded, containsString("\r\n"));
-        OptionalInt maxLineLength = Arrays.stream(encoded.split("\r\n")).mapToInt(String::length).max();
-        assertTrue(maxLineLength.isPresent());
-        assertEquals(76, maxLineLength.getAsInt());
-
-        assertThat(elementValue, containsString(encoded));
-        assertThat(elementValue, startsWith("\n"));
-        assertThat(elementValue, endsWith("\n"));
-
-        assertEquals(encoded, encodedWithStream);
-    }
-
-    private String encodeToString(Class<?> xmlUtilsClass, byte[] bytes) throws ReflectiveOperationException {
-        return (String) xmlUtilsClass.getMethod("encodeToString", byte[].class).invoke(null, (Object) bytes);
-    }
-
-    private String encodeElementValue(Class<?> xmlUtilsClass, byte[] bytes) throws ReflectiveOperationException {
-        return (String) xmlUtilsClass.getMethod("encodeElementValue", byte[].class).invoke(null, (Object) bytes);
-    }
-
-    private OutputStream encodeStream(Class<?> xmlUtilsClass, OutputStream stream) throws ReflectiveOperationException {
-        return (OutputStream) xmlUtilsClass.getMethod("encodeStream", OutputStream.class).invoke(null, stream);
-    }
-
-    private String encodeUsingStream(Class<?> xmlUtilsClass, byte[] bytes) throws ReflectiveOperationException, IOException {
+    public void testEncodeUsingStream() throws IOException {
+        byte[] data =  new byte[60];
+        String expected = XMLUtils.encodeToString(data);
+        String encodedWithStream;
         try (ByteArrayOutputStream encoded = new ByteArrayOutputStream();
-             OutputStream raw = encodeStream(xmlUtilsClass, encoded)) {
-            raw.write(bytes);
+             OutputStream raw = XMLUtils.encodeStream(encoded)) {
+            raw.write(data);
             raw.flush();
-            return encoded.toString(StandardCharsets.US_ASCII);
+            encodedWithStream = encoded.toString(StandardCharsets.US_ASCII);
         }
+
+        assertEquals(expected, encodedWithStream);
     }
 
-    /**
-     * This implementation of {@code ClassLoader} reloads given classes from bytecode,
-     * even if they are already loaded by the parent class loader.
-     */
-    private static class ReloadingClassLoader extends ClassLoader {
-        private Collection<String> classNames;
+    @Test
+    public void decodeNoLineBreaks() {
+        String encoded = "AQIDBAUGBwg=";
 
-        /**
-         * Creates new class loader.
-         * @param parent    Parent class loader.
-         * @param classes   Set of classes to be forcefully reloaded
-         */
-        private ReloadingClassLoader(ClassLoader parent, Collection<Class<?>> classes) {
-            super("TestClassLoader", parent);
-            this.classNames = classes.stream().map(Class::getName).collect(Collectors.toSet());
-        }
+        byte[] data = XMLUtils.decode(encoded);
+        assertArrayEquals(TEST_DATA, data);
 
-        @Override
-        protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-            if (classNames.contains(name)) {
-                Class<?> clazz = findClass(name);
-                if (resolve) {
-                    resolveClass(clazz);
-                }
-                return clazz;
-            }
-            return super.loadClass(name, resolve);
-        }
+        data = XMLUtils.decode(encoded.getBytes(StandardCharsets.US_ASCII));
+        assertArrayEquals(TEST_DATA, data);
+    }
 
-        @Override
-        protected Class<?> findClass(String name) throws ClassNotFoundException {
-            if (classNames.contains(name)) {
-                Class<?> parentLoadedClass = getParent().loadClass(name);
-                String resourceName = synthesizeClassName(parentLoadedClass) + ".class";
-                byte[] classData;
-                try (InputStream in = parentLoadedClass.getResourceAsStream(resourceName)) {
-                    if (in == null) {
-                        throw new ClassNotFoundException("Could not load class " + name);
-                    }
-                    classData = in.readAllBytes();
-                } catch (IOException e) {
-                    throw new ClassNotFoundException("Could not load class " + name, e);
-                }
+    @Test
+    public void decodeCrlfLineBreaks() {
+        String encoded = "AQIDBAUG\r\nBwg=";
 
-                return defineClass(name, classData, 0, classData.length);
-            }
-            throw new ClassNotFoundException("Class not found: " + name);
-        }
+        byte[] data = XMLUtils.decode(encoded);
+        assertArrayEquals(TEST_DATA, data);
 
-        private String synthesizeClassName(Class<?> clazz) {
-            String name = clazz.getSimpleName();
-            if (clazz.isMemberClass()) name = synthesizeClassName(clazz.getEnclosingClass()) + "$" + name;
-            return name;
+        data = XMLUtils.decode(encoded.getBytes(StandardCharsets.US_ASCII));
+        assertArrayEquals(TEST_DATA, data);
+    }
+
+    @Test
+    public void decodeLfLineBreaks() {
+        String encoded = "AQIDBAUG\nBwg=";
+
+        byte[] data = XMLUtils.decode(encoded);
+        assertArrayEquals(TEST_DATA, data);
+
+        data = XMLUtils.decode(encoded.getBytes(StandardCharsets.US_ASCII));
+        assertArrayEquals(TEST_DATA, data);
+    }
+
+    @Test
+    public void decodeStream() throws IOException {
+        byte[] encodedBytes = "AQIDBAUGBwg=".getBytes(StandardCharsets.US_ASCII);
+
+        try (InputStream decoded = XMLUtils.decodeStream(new ByteArrayInputStream(encodedBytes))) {
+            assertArrayEquals(TEST_DATA, decoded.readAllBytes());
         }
     }
 }
