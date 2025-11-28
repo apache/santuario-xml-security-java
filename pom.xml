@@ -88,7 +88,7 @@
     </distributionManagement>
 
     <properties>
-        <bcprov.version>1.82</bcprov.version>
+        <bcprov.version>1.83</bcprov.version>
         <clirr.version>2.8</clirr.version>
         <commons.codec.version>1.20.0</commons.codec.version>
         <hamcrest.version>2.2</hamcrest.version>
