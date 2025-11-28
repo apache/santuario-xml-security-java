@@ -40,6 +40,7 @@ import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Base64OutputStream;
 import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.encryption.XMLCipherUtil;
@@ -175,12 +176,14 @@ public abstract class AbstractEncryptOutputProcessor extends AbstractOutputProce
                 symmetricCipher.init(Cipher.ENCRYPT_MODE, encryptionPartDef.getSymmetricKey(), parameterSpec);
 
                 characterEventGeneratorOutputStream = new CharacterEventGeneratorOutputStream();
-                Base64OutputStream base64EncoderStream = null;  //NOPMD
+                Base64OutputStream.Builder builder = Base64OutputStream.builder()
+                        .setOutputStream(characterEventGeneratorOutputStream)
+                        .setEncode(true);
                 if (XMLUtils.isIgnoreLineBreaks()) {
-                    base64EncoderStream = new Base64OutputStream(characterEventGeneratorOutputStream, true, 0, null);
-                } else {
-                    base64EncoderStream = new Base64OutputStream(characterEventGeneratorOutputStream, true);
+                    builder.setBaseNCodec(Base64.builder().setLineLength(0).setLineSeparator(null).get());
                 }
+
+                Base64OutputStream base64EncoderStream = builder.get();  //NOPMD
                 base64EncoderStream.write(iv);
 
                 OutputStream outputStream = new CipherOutputStream(base64EncoderStream, symmetricCipher);   //NOPMD

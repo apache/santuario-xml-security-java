@@ -43,16 +43,17 @@ public class TransformBase64Decode extends TransformIdentity {
 
     @Override
     public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
-        super.setOutputStream(new Base64OutputStream(
-                new FilterOutputStream(outputStream) {
+        OutputStream base64OutputStream = Base64OutputStream.builder() //NOPMD
+                .setOutputStream(new FilterOutputStream(outputStream) {
                     @Override
                     public void close() throws IOException {
                         //do not close the parent output stream!
                         super.flush();
                     }
-                },
-                false)
-        );
+                })
+                .setEncode(false)
+                .get();
+        super.setOutputStream(base64OutputStream);
     }
 
     @Override
@@ -96,7 +97,11 @@ public class TransformBase64Decode extends TransformIdentity {
                             public void transform(Object object) throws XMLStreamException {
                                 if (base64OutputStream == null) {
                                     byteArrayOutputStream = new UnsyncByteArrayOutputStream();
-                                    base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
+                                    base64OutputStream =
+                                        Base64OutputStream.builder()
+                                            .setOutputStream(byteArrayOutputStream)
+                                            .setEncode(false)
+                                            .get();
                                 }
                                 try {
                                     base64OutputStream.write((byte[]) object);
@@ -139,7 +144,10 @@ public class TransformBase64Decode extends TransformIdentity {
                             public void transform(Object object) throws XMLStreamException {
                                 if (base64OutputStream == null) {
                                     byteArrayOutputStream = new UnsyncByteArrayOutputStream();
-                                    base64OutputStream = new Base64OutputStream(byteArrayOutputStream, false);
+                                    base64OutputStream = Base64OutputStream.builder()
+                                            .setOutputStream(byteArrayOutputStream)
+                                            .setEncode(false)
+                                            .get();
                                 }
                                 try {
                                     base64OutputStream.write((byte[]) object);
@@ -177,7 +185,11 @@ public class TransformBase64Decode extends TransformIdentity {
         if (getOutputStream() != null) {
             super.transform(inputStream);
         } else {
-            super.transform(new Base64InputStream(inputStream, false));
+            InputStream base64InputStream = Base64InputStream.builder() //NOPMD
+                    .setInputStream(inputStream)
+                    .setEncode(false)
+                    .get();
+            super.transform(base64InputStream);
         }
     }
 
