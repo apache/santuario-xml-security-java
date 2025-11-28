@@ -844,7 +844,10 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 //buffering seems not to help
                 //bufferedOutputStream = new BufferedOutputStream(new Base64OutputStream(ivSplittingOutputStream, false), 8192 * 5);
                 ReplaceableOuputStream replaceableOuputStream = new ReplaceableOuputStream(ivSplittingOutputStream);    //NOPMD
-                OutputStream base64OutputStream = new Base64OutputStream(replaceableOuputStream, false); //NOPMD
+                OutputStream base64OutputStream = Base64OutputStream.builder() //NOPMD
+                        .setOutputStream(replaceableOuputStream)
+                        .setEncode(false)
+                        .get();
                 ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
                 OutputStreamWriter outputStreamWriter = //NOPMD
                         new OutputStreamWriter(base64OutputStream,
