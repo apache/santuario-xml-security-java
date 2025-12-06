@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Output of the first two methods is checked using an appropriate {@link FormattingChecker} implementation.
  * The result of stream encoding is compared to the output of {@code encodeToString} method.
  *
- * There are also tests, which check that the corresponding decoding methods can process Base64-encoded data with any
+ * There are also tests which check that the corresponding decoding methods can process Base64-encoded data with any
  * formatting regardless of formatting options.
  */
 @FormattingTest
@@ -56,7 +56,7 @@ public class XMLUtilsTest {
 
     @Test
     public void testEncodeToString() {
-        byte[] data =  new byte[60]; // long enough for a line break in MIME encoding
+        byte[] data = new byte[60]; // long enough for a line break in MIME encoding
         String encoded = XMLUtils.encodeToString(data);
         formattingChecker.checkBase64Value(encoded);
     }
@@ -70,21 +70,21 @@ public class XMLUtilsTest {
 
     @Test
     public void testEncodeElementValue() {
-        byte[] data =  new byte[60]; // long enough for a line break in MIME encoding
+        byte[] data = new byte[60]; // long enough for a line break in MIME encoding
         String encoded = XMLUtils.encodeElementValue(data);
         formattingChecker.checkBase64ValueWithSpacing(encoded);
     }
 
     @Test
     public void testEncodeElementValueShort() {
-        byte[] data =  new byte[8];
+        byte[] data = new byte[8];
         String encoded = XMLUtils.encodeElementValue(data);
         formattingChecker.checkBase64ValueWithSpacing(encoded);
     }
 
     @Test
     public void testEncodeUsingStream() throws IOException {
-        byte[] data =  new byte[60];
+        byte[] data = new byte[60];
         String expected = XMLUtils.encodeToString(data);
         String encodedWithStream;
         try (ByteArrayOutputStream encoded = new ByteArrayOutputStream();
