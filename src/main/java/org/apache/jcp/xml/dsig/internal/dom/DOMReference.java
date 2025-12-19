@@ -490,7 +490,7 @@ public final class DOMReference extends DOMStructure
             }
 
             if (data == null) {
-                LOG.log(Level.WARNING, "The input bytes to the digest operation are null. " +
+                LOG.log(Level.INFO, "The input bytes to the digest operation are null. " +
                    "This may be due to a problem with the Reference URI " +
                    "or its Transforms.");
             } else {
