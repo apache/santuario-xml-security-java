@@ -94,7 +94,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <jetty.version>9.4.58.v20250814</jetty.version>
         <junit.version>5.14.2</junit.version>
-        <log4j.version>2.20.0</log4j.version>
+        <log4j.version>2.25.3</log4j.version>
         <slf4j.version>1.7.36</slf4j.version>
         <xalan.version>2.7.3</xalan.version>
         <xmlunit.version>2.11.0</xmlunit.version>
