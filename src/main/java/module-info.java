@@ -22,8 +22,8 @@
  */
 module org.apache.santuario.xmlsec {
 
-    requires transitive jakarta.activation;
-    requires transitive jakarta.xml.bind;
+    requires static jakarta.activation;
+    requires static jakarta.xml.bind;
     requires java.base;
     requires java.management;
     requires java.xml;
