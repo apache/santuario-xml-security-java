@@ -60,7 +60,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * and data encryption key.
  */
 @FormattingTest
-public class EncryptionFormattingTest {
+class EncryptionFormattingTest {
     private final Random random = new Random();
     private final FormattingChecker formattingChecker;
     private KeyStore keyStore;
@@ -85,7 +85,7 @@ public class EncryptionFormattingTest {
     }
 
     @Test
-    public void testEncryptedFormatting() throws Exception {
+    void testEncryptedFormatting() throws Exception {
         /* this test checks formatting of base64binary values */
         byte[] testData = new byte[128]; // long enough for line breaks
         random.nextBytes(testData);
@@ -106,7 +106,7 @@ public class EncryptionFormattingTest {
     }
 
     @Test
-    public void testEncryptDecrypt() throws Exception {
+    void testEncryptDecrypt() throws Exception {
         /* this test ensures that the encrypted data can be processed with various formatting settings */
         byte[] testData = new byte[128]; // long enough for line breaks
         random.nextBytes(testData);
