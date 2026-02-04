@@ -56,14 +56,38 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * DOM and XML accessibility and comfort functions.
  *
+ * @implNote
+ * The following system properties affect XML formatting:
+ * <ul>
+ *     <li>{@systemProperty org.apache.xml.security.ignoreLineBreaks} - ignores all line breaks,
+ *     making a single-line document. Overrides all other formatting options. Default: false</li>
+ *     <li>{@systemProperty org.apache.xml.security.base64.ignoreLineBreaks} - ignores line breaks in base64Binary values.
+ *     Takes precedence over line length and separator options (see below). Default: false</li>
+ *     <li>{@systemProperty org.apache.xml.security.base64.lineSeparator} - Sets the line separator sequence in base64Binary values.
+ *     Possible values: crlf, lf. Default: crlf</li>
+ *     <li>{@systemProperty org.apache.xml.security.base64.lineLength} - Sets maximum line length in base64Binary values.
+ *     The value is rounded down to the nearest multiple of 4. Values less than 4 are ignored. Default: 76</li>
+ * </ul>
  */
 public final class XMLUtils {
 
+    private static final Logger LOG = System.getLogger(XMLUtils.class.getName());
+
+    private static final String IGNORE_LINE_BREAKS_PROP = "org.apache.xml.security.ignoreLineBreaks";
+
     private static boolean ignoreLineBreaks =
             AccessController.doPrivileged(
-                    (PrivilegedAction<Boolean>) () -> Boolean.getBoolean("org.apache.xml.security.ignoreLineBreaks"));
+                    (PrivilegedAction<Boolean>) () -> Boolean.getBoolean(IGNORE_LINE_BREAKS_PROP));
 
-    private static final Logger LOG = System.getLogger(XMLUtils.class.getName());
+    private static Base64FormattingOptions base64Formatting =
+            AccessController.doPrivileged(
+                    (PrivilegedAction<Base64FormattingOptions>) () -> new Base64FormattingOptions());
+
+    private static Base64.Encoder base64Encoder = (ignoreLineBreaks || base64Formatting.isIgnoreLineBreaks()) ?
+            Base64.getEncoder() :
+            Base64.getMimeEncoder(base64Formatting.getLineLength(), base64Formatting.getLineSeparator().getBytes());
+
+    private static Base64.Decoder base64Decoder = Base64.getMimeDecoder();
 
     private static XMLParser xmlParserImpl =
             AccessController.doPrivileged(
@@ -515,18 +539,48 @@ public final class XMLUtils {
     }
 
     public static String encodeToString(byte[] bytes) {
-        if (ignoreLineBreaks) {
-            return Base64.getEncoder().encodeToString(bytes);
+        return base64Encoder.encodeToString(bytes);
+    }
+
+    /**
+     * Encodes bytes using Base64, with or without line breaks, depending on configuration (see {@link XMLUtils}).
+     * @param bytes Bytes to encode
+     * @return      Base64 string
+     */
+    public static String encodeElementValue(byte[] bytes) {
+        String encoded = encodeToString(bytes);
+        if (!ignoreLineBreaks && !base64Formatting.isIgnoreLineBreaks()
+                && encoded.length() > base64Formatting.getLineLength()) {
+            encoded = "\n" + encoded + "\n";
         }
-        return Base64.getMimeEncoder().encodeToString(bytes);
+        return encoded;
+    }
+
+    /**
+     * Wraps output stream for Base64 encoding.
+     * Output data may contain line breaks or not, depending on configuration (see {@link XMLUtils})
+     * @param stream    The underlying output stream to write Base64-encoded data
+     * @return          Stream which writes binary data using Base64 encoder
+     */
+    public static OutputStream encodeStream(OutputStream stream) {
+        return base64Encoder.wrap(stream);
     }
 
     public static byte[] decode(String encodedString) {
-        return Base64.getMimeDecoder().decode(encodedString);
+        return base64Decoder.decode(encodedString);
     }
 
     public static byte[] decode(byte[] encodedBytes) {
-        return Base64.getMimeDecoder().decode(encodedBytes);
+        return base64Decoder.decode(encodedBytes);
+    }
+
+    /**
+     * Wraps input stream for Base64 decoding.
+     * @param stream    Input stream with Base64-encoded data
+     * @return          Input stream with decoded binary data
+     */
+    public static InputStream decodeStream(InputStream stream) {
+        return base64Decoder.wrap(stream);
     }
 
     public static boolean isIgnoreLineBreaks() {
@@ -1067,5 +1121,91 @@ public final class XMLUtils {
         System.arraycopy(bigBytes, startSrc, resizedBytes, startDst, bigLen);
 
         return resizedBytes;
+    }
+
+    /**
+     * Aggregates formatting options for base64Binary values.
+     */
+    static class Base64FormattingOptions {
+        private static final String BASE64_IGNORE_LINE_BREAKS_PROP = "org.apache.xml.security.base64.ignoreLineBreaks";
+        private static final String BASE64_LINE_SEPARATOR_PROP = "org.apache.xml.security.base64.lineSeparator";
+        private static final String BASE64_LINE_LENGTH_PROP = "org.apache.xml.security.base64.lineLength";
+
+        private boolean ignoreLineBreaks = false;
+        private Base64LineSeparator lineSeparator = Base64LineSeparator.CRLF;
+        private int lineLength = 76;
+
+        /**
+         * Creates new formatting options by reading system properties.
+         */
+        Base64FormattingOptions() {
+            String ignoreLineBreaksProp = System.getProperty(BASE64_IGNORE_LINE_BREAKS_PROP);
+            ignoreLineBreaks = Boolean.parseBoolean(ignoreLineBreaksProp);
+            if (XMLUtils.ignoreLineBreaks && ignoreLineBreaksProp != null && !ignoreLineBreaks) {
+                LOG.log(Level.WARNING, "{0} property takes precedence over {1}, line breaks will be ignored",
+                        IGNORE_LINE_BREAKS_PROP, BASE64_IGNORE_LINE_BREAKS_PROP);
+            }
+
+            String lineSeparatorProp = System.getProperty(BASE64_LINE_SEPARATOR_PROP);
+            if (lineSeparatorProp != null) {
+                try {
+                    lineSeparator = Base64LineSeparator.valueOf(lineSeparatorProp.toUpperCase());
+                    if (XMLUtils.ignoreLineBreaks || ignoreLineBreaks) {
+                        LOG.log(Level.WARNING, "Property {0} has no effect since line breaks are ignored",
+                                BASE64_LINE_SEPARATOR_PROP);
+                    }
+                } catch (IllegalArgumentException e) {
+                    LOG.log(Level.WARNING, "Illegal value of {0} property is ignored: {1}",
+                            BASE64_LINE_SEPARATOR_PROP, lineSeparatorProp);
+                }
+            }
+
+            String lineLengthProp = System.getProperty(BASE64_LINE_LENGTH_PROP);
+            if (lineLengthProp != null) {
+                try {
+                    int lineLength = Integer.parseInt(lineLengthProp);
+                    if (lineLength >= 4) {
+                        this.lineLength = lineLength;
+                        if (XMLUtils.ignoreLineBreaks || ignoreLineBreaks) {
+                            LOG.log(Level.WARNING, "Property {0} has no effect since line breaks are ignored",
+                                    BASE64_LINE_LENGTH_PROP);
+                        }
+                    } else {
+                        LOG.log(Level.WARNING, "Illegal value of {0} property is ignored: {1}",
+                                BASE64_LINE_LENGTH_PROP, lineLengthProp);
+                    }
+                } catch (NumberFormatException e) {
+                    LOG.log(Level.WARNING, "Illegal value of {0} property is ignored: {1}",
+                            BASE64_LINE_LENGTH_PROP, lineLengthProp);
+                }
+            }
+        }
+
+        public boolean isIgnoreLineBreaks() {
+            return ignoreLineBreaks;
+        }
+
+        public Base64LineSeparator getLineSeparator() {
+            return lineSeparator;
+        }
+
+        public int getLineLength() {
+            return lineLength;
+        }
+    }
+
+    enum Base64LineSeparator {
+        CRLF(new byte[]{'\r', '\n'}),
+        LF(new byte[]{'\n'});
+
+        private byte[] bytes;
+
+        Base64LineSeparator(byte[] bytes) {
+            this.bytes = bytes;
+        }
+
+        byte[] getBytes() {
+            return bytes;
+        }
     }
 }
