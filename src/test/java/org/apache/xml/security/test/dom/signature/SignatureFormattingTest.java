@@ -61,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * RSA-2048 and SHA-512 are used to create longer binary values.
  */
 @FormattingTest
-public class SignatureFormattingTest {
+class SignatureFormattingTest {
     private final static byte[] MOCK_DATA = new byte[]{ 0x0a, 0x0b, 0x0c, 0x0d };
 
     private final FormattingChecker formattingChecker;
@@ -89,7 +89,7 @@ public class SignatureFormattingTest {
     }
 
     @Test
-    public void testSignatureFormatting() throws Exception {
+    void testSignatureFormatting() throws Exception {
         /* this test checks formatting of base64Binary values */
         Document doc = createDocument();
 
@@ -117,7 +117,7 @@ public class SignatureFormattingTest {
     }
 
     @Test
-    public void testSignVerify() throws Exception {
+    void testSignVerify() throws Exception {
         /* this test checks the signature can be verified with given formatting settings */
         Document doc = createDocument();
         Element signatureElement = findElementByXpath("//ds:Signature[1]", doc);
