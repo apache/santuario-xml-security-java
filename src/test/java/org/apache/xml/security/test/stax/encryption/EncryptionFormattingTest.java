@@ -70,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Also, decryption with StAX API is performed to ensure different formatting can be consumed.
  */
 @FormattingTest
-public class EncryptionFormattingTest {
+class EncryptionFormattingTest {
     private Random random = new Random();
     private final FormattingChecker formattingChecker;
     private KeyStore keyStore;
@@ -98,7 +98,7 @@ public class EncryptionFormattingTest {
     }
 
     @Test
-    public void testEncryptedFormatting() throws Exception {
+    void testEncryptedFormatting() throws Exception {
         /* this test checks formatting of base64Binary values */
         byte[] documentBytes = createDocument();
 
@@ -128,7 +128,7 @@ public class EncryptionFormattingTest {
     }
 
     @Test
-    public void testEncryptDecrypt() throws Exception {
+    void testEncryptDecrypt() throws Exception {
         /* this test ensures that the encrypted data can be processed with various formatting settings */
         byte[] documentBytes = createDocument();
 

@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * formatting regardless of formatting options.
  */
 @FormattingTest
-public class XMLUtilsTest {
+class XMLUtilsTest {
 
     private FormattingChecker formattingChecker = FormattingCheckerFactory.getFormattingChecker();
 
@@ -55,35 +55,35 @@ public class XMLUtilsTest {
     private static final byte[] TEST_DATA = new byte[]{ 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08 };
 
     @Test
-    public void testEncodeToString() {
+    void testEncodeToString() {
         byte[] data = new byte[60]; // long enough for a line break in MIME encoding
         String encoded = XMLUtils.encodeToString(data);
         formattingChecker.checkBase64Value(encoded);
     }
 
     @Test
-    public void testEncodeToStringShort() {
+    void testEncodeToStringShort() {
         byte[] data = new byte[8];
         String encoded = XMLUtils.encodeToString(data);
         formattingChecker.checkBase64Value(encoded);
     }
 
     @Test
-    public void testEncodeElementValue() {
+    void testEncodeElementValue() {
         byte[] data = new byte[60]; // long enough for a line break in MIME encoding
         String encoded = XMLUtils.encodeElementValue(data);
         formattingChecker.checkBase64ValueWithSpacing(encoded);
     }
 
     @Test
-    public void testEncodeElementValueShort() {
+    void testEncodeElementValueShort() {
         byte[] data = new byte[8];
         String encoded = XMLUtils.encodeElementValue(data);
         formattingChecker.checkBase64ValueWithSpacing(encoded);
     }
 
     @Test
-    public void testEncodeUsingStream() throws IOException {
+    void testEncodeUsingStream() throws IOException {
         byte[] data = new byte[60];
         String expected = XMLUtils.encodeToString(data);
         String encodedWithStream;
@@ -98,7 +98,7 @@ public class XMLUtilsTest {
     }
 
     @Test
-    public void decodeNoLineBreaks() {
+    void decodeNoLineBreaks() {
         String encoded = "AQIDBAUGBwg=";
 
         byte[] data = XMLUtils.decode(encoded);
@@ -109,7 +109,7 @@ public class XMLUtilsTest {
     }
 
     @Test
-    public void decodeCrlfLineBreaks() {
+    void decodeCrlfLineBreaks() {
         String encoded = "AQIDBAUG\r\nBwg=";
 
         byte[] data = XMLUtils.decode(encoded);
@@ -120,7 +120,7 @@ public class XMLUtilsTest {
     }
 
     @Test
-    public void decodeLfLineBreaks() {
+    void decodeLfLineBreaks() {
         String encoded = "AQIDBAUG\nBwg=";
 
         byte[] data = XMLUtils.decode(encoded);
@@ -131,7 +131,7 @@ public class XMLUtilsTest {
     }
 
     @Test
-    public void decodeStream() throws IOException {
+    void decodeStream() throws IOException {
         byte[] encodedBytes = "AQIDBAUGBwg=".getBytes(StandardCharsets.US_ASCII);
 
         try (InputStream decoded = XMLUtils.decodeStream(new ByteArrayInputStream(encodedBytes))) {

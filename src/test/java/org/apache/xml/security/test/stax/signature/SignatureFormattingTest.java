@@ -61,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Also, signature verification with StAX API is performed to ensure different formatting can be consumed.
  */
 @FormattingTest
-public class SignatureFormattingTest {
+class SignatureFormattingTest {
     private final FormattingChecker formattingChecker;
     private KeyStore keyStore;
     private XPath xpath;
@@ -87,7 +87,7 @@ public class SignatureFormattingTest {
     }
 
     @Test
-    public void testSignatureFormatting() throws Exception {
+    void testSignatureFormatting() throws Exception {
         /* this test checks formatting of base64Binary values */
         byte[] documentBytes = createDocument();
 
@@ -116,7 +116,7 @@ public class SignatureFormattingTest {
     }
     
     @Test
-    public void testSignVerify() throws Exception {
+    void testSignVerify() throws Exception {
         /* this test checks the signature can be verified with given formatting settings */
         byte[] documentBytes = createDocument();
         
