@@ -25,7 +25,7 @@
     <created>2006-03-20</created>
     <license rdf:resource="https://spdx.org/licenses/Apache-2.0" />
     <name>Apache Santuario</name>
-    <homepage rdf:resource="htts://santuario.apache.org" />
+    <homepage rdf:resource="https://santuario.apache.org" />
     <asfext:pmc rdf:resource="https://santuario.apache.org" />
     <shortdesc>Library implementing XML Digital Signature Specification &amp; XML Encryption Specification</shortdesc>
     <bug-database rdf:resource="https://issues.apache.org/jira/browse/SANTUARIO" />
@@ -78,7 +78,7 @@
       <asfext:title>XML Encryption Syntax and Processing</asfext:title>
       <asfext:body>W3C</asfext:body>
       <asfext:id>Exclusive XML Encryption</asfext:id>
-      <asfext:url rdf:resource="http://www.w3.org/TR/2002/CR-xmlenc-core-20020304/"/>
+      <asfext:url rdf:resource="https://www.w3.org/TR/xmlenc-core1/"/>
     </asfext:Standard>
     </asfext:implements>
 
