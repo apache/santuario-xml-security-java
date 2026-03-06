@@ -221,7 +221,7 @@ public class Manifest extends SignatureElementProxy {
 
     /**
      * Return the <i>i</i><sup>th</sup> reference. Valid <code>i</code>
-     * values are 0 to <code>{link@ getSize}-1</code>.
+     * values are 0 to <code>{@link #getLength()}-1</code>.
      *
      * @param i Index of the requested {@link Reference}
      * @return the <i>i</i><sup>th</sup> reference
