@@ -20,11 +20,17 @@ package org.apache.xml.security.test.dom.signature;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.PublicKey;
 
 import org.apache.xml.security.Init;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.test.dom.TestUtils;
+import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
@@ -33,6 +39,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case contributed by Matthias Germann for testing that bug 43239 is
@@ -80,6 +87,88 @@ class InvalidKeyTest {
         si.checkSignatureValue(pk);
 
         // System.out.println("VALIDATION OK" );
+    }
+
+    /**
+     * Test that wrong key type is properly rejected.
+     * Using EC key when RSA is expected should fail clearly.
+     */
+    @Test
+    void testWrongKeyTypeRejection() throws Exception {
+        File file = resolveFile("src/test/resources/org/apache/xml/security/samples/input/test-assertion.xml");
+        Document doc = XMLUtils.read(file, false);
+        Node assertion = doc.getFirstChild();
+        while (!(assertion instanceof Element)) {
+            assertion = assertion.getNextSibling();
+        }
+        
+        Element n = (Element)assertion.getLastChild();
+        XMLSignature sig = new XMLSignature(n, "");
+        
+        // Generate an EC key when signature expects RSA/DSA
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("EC");
+        keyGen.initialize(256);
+        KeyPair keyPair = keyGen.generateKeyPair();
+        
+        assertThrows(XMLSecurityException.class, () -> {
+            sig.checkSignatureValue(keyPair.getPublic());
+        }, "EC key should be rejected when RSA/DSA signature expected");
+    }
+
+    /**
+     * Test that different keys from same algorithm type are rejected.
+     * Sign with one RSA key, verify with different RSA key.
+     */
+    @Test
+    void testDifferentKeySameAlgorithm() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Test content"));
+        
+        // Generate two different RSA key pairs
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+        KeyPair keyPair1 = keyGen.generateKeyPair();
+        KeyPair keyPair2 = keyGen.generateKeyPair();
+        
+        // Sign with first key
+        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256);
+        root.appendChild(sig.getElement());
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        sig.addDocument("", transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        sig.sign(keyPair1.getPrivate());
+        
+        // Verify with second key should fail
+        assertFalse(sig.checkSignatureValue(keyPair2.getPublic()),
+            "Signature should not verify with different RSA key");
+    }
+
+    /**
+     * Test that matching key pair works correctly.
+     */
+    @Test
+    void testMatchingKeyPairSucceeds() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Test content"));
+        
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+        KeyPair keyPair = keyGen.generateKeyPair();
+        
+        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256);
+        root.appendChild(sig.getElement());
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        sig.addDocument("", transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+        sig.sign(keyPair.getPrivate());
+        
+        // Verify with matching public key should succeed
+        assertTrue(sig.checkSignatureValue(keyPair.getPublic()),
+            "Signature should verify with matching key pair");
     }
 
 }

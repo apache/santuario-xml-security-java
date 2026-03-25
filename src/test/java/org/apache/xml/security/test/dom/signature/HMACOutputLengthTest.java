@@ -40,6 +40,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -150,6 +152,139 @@ class HMACOutputLengthTest {
         XMLSignature signature = new XMLSignature(sigElement, file.toURI().toString());
         SecretKey sk = signature.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
         return signature.checkSignatureValue(sk);
+    }
+
+    /**
+     * Test that zero HMAC output length via the constructor is treated as "use default"
+     * (no HMACOutputLength element set), not an error. Zero-length rejection when
+     * explicitly present in an XML document is covered by test_signature_enveloping_hmac_sha1_trunclen_0.
+     */
+    @Test
+    void testZeroOutputLengthDirect() throws Exception {
+        Document doc = TestUtils.newDocument();
+        // 0 is the sentinel for "no output length specified" in this API
+        XMLSignature sig = new XMLSignature(
+            doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
+            0, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+        );
+        assertNotNull(sig);
+    }
+
+    /**
+     * Test HMAC output length just below minimum (should fail).
+     */
+    @Test
+    void testBelowMinimumOutputLength() {
+        assertThrows(XMLSignatureException.class, () -> {
+            Document doc = TestUtils.newDocument();
+            // 79 bits is below minimum of 80
+            new XMLSignature(
+                doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
+                79, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+            );
+        }, "Output length below minimum should be rejected");
+    }
+
+    /**
+     * Test HMAC output length exceeding algorithm output size.
+     */
+    @Test
+    void testExcessiveOutputLength() throws Exception {
+        Document doc = TestUtils.newDocument();
+        
+        // HMAC-SHA1 produces 160 bits, try to request 256 bits
+        try {
+            XMLSignature sig = new XMLSignature(
+                doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
+                256, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+            );
+            // If this succeeds, it means excessive length is truncated to max
+            assertNotNull(sig);
+        } catch (XMLSignatureException e) {
+            // Also acceptable - excessive length rejected
+            assertTrue(e.getMessage().contains("HMACOutputLength") || 
+                      e.getMessage().contains("length"),
+                "Exception should mention output length issue");
+        }
+    }
+
+    /**
+     * Test HMAC with maximum valid output length (160 bits for SHA1).
+     */
+    @Test
+    void testMaximumOutputLength() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Test content"));
+
+        // 160 bits is the full output for HMAC-SHA1
+        XMLSignature sig = new XMLSignature(
+            doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
+            160, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+        );
+        
+        root.appendChild(sig.getElement());
+        
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        sig.addDocument("", transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+
+        SecretKey sk = sig.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
+        sig.sign(sk);
+        
+        assertTrue(sig.checkSignatureValue(sk));
+    }
+
+    /**
+     * Test that missing HMACOutputLength element defaults appropriately.
+     */
+    @Test
+    void testMissingOutputLengthElement() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+        doc.appendChild(root);
+        root.appendChild(doc.createTextNode("Test content"));
+
+        // Create signature without specifying output length (uses default)
+        XMLSignature sig = new XMLSignature(
+            doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
+            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+        );
+        
+        root.appendChild(sig.getElement());
+        
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        sig.addDocument("", transforms, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256);
+
+        SecretKey sk = sig.createSecretKey("secret".getBytes(StandardCharsets.US_ASCII));
+        sig.sign(sk);
+        
+        // Should use full output length by default
+        assertTrue(sig.checkSignatureValue(sk));
+    }
+
+
+    /**
+     * Test that non-multiple-of-8 output length is handled.
+     */
+    @Test
+    void testNonByteAlignedOutputLength() throws Exception{
+        // Output length should be in bits, but might need to be byte-aligned
+        // Test with 85 bits (not a multiple of 8)
+        try {
+            Document doc = TestUtils.newDocument();
+            XMLSignature sig = new XMLSignature(
+                doc, null, XMLSignature.ALGO_ID_MAC_HMAC_SHA1,
+                85, Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS
+            );
+            // If this succeeds, non-byte-aligned lengths are accepted
+            assertNotNull(sig);
+        } catch (XMLSignatureException e) {
+            // Also acceptable - require byte alignment
+            assertNotNull(e);
+        }
     }
 
 }

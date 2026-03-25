@@ -35,6 +35,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
@@ -221,5 +224,172 @@ class SignatureTest {
         sig.sign(getPrivateKey());
 
         return sig;
+    }
+
+    /**
+     * Test that null private key is rejected during signing.
+     */
+    @Test
+    void testSignWithNullKeyRejection() throws Throwable {
+        Document doc = getOriginalDocument();
+        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        doc.getDocumentElement().appendChild(sig.getElement());
+        
+        sig.addDocument("", null, Constants.ALGO_ID_DIGEST_SHA1);
+        
+        assertThrows(XMLSignatureException.class, () -> {
+            sig.sign(null);
+        }, "Null private key should be rejected");
+    }
+
+    /**
+     * Test that tampered signature value is detected.
+     */
+    @Test
+    void testTamperedSignatureValueDetection() throws Throwable {
+        Document doc = getOriginalDocument();
+        signDocument(doc);
+        
+        // Tamper with the SignatureValue
+        Element sigValue = (Element) doc.getElementsByTagNameNS(DS_NS, "SignatureValue").item(0);
+        String originalValue = sigValue.getTextContent();
+        
+        // Flip some bits by changing a character
+        String tamperedValue = "AAAA" + originalValue.substring(4);
+        sigValue.setTextContent(tamperedValue);
+        
+        // Rebuild signature and verify - should fail
+        Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
+        XMLSignature signature = new XMLSignature(signatureElem, "");
+        
+        assertFalse(signature.checkSignatureValue(getPublicKey()),
+            "Tampered signature should not verify");
+    }
+
+    /**
+     * Test that tampered document content is detected.
+     */
+    @Test
+    void testTamperedDocumentContentDetection() throws Throwable {
+        Document doc = getOriginalDocument();
+        XMLSignature sig = signDocument(doc);
+        
+        // Tamper with the document content after signing
+        Element root = doc.getDocumentElement();
+        root.setTextContent("Tampered content!");
+        
+        // Signature should not verify
+        assertFalse(sig.checkSignatureValue(getPublicKey()),
+            "Signature should not verify after document tampering");
+    }
+
+    /**
+     * Test that empty document can be signed.
+     */
+    @Test
+    void testSignEmptyDocument() throws Throwable {
+        Document doc = TestUtils.newDocument();
+        Element root = doc.createElementNS("http://ns.example.org/", "root");
+        // No content - empty element
+        doc.appendChild(root);
+        
+        XMLSignature sig = new XMLSignature(doc, "", XMLSignature.ALGO_ID_SIGNATURE_DSA);
+        root.appendChild(sig.getElement());
+        
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+        sig.addDocument("", transforms, Constants.ALGO_ID_DIGEST_SHA1);
+        
+        sig.sign(getPrivateKey());
+        
+        // Verify
+        assertTrue(sig.checkSignatureValue(getPublicKey()),
+            "Empty document signature should verify");
+    }
+
+    /**
+     * Test that zero-length signature is handled correctly.
+     */
+    @Test
+    void testZeroLengthSignatureRejection() throws Throwable {
+        Document doc = getOriginalDocument();
+        signDocument(doc);
+        
+        // Set SignatureValue to empty
+        Element sigValue = (Element) doc.getElementsByTagNameNS(DS_NS, "SignatureValue").item(0);
+        sigValue.setTextContent("");
+        
+        Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
+        XMLSignature signature = new XMLSignature(signatureElem, "");
+        
+        // Should fail (either throw exception or return false)
+        try {
+            boolean result = signature.checkSignatureValue(getPublicKey());
+            assertFalse(result, "Empty signature should not verify");
+        } catch (XMLSignatureException e) {
+            // Also acceptable - exception on empty signature
+            assertNotNull(e);
+        }
+    }
+
+    /**
+     * Test that malformed signature element structure is detected.
+     */
+    @Test
+    void testMalformedSignatureStructureRejection() throws Throwable {
+        Document doc = getOriginalDocument();
+        signDocument(doc);
+        
+        // Remove required SignedInfo element
+        Element signatureElem = (Element) doc.getElementsByTagNameNS(DS_NS, "Signature").item(0);
+        Element signedInfo = (Element) signatureElem.getElementsByTagNameNS(DS_NS, "SignedInfo").item(0);
+        signatureElem.removeChild(signedInfo);
+        
+        // Trying to create XMLSignature from malformed structure should fail
+        assertThrows(XMLSignatureException.class, () -> {
+            new XMLSignature(signatureElem, "");
+        }, "Signature without SignedInfo should be rejected");
+    }
+
+    /**
+     * Test concurrent signing operations don't interfere.
+     */
+    @Test
+    void testConcurrentSigningOperations() throws Throwable {
+        final int numThreads = 5;
+        final Thread[] threads = new Thread[numThreads];
+        final Throwable[] exceptions = new Throwable[numThreads];
+        final boolean[] results = new boolean[numThreads];
+        
+        for (int i = 0; i < numThreads; i++) {
+            final int index = i;
+            threads[i] = new Thread(() -> {
+                try {
+                    Document doc = getOriginalDocument();
+                    XMLSignature sig = signDocument(doc);
+                    results[index] = sig.checkSignatureValue(getPublicKey());
+                } catch (Throwable t) {
+                    exceptions[index] = t;
+                }
+            });
+        }
+        
+        // Start all threads
+        for (Thread thread : threads) {
+            thread.start();
+        }
+        
+        // Wait for completion
+        for (Thread thread : threads) {
+            thread.join();
+        }
+        
+        // Verify all succeeded
+        for (int i = 0; i < numThreads; i++) {
+            if (exceptions[i] != null) {
+                throw new Exception("Thread " + i + " failed", exceptions[i]);
+            }
+            assertTrue(results[i], "Thread " + i + " signature should verify");
+        }
     }
 }

@@ -40,6 +40,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -132,6 +134,78 @@ class UnknownAlgoSignatureTest {
 
     public static Document getDocument(File file) throws Exception {
         return XMLUtils.read(file, false);
+    }
+
+    /**
+     * Test that empty algorithm URI is rejected.
+     */
+    @Test
+    void testEmptyAlgorithmRejection() throws Exception {
+        assertThrows(XMLSignatureException.class, () -> {
+            Document doc = org.apache.xml.security.test.dom.TestUtils.newDocument();
+            new XMLSignature(doc, "", "");
+        }, "Empty signature algorithm should be rejected");
+    }
+
+    /**
+     * Test that algorithm URI with wrong case is handled.
+     */
+    @Test
+    void testAlgorithmCaseSensitivity() throws Exception {
+        // Algorithm URIs are case-sensitive - wrong case should fail
+        assertThrows(XMLSignatureException.class, () -> {
+            Document doc = org.apache.xml.security.test.dom.TestUtils.newDocument();
+            // Use wrong case in algorithm URI
+            new XMLSignature(doc, "", "HTTP://WWW.W3.ORG/2000/09/XMLDSIG#RSA-SHA1");
+        }, "Algorithm URI with wrong case should be rejected");
+    }
+
+    /**
+     * Test that algorithm URI with embedded whitespace is rejected.
+     */
+    @Test
+    void testAlgorithmWithWhitespace() throws Exception {
+        assertThrows(XMLSignatureException.class, () -> {
+            Document doc = org.apache.xml.security.test.dom.TestUtils.newDocument();
+            // Algorithm URI with embedded space
+            new XMLSignature(doc, "", "http://www.w3.org/2000/09/xmldsig# rsa-sha1");
+        }, "Algorithm URI with whitespace should be rejected");
+    }
+
+    /**
+     * Test that malformed algorithm URI is rejected.
+     */
+    @Test
+    void testMalformedAlgorithmURI() throws Exception {
+        assertThrows(XMLSignatureException.class, () -> {
+            Document doc = org.apache.xml.security.test.dom.TestUtils.newDocument();
+            // Not a valid URI at all
+            new XMLSignature(doc, "", "not-a-valid-uri");
+        }, "Malformed algorithm URI should be rejected");
+    }
+
+    /**
+     * Test that algorithm with invalid scheme is rejected.
+     */
+    @Test
+    void testAlgorithmWithInvalidScheme() throws Exception {
+        assertThrows(XMLSignatureException.class, () -> {
+            Document doc = org.apache.xml.security.test.dom.TestUtils.newDocument();
+            // Use ftp:// instead of http://
+            new XMLSignature(doc, "", "ftp://www.w3.org/2000/09/xmldsig#rsa-sha1");
+        }, "Algorithm URI with invalid scheme should be rejected");
+    }
+
+    /**
+     * Test that relative algorithm URI is rejected.
+     */
+    @Test
+    void testRelativeAlgorithmURI() throws Exception {
+        assertThrows(XMLSignatureException.class, () -> {
+            Document doc = org.apache.xml.security.test.dom.TestUtils.newDocument();
+            // Relative URI instead of absolute
+            new XMLSignature(doc, "", "/2000/09/xmldsig#rsa-sha1");
+        }, "Relative algorithm URI should be rejected");
     }
 
 }

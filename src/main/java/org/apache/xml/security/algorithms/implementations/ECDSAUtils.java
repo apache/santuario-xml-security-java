@@ -119,8 +119,13 @@ public final class ECDSAUtils {
 
         int j = i;
 
-        if (xmldsigBytes[rawLen - i] < 0) {
+        if (i > 0 && xmldsigBytes[rawLen - i] < 0) {
             j += 1;
+        }
+
+        // ASN.1 INTEGER requires at least one byte, even for zero
+        if (j == 0) {
+            j = 1;
         }
 
         int k;
@@ -129,8 +134,13 @@ public final class ECDSAUtils {
 
         int l = k;
 
-        if (xmldsigBytes[2 * rawLen - k] < 0) {
+        if (k > 0 && xmldsigBytes[2 * rawLen - k] < 0) {
             l += 1;
+        }
+
+        // ASN.1 INTEGER requires at least one byte, even for zero
+        if (l == 0) {
+            l = 1;
         }
 
         int len = 2 + j + 2 + l;
