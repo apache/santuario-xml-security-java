@@ -1842,6 +1842,14 @@ public final class XMLCipher {
         EncryptedData encryptedData = factory.newEncryptedData(element);
         String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
 
+        // Reject any attempt to decrypt with an algorithm that doesn't match the one specified when the XMLCipher was initialized
+        if (algorithm != null && !algorithm.equals(encMethodAlgorithm)) {
+            throw new XMLEncryptionException("empty",
+                "EncryptionMethod algorithm \"" + encMethodAlgorithm
+                + "\" does not match the algorithm this XMLCipher was initialised with: \""
+                + algorithm + "\"");
+        }
+
         if (key == null) {
             KeyInfo ki = encryptedData.getKeyInfo();
             if (ki != null) {

@@ -51,6 +51,7 @@ import org.apache.xml.security.encryption.EncryptionMethod;
 import org.apache.xml.security.encryption.EncryptionProperties;
 import org.apache.xml.security.encryption.EncryptionProperty;
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.encryption.XMLCipherUtil;
 import org.apache.xml.security.encryption.keys.KeyInfoEnc;
 import org.apache.xml.security.encryption.params.ConcatKDFParams;
@@ -85,6 +86,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 
 
@@ -1365,6 +1367,56 @@ class XMLCipherTest {
                 + "necessary algorithms not available"
             );
         }
+    }
+
+    /**
+     * Test that you can't substitute an encryption algorithm in the EncryptionMethod and have it be accepted by the decryptor.
+     */
+    @Test
+    void testAlgorithmSubstitutionNotDetected() throws Exception {
+        Assumptions.assumeTrue(haveISOPadding, "ISO padding not available, skipping VULN-1 test");
+
+        // Fixed 256-bit server key.
+        byte[] bits256 = {
+            (byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
+            (byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
+            (byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B,
+            (byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F,
+            (byte)0x10, (byte)0x11, (byte)0x12, (byte)0x13,
+            (byte)0x14, (byte)0x15, (byte)0x16, (byte)0x17,
+            (byte)0x18, (byte)0x19, (byte)0x1A, (byte)0x1B,
+            (byte)0x1C, (byte)0x1D, (byte)0x1E, (byte)0x1F
+        };
+        Key serverKey = new SecretKeySpec(bits256, "AES");
+
+        Document d = document();
+        Element e = (Element) d.getElementsByTagName(element()).item(index());
+
+        // Step 1 – server encrypts with AES-256-CBC.
+        cipher = XMLCipher.getInstance(XMLCipher.AES_256);
+        cipher.init(XMLCipher.ENCRYPT_MODE, serverKey);
+        Document encryptedDoc = cipher.doFinal(d, e);
+
+        Element encData = (Element) encryptedDoc.getElementsByTagName("xenc:EncryptedData").item(0);
+        Element encMethod = (Element) encData.getElementsByTagName("xenc:EncryptionMethod").item(0);
+        assertEquals(XMLCipher.AES_256, encMethod.getAttribute("Algorithm"),
+            "Sanity check: encrypted document should advertise AES-256-CBC");
+
+        // Step 2 – attacker tampers the EncryptionMethod to claim AES-128-CBC.
+        encMethod.setAttribute("Algorithm", XMLCipher.AES_128);
+
+        // Step 3 – server decrypts using its AES-256-CBC XMLCipher.
+        XMLCipher serverDecryptor = XMLCipher.getInstance(XMLCipher.AES_256);
+        serverDecryptor.init(XMLCipher.DECRYPT_MODE, serverKey);
+
+        XMLEncryptionException thrown = assertThrows(XMLEncryptionException.class,
+            () -> serverDecryptor.doFinal(encryptedDoc, encData),
+            "Expected XMLEncryptionException for algorithm substitution AES-256-CBC -> AES-128-CBC");
+
+        // The error must originate from algorithm validation, not from a downstream
+        // JCE operation, so the cause must be null (it is a pure logic rejection).
+        assertNull(thrown.getCause(),
+            "Algorithm mismatch must be detected upfront, not wrapped around a JCE exception");
     }
 
     private String toString (Node n) throws Exception {
