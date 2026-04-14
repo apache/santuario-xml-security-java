@@ -61,7 +61,13 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
         if (uri == null) {
             return null;
         }
-        if (pattern.matcher(uri).matches() || baseURI != null && pattern.matcher(baseURI).matches()) {
+        if (pattern.matcher(uri).matches()) {
+            return this;
+        }
+        // Only accept baseURI fallback when uri is a relative reference (no scheme).
+        // An explicit non-http/https scheme (file:, ftp:, jar:, …) must never be
+        // resolved by this resolver, even if baseURI happens to be http/https.
+        if (uri.indexOf(':') <= 0 && baseURI != null && pattern.matcher(baseURI).matches()) {
             return this;
         }
         return null;
@@ -94,6 +100,10 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
 
             if (tmp.getFragment() != null) {
                 tmp = new URI(tmp.getScheme(), tmp.getSchemeSpecificPart(), null);
+            }
+            if (!pattern.matcher(tmp.toString()).matches()) {
+                throw new XMLSecurityException("empty",
+                    new Object[]{"Resolved URI scheme is not http/https: " + tmp.getScheme()});
             }
             URL url = tmp.toURL();
             HttpURLConnection urlConnection;
