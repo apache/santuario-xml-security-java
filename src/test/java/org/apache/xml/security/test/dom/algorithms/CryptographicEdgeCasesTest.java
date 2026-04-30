@@ -75,6 +75,7 @@ class CryptographicEdgeCasesTest {
         SignatureAlgorithm sa = new SignatureAlgorithm(doc, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256);
         
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPairGenerator.initialize(2048);
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
         
         // Initialize verification
