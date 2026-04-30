@@ -95,6 +95,18 @@ class ResolverFilesystemTest {
     }
 
     /**
+     * FIX: A relative uri combined with a non-file baseURI must be rejected
+     * to prevent SSRF attacks where a relative URI would be resolved against
+     * an https: (or other non-file) base.
+     */
+    @Test
+    void testRelativeUriWithNonFileBaseUriIsRejected() {
+        ResolverFilesystem resolver = new ResolverFilesystem();
+        assertNull(resolver.canResolve("subdoc.xml", "https://victim.com/"),
+            "A relative uri with a non-file baseURI must be rejected");
+    }
+
+    /**
      * VULN: URI.resolve() returns an absolute uri unchanged, so the final URL
      * opened by getInputStreamFromExternalReference() will be the attacker's
      * https: URL — a live SSRF. Demonstrate that resolve() does not anchor
