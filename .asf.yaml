@@ -1,5 +1,5 @@
 github:
-  protected_branches:
+  protected_branches: {}
   rulesets:
     - name: "Default Branch Protection"
       type: branch
