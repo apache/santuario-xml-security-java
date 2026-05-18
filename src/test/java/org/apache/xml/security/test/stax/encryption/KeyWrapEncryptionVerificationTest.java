@@ -49,6 +49,9 @@ import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
@@ -63,6 +66,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -163,6 +167,8 @@ public class KeyWrapEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.AES_128_KeyWrap);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -219,6 +225,8 @@ public class KeyWrapEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.AES_192_KeyWrap);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -274,6 +282,8 @@ public class KeyWrapEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.AES_256_KeyWrap);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -332,6 +342,8 @@ public class KeyWrapEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.TRIPLEDES_KeyWrap);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -387,6 +399,8 @@ public class KeyWrapEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.RSA_v1dot5);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -444,6 +458,8 @@ public class KeyWrapEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.RSA_OAEP);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -499,6 +515,8 @@ public class KeyWrapEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.RSA_OAEP_11);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -561,6 +579,8 @@ public class KeyWrapEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.CAMELLIA_128_KeyWrap);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -621,6 +641,8 @@ public class KeyWrapEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.CAMELLIA_192_KeyWrap);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -683,6 +705,8 @@ public class KeyWrapEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.CAMELLIA_256_KeyWrap);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -744,9 +768,38 @@ public class KeyWrapEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, encryptionAlgorithm, XMLCipher.SEED_128_KeyWrap);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
+    }
+
+    private void checkDecryptionMethod(
+            TestSecurityEventListener securityEventListener,
+            String encryptionAlgorithm,
+            String keyWrapAlgorithm
+    ) {
+        List<SecurityEvent> algorithmEvents =
+                securityEventListener.getSecurityEvents(SecurityEventConstants.AlgorithmSuite);
+        assertFalse(algorithmEvents.isEmpty());
+
+        boolean matchedEncryptionAlgorithm = false;
+        boolean matchedKeyWrapAlgorithm = false;
+        for (SecurityEvent event : algorithmEvents) {
+            AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
+            if (XMLSecurityConstants.Enc.equals(algorithmEvent.getAlgorithmUsage())) {
+                assertEquals(encryptionAlgorithm, algorithmEvent.getAlgorithmURI());
+                matchedEncryptionAlgorithm = true;
+            } else if (XMLSecurityConstants.Sym_Key_Wrap.equals(algorithmEvent.getAlgorithmUsage())
+                    || XMLSecurityConstants.Asym_Key_Wrap.equals(algorithmEvent.getAlgorithmUsage())) {
+                assertEquals(keyWrapAlgorithm, algorithmEvent.getAlgorithmURI());
+                matchedKeyWrapAlgorithm = true;
+            }
+        }
+
+        assertTrue(matchedEncryptionAlgorithm);
+        assertTrue(matchedKeyWrapAlgorithm);
     }
 
     private void encrypt(

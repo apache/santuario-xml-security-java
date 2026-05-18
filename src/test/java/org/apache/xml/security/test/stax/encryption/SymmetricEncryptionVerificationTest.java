@@ -48,6 +48,9 @@ import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
+import org.apache.xml.security.stax.securityEvent.AlgorithmSuiteSecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SecurityEvent;
+import org.apache.xml.security.stax.securityEvent.SecurityEventConstants;
 import org.apache.xml.security.test.dom.DSNamespaceContext;
 import org.apache.xml.security.test.stax.signature.TestSecurityEventListener;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
@@ -62,6 +65,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -155,6 +159,8 @@ public class SymmetricEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, algorithm);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -206,6 +212,8 @@ public class SymmetricEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, algorithm);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -259,6 +267,8 @@ public class SymmetricEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, algorithm);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -310,6 +320,8 @@ public class SymmetricEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, algorithm);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -363,6 +375,8 @@ public class SymmetricEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, algorithm);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -415,6 +429,8 @@ public class SymmetricEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, algorithm);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -465,6 +481,8 @@ public class SymmetricEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, algorithm);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -520,6 +538,8 @@ public class SymmetricEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, algorithm);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -573,6 +593,8 @@ public class SymmetricEncryptionVerificationTest {
                 inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
 
         document = StAX2DOM.readDoc(securityStreamReader);
+
+        checkDecryptionMethod(securityEventListener, algorithm);
 
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -628,6 +650,8 @@ public class SymmetricEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, algorithm);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
@@ -682,9 +706,28 @@ public class SymmetricEncryptionVerificationTest {
 
         document = StAX2DOM.readDoc(securityStreamReader);
 
+        checkDecryptionMethod(securityEventListener, algorithm);
+
         // Check the CreditCard decrypted ok
         nodeList = document.getElementsByTagNameNS("urn:example:po", "CreditCard");
         assertEquals(nodeList.getLength(), 1);
+    }
+
+    private void checkDecryptionMethod(TestSecurityEventListener securityEventListener, String encryptionAlgorithm) {
+        List<SecurityEvent> algorithmEvents =
+                securityEventListener.getSecurityEvents(SecurityEventConstants.AlgorithmSuite);
+        assertFalse(algorithmEvents.isEmpty());
+
+        boolean matchedEncryptionAlgorithm = false;
+        for (SecurityEvent event : algorithmEvents) {
+            AlgorithmSuiteSecurityEvent algorithmEvent = (AlgorithmSuiteSecurityEvent) event;
+            if (XMLSecurityConstants.Enc.equals(algorithmEvent.getAlgorithmUsage())) {
+                assertEquals(encryptionAlgorithm, algorithmEvent.getAlgorithmURI());
+                matchedEncryptionAlgorithm = true;
+            }
+        }
+
+        assertTrue(matchedEncryptionAlgorithm);
     }
 
     private void encryptUsingDOM(
