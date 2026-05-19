@@ -1468,6 +1468,8 @@ public final class XMLCipher {
             throw new XMLEncryptionException("empty", "Cannot decrypt a key without knowing the algorithm");
         }
 
+        validateEncryptionMethodAlgorithm(encryptedKey.getEncryptionMethod().getAlgorithm());
+
         if (key == null) {
             LOG.log(Level.DEBUG, "Trying to find a KEK via key resolvers");
 
@@ -1842,6 +1844,9 @@ public final class XMLCipher {
         EncryptedData encryptedData = factory.newEncryptedData(element);
         String encMethodAlgorithm = encryptedData.getEncryptionMethod().getAlgorithm();
 
+        // Reject any attempt to decrypt with an algorithm that doesn't match the one specified when the XMLCipher was initialized
+        validateEncryptionMethodAlgorithm(encMethodAlgorithm);
+
         if (key == null) {
             KeyInfo ki = encryptedData.getKeyInfo();
             if (ki != null) {
@@ -1911,6 +1916,15 @@ public final class XMLCipher {
             return c.doFinal(encryptedBytes, ivLen, encryptedBytes.length - ivLen);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new XMLEncryptionException(e);
+        }
+    }
+
+    private void validateEncryptionMethodAlgorithm(String encryptionMethodAlgorithm) throws XMLEncryptionException {
+        if (algorithm != null && !algorithm.equals(encryptionMethodAlgorithm)) {
+            throw new XMLEncryptionException("empty",
+                "EncryptionMethod algorithm \"" + encryptionMethodAlgorithm
+                + "\" does not match the algorithm this XMLCipher was initialised with: \""
+                + algorithm + "\"");
         }
     }
 
