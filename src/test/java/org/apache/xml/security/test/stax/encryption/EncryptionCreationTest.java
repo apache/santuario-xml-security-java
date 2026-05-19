@@ -475,7 +475,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, transportKey, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes128-cbc", null, transportKey, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -544,7 +544,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -613,7 +613,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -683,7 +683,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-                decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+                decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -751,7 +751,7 @@ public class EncryptionCreationTest {
         assertEquals(nodeList.getLength(), 2);
 
         // Decrypt using DOM API
-        decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+        decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
     }
 
     @Test
@@ -818,7 +818,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -889,7 +889,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -968,7 +968,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1039,7 +1039,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1110,7 +1110,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, priv, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes256-cbc", null, priv, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1177,7 +1177,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, transportKey, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes192-cbc", null, transportKey, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
@@ -1680,7 +1680,7 @@ public class EncryptionCreationTest {
 
         // Decrypt using DOM API
         Document doc =
-            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#tripledes-cbc", null, transportKey, document);
+            decryptUsingDOM("http://www.w3.org/2001/04/xmlenc#aes128-cbc", null, transportKey, document);
 
         // Check the CreditCard decrypted ok
         nodeList = doc.getElementsByTagNameNS("urn:example:po", "CreditCard");
