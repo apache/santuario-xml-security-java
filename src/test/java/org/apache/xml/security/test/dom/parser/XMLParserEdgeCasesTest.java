@@ -22,6 +22,7 @@ import org.apache.xml.security.parser.XMLParserException;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXParseException;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -153,10 +154,15 @@ class XMLParserEdgeCasesTest {
             try {
                 XMLUtils.read(bais, false);
             } catch (XMLParserException e) {
-                // Stack overflow protection is acceptable
-                assertTrue(e.getMessage().contains("depth") || 
-                          e.getMessage().contains("stack") ||
-                          e.getMessage().contains("nested"),
+                /*
+                 * Stack overflow protection is acceptable - in this case there will be a parent
+                 * SAXParseException with a specific text.
+                 */
+                assertTrue(e.getCause() instanceof SAXParseException);
+                SAXParseException saxEx = (SAXParseException) e.getCause();
+                assertTrue(saxEx.getMessage().contains("depth") ||
+                          saxEx.getMessage().contains("stack") ||
+                          saxEx.getMessage().contains("nested"),
                           "Deep nesting should trigger protection");
             }
         }, "Parser should handle deep nesting gracefully");
