@@ -26,6 +26,7 @@ import org.w3c.dom.Document;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.interfaces.RSAPublicKey;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,8 +80,9 @@ class CryptographicEdgeCasesTest {
         // Initialize verification
         sa.initVerify(keyPair.getPublic());
         
-        // Create all-zeros signature (256 bytes for RSA-2048)
-        byte[] zeroSignature = new byte[256];
+        // Create all-zeros signature with the exact byte length expected for this key
+        int signatureLength = (((RSAPublicKey) keyPair.getPublic()).getModulus().bitLength() + 7) / 8;
+        byte[] zeroSignature = new byte[signatureLength];
         
         // Update with some data
         byte[] data = "test data".getBytes();
