@@ -18,8 +18,12 @@
  */
 package org.apache.xml.security.extension.xades;
 
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+
+import java.util.Set;
+
 /**
- * Namespace URIs, prefixes, and element tag constants for XAdES v1.3.2 and v1.4.1.
+ * Namespace URIs, prefixes, element tag constants, and approved algorithm sets for XAdES v1.3.2 and v1.4.1.
  *
  * @see <a href="https://www.etsi.org/deliver/etsi_en/319100_319199/31913201/01.03.01_60/en_31913201v010301p.pdf">
  *      ETSI EN 319 132-1 (XAdES)</a>
@@ -28,6 +32,20 @@ public final class XAdESConstants {
 
     private XAdESConstants() {
     }
+
+    /**
+     * Algorithm URIs accepted for certificate digest in XAdES {@code CertDigest}.
+     * Only SHA-2 and SHA-3 variants with at least 256-bit output are permitted;
+     * MD5, SHA-1, SHA-224, and other weak/deprecated algorithms are rejected.
+     * Used by both {@link XAdESSignatureProcessor} (signing) and {@link XAdESBBValidator} (validation)
+     */
+    public static final Set<String> APPROVED_CERT_DIGEST_ALGORITHM_URIS = Set.of(
+            MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA256,
+            MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA384,
+            MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA512,
+            MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_256,
+            MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_384,
+            MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_512);
 
     public static final String XADES_V132_NS = "http://uri.etsi.org/01903/v1.3.2#";
     public static final String XADES_V141_NS = "http://uri.etsi.org/01903/v1.4.1#";

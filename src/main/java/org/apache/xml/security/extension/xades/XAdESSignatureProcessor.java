@@ -18,8 +18,9 @@
  */
 package org.apache.xml.security.extension.xades;
 
-import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.encryption.XMLCipher;
+import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.extension.SignatureExtensionException;
 import org.apache.xml.security.extension.SignatureProcessor;
 import org.apache.xml.security.signature.ObjectContainer;
@@ -30,8 +31,6 @@ import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.w3c.dom.Document;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
@@ -143,12 +142,6 @@ public final class XAdESSignatureProcessor implements SignatureProcessor {
     }
 
     private SigningCertificate buildSigningCertificate(Document doc) throws XMLSignatureException {
-        String jceAlgorithm = JCEMapper.translateURItoJCEID(certificateDigestAlgorithmURI);
-        if (jceAlgorithm == null) {
-            throw new SignatureExtensionException(
-                    "Unknown digest algorithm URI: " + certificateDigestAlgorithmURI);
-        }
-
         byte[] certDer;
         try {
             certDer = certificate.getEncoded();
@@ -158,8 +151,8 @@ public final class XAdESSignatureProcessor implements SignatureProcessor {
 
         byte[] digest;
         try {
-            digest = MessageDigest.getInstance(jceAlgorithm).digest(certDer);
-        } catch (NoSuchAlgorithmException e) {
+            digest = MessageDigestAlgorithm.getDigestInstance(certificateDigestAlgorithmURI).digest(certDer);
+        } catch (XMLSecurityException e) {
             throw new SignatureExtensionException(
                     "Digest algorithm not available: " + certificateDigestAlgorithmURI, e);
         }
@@ -175,13 +168,13 @@ public final class XAdESSignatureProcessor implements SignatureProcessor {
         return sc;
     }
 
-    private void ensureSignatureId(XMLSignature signature) throws XMLSignatureException {
+    private void ensureSignatureId(XMLSignature signature) {
         if (isBlank(signature.getId())) {
             signature.setId(IDGenerator.generateID(ID_PREFIX_SIG));
         }
     }
 
-    private void ensureSignatureValueId(XMLSignature signature) throws XMLSignatureException {
+    private void ensureSignatureValueId(XMLSignature signature){
         if (isBlank(signature.getSignatureValueId())) {
             signature.setSignatureValueId(IDGenerator.generateID(ID_PREFIX_SIG_VAL));
         }
@@ -220,6 +213,7 @@ public final class XAdESSignatureProcessor implements SignatureProcessor {
      */
     public static final class Builder {
 
+        private boolean allowWeakAlgorithms = false;
         private final X509Certificate certificate;
         private String certificateDigestAlgorithmURI = XMLCipher.SHA256;
         private boolean signaturePolicyImplied = false;
@@ -261,6 +255,12 @@ public final class XAdESSignatureProcessor implements SignatureProcessor {
             return this;
         }
 
+        /** When {@code true}, allows weak digest algorithms (e.g. SHA-1) to be used for certificate digest. */
+        public Builder withAllowWeakAlgorithms(boolean allowWeakAlgorithms) {
+            this.allowWeakAlgorithms = allowWeakAlgorithms;
+            return this;
+        }
+
         /**
          * Adds a canonicalization or transform algorithm URI to apply to the
          * {@code SignedProperties} reference before digesting. Algorithms are applied in
@@ -273,6 +273,11 @@ public final class XAdESSignatureProcessor implements SignatureProcessor {
 
         public XAdESSignatureProcessor build() {
             Objects.requireNonNull(certificateDigestAlgorithmURI, "certificateDigestAlgorithmURI");
+            if (!this.allowWeakAlgorithms && !XAdESConstants.APPROVED_CERT_DIGEST_ALGORITHM_URIS.contains(certificateDigestAlgorithmURI)) {
+                throw new IllegalArgumentException(
+                        "certificateDigestAlgorithmURI uses a weak or disallowed digest algorithm: "
+                                + certificateDigestAlgorithmURI);
+            }
             return new XAdESSignatureProcessor(this);
         }
     }

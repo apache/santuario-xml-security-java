@@ -18,7 +18,7 @@
  */
 package org.apache.xml.security.extension.xades;
 
-import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
@@ -40,8 +40,6 @@ import javax.xml.validation.Validator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -87,7 +85,9 @@ import java.util.List;
  */
 public final class XAdESBBValidator {
 
-    private static final String XADES_SCHEMA_RESOURCE ="bindings/schemas/XAdES01903v141-202107.xsd";
+    private static final String XADES_SCHEMA_RESOURCE =
+            "bindings/schemas/XAdES01903v132-201601.xsd";
+
 
     /**
      * Schema is thread-safe once constructed; load once and share.
@@ -106,7 +106,7 @@ public final class XAdESBBValidator {
                     XADES_SCHEMA_RESOURCE, XAdESBBValidator.class)) {
                 return sf.newSchema(new StreamSource(xadesIs, xadesUri));
             }
-        } catch (SAXException | IOException  e) {
+        } catch (SAXException | IOException e) {
             // Logged here; validate() reports the violation rather than crashing callers
             System.getLogger(XAdESBBValidator.class.getName())
                     .log(System.Logger.Level.ERROR,
@@ -121,6 +121,17 @@ public final class XAdESBBValidator {
             throw new IllegalStateException("XAdES schema not found on classpath: " + path);
         }
         return url.toExternalForm();
+    }
+
+
+    private final boolean secureValidation;
+
+    public XAdESBBValidator() {
+        this(true);
+    }
+
+    public XAdESBBValidator(boolean secureValidation) {
+        this.secureValidation = secureValidation;
     }
 
     /**
@@ -259,9 +270,8 @@ public final class XAdESBBValidator {
             return;
         }
 
-        String jceAlgorithm = JCEMapper.translateURItoJCEID(algorithmURI);
-        if (jceAlgorithm == null) {
-            violations.add("Unknown digest algorithm URI in CertDigest: " + algorithmURI);
+        if (secureValidation && !XAdESConstants.APPROVED_CERT_DIGEST_ALGORITHM_URIS.contains(algorithmURI)) {
+            violations.add("CertDigest uses a weak or disallowed digest algorithm: " + algorithmURI);
             return;
         }
 
@@ -276,8 +286,8 @@ public final class XAdESBBValidator {
         byte[] actualDigest;
         try {
             byte[] certDer = signingCertificate.getEncoded();
-            actualDigest = MessageDigest.getInstance(jceAlgorithm).digest(certDer);
-        } catch (CertificateEncodingException | NoSuchAlgorithmException e) {
+            actualDigest = MessageDigestAlgorithm.getDigestInstance(algorithmURI).digest(certDer);
+        } catch (CertificateEncodingException | XMLSecurityException e) {
             violations.add("Cannot compute signing certificate digest: " + e.getMessage());
             return;
         }
