@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -47,6 +48,7 @@ import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xmlunit.matchers.CompareMatcher;
+import org.xmlunit.util.DocumentBuilderFactoryConfigurer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -189,7 +191,11 @@ public class XMLSecurityStreamWriterTest {
         stdXmlStreamWriter.close();
         xmlSecurityStreamWriter.close();
 
-        MatcherAssert.assertThat(stdStringWriter.toString(), CompareMatcher.isSimilarTo(securityStringWriter.toString()));
+        MatcherAssert.assertThat(stdStringWriter.toString(),
+            CompareMatcher.isSimilarTo(securityStringWriter.toString())
+                .withDocumentBuilderFactory(
+                    DocumentBuilderFactoryConfigurer.DefaultWithDTDParsing.configure(
+                        DocumentBuilderFactory.newInstance())));
     }
 
     // @see https://issues.apache.org/jira/browse/SANTUARIO-433
