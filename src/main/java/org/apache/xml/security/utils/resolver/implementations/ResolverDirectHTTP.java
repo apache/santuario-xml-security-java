@@ -32,6 +32,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.xml.security.signature.XMLSignatureByteInput;
 import org.apache.xml.security.signature.XMLSignatureInput;
@@ -63,6 +64,8 @@ import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
 public class ResolverDirectHTTP extends ResourceResolverSpi {
 
     private static final Logger LOG = System.getLogger(ResolverDirectHTTP.class.getName());
+
+    private static final Pattern HTTP_HTTPS_PATTERN = Pattern.compile("^https?://.*");
 
     /** Field properties[] */
     private static final String[] properties = {
@@ -110,6 +113,11 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
         try {
             // calculate new URI
             URI uriNew = getNewURI(context.uriToResolve, context.baseUri);
+            if (!HTTP_HTTPS_PATTERN.matcher(uriNew.toString()).matches()) {
+                throw new ResourceResolverException("generic.EmptyMessage",
+                    new Object[]{"Resolved URI scheme is not http/https: " + uriNew.getScheme()},
+                    context.uriToResolve, context.baseUri);
+            }
             URL url = uriNew.toURL();
             URLConnection urlConnection = openConnection(url, context);
 
@@ -217,8 +225,16 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
 
         LOG.log(Level.DEBUG, "I was asked whether I can resolve {0}", context.uriToResolve);
 
-        if (context.uriToResolve.startsWith("http:") ||
-            context.baseUri != null && context.baseUri.startsWith("http:")) {
+        if (HTTP_HTTPS_PATTERN.matcher(context.uriToResolve).matches()) {
+            LOG.log(Level.DEBUG, "I state that I can resolve {0}", context.uriToResolve);
+            return true;
+        }
+
+        // Only accept baseURI fallback for relative references (no scheme).
+        // A URI with an explicit non-http/https scheme must never be resolved here.
+        if (context.uriToResolve.indexOf(':') <= 0
+            && context.baseUri != null
+            && HTTP_HTTPS_PATTERN.matcher(context.baseUri).matches()) {
             LOG.log(Level.DEBUG, "I state that I can resolve {0}", context.uriToResolve);
             return true;
         }
