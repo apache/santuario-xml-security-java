@@ -20,11 +20,14 @@ package org.apache.xml.security.stax.impl.resourceResolvers;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
 import org.apache.xml.security.stax.ext.ResourceResolverLookup;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.utils.resolver.ResolverUtils;
 
 /**
  * Resolver for local filesystem resources. Use the standard java security-manager to
@@ -49,7 +52,11 @@ public class ResolverFilesystem implements ResourceResolver, ResourceResolverLoo
         if (uri == null) {
             return null;
         }
-        if (uri.startsWith("file:") || baseURI != null && baseURI.startsWith("file:")) {
+        // At least one of uri or baseURI must start with "file:", and
+        // neither may carry a different explicit scheme (e.g. http:, https:, ftp:).
+        if ((uri.startsWith("file:") || baseURI != null && baseURI.startsWith("file:"))
+                && !ResolverUtils.hasExplicitNonFileScheme(uri)
+                && !ResolverUtils.hasExplicitNonFileScheme(baseURI)) {
             return this;
         }
         return null;
@@ -83,7 +90,8 @@ public class ResolverFilesystem implements ResourceResolver, ResourceResolverLoo
             if (tmp.getFragment() != null) {
                 tmp = new URI(tmp.getScheme(), tmp.getSchemeSpecificPart(), null);
             }
-            return tmp.toURL().openStream();
+
+            return Files.newInputStream(Path.of(tmp));
         } catch (Exception e) {
             throw new XMLSecurityException(e);
         }
