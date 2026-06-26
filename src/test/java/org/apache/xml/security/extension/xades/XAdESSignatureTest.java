@@ -31,7 +31,7 @@ import org.apache.xml.security.test.dom.signature.XPointerResourceResolver;
 import org.apache.xml.security.testutils.JDKTestUtils;
 import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.Constants;
-import org.apache.xml.security.utils.SelfSignedCertGenerator;
+import org.apache.xml.security.testutils.SelfSignedCertGenerator;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
