@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Generates minimal self-signed X.509 v3 certificates using only public JDK APIs.
  *
- * <p>The certificate’s DER structure is constructed directly from ASN.1/DER primitives
+ * <p>The certificate's DER structure is constructed directly from ASN.1/DER primitives
  * and then parsed using CertificateFactory. No BouncyCastle, no sun.security.* internals,
  * and no --add-opens flags are required.
  * This class is designed to eliminate the need for storing test certificates in a keystore
@@ -47,9 +47,16 @@ import java.util.Map;
  *   <li>EdDSA — {@code Ed25519}, {@code Ed448} (requires Java 15+)</li>
  * </ul>
  *
+ * <h3>Supported DN attributes</h3>
+ * <ul>
+ *   <li>{@code CN} — commonName (UTF8String)</li>
+ *   <li>{@code C}  — countryName (PrintableString, two-letter ISO 3166 code)</li>
+ *   <li>{@code O}  — organizationName (UTF8String)</li>
+ *   <li>{@code OU} — organizationalUnitName (UTF8String)</li>
+ * </ul>
+ *
  * <h3>Limitations</h3>
  * <ul>
- *   <li>Only the {@code CN} attribute is supported in the subject/issuer DN.</li>
  *   <li>No X.509 extensions are added (basic-constraints, key-usage, etc.).</li>
  *   <li>Validity dates use UTCTime, which covers years 2000–2049.</li>
  * </ul>
@@ -61,6 +68,79 @@ public final class SelfSignedCertGenerator {
     private SelfSignedCertGenerator() {
     }
 
+    // -------------------------------------------------------------------------
+    // ASN.1 universal tag constants (ITU-T X.690)
+    // -------------------------------------------------------------------------
+
+    private static final int TAG_INTEGER          = 0x02;
+    private static final int TAG_BIT_STRING       = 0x03;
+    private static final int TAG_OID              = 0x06;
+    private static final int TAG_UTF8_STRING      = 0x0C;
+    private static final int TAG_PRINTABLE_STRING = 0x13;
+    private static final int TAG_UTC_TIME         = 0x17;
+    private static final int TAG_SEQUENCE         = 0x30;
+    private static final int TAG_SET              = 0x31;
+    /** Context-specific constructed [0] tag — used for the TBSCertificate version field. */
+    private static final int TAG_CONTEXT_0        = 0xA0;
+
+    // -------------------------------------------------------------------------
+    // Pre-built DER encoding constants
+    // -------------------------------------------------------------------------
+
+    /** DER encoding of ASN.1 NULL (05 00). */
+    private static final byte[] DER_NULL = {0x05, 0x00};
+
+    /**
+     * DER encoding of TBSCertificate {@code version} field set to v3 (INTEGER value 2)
+     * wrapped in an [0] EXPLICIT context tag.
+     */
+    private static final byte[] TBS_VERSION_V3 = {
+            (byte) TAG_CONTEXT_0, 0x03, (byte) TAG_INTEGER, 0x01, 0x02
+    };
+
+    // -------------------------------------------------------------------------
+    // Signature algorithm OID strings
+    // -------------------------------------------------------------------------
+
+    /** SHA-256 with RSA Encryption — RFC 4055, OID 1.2.840.113549.1.1.11 */
+    private static final String OID_SHA256_WITH_RSA        = "1.2.840.113549.1.1.11";
+    /** SHA-384 with RSA Encryption — RFC 4055, OID 1.2.840.113549.1.1.12 */
+    private static final String OID_SHA384_WITH_RSA        = "1.2.840.113549.1.1.12";
+    /** SHA-512 with RSA Encryption — RFC 4055, OID 1.2.840.113549.1.1.13 */
+    private static final String OID_SHA512_WITH_RSA        = "1.2.840.113549.1.1.13";
+    /** ECDSA with SHA-256 — RFC 5758, OID 1.2.840.10045.4.3.2 */
+    private static final String OID_SHA256_WITH_ECDSA      = "1.2.840.10045.4.3.2";
+    /** ECDSA with SHA-384 — RFC 5758, OID 1.2.840.10045.4.3.3 */
+    private static final String OID_SHA384_WITH_ECDSA      = "1.2.840.10045.4.3.3";
+    /** ECDSA with SHA-512 — RFC 5758, OID 1.2.840.10045.4.3.4 */
+    private static final String OID_SHA512_WITH_ECDSA      = "1.2.840.10045.4.3.4";
+    /** Ed25519 — RFC 8410, OID 1.3.101.112 */
+    private static final String OID_ED25519                = "1.3.101.112";
+    /** Ed448 — RFC 8410, OID 1.3.101.113 */
+    private static final String OID_ED448                  = "1.3.101.113";
+
+    // -------------------------------------------------------------------------
+    // X.500 attribute type OID strings (RFC 4519)
+    // -------------------------------------------------------------------------
+
+    /** commonName — OID 2.5.4.3 */
+    private static final String OID_COMMON_NAME              = "2.5.4.3";
+    /** countryName — OID 2.5.4.6 */
+    private static final String OID_COUNTRY_NAME             = "2.5.4.6";
+    /** organizationName — OID 2.5.4.10 */
+    private static final String OID_ORGANIZATION_NAME        = "2.5.4.10";
+    /** organizationalUnitName — OID 2.5.4.11 */
+    private static final String OID_ORGANIZATIONAL_UNIT_NAME = "2.5.4.11";
+
+    // -------------------------------------------------------------------------
+    // Pre-encoded DER OID bytes for RDN attribute types
+    // -------------------------------------------------------------------------
+
+    private static final byte[] OID_BYTES_CN = encodeOid(OID_COMMON_NAME);
+    private static final byte[] OID_BYTES_C  = encodeOid(OID_COUNTRY_NAME);
+    private static final byte[] OID_BYTES_O  = encodeOid(OID_ORGANIZATION_NAME);
+    private static final byte[] OID_BYTES_OU = encodeOid(OID_ORGANIZATIONAL_UNIT_NAME);
+
     /**
      * Pre-encoded DER bytes for the {@code AlgorithmIdentifier} of each supported
      * signature algorithm.  Values are constant per the relevant RFCs; they do not
@@ -70,14 +150,14 @@ public final class SelfSignedCertGenerator {
      * ECDSA and EdDSA algorithms omit parameters entirely (RFC 5758, RFC 8410).
      */
     private static final Map<String, byte[]> ALG_IDS = Map.of(
-            "SHA256withRSA",   encodeAlgorithmIdentifier("1.2.840.113549.1.1.11"),
-            "SHA384withRSA",   encodeAlgorithmIdentifier("1.2.840.113549.1.1.12"),
-            "SHA512withRSA",   encodeAlgorithmIdentifier("1.2.840.113549.1.1.13"),
-            "SHA256withECDSA", encodeAlgorithmIdentifier("1.2.840.10045.4.3.2"),
-            "SHA384withECDSA", encodeAlgorithmIdentifier("1.2.840.10045.4.3.3"),
-            "SHA512withECDSA", encodeAlgorithmIdentifier("1.2.840.10045.4.3.4"),
-            "Ed25519",         encodeAlgorithmIdentifier("1.3.101.112"),
-            "Ed448",           encodeAlgorithmIdentifier("1.3.101.113"));
+            "SHA256withRSA",   encodeAlgorithmIdentifier(OID_SHA256_WITH_RSA),
+            "SHA384withRSA",   encodeAlgorithmIdentifier(OID_SHA384_WITH_RSA),
+            "SHA512withRSA",   encodeAlgorithmIdentifier(OID_SHA512_WITH_RSA),
+            "SHA256withECDSA", encodeAlgorithmIdentifier(OID_SHA256_WITH_ECDSA),
+            "SHA384withECDSA", encodeAlgorithmIdentifier(OID_SHA384_WITH_ECDSA),
+            "SHA512withECDSA", encodeAlgorithmIdentifier(OID_SHA512_WITH_ECDSA),
+            "Ed25519",         encodeAlgorithmIdentifier(OID_ED25519),
+            "Ed448",           encodeAlgorithmIdentifier(OID_ED448));
 
     /**
      * Generates a self-signed X.509 v3 certificate.
@@ -85,8 +165,8 @@ public final class SelfSignedCertGenerator {
      * @param keyPair            the key pair to certify; the private key signs the TBS structure
      *                           and the public key is embedded in SubjectPublicKeyInfo
      * @param signatureAlgorithm JCA algorithm name, e.g. {@code "SHA256withRSA"} or {@code "Ed25519"}
-     * @param subjectDN          distinguished name — only the {@code CN} attribute is used,
-     *                           e.g. {@code "CN=Test Certificate"}
+     * @param subjectDN          distinguished name with supported attributes: CN, C, O, OU,
+     *                           e.g. {@code "CN=Test Certificate,O=Acme,C=US"}
      * @param validityDays       number of days the certificate is valid, starting from now
      * @return the signed X.509 certificate
      * @throws IllegalArgumentException if {@code signatureAlgorithm} is not in the supported set
@@ -140,13 +220,11 @@ public final class SelfSignedCertGenerator {
      */
     private static byte[] buildTbs(byte[] algId, byte[] name,
                                    byte[] spki, int validityDays) {
-        // [0] EXPLICIT INTEGER 2  →  version v3
-        byte[] version = new byte[]{(byte) 0xA0, 0x03, 0x02, 0x01, 0x02};
         // Serial: milliseconds since epoch — unique enough for test certs
         byte[] serial = integer(BigInteger.valueOf(System.currentTimeMillis()));
         byte[] validity = buildValidity(validityDays);
         // issuer == subject for self-signed
-        return sequence(cat(version, serial, algId, name, validity, name, spki));
+        return sequence(cat(TBS_VERSION_V3, serial, algId, name, validity, name, spki));
     }
 
     private static byte[] buildValidity(int validityDays) {
@@ -156,7 +234,7 @@ public final class SelfSignedCertGenerator {
     }
 
     // -------------------------------------------------------------------------
-    // DN encoding — only CN attribute (OID 2.5.4.3) supported
+    // DN encoding — CN, C, O, OU attributes (RFC 4519)
     // -------------------------------------------------------------------------
 
     /**
@@ -167,23 +245,46 @@ public final class SelfSignedCertGenerator {
      * </pre>
      */
     private static byte[] encodeName(String dn) {
-        // OID for commonName (2.5.4.3): 06 03 55 04 03
-        byte[] cnOid = encodeOid("2.5.4.3");
-        byte[] cnValue = tlv(0x0C, extractCN(dn).getBytes(StandardCharsets.UTF_8)); // UTF8String
-        return sequence(set(sequence(cat(cnOid, cnValue))));
-    }
-
-    /**
-     * Extracts the CN value from a DN string such as {@code "CN=My Test,O=Acme"}.
-     */
-    private static String extractCN(String dn) {
+        ByteArrayOutputStream rdns = new ByteArrayOutputStream();
         for (String part : dn.split(",")) {
             String trimmed = part.strip();
-            if (trimmed.regionMatches(true, 0, "CN=", 0, 3)) {
-                return trimmed.substring(3).strip();
+            int eq = trimmed.indexOf('=');
+            if (eq < 0) continue;
+            String key = trimmed.substring(0, eq).strip().toUpperCase();
+            String val = trimmed.substring(eq + 1).strip();
+            byte[] oidBytes;
+            byte[] valueBytes;
+            switch (key) {
+                case "CN":
+                    oidBytes   = OID_BYTES_CN;
+                    valueBytes = tlv(TAG_UTF8_STRING, val.getBytes(StandardCharsets.UTF_8));
+                    break;
+                case "C":
+                    oidBytes   = OID_BYTES_C;
+                    // countryName uses PrintableString; ISO 3166-1 alpha-2 codes are ASCII
+                    valueBytes = tlv(TAG_PRINTABLE_STRING, val.getBytes(StandardCharsets.US_ASCII));
+                    break;
+                case "O":
+                    oidBytes   = OID_BYTES_O;
+                    valueBytes = tlv(TAG_UTF8_STRING, val.getBytes(StandardCharsets.UTF_8));
+                    break;
+                case "OU":
+                    oidBytes   = OID_BYTES_OU;
+                    valueBytes = tlv(TAG_UTF8_STRING, val.getBytes(StandardCharsets.UTF_8));
+                    break;
+                default:
+                    continue; // unsupported attribute — skip
             }
+            byte[] rdn = set(sequence(cat(oidBytes, valueBytes)));
+            rdns.write(rdn, 0, rdn.length);
         }
-        return dn; // fallback: treat the whole string as the CN value
+        if (rdns.size() == 0) {
+            // fallback: treat the whole string as a CN value
+            byte[] cnValue = tlv(TAG_UTF8_STRING, dn.getBytes(StandardCharsets.UTF_8));
+            byte[] rdn = set(sequence(cat(OID_BYTES_CN, cnValue)));
+            rdns.write(rdn, 0, rdn.length);
+        }
+        return sequence(rdns.toByteArray());
     }
 
     // -------------------------------------------------------------------------
@@ -195,12 +296,6 @@ public final class SelfSignedCertGenerator {
      *
      * <p>A SEQUENCE in ASN.1 represents an ordered collection of elements
      * <p>The DER tag for a SEQUENCE is <b>0x30</b>.</p>
-     *
-     * <p><b>Use in X.509:</b><br>
-     * Distinguished Names (DNs), RelativeDistinguishedNames (RDNs), and
-     * AttributeTypeAndValue pairs are all encoded using SEQUENCE structures. For example,
-     * an AttributeTypeAndValue is defined as:</p>
-     *
      * <pre>
      * AttributeTypeAndValue ::= SEQUENCE {
      *   type   OBJECT IDENTIFIER,
@@ -220,9 +315,8 @@ public final class SelfSignedCertGenerator {
      * @return the DER‑encoded SEQUENCE (tag 0x30 + length + content)
      */
     private static byte[] sequence(byte[] content) {
-        return tlv(0x30, content);
+        return tlv(TAG_SEQUENCE, content);
     }
-
 
     /**
      * Encodes the provided content as an ASN.1 DER SET value.
@@ -250,18 +344,18 @@ public final class SelfSignedCertGenerator {
      * @return the DER-encoded SET (tag 0x31 + length + content)
      */
     private static byte[] set(byte[] content) {
-        return tlv(0x31, content);
+        return tlv(TAG_SET, content);
     }
 
     private static byte[] integer(BigInteger value) {
         // toByteArray() produces two's-complement big-endian; positive integers may
         // have a leading 0x00 byte if the MSB would otherwise be set — that is correct
         // DER INTEGER encoding for a non-negative number.
-        return tlv(0x02, value.toByteArray());
+        return tlv(TAG_INTEGER, value.toByteArray());
     }
 
     private static byte[] bitString(byte[] value) {
-        return tlv(0x03, cat(new byte[]{0x00}, value)); // 0x00 = zero unused bits
+        return tlv(TAG_BIT_STRING, cat(new byte[]{0x00}, value)); // 0x00 = zero unused bits
     }
 
     // UTCTime covers 2000–2049 (yy < 50 → 20yy).  Sufficient for short-lived test certs.
@@ -269,7 +363,7 @@ public final class SelfSignedCertGenerator {
             DateTimeFormatter.ofPattern("yyMMddHHmmss'Z'").withZone(ZoneOffset.UTC);
 
     private static byte[] utcTime(Instant instant) {
-        return tlv(0x17, UTC_TIME_FMT.format(instant).getBytes(StandardCharsets.US_ASCII));
+        return tlv(TAG_UTC_TIME, UTC_TIME_FMT.format(instant).getBytes(StandardCharsets.US_ASCII));
     }
 
     /**
@@ -317,9 +411,10 @@ public final class SelfSignedCertGenerator {
      * @return
      */
     public static byte[] encodeAlgorithmIdentifier(String oid) {
-        // RFC 8410: EdDSA parameters MUST be absent; RSA/ECDSA require a NULL (RFC 4055/5758)
-        byte[] nullParam = oid.startsWith("1.3.101.11") ? new byte[0] : new byte[]{0x05, 0x00};
-        return sequence(cat(encodeOid(oid), nullParam));
+        // RFC 8410 §6: all OIDs under arc 1.3.101 (X25519, X448, Ed25519, Ed448) MUST omit parameters.
+        // RFC 4055 §3.2: RSA signature algorithms MUST include a NULL parameters element.
+        byte[] params = oid.startsWith("1.3.101.") ? new byte[0] : DER_NULL;
+        return sequence(cat(encodeOid(oid), params));
     }
 
     /**
@@ -335,7 +430,7 @@ public final class SelfSignedCertGenerator {
             byte[] arc = encodeBase128(Long.parseLong(parts[i]));
             body.write(arc, 0, arc.length);
         }
-        return tlv(0x06, body.toByteArray());
+        return tlv(TAG_OID, body.toByteArray());
     }
 
     /**
