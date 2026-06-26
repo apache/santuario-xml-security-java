@@ -27,12 +27,16 @@ import java.security.Provider;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.extension.SignatureProcessor;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.keys.content.X509Data;
 import org.apache.xml.security.transforms.Transforms;
@@ -248,6 +252,10 @@ public final class XMLSignature extends SignatureElementProxy {
     private static final int MODE_SIGN = 0;
     private static final int MODE_VERIFY = 1;
     private int state = MODE_SIGN;
+
+
+    private final List<SignatureProcessor> preProcessors = new ArrayList<>();
+    private final List<SignatureProcessor> postProcessors = new ArrayList<>();
 
     /**
      * This creates a new <CODE>ds:Signature</CODE> Element and adds an empty
@@ -631,6 +639,29 @@ public final class XMLSignature extends SignatureElementProxy {
         this.state = MODE_VERIFY;
     }
 
+
+    /**
+     * Registers a pre-processor that is invoked before digest values are computed.
+     * Pre-processors run in registration order.
+     *
+     * @param processor the pre-processor to register; must not be {@code null}
+     */
+    public void addPreProcessor(SignatureProcessor processor) {
+        Objects.requireNonNull(processor, "processor");
+        preProcessors.add(processor);
+    }
+
+    /**
+     * Registers a post-processor that is invoked after the {@code ds:SignatureValue}
+     * element has been populated. Post-processors run in registration order.
+     *
+     * @param processor the post-processor to register; must not be {@code null}
+     */
+    public void addPostProcessor(SignatureProcessor processor) {
+        Objects.requireNonNull(processor, "processor");
+        postProcessors.add(processor);
+    }
+
     /**
      * Sets the <code>Id</code> attribute
      *
@@ -688,6 +719,32 @@ public final class XMLSignature extends SignatureElementProxy {
 
         Text t = createText(base64codedValue);
         signatureValueElement.appendChild(t);
+    }
+
+    /**
+     * Sets an {@code Id} attribute on the {@code ds:SignatureValue} element so
+     * it can be referenced from unsigned signature properties (e.g., XAdES-T).
+     *
+     * @param id the identifier value; {@code null} removes an existing attribute
+     */
+    public void setSignatureValueId(String id) {
+        if (id != null) {
+            signatureValueElement.setAttributeNS(null, Constants._ATT_ID, id);
+            signatureValueElement.setIdAttributeNS(null, Constants._ATT_ID, true);
+        } else {
+            signatureValueElement.removeAttributeNS(null, Constants._ATT_ID);
+        }
+    }
+
+    /**
+     * Returns the {@code Id} attribute value of the {@code ds:SignatureValue}
+     * element, or {@code null} if none has been set.
+     *
+     * @return the identifier, or {@code null}
+     */
+    public String getSignatureValueId() {
+        String id = signatureValueElement.getAttributeNS(null, Constants._ATT_ID);
+        return id.isEmpty() ? null : id;
     }
 
     /**
@@ -794,6 +851,17 @@ public final class XMLSignature extends SignatureElementProxy {
             );
         }
 
+
+        // snapshot the lists so that concurrent registration during sign() cannot
+        // cause ConcurrentModificationException or skip newly added processors
+        List<SignatureProcessor> preSnapshot = List.copyOf(preProcessors);
+        List<SignatureProcessor> postSnapshot = List.copyOf(postProcessors);
+
+        // invoke pre-processors before digests are computed
+        for (SignatureProcessor processor : preSnapshot) {
+            processor.processSignature(this);
+        }
+
         //Create a SignatureAlgorithm object
         SignedInfo si = this.getSignedInfo();
         SignatureAlgorithm sa = si.getSignatureAlgorithm();
@@ -815,6 +883,11 @@ public final class XMLSignature extends SignatureElementProxy {
             throw ex;
         } catch (XMLSecurityException | IOException ex) {
             throw new XMLSignatureException(ex);
+        }
+
+        // invoke post-processors after the signature value has been set
+        for (SignatureProcessor processor : postSnapshot) {
+            processor.processSignature(this);
         }
     }
 
