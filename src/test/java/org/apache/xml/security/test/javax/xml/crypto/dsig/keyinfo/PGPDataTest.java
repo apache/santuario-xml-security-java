@@ -25,15 +25,28 @@ package org.apache.xml.security.test.javax.xml.crypto.dsig.keyinfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.crypto.MarshalException;
 import javax.xml.crypto.XMLStructure;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dom.DOMStructure;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.PGPData;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
+
+import org.apache.xml.security.utils.XMLUtils;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -44,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class PGPDataTest {
 
     private final KeyInfoFactory fac;
+    private final DocumentBuilder db;
     private final byte[][] values = {
         {
             0x01, 0x02, 0x03, 0x04,
@@ -54,9 +68,35 @@ class PGPDataTest {
         }
     };
 
+    private final byte[][] invalidKeyPackets = {
+        {
+            // key packet too short
+            0x01, 0x02
+        },
+        {
+            // invalid key packet header (bit 7 not set to 1)
+            0x66, 0x01, 0x00
+        },
+        {
+            // invalid old key packet format (bit 6 not set to 1)
+            (byte)0x86, 0x01, 0x00
+        },
+        {
+            // invalid key packet tag (must be 6, 14, 5, or 7)
+            (byte)0xc3, 0x01, 0x00
+        },
+        {
+            // invalid key packet tag (must be 6, 14, 5, or 7)
+            (byte)0xd6, 0x01, 0x00
+        }
+    };
+
     public PGPDataTest() throws Exception {
         fac = KeyInfoFactory.getInstance
             ("DOM", new org.apache.jcp.xml.dsig.internal.dom.XMLDSigRI());
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        db = dbf.newDocumentBuilder();
     }
 
     @SuppressWarnings("rawtypes")
@@ -123,6 +163,45 @@ class PGPDataTest {
         // test newPGPData(byte[], List)
         pd = fac.newPGPData(values[1], null);
         assertArrayEquals(values[1], pd.getKeyPacket());
+
+        // test that newPGPData throws IllegalArgumentExc on invalid key packets
+        for (byte[] keyPacket : invalidKeyPackets) {
+            testInvalidKeyPacket(keyPacket);
+        }
+    }
+
+    private void testInvalidKeyPacket(byte[] keyPacket) {
+        assertThrows(IllegalArgumentException.class, () ->
+            fac.newPGPData(keyPacket, null));
+    }
+
+    @Test
+    void testUnmarshal() throws Exception {
+        Document doc = db.newDocument();
+        Element kiElem = doc.createElementNS(XMLSignature.XMLNS, "KeyInfo");
+        Element pdElem = doc.createElementNS(XMLSignature.XMLNS, "PGPData");
+        Element pkpElem = doc.createElementNS(XMLSignature.XMLNS, "PGPKeyPacket");
+        Element pkiElem = doc.createElementNS(XMLSignature.XMLNS, "PGPKeyID");
+        kiElem.appendChild(pdElem);
+
+        // test unmarshalling key id and packets
+        Text pkiText = doc.createTextNode(XMLUtils.encodeToString(values[0]));
+        pkiElem.appendChild(pkiText);
+        Text pkpText = doc.createTextNode(XMLUtils.encodeToString(values[1]));
+        pkpElem.appendChild(pkpText);
+        pdElem.appendChild(pkiElem);
+        pdElem.appendChild(pkpElem);
+        KeyInfo ki = fac.unmarshalKeyInfo(new DOMStructure(kiElem));
+        PGPData pd = (PGPData)ki.getContent().get(0);
+        assertArrayEquals(values[0], pd.getKeyId());
+        assertArrayEquals(values[1], pd.getKeyPacket());
+
+        // test that unmarshalKeyInfo throws MarshalExc on invalid key packets
+        for (byte[] keyPacket : invalidKeyPackets) {
+            pkpText.setNodeValue(XMLUtils.encodeToString(keyPacket));
+            assertThrows(MarshalException.class, () ->
+                fac.unmarshalKeyInfo(new DOMStructure(kiElem)));
+        }
     }
 
     @Test
