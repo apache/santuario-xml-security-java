@@ -256,12 +256,5 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
             throw new IllegalArgumentException("keypacket tag is invalid: " +
                                                "must be 6, 14, 5, or 7");
         }
-/*
-        if ((tag & 6) != 6 && (tag & 14) != 14 &&
-            (tag & 5) != 5 && (tag & 7) != 7) {
-            throw new IllegalArgumentException("keypacket tag is invalid: " +
-                                               "must be 6, 14, 5, or 7");
-        }
-*/
     }
 }
