@@ -157,6 +157,7 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
                 } else if ("PGPKeyPacket".equals(localName) && XMLSignature.XMLNS.equals(namespace)) {
                     String content = XMLUtils.getFullTextChildrenFromNode(childElem);
                     pgpKeyPacket = XMLUtils.decode(content);
+                    checkKeyPacket(pgpKeyPacket);
                 } else {
                     other.add
                     (new javax.xml.crypto.dom.DOMStructure(childElem));
@@ -250,8 +251,8 @@ public final class DOMPGPData extends DOMStructure implements PGPData {
         }
 
         // tag value must be 6, 14, 5 or 7
-        if ((tag & 6) != 6 && (tag & 14) != 14 &&
-            (tag & 5) != 5 && (tag & 7) != 7) {
+        tag = tag & 0x3f;
+        if (tag != 5 && tag != 6 && tag != 7 && tag != 14) {
             throw new IllegalArgumentException("keypacket tag is invalid: " +
                                                "must be 6, 14, 5, or 7");
         }
