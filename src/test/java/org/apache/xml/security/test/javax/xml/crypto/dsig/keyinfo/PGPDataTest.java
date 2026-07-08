@@ -47,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -199,8 +200,9 @@ class PGPDataTest {
         // test that unmarshalKeyInfo throws MarshalExc on invalid key packets
         for (byte[] keyPacket : invalidKeyPackets) {
             pkpText.setNodeValue(XMLUtils.encodeToString(keyPacket));
-            assertThrows(MarshalException.class, () ->
+            MarshalException me = assertThrows(MarshalException.class, () ->
                 fac.unmarshalKeyInfo(new DOMStructure(kiElem)));
+            assertTrue(me.getCause() instanceof IllegalArgumentException);
         }
     }
 
