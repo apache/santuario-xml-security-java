@@ -32,6 +32,7 @@ module org.apache.santuario.xmlsec {
 
     exports org.apache.jcp.xml.dsig.internal.dom;
     exports org.apache.xml.security;
+    exports org.apache.xml.security.extension;
     exports org.apache.xml.security.algorithms;
     exports org.apache.xml.security.algorithms.implementations;
     exports org.apache.xml.security.c14n;
