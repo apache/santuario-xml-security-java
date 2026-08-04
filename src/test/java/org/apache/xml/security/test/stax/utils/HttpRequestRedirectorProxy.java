@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -37,8 +40,6 @@ import java.util.List;
 import org.apache.xml.security.stax.ext.XMLSecurityUtils;
 import org.eclipse.jetty.http.MimeTypes;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
  */
@@ -47,6 +48,7 @@ public class HttpRequestRedirectorProxy {
 
     private static final int startPort = 31280;
     private static Server httpServer;
+    private static final String JETTY_SERVLET_PACKAGE = resolveJettyServletPackage();
 
     public static Proxy startHttpEngine() throws Exception {
 
@@ -68,17 +70,17 @@ public class HttpRequestRedirectorProxy {
         resourceHandler.setResourceBase(".");
         httpServer.setHandler(resourceHandler);*/
 
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-        context.setContextPath("/");
-        httpServer.setHandler(context);
-        context.addServlet(new ServletHolder(new TestingHttpProxyServlet()), "/*");
-        httpServer.start();
+        Object context = newJettyServletContextHandler();
+        invoke(context, "setContextPath", new Class<?>[] {String.class}, "/");
+        invoke(httpServer, "setHandler", new Class<?>[] {Class.forName("org.eclipse.jetty.server.Handler")}, context);
+        addServlet(context, new TestingHttpProxyServlet(), "/*");
+        invoke(httpServer, "start");
 
         return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(InetAddress.getByName("127.0.0.1"), port));
     }
 
     public static void stopHttpEngine() throws Exception {
-        httpServer.stop();
+        invoke(httpServer, "stop");
     }
 
     static class TestingHttpProxyServlet extends HttpServlet {
@@ -115,5 +117,39 @@ public class HttpRequestRedirectorProxy {
             LOG.log(Level.INFO, "Unable to serve request line {0}, the file name was not found.", requestLine);
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    private static String resolveJettyServletPackage() {
+        try {
+            Class.forName("org.eclipse.jetty.ee10.servlet.ServletContextHandler");
+            return "org.eclipse.jetty.ee10.servlet";
+        } catch (ClassNotFoundException ex) {
+            return "org.eclipse.jetty.servlet";
+        }
+    }
+
+    private static Object newJettyServletContextHandler() throws Exception {
+        Class<?> contextClass = Class.forName(JETTY_SERVLET_PACKAGE + ".ServletContextHandler");
+        Field noSessionsField = contextClass.getField("NO_SESSIONS");
+        Constructor<?> constructor = contextClass.getConstructor(int.class);
+        return constructor.newInstance(noSessionsField.getInt(null));
+    }
+
+    private static void addServlet(Object context, HttpServlet servlet, String pathSpec) throws Exception {
+        Class<?> holderClass = Class.forName(JETTY_SERVLET_PACKAGE + ".ServletHolder");
+        Constructor<?> holderConstructor = holderClass.getConstructor(Class.forName("jakarta.servlet.Servlet"));
+        Object servletHolder = holderConstructor.newInstance(servlet);
+        Method addServletMethod = context.getClass().getMethod("addServlet", holderClass, String.class);
+        addServletMethod.invoke(context, servletHolder, pathSpec);
+    }
+
+    private static Object invoke(Object target, String methodName) throws Exception {
+        Method method = target.getClass().getMethod(methodName);
+        return method.invoke(target);
+    }
+
+    private static Object invoke(Object target, String methodName, Class<?>[] parameterTypes, Object... arguments) throws Exception {
+        Method method = target.getClass().getMethod(methodName, parameterTypes);
+        return method.invoke(target, arguments);
     }
 }
