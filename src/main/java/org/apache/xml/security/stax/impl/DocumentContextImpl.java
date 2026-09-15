@@ -66,7 +66,9 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
     @Override
     public synchronized void unsetIsInEncryptedContent(Object key) {
         Integer index = processorToIndexMap.remove(key);
-        contentTypeMap.remove(index);
+        if (index != null) {
+            contentTypeMap.remove(index);
+        }
     }
 
     @Override
@@ -83,7 +85,9 @@ public class DocumentContextImpl implements DocumentContext, Cloneable {
     @Override
     public synchronized void unsetIsInSignedContent(Object key) {
         Integer index = processorToIndexMap.remove(key);
-        contentTypeMap.remove(index);
+        if (index != null) {
+            contentTypeMap.remove(index);
+        }
     }
 
     @Override
