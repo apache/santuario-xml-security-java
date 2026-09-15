@@ -176,11 +176,12 @@ public abstract class AbstractSignatureReferenceVerifyInputProcessor extends Abs
                     if (!internalSignatureReferenceVerifier.isFinished()) {
                         internalSignatureReferenceVerifier.processEvent(xmlSecEvent, inputProcessorChain);
                         inputProcessorChain.addProcessor(internalSignatureReferenceVerifier);
+
+                        inputProcessorChain.getDocumentContext().setIsInSignedContent(
+                            inputProcessorChain.getProcessors().indexOf(internalSignatureReferenceVerifier),
+                            internalSignatureReferenceVerifier);
                     }
                     processedReferences.add(referenceType);
-                    inputProcessorChain.getDocumentContext().setIsInSignedContent(
-                        inputProcessorChain.getProcessors().indexOf(internalSignatureReferenceVerifier),
-                        internalSignatureReferenceVerifier);
 
                     processElementPath(internalSignatureReferenceVerifier.getStartElementPath(), inputProcessorChain,
                                        internalSignatureReferenceVerifier.getStartElement(), referenceType);
