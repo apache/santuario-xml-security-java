@@ -52,6 +52,11 @@ public class XMLSecurityProperties {
     private String encryptionKeyTransportDigestAlgorithm;
     private String encryptionKeyTransportMGFAlgorithm;
     private byte[] encryptionKeyTransportOAEPParams;
+    // Generic Hybrid Cipher (W3C xmlsec-generic-hybrid) KEM-based key transport, e.g. ML-KEM (SANTUARIO-633).
+    // Used when encryptionKeyTransportAlgorithm is EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID.
+    private String encryptionKeyEncapsulationAlgorithm;
+    private String encryptionDataEncapsulationAlgorithm;
+    private String encryptionKeyEncapsulationHmacAlgorithm;
     private final List<SecurePart> encryptionParts = new LinkedList<>();
     private Key encryptionKey;
     private Key encryptionTransportKey;
@@ -100,6 +105,9 @@ public class XMLSecurityProperties {
         this.encryptionKeyTransportDigestAlgorithm = xmlSecurityProperties.encryptionKeyTransportDigestAlgorithm;
         this.encryptionKeyTransportMGFAlgorithm = xmlSecurityProperties.encryptionKeyTransportMGFAlgorithm;
         this.encryptionKeyTransportOAEPParams = xmlSecurityProperties.encryptionKeyTransportOAEPParams;
+        this.encryptionKeyEncapsulationAlgorithm = xmlSecurityProperties.encryptionKeyEncapsulationAlgorithm;
+        this.encryptionDataEncapsulationAlgorithm = xmlSecurityProperties.encryptionDataEncapsulationAlgorithm;
+        this.encryptionKeyEncapsulationHmacAlgorithm = xmlSecurityProperties.encryptionKeyEncapsulationHmacAlgorithm;
         this.encryptionParts.addAll(xmlSecurityProperties.encryptionParts);
         this.encryptionKey = xmlSecurityProperties.encryptionKey;
         this.encryptionTransportKey = xmlSecurityProperties.encryptionTransportKey;
@@ -331,6 +339,43 @@ public class XMLSecurityProperties {
 
     public void setEncryptionKeyTransportOAEPParams(byte[] encryptionKeyTransportOAEPParams) {
         this.encryptionKeyTransportOAEPParams = encryptionKeyTransportOAEPParams;
+    }
+
+    /**
+     * Returns the Key Encapsulation Method algorithm URI (e.g. an ML-KEM algorithm URI) used when
+     * {@link #getEncryptionKeyTransportAlgorithm()} is the Generic Hybrid Cipher algorithm
+     * (see {@code EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID}, SANTUARIO-633).
+     */
+    public String getEncryptionKeyEncapsulationAlgorithm() {
+        return encryptionKeyEncapsulationAlgorithm;
+    }
+
+    public void setEncryptionKeyEncapsulationAlgorithm(String encryptionKeyEncapsulationAlgorithm) {
+        this.encryptionKeyEncapsulationAlgorithm = encryptionKeyEncapsulationAlgorithm;
+    }
+
+    /**
+     * Returns the Data Encapsulation Method algorithm URI (an AES-KeyWrap algorithm) used when
+     * {@link #getEncryptionKeyTransportAlgorithm()} is the Generic Hybrid Cipher algorithm.
+     */
+    public String getEncryptionDataEncapsulationAlgorithm() {
+        return encryptionDataEncapsulationAlgorithm;
+    }
+
+    public void setEncryptionDataEncapsulationAlgorithm(String encryptionDataEncapsulationAlgorithm) {
+        this.encryptionDataEncapsulationAlgorithm = encryptionDataEncapsulationAlgorithm;
+    }
+
+    /**
+     * Returns the HMAC hash algorithm URI used as the HKDF PRF when deriving the data-encapsulation
+     * (AES-KeyWrap) key from the KEM shared secret. Defaults to HMAC-SHA256 if unset.
+     */
+    public String getEncryptionKeyEncapsulationHmacAlgorithm() {
+        return encryptionKeyEncapsulationHmacAlgorithm;
+    }
+
+    public void setEncryptionKeyEncapsulationHmacAlgorithm(String encryptionKeyEncapsulationHmacAlgorithm) {
+        this.encryptionKeyEncapsulationHmacAlgorithm = encryptionKeyEncapsulationHmacAlgorithm;
     }
 
     public X509Certificate getEncryptionUseThisCertificate() {

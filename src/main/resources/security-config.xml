@@ -505,6 +505,41 @@
                     RequiredKey="RSA"
                     JCEName="RSA/ECB/OAEPPadding"/>
 
+         <!-- W3C "XML Security: Generic Hybrid Cipher" key transport (https://www.w3.org/TR/xmlsec-generic-hybrid/),
+              used for KEM-based key transport such as ML-KEM. The actual key encapsulation and data
+              encapsulation algorithms are identified by the nested KeyEncapsulationMethod/DataEncapsulationMethod
+              elements, see SANTUARIO-633. -->
+         <Algorithm URI="http://www.w3.org/2010/xmlsec-ghc#generic-hybrid"
+                    Description="Key Transport Generic Hybrid Cipher"
+                    AlgorithmClass="KeyTransport"
+                    RequirementLevel="OPTIONAL"
+                    RequiredKey=""
+                    JCEName=""/>
+
+         <!-- ML-KEM (FIPS 203) Key Encapsulation — URIs per draft-eastlake-rfc9231bis-xmlsec-uris-09
+              section 3.6.9, used as the GenericHybridCipherMethod/KeyEncapsulationMethod/@Algorithm
+              value above (see SANTUARIO-634). -->
+         <Algorithm URI="http://www.w3.org/2026/08/xmldsig-more#ml-kem-512"
+                    Description="Key Encapsulation ML-KEM-512 (FIPS 203, NIST security level 1)"
+                    AlgorithmClass="KeyTransport"
+                    RequirementLevel="OPTIONAL"
+                    RequiredKey="ML-KEM-512"
+                    JCEName="ML-KEM-512"/>
+
+         <Algorithm URI="http://www.w3.org/2026/08/xmldsig-more#ml-kem-768"
+                    Description="Key Encapsulation ML-KEM-768 (FIPS 203, NIST security level 3)"
+                    AlgorithmClass="KeyTransport"
+                    RequirementLevel="OPTIONAL"
+                    RequiredKey="ML-KEM-768"
+                    JCEName="ML-KEM-768"/>
+
+         <Algorithm URI="http://www.w3.org/2026/08/xmldsig-more#ml-kem-1024"
+                    Description="Key Encapsulation ML-KEM-1024 (FIPS 203, NIST security level 5)"
+                    AlgorithmClass="KeyTransport"
+                    RequirementLevel="OPTIONAL"
+                    RequiredKey="ML-KEM-1024"
+                    JCEName="ML-KEM-1024"/>
+
          <Algorithm URI="http://www.w3.org/2001/04/xmlenc#dh"
                     Description="Key Agreement Diffie-Hellman"
                     AlgorithmClass="KeyAgreement"

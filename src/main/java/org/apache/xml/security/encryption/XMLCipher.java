@@ -55,9 +55,12 @@ import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
 import org.apache.xml.security.encryption.keys.KeyInfoEnc;
 import org.apache.xml.security.encryption.params.KeyAgreementParameters;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
+import org.apache.xml.security.encryption.params.KeyEncapsulationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.encryption.keys.content.AgreementMethodImpl;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
 import org.apache.xml.security.keys.keyresolver.KeyResolverException;
 import org.apache.xml.security.keys.keyresolver.KeyResolverSpi;
 import org.apache.xml.security.keys.keyresolver.implementations.EncryptedKeyResolver;
@@ -1382,6 +1385,7 @@ public final class XMLCipher {
 
         AlgorithmParameterSpec cipherSpec = null;
         Key wrapKey = this.key;
+        byte[] kemEncapsulation = null;
         if (params instanceof OAEPParameterSpec) {
             cipherSpec = params;
         } else if (params instanceof KeyAgreementParameters) {
@@ -1389,6 +1393,16 @@ public final class XMLCipher {
             validateAndUpdateKeyAgreementParameterKeys(keyAgreementParameter);
             // Generate a key using the key Agreement Parameters for the wrap algorithm
             wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey(keyAgreementParameter);
+        } else if (params instanceof KeyEncapsulationParameters) {
+            KeyEncapsulationParameters keyEncapsulationParameter = (KeyEncapsulationParameters) params;
+            validateAndUpdateKeyEncapsulationParameterKeys(keyEncapsulationParameter);
+            // Encapsulate a shared secret to the recipient's KEM public key and derive the wrap key from it
+            KeyUtils.KemEncapsulation kemResult = KeyUtils.kemEncapsulate(
+                    keyEncapsulationParameter.getRecipientPublicKey(),
+                    keyEncapsulationParameter.getKeyEncapsulationAlgorithm(),
+                    keyEncapsulationParameter.getKeyDerivationParameter());
+            wrapKey = kemResult.getWrapKey();
+            kemEncapsulation = kemResult.getEncapsulation();
         } else if (params != null) {
             throw new XMLEncryptionException("encryption.UnsupportedAlgorithmParameterSpec", params.getClass().getName());
         }
@@ -1413,6 +1427,15 @@ public final class XMLCipher {
             throw new XMLEncryptionException(e);
         }
 
+        if (kemEncapsulation != null) {
+            // Per the W3C Generic Hybrid Cipher spec, CipherValue holds the concatenation of the
+            // KEM encapsulation (C0) and the AES-wrapped CEK (C1)
+            byte[] combined = new byte[kemEncapsulation.length + encryptedBytes.length];
+            System.arraycopy(kemEncapsulation, 0, combined, 0, kemEncapsulation.length);
+            System.arraycopy(encryptedBytes, 0, combined, kemEncapsulation.length, encryptedBytes.length);
+            encryptedBytes = combined;
+        }
+
         String base64EncodedEncryptedOctets = XMLUtils.encodeToString(encryptedBytes);
         LOG.log(Level.DEBUG, "Encrypted key octets:\n{0}", base64EncodedEncryptedOctets);
         LOG.log(Level.DEBUG, "Encrypted key octets length = {0}", base64EncodedEncryptedOctets.length());
@@ -1421,7 +1444,9 @@ public final class XMLCipher {
         cv.setValue(base64EncodedEncryptedOctets);
 
         try {
-            EncryptionMethod method = factory.newEncryptionMethod(new URI(algorithm).toString());
+            String encryptionMethodAlgorithm = params instanceof KeyEncapsulationParameters
+                    ? EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID : algorithm;
+            EncryptionMethod method = factory.newEncryptionMethod(new URI(encryptionMethodAlgorithm).toString());
             method.setDigestAlgorithm(digestAlg);
             ek.setEncryptionMethod(method);
             if (params instanceof OAEPParameterSpec) {
@@ -1439,12 +1464,49 @@ public final class XMLCipher {
                 KeyInfoEnc keyInfo = new KeyInfoEnc(contextDocument);
                 keyInfo.add(agreementMethod);
                 ek.setKeyInfo(keyInfo);
+            } else if (params instanceof KeyEncapsulationParameters) {
+                KeyEncapsulationParameters keyEncapsulationParameter = (KeyEncapsulationParameters) params;
+                KeyDerivationParameters kdp = keyEncapsulationParameter.getKeyDerivationParameter();
+                method.setKeyEncapsulationAlgorithm(keyEncapsulationParameter.getKeyEncapsulationAlgorithm());
+                method.setKeyEncapsulationKeyDerivationMethod(
+                        XMLCipherUtil.constructKeyDerivationMethod(contextDocument, kdp));
+                method.setKeyEncapsulationKeyLength(kdp.getKeyLength());
+                method.setDataEncapsulationAlgorithm(algorithm);
             }
 
         } catch (URISyntaxException ex) {
             throw new XMLEncryptionException(ex);
         }
         return ek;
+    }
+
+    /**
+     * Method validates and updates if needed the KeyEncapsulationParameters with the required keys.
+     *
+     * @param keyEncapsulationParameter KeyEncapsulationParameters to be validated and updated
+     *                                   with the required key if needed
+     */
+    public void validateAndUpdateKeyEncapsulationParameterKeys(KeyEncapsulationParameters keyEncapsulationParameter)
+            throws XMLEncryptionException {
+        if (keyEncapsulationParameter == null) {
+            return;
+        }
+        // check if the recipient's public key is set, if not, use the recipient's public key
+        // specified in the XMLCipher instance init method.
+        if (keyEncapsulationParameter.getRecipientPublicKey() == null && this.key != null) {
+            if (this.key instanceof PublicKey) {
+                LOG.log(Level.DEBUG, "Recipient's public key is not set in keyEncapsulationParameter, " +
+                        "use the recipient's public key specified in XMLCipher instance init method.");
+                keyEncapsulationParameter.setRecipientPublicKey((PublicKey) this.key);
+            } else {
+                throw new XMLEncryptionException("algorithms.WrongKeyForThisOperation",
+                        this.key.getClass().getName(), "java.security.PublicKey");
+            }
+        }
+        if (keyEncapsulationParameter.getRecipientPublicKey() == null) {
+            // recipient's public key is mandatory for key encapsulation.
+            throw new XMLEncryptionException("encryption.nokey");
+        }
     }
 
     /**
@@ -1479,7 +1541,9 @@ public final class XMLCipher {
                 try {
                     String keyWrapAlg = encryptedKey.getEncryptionMethod().getAlgorithm();
                     String keyType = JCEMapper.getJCEKeyAlgorithmFromURI(keyWrapAlg);
-                    if ( "RSA".equals(keyType) || "EC".equals(keyType)) {
+                    if ("RSA".equals(keyType) || "EC".equals(keyType)
+                            || (keyType != null && keyType.startsWith("ML-KEM"))
+                            || EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID.equals(keyWrapAlg)) {
                         key = ki.getPrivateKey();
                     } else {
                         key = ki.getSecretKey();
@@ -1503,14 +1567,28 @@ public final class XMLCipher {
         String jceKeyAlgorithm = JCEMapper.getJCEKeyAlgorithmFromURI(algorithm);
         LOG.log(Level.DEBUG, "JCE Key Algorithm: {0}", jceKeyAlgorithm);
 
+        boolean genericHybrid = EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID.equals(
+                encryptedKey.getEncryptionMethod().getAlgorithm());
+
         Cipher c;
         if (contextCipher == null) {
-            // Now create the working cipher
-            c =
-                constructCipher(
-                    encryptedKey.getEncryptionMethod().getAlgorithm(),
-                    encryptedKey.getEncryptionMethod().getDigestAlgorithm()
-                );
+            // Now create the working cipher. For Generic Hybrid Cipher (KEM) key transport, the
+            // top-level EncryptionMethod algorithm is the generic "generic-hybrid" URI, not a JCE
+            // cipher algorithm - the actual data-encapsulation (AES-KeyWrap) algorithm is nested
+            // inside GenericHybridCipherMethod/DataEncapsulationMethod.
+            String cipherAlgorithm = genericHybrid
+                    ? encryptedKey.getEncryptionMethod().getDataEncapsulationAlgorithm()
+                    : encryptedKey.getEncryptionMethod().getAlgorithm();
+            if (genericHybrid) {
+                // dataEncapsulationAlgorithm comes straight from the untrusted input XML
+                // (ghc:DataEncapsulationMethod/@Algorithm); restrict it to an AES-KeyWrap algorithm
+                // before it is used to construct the unwrap Cipher below, rather than accepting
+                // whatever cipher JCEMapper happens to resolve the URI to (e.g. legacy TripleDES
+                // key-wrap). This mirrors the check XMLEncryptedKeyInputHandler already performs
+                // for the STAX path.
+                KeyUtils.getAESKeyBitSizeForWrapAlgorithm(cipherAlgorithm);
+            }
+            c = constructCipher(cipherAlgorithm, encryptedKey.getEncryptionMethod().getDigestAlgorithm());
         } else {
             c = contextCipher;
         }
@@ -1534,6 +1612,17 @@ public final class XMLCipher {
             if (params instanceof KeyAgreementParameters) {
                 Key wrapKey = KeyUtils.aesWrapKeyWithDHGeneratedKey((KeyAgreementParameters) params);
                 c.init(Cipher.UNWRAP_MODE, wrapKey);
+            } else if (params instanceof KeyEncapsulationParameters) {
+                // Split the leading KEM encapsulation (C0) off the combined ciphertext, decapsulate
+                // it to derive the wrap key, and continue unwrapping only the remaining AES-wrapped
+                // CEK bytes (C1)
+                KeyUtils.KemDecapsulation kemResult = KeyUtils.kemDecapsulate(
+                        ((KeyEncapsulationParameters) params).getRecipientPrivateKey(),
+                        ((KeyEncapsulationParameters) params).getKeyEncapsulationAlgorithm(),
+                        encryptedBytes,
+                        ((KeyEncapsulationParameters) params).getKeyDerivationParameter());
+                c.init(Cipher.UNWRAP_MODE, kemResult.getWrapKey());
+                encryptedBytes = kemResult.getWrappedKey();
             }
             ret = c.unwrap(encryptedBytes, jceKeyAlgorithm, Cipher.SECRET_KEY);
         } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
@@ -1608,8 +1697,47 @@ public final class XMLCipher {
                     encMethod.getMGFAlgorithm(), encMethod.getOAEPparams());
         }
 
+        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID.equals(encryptionAlgorithm)) {
+            LOG.log(Level.DEBUG,"EncryptedKey key algorithm is Generic Hybrid Cipher (KEM) key transport");
+            return constructKeyEncapsulationParameters(encMethod);
+        }
+
         KeyInfoEnc keyInfo = encryptedKey.getKeyInfo() instanceof KeyInfoEnc ? (KeyInfoEnc) encryptedKey.getKeyInfo(): null;
         return constructKeyAgreementParameters(keyInfo, encryptionAlgorithm);
+    }
+
+    /**
+     * The method validates whether the provided key is of type PrivateKey and the EncryptionMethod
+     * carries the Generic Hybrid Cipher key-encapsulation data. If both conditions are met, it
+     * proceeds to extract the KeyEncapsulationParameters for key derivation; otherwise, it returns null.
+     *
+     * @param encMethod the EncryptionMethod containing the Generic Hybrid Cipher key encapsulation data
+     * @return KeyEncapsulationParameters object containing the key encapsulation data
+     *       or null if the provided key is not a PrivateKey
+     */
+    private KeyEncapsulationParameters constructKeyEncapsulationParameters(EncryptionMethod encMethod)
+            throws XMLSecurityException {
+
+        if (!(this.key instanceof PrivateKey)) {
+            LOG.log(Level.INFO,"The EncryptedKey key is using Generic Hybrid Cipher key encapsulation data, " +
+                    "but provided key is not a PrivateKey. Skipping Key Encapsulation data processing.");
+            return null;
+        }
+
+        String kemAlgorithm = encMethod.getKeyEncapsulationAlgorithm();
+        KeyDerivationMethod keyDerivationMethod = encMethod.getKeyEncapsulationKeyDerivationMethod();
+        if (kemAlgorithm == null || keyDerivationMethod == null) {
+            throw new XMLEncryptionException("Key Encapsulation Algorithm or Key Derivation Method is not specified");
+        }
+
+        int keyLength = encMethod.getKeyEncapsulationKeyLength() > 0
+                ? encMethod.getKeyEncapsulationKeyLength() * 8
+                : KeyUtils.getAESKeyBitSizeForWrapAlgorithm(encMethod.getDataEncapsulationAlgorithm());
+        KeyDerivationParameters kdp = XMLCipherUtil.constructKeyDerivationParameter(keyDerivationMethod, keyLength);
+
+        KeyEncapsulationParameters keyEncapsulationParameters = new KeyEncapsulationParameters(kemAlgorithm, kdp);
+        keyEncapsulationParameters.setRecipientPrivateKey((PrivateKey) this.key);
+        return keyEncapsulationParameters;
     }
 
     /**
@@ -1920,7 +2048,11 @@ public final class XMLCipher {
     }
 
     private void validateEncryptionMethodAlgorithm(String encryptionMethodAlgorithm) throws XMLEncryptionException {
-        if (algorithm != null && !algorithm.equals(encryptionMethodAlgorithm)) {
+        // Generic Hybrid Cipher (KEM) key transport always uses the "generic-hybrid" URI as the
+        // top-level EncryptionMethod algorithm, regardless of the AES-KeyWrap algorithm the
+        // XMLCipher instance was initialised with (which is nested as DataEncapsulationMethod).
+        if (algorithm != null && !algorithm.equals(encryptionMethodAlgorithm)
+                && !EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID.equals(encryptionMethodAlgorithm)) {
             throw new XMLEncryptionException("empty",
                 "EncryptionMethod algorithm \"" + encryptionMethodAlgorithm
                 + "\" does not match the algorithm this XMLCipher was initialised with: \""
@@ -2475,7 +2607,7 @@ public final class XMLCipher {
          * @param element
          * @return a new EncryptionMethod
          */
-        EncryptionMethod newEncryptionMethod(Element element) {
+        EncryptionMethod newEncryptionMethod(Element element) throws XMLEncryptionException {
             String encAlgorithm = element.getAttributeNS(null, EncryptionConstants._ATT_ALGORITHM);
             EncryptionMethod result = newEncryptionMethod(encAlgorithm);
 
@@ -2514,10 +2646,76 @@ public final class XMLCipher {
                 result.setMGFAlgorithm(mgfAlgorithm);
             }
 
+            Element genericHybridCipherMethodElement =
+                (Element) element.getElementsByTagNameNS(
+                    EncryptionConstants.EncryptionSpecGHCNS,
+                    EncryptionConstants._TAG_GENERICHYBRIDCIPHERMETHOD).item(0);
+            if (genericHybridCipherMethodElement != null) {
+                Element keyEncapsulationMethodElement =
+                    (Element) genericHybridCipherMethodElement.getElementsByTagNameNS(
+                        EncryptionConstants.EncryptionSpecGHCNS,
+                        EncryptionConstants._TAG_KEYENCAPSULATIONMETHOD).item(0);
+                if (keyEncapsulationMethodElement != null) {
+                    result.setKeyEncapsulationAlgorithm(
+                        keyEncapsulationMethodElement.getAttributeNS(null, "Algorithm"));
+
+                    Element keyDerivationMethodElement =
+                        (Element) keyEncapsulationMethodElement.getElementsByTagNameNS(
+                            EncryptionConstants.EncryptionSpec11NS,
+                            EncryptionConstants._TAG_KEYDERIVATIONMETHOD).item(0);
+                    if (keyDerivationMethodElement != null) {
+                        try {
+                            result.setKeyEncapsulationKeyDerivationMethod(
+                                new KeyDerivationMethodImpl(keyDerivationMethodElement, null));
+                        } catch (XMLSecurityException xse) {
+                            throw new XMLEncryptionException(xse);
+                        }
+                    }
+
+                    Element keyLenElement =
+                        (Element) keyEncapsulationMethodElement.getElementsByTagNameNS(
+                            EncryptionConstants.EncryptionSpecGHCNS,
+                            EncryptionConstants._TAG_KEYLEN).item(0);
+                    if (keyLenElement != null) {
+                        result.setKeyEncapsulationKeyLength(
+                            parseKeyEncapsulationKeyLength(keyLenElement));
+                    }
+                }
+
+                Element dataEncapsulationMethodElement =
+                    (Element) genericHybridCipherMethodElement.getElementsByTagNameNS(
+                        EncryptionConstants.EncryptionSpecGHCNS,
+                        EncryptionConstants._TAG_DATAENCAPSULATIONMETHOD).item(0);
+                if (dataEncapsulationMethodElement != null) {
+                    result.setDataEncapsulationAlgorithm(
+                        dataEncapsulationMethodElement.getAttributeNS(null, "Algorithm"));
+                }
+            }
+
             // TODO: Make this mess work
             // <any namespace='##other' minOccurs='0' maxOccurs='unbounded'/>
 
             return result;
+        }
+
+        /**
+         * Parses the {@code ghc:KeyLen} element content. The element is read from the
+         * (untrusted) message, so a missing, empty or non-numeric value is reported as an
+         * {@link XMLEncryptionException}, the exception type the decrypt API declares, rather
+         * than escaping as a {@code NullPointerException} or {@code NumberFormatException}.
+         */
+        private int parseKeyEncapsulationKeyLength(Element keyLenElement) throws XMLEncryptionException {
+            Node child = keyLenElement.getFirstChild();
+            String text = child == null ? null : child.getNodeValue();
+            if (text == null || text.trim().isEmpty()) {
+                throw new XMLEncryptionException("KeyDerivation.InvalidParameter", EncryptionConstants._TAG_KEYLEN);
+            }
+            try {
+                return Integer.parseInt(text.trim());
+            } catch (NumberFormatException e) {
+                throw new XMLEncryptionException(e, "KeyDerivation.InvalidParameter",
+                    new Object[]{EncryptionConstants._TAG_KEYLEN});
+            }
         }
 
         /**
@@ -3120,6 +3318,10 @@ public final class XMLCipher {
             private List<Element> encryptionMethodInformation;
             private String digestAlgorithm;
             private String mgfAlgorithm;
+            private String keyEncapsulationAlgorithm;
+            private KeyDerivationMethod keyEncapsulationKeyDerivationMethod;
+            private int keyEncapsulationKeyLength = Integer.MIN_VALUE;
+            private String dataEncapsulationAlgorithm;
 
             /**
              * Constructor.
@@ -3193,6 +3395,54 @@ public final class XMLCipher {
 
             /** {@inheritDoc} */
             @Override
+            public String getKeyEncapsulationAlgorithm() {
+                return keyEncapsulationAlgorithm;
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public void setKeyEncapsulationAlgorithm(String algorithm) {
+                keyEncapsulationAlgorithm = algorithm;
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public KeyDerivationMethod getKeyEncapsulationKeyDerivationMethod() {
+                return keyEncapsulationKeyDerivationMethod;
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public void setKeyEncapsulationKeyDerivationMethod(KeyDerivationMethod keyDerivationMethod) {
+                keyEncapsulationKeyDerivationMethod = keyDerivationMethod;
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public int getKeyEncapsulationKeyLength() {
+                return keyEncapsulationKeyLength;
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public void setKeyEncapsulationKeyLength(int keyLength) {
+                keyEncapsulationKeyLength = keyLength;
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public String getDataEncapsulationAlgorithm() {
+                return dataEncapsulationAlgorithm;
+            }
+
+            /** {@inheritDoc} */
+            @Override
+            public void setDataEncapsulationAlgorithm(String algorithm) {
+                dataEncapsulationAlgorithm = algorithm;
+            }
+
+            /** {@inheritDoc} */
+            @Override
             public Iterator<Element> getEncryptionMethodInformation() {
                 return encryptionMethodInformation.iterator();
             }
@@ -3254,6 +3504,50 @@ public final class XMLCipher {
                         EncryptionConstants.EncryptionSpec11NS
                     );
                     result.appendChild(mgfElement);
+                }
+                if (keyEncapsulationAlgorithm != null) {
+                    Element genericHybridCipherMethodElement =
+                        contextDocument.createElementNS(
+                            EncryptionConstants.EncryptionSpecGHCNS,
+                            "ghc:" + EncryptionConstants._TAG_GENERICHYBRIDCIPHERMETHOD
+                        );
+                    genericHybridCipherMethodElement.setAttributeNS(
+                        Constants.NamespaceSpecNS, "xmlns:ghc", EncryptionConstants.EncryptionSpecGHCNS
+                    );
+
+                    Element keyEncapsulationMethodElement =
+                        contextDocument.createElementNS(
+                            EncryptionConstants.EncryptionSpecGHCNS,
+                            "ghc:" + EncryptionConstants._TAG_KEYENCAPSULATIONMETHOD
+                        );
+                    keyEncapsulationMethodElement.setAttributeNS(null, "Algorithm", keyEncapsulationAlgorithm);
+                    if (keyEncapsulationKeyDerivationMethod instanceof ElementProxy) {
+                        keyEncapsulationMethodElement.appendChild(
+                            ((ElementProxy) keyEncapsulationKeyDerivationMethod).getElement()
+                        );
+                    }
+                    if (keyEncapsulationKeyLength > 0) {
+                        Element keyLenElement =
+                            contextDocument.createElementNS(
+                                EncryptionConstants.EncryptionSpecGHCNS,
+                                "ghc:" + EncryptionConstants._TAG_KEYLEN
+                            );
+                        keyLenElement.appendChild(
+                            contextDocument.createTextNode(String.valueOf(keyEncapsulationKeyLength))
+                        );
+                        keyEncapsulationMethodElement.appendChild(keyLenElement);
+                    }
+                    genericHybridCipherMethodElement.appendChild(keyEncapsulationMethodElement);
+
+                    Element dataEncapsulationMethodElement =
+                        contextDocument.createElementNS(
+                            EncryptionConstants.EncryptionSpecGHCNS,
+                            "ghc:" + EncryptionConstants._TAG_DATAENCAPSULATIONMETHOD
+                        );
+                    dataEncapsulationMethodElement.setAttributeNS(null, "Algorithm", dataEncapsulationAlgorithm);
+                    genericHybridCipherMethodElement.appendChild(dataEncapsulationMethodElement);
+
+                    result.appendChild(genericHybridCipherMethodElement);
                 }
                 for (Element element : encryptionMethodInformation) {
                     result.appendChild(element);
