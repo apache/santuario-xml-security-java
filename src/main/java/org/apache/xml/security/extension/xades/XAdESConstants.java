@@ -19,6 +19,7 @@
 package org.apache.xml.security.extension.xades;
 
 import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
+import org.apache.xml.security.c14n.Canonicalizer;
 
 import java.util.Set;
 
@@ -34,7 +35,8 @@ public final class XAdESConstants {
     }
 
     /**
-     * Algorithm URIs accepted for certificate digest in XAdES {@code CertDigest}.
+     * Algorithm URIs accepted for certificate digest in XAdES {@code CertDigest}, and by
+     * {@link XAdESBBValidator} for the SignedProperties {@code ds:Reference} digest.
      * Only SHA-2 and SHA-3 variants with at least 256-bit output are permitted;
      * MD5, SHA-1, SHA-224, and other weak/deprecated algorithms are rejected.
      * Used by both {@link XAdESSignatureProcessor} (signing) and {@link XAdESBBValidator} (validation)
@@ -47,6 +49,19 @@ public final class XAdESConstants {
             MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_384,
             MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA3_512);
 
+    /**
+     * Transform algorithm URIs permitted on the {@code ds:Reference} covering
+     * {@code xades132:SignedProperties}. Only canonicalization transforms are allowed
+     * (see ETSI EN 319 132-1 V1.3.1).
+     */
+    public static final Set<String> ALLOWED_SIGNED_PROPERTIES_TRANSFORMS = Set.of(
+            Canonicalizer.ALGO_ID_C14N_OMIT_COMMENTS,
+            Canonicalizer.ALGO_ID_C14N_WITH_COMMENTS,
+            Canonicalizer.ALGO_ID_C14N11_OMIT_COMMENTS,
+            Canonicalizer.ALGO_ID_C14N11_WITH_COMMENTS,
+            Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS,
+            Canonicalizer.ALGO_ID_C14N_EXCL_WITH_COMMENTS);
+
     public static final String XADES_V132_NS = "http://uri.etsi.org/01903/v1.3.2#";
     public static final String XADES_V141_NS = "http://uri.etsi.org/01903/v1.4.1#";
 
@@ -57,5 +72,11 @@ public final class XAdESConstants {
     public static final String REFERENCE_TYPE_SIGNEDPROPERTIES = "http://uri.etsi.org/01903#SignedProperties";
 
     public static final String TAG_QUALIFYING_PROPERTIES = "QualifyingProperties";
+    public static final String TAG_SIGNED_PROPERTIES = "SignedProperties";
+    public static final String TAG_SIGNED_SIGNATURE_PROPERTIES = "SignedSignatureProperties";
+    public static final String TAG_SIGNING_CERTIFICATE = "SigningCertificate";
+    public static final String TAG_SIGNING_CERTIFICATE_V2 = "SigningCertificateV2";
+    public static final String TAG_CERT = "Cert";
+    public static final String TAG_CERT_DIGEST = "CertDigest";
     public static final String TAG_SIGNATURE_POLICY_IMPLIED = "SignaturePolicyImplied";
 }

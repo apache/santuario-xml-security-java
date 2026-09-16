@@ -51,8 +51,9 @@ public final class XAdESValidationResult {
     }
 
     /**
-     * Returns {@code true} if {@code xades132:QualifyingProperties} was found in
-     * the signature's {@code ds:Object} elements.
+     * Returns {@code true} if the signature declares XAdES (a SignedProperties-typed
+     * {@code ds:Reference}) or contains {@code xades132:QualifyingProperties} in its
+     * {@code ds:Object} elements. Informational only: use {@link #isValid()} to accept a signature.
      */
     public boolean isXAdESPresent() {
         return xadesPresent;

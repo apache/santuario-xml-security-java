@@ -20,6 +20,7 @@ package org.apache.xml.security.extension.xades;
 
 
 import org.apache.xml.security.algorithms.JCEMapper;
+import org.apache.xml.security.algorithms.MessageDigestAlgorithm;
 import org.apache.xml.security.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -220,6 +221,19 @@ class XAdESSignatureTest {
     }
 
     @Test
+    void nullSigningCertificateIsReportedAsViolation() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=NullCert");
+        Document doc = signAndParse(kp, cert);
+        Element sigEl = findSignatureElement(doc, newXPath());
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(new XMLSignature(sigEl, ""), null);
+        assertTrue(result.isXAdESPresent());
+        assertFalse(result.isValid(), "Certificate binding must not be silently skipped");
+        assertViolation(result, "No signing certificate provided");
+    }
+
+    @Test
     void xadesBBValidatorReportsNotPresentForPlainXmldsig() throws Exception {
         // Sign without XAdES processor — no QualifyingProperties
         KeyPair kp = generateRsaKeyPair();
@@ -272,11 +286,440 @@ class XAdESSignatureTest {
     }
 
     // -----------------------------------------------------------------
+    // Security — QualifyingProperties must be bound to the signature
+    // -----------------------------------------------------------------
+
+    @Test
+    void forgedQualifyingPropertiesBeforeSignedOneIsRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=ForgedQP");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+        Element realQp = findQualifyingProperties(doc, xpath);
+
+        // Unsigned forged block with valid Target and CertDigest, inserted in front of the real one
+        Element forgedObject = forgeQualifyingPropertiesObject(realQp, "forged-sp");
+        sigEl.insertBefore(forgedObject, realQp.getParentNode());
+        setIdFlagToIdAttributes(doc.getDocumentElement());
+
+        XMLSignature sig = new XMLSignature(sigEl, "");
+        assertTrue(sig.checkSignatureValue(cert), "Core verification is unaffected by the unsigned ds:Object");
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertTrue(result.isXAdESPresent());
+        assertFalse(result.isValid(), "Forged QualifyingProperties must not validate");
+        assertViolation(result, "Multiple xades132:QualifyingProperties");
+    }
+
+    @Test
+    void replacedQualifyingPropertiesIsRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=ReplacedQP");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+        Element realQp = findQualifyingProperties(doc, xpath);
+
+        Element realObject = (Element) realQp.getParentNode();
+        sigEl.replaceChild(forgeQualifyingPropertiesObject(realQp, "forged-sp"), realObject);
+        setIdFlagToIdAttributes(doc.getDocumentElement());
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(new XMLSignature(sigEl, ""), cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "does not point to SignedProperties Id");
+    }
+
+    @ParameterizedTest(name = "secureValidation={0}")
+    @CsvSource({"true", "false"})
+    void duplicateSignedPropertiesIdIsRejected(boolean secureValidation) throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=DuplicateId");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+        Element realQp = findQualifyingProperties(doc, xpath);
+        Element realSp = (Element) xpath.evaluate("xades132:SignedProperties", realQp, XPathConstants.NODE);
+
+        // Wrapping: move the signed block out of the signature, put a forged one with the same Id in
+        Element realObject = (Element) realQp.getParentNode();
+        Element forgedObject = forgeQualifyingPropertiesObject(realQp, realSp.getAttribute("Id"));
+        doc.getDocumentElement().appendChild(realObject);
+        sigEl.appendChild(forgedObject);
+        setIdFlagToIdAttributes(doc.getDocumentElement());
+
+        XMLSignature sig = new XMLSignature(sigEl, "", secureValidation);
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertTrue(result.isXAdESPresent());
+        assertFalse(result.isValid(), "Duplicate-Id wrapping must not validate; violations: "
+                + result.getViolations());
+    }
+
+    @Test
+    void signedPropertiesReferenceToOtherElementIsRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=OtherUri");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        String sigValueId = (String) xpath.evaluate("//ds:SignatureValue/@Id", doc, XPathConstants.STRING);
+        assertFalse(sigValueId.isEmpty());
+        findSignedPropertiesReference(doc, xpath).setAttributeNS(null, "URI", "#" + sigValueId);
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(new XMLSignature(sigEl, ""), cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "does not point to SignedProperties Id");
+    }
+
+    @Test
+    void violationMessagesAreSanitized() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=LogInjection");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        String longTail = "A".repeat(1000);
+        findSignedPropertiesReference(doc, xpath)
+                .setAttributeNS(null, "URI", "#x\r\nFORGED LOG LINE" + longTail);
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(new XMLSignature(sigEl, ""), cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "does not point to SignedProperties Id");
+        for (String violation : result.getViolations()) {
+            assertTrue(violation.chars().noneMatch(c -> c < 0x20 || c >= 0x7F && c <= 0x9F),
+                    "Control character in violation: " + violation);
+            assertFalse(violation.contains(longTail), "Attacker-controlled value must be truncated");
+        }
+    }
+
+    @Test
+    void multipleSignedPropertiesReferencesAreRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=MultipleRefs");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        Element spRef = findSignedPropertiesReference(doc, xpath);
+        spRef.getParentNode().appendChild(spRef.cloneNode(true));
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(new XMLSignature(sigEl, ""), cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "Multiple ds:Reference elements");
+    }
+
+    @ParameterizedTest(name = "wrapperNamespace={0}")
+    @CsvSource(value = {"urn:test", "NULL"}, nullValues = "NULL")
+    void nestedQualifyingPropertiesIsRejected(String wrapperNamespace) throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=NestedQP");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+        Element realQp = findQualifyingProperties(doc, xpath);
+
+        // Downgrade attempt: hide the QualifyingProperties from the presence check
+        Element object = (Element) realQp.getParentNode();
+        Element wrapper = doc.createElementNS(wrapperNamespace, wrapperNamespace == null ? "Wrapper" : "t:Wrapper");
+        object.replaceChild(wrapper, realQp);
+        wrapper.appendChild(realQp);
+
+        XMLSignature sig = new XMLSignature(sigEl, "");
+        assertTrue(sig.checkSignatureValue(cert), "Core verification is unaffected by the unsigned wrapper");
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertTrue(result.isXAdESPresent(), "SignedProperties reference in SignedInfo declares XAdES");
+        assertFalse(result.isValid());
+        assertViolation(result, "no xades132:QualifyingProperties found directly under");
+    }
+
+    @Test
+    void qualifyingPropertiesObjectMovedOutsideSignatureIsRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=MovedQP");
+        Document doc = parseDocument(signIdReferencedContent(kp.getPrivate(), cert));
+        setIdFlagToIdAttributes(doc.getDocumentElement());
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+        Element realQp = findQualifyingProperties(doc, xpath);
+
+        // The content reference is Id-based, so the document root is not covered
+        doc.getDocumentElement().appendChild(realQp.getParentNode());
+
+        XMLSignature sig = new XMLSignature(sigEl, "");
+        assertTrue(sig.checkSignatureValue(cert), "Core verification is unaffected by moving the ds:Object");
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertTrue(result.isXAdESPresent());
+        assertFalse(result.isValid());
+        assertViolation(result, "no xades132:QualifyingProperties found directly under");
+    }
+
+    @Test
+    void disallowedTransformOnSignedPropertiesReferenceIsRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=BadTransform");
+        byte[] signed = sign(kp.getPrivate(), cert, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
+                Transforms.TRANSFORM_ENVELOPED_SIGNATURE, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+        Document doc = parseDocument(signed);
+        setIdFlagToIdAttributes(doc.getDocumentElement());
+        Element sigEl = findSignatureElement(doc, newXPath());
+
+        XMLSignature sig = new XMLSignature(sigEl, "");
+        assertTrue(sig.checkSignatureValue(cert));
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "Disallowed transform");
+    }
+
+    @ParameterizedTest(name = "validatorSecureValidation={0}")
+    @CsvSource({"true", "false"})
+    void weakSignedPropertiesDigestIsRejectedUnderSecureValidation(boolean validatorSecureValidation)
+            throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=WeakSpDigest");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        // Re-digest the SignedProperties reference with SHA-1; only the validator is exercised
+        Element digestMethod = (Element) xpath.evaluate("ds:DigestMethod",
+                findSignedPropertiesReference(doc, xpath), XPathConstants.NODE);
+        digestMethod.setAttributeNS(null, Constants._ATT_ALGORITHM, MessageDigestAlgorithm.ALGO_ID_DIGEST_SHA1);
+        XMLSignature weakSig = new XMLSignature(sigEl, "", false);
+        for (int i = 0; i < weakSig.getSignedInfo().getLength(); i++) {
+            if (XAdESConstants.REFERENCE_TYPE_SIGNEDPROPERTIES.equals(weakSig.getSignedInfo().item(i).getType())) {
+                weakSig.getSignedInfo().item(i).generateDigestValue();
+            }
+        }
+
+        XAdESValidationResult result = new XAdESBBValidator(validatorSecureValidation)
+                .validate(new XMLSignature(sigEl, "", false), cert);
+        if (validatorSecureValidation) {
+            assertFalse(result.isValid(), "SHA-1 SignedProperties digest must be rejected");
+            assertViolation(result, "SignedProperties reference uses a weak or disallowed digest algorithm");
+        } else {
+            assertTrue(result.isValid(), "violations: " + result.getViolations());
+        }
+    }
+
+    @ParameterizedTest(name = "validatorSecureValidation={0}")
+    @CsvSource({"true", "false"})
+    void emptySignedPropertiesDigestAlgorithmIsReportedAsViolation(boolean validatorSecureValidation)
+            throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=EmptySpDigest");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        Element digestMethod = (Element) xpath.evaluate("ds:DigestMethod",
+                findSignedPropertiesReference(doc, xpath), XPathConstants.NODE);
+        digestMethod.setAttributeNS(null, Constants._ATT_ALGORITHM, "");
+
+        XAdESValidationResult result = new XAdESBBValidator(validatorSecureValidation)
+                .validate(new XMLSignature(sigEl, ""), cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "SignedProperties reference has no ds:DigestMethod/@Algorithm");
+    }
+
+    @Test
+    void tamperedSigningTimeIsRejectedWithoutCoreVerification() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=TamperNoCore");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        Element signingTimeEl = (Element) xpath.evaluate("//xades132:SigningTime", doc, XPathConstants.NODE);
+        signingTimeEl.setTextContent("1970-01-01T00:00:00Z");
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(new XMLSignature(sigEl, ""), cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "digest does not verify");
+    }
+
+    @Test
+    void signingCertificateV2IsAccepted() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=SigningCertV2");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        Element signingCert = (Element) xpath.evaluate("//xades132:SigningCertificate", doc, XPathConstants.NODE);
+        Element issuerSerial = (Element) xpath.evaluate("xades132:Cert/xades132:IssuerSerial",
+                signingCert, XPathConstants.NODE);
+        if (issuerSerial != null) {
+            issuerSerial.getParentNode().removeChild(issuerSerial);
+        }
+        doc.renameNode(signingCert, XAdESConstants.XADES_V132_NS,
+                signingCert.getPrefix() + ":" + XAdESConstants.TAG_SIGNING_CERTIFICATE_V2);
+
+        XMLSignature sig = resign(sigEl, kp.getPrivate());
+        assertTrue(sig.checkSignatureValue(cert));
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertTrue(result.isValid(), "violations: " + result.getViolations());
+
+        // The V2 certificate digest is really compared
+        KeyPair otherKp = generateRsaKeyPair();
+        X509Certificate otherCert = generateSelfSignedCert(otherKp, "SHA256withRSA", "CN=Other");
+        assertViolation(new XAdESBBValidator().validate(sig, otherCert), "CertDigest does not match");
+    }
+
+    @Test
+    void bothSigningCertificateVersionsAreRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=BothSigningCerts");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        Element signingCert = (Element) xpath.evaluate("//xades132:SigningCertificate", doc, XPathConstants.NODE);
+        Element v2 = (Element) signingCert.cloneNode(true);
+        Element issuerSerial = (Element) xpath.evaluate("xades132:Cert/xades132:IssuerSerial", v2, XPathConstants.NODE);
+        if (issuerSerial != null) {
+            issuerSerial.getParentNode().removeChild(issuerSerial);
+        }
+        v2 = (Element) doc.renameNode(v2, XAdESConstants.XADES_V132_NS,
+                signingCert.getPrefix() + ":" + XAdESConstants.TAG_SIGNING_CERTIFICATE_V2);
+        signingCert.getParentNode().insertBefore(v2, signingCert.getNextSibling());
+
+        XMLSignature sig = resign(sigEl, kp.getPrivate());
+        assertTrue(sig.checkSignatureValue(cert));
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "Both SigningCertificate and SigningCertificateV2 present");
+    }
+
+    @Test
+    void certDigestWithLineBreaksIsAccepted() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=WrappedDigest");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        Element digestValue = (Element) xpath.evaluate(
+                "//xades132:SigningCertificate/xades132:Cert/xades132:CertDigest/ds:DigestValue",
+                doc, XPathConstants.NODE);
+        String b64 = digestValue.getTextContent().trim();
+        digestValue.setTextContent(b64.substring(0, 20) + "\r\n\t " + b64.substring(20));
+
+        XMLSignature sig = resign(sigEl, kp.getPrivate());
+        assertTrue(sig.checkSignatureValue(cert));
+        XAdESValidationResult result = new XAdESBBValidator().validate(sig, cert);
+        assertTrue(result.isValid(), "violations: " + result.getViolations());
+    }
+
+    @Test
+    void certDigestWithNonBase64CharactersIsRejected() throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=JunkDigest");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        Element digestValue = (Element) xpath.evaluate(
+                "//xades132:SigningCertificate/xades132:Cert/xades132:CertDigest/ds:DigestValue",
+                doc, XPathConstants.NODE);
+        String b64 = digestValue.getTextContent().trim();
+        digestValue.setTextContent(b64.substring(0, 20) + "*" + b64.substring(20));
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(resign(sigEl, kp.getPrivate()), cert);
+        assertFalse(result.isValid());
+        assertViolation(result, "CertDigest/ds:DigestValue is not valid Base64");
+    }
+
+    @ParameterizedTest(name = "quote={0}")
+    @CsvSource(value = {"'", "\""}, quoteCharacter = '`')
+    void xpointerIdReferenceToSignedPropertiesIsAccepted(String quote) throws Exception {
+        KeyPair kp = generateRsaKeyPair();
+        X509Certificate cert = generateSelfSignedCert(kp, "SHA256withRSA", "CN=XPointerUri");
+        Document doc = signAndParse(kp, cert);
+        XPath xpath = newXPath();
+        Element sigEl = findSignatureElement(doc, xpath);
+
+        // Only the validator is exercised: SignatureValue no longer matches the edited SignedInfo
+        Element spRef = findSignedPropertiesReference(doc, xpath);
+        String id = spRef.getAttribute("URI").substring(1);
+        spRef.setAttributeNS(null, "URI", "#xpointer(id(" + quote + id + quote + "))");
+
+        XAdESValidationResult result = new XAdESBBValidator().validate(new XMLSignature(sigEl, ""), cert);
+        assertTrue(result.isValid(), "violations: " + result.getViolations());
+    }
+
+    private Document signAndParse(KeyPair kp, X509Certificate cert) throws Exception {
+        byte[] signed = sign(kp.getPrivate(), cert, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256);
+        Document doc = parseDocument(signed);
+        setIdFlagToIdAttributes(doc.getDocumentElement());
+        return doc;
+    }
+
+    /** Re-signs an edited, parsed signature in place and returns a freshly parsed instance. */
+    private XMLSignature resign(Element sigEl, PrivateKey privateKey) throws Exception {
+        XMLSignature sig = new XMLSignature(sigEl, "");
+        // Parsed references are created lazily; sign() expects them to exist
+        for (int i = 0; i < sig.getSignedInfo().getLength(); i++) {
+            sig.getSignedInfo().item(i);
+        }
+        sig.sign(privateKey);
+        return new XMLSignature(sigEl, "");
+    }
+
+    private Element findQualifyingProperties(Document doc, XPath xpath) throws Exception {
+        Element qp = (Element) xpath.evaluate("//xades132:QualifyingProperties", doc, XPathConstants.NODE);
+        assertNotNull(qp, "QualifyingProperties must be present");
+        return qp;
+    }
+
+    private Element findSignedPropertiesReference(Document doc, XPath xpath) throws Exception {
+        Element ref = (Element) xpath.evaluate(
+                "//ds:Reference[@Type='" + XAdESConstants.REFERENCE_TYPE_SIGNEDPROPERTIES + "']",
+                doc, XPathConstants.NODE);
+        assertNotNull(ref, "SignedProperties reference must be present");
+        return ref;
+    }
+
+    /**
+     * Builds a {@code ds:Object} holding a copy of {@code realQp} with the given
+     * SignedProperties Id and an attacker-chosen SigningTime. Target and CertDigest are
+     * kept, as an attacker can compute them from public data.
+     */
+    private Element forgeQualifyingPropertiesObject(Element realQp, String signedPropertiesId) throws Exception {
+        Document doc = realQp.getOwnerDocument();
+        XPath xpath = newXPath();
+        Element forgedQp = (Element) realQp.cloneNode(true);
+        Element forgedSp = (Element) xpath.evaluate("xades132:SignedProperties", forgedQp, XPathConstants.NODE);
+        forgedSp.setAttributeNS(null, "Id", signedPropertiesId);
+        Element signingTime = (Element) xpath.evaluate(".//xades132:SigningTime", forgedSp, XPathConstants.NODE);
+        signingTime.setTextContent("2001-01-01T00:00:00Z");
+
+        Element object = XMLUtils.createElementInSignatureSpace(doc, Constants._TAG_OBJECT);
+        object.appendChild(forgedQp);
+        return object;
+    }
+
+    private static void assertViolation(XAdESValidationResult result, String expectedFragment) {
+        assertTrue(result.getViolations().stream().anyMatch(v -> v.contains(expectedFragment)),
+                "Expected violation containing '" + expectedFragment + "'; actual: " + result.getViolations());
+    }
+
+    // -----------------------------------------------------------------
     // Helpers — signing
     // -----------------------------------------------------------------
 
     private byte[] sign(PrivateKey privateKey, X509Certificate cert,
                         String xmlSigAlgorithmURI) throws Exception {
+        return sign(privateKey, cert, xmlSigAlgorithmURI, Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+    }
+
+    private byte[] sign(PrivateKey privateKey, X509Certificate cert,
+                        String xmlSigAlgorithmURI,
+                        String... signedPropertiesTransforms) throws Exception {
         Document doc = TestUtils.newDocument();
         Element root = doc.createElementNS("", "RootElement");
         doc.appendChild(root);
@@ -297,11 +740,41 @@ class XAdESSignatureTest {
         sig.addDocument("", transforms, XMLCipher.SHA256);
         sig.addKeyInfo(cert);
 
-        XAdESSignatureProcessor xades = XAdESSignatureProcessor.builder(cert)
-                .addReferenceTransformAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS)
-                .build();
-        sig.addPreProcessor(xades);
+        XAdESSignatureProcessor.Builder xadesBuilder = XAdESSignatureProcessor.builder(cert);
+        for (String algorithm : signedPropertiesTransforms) {
+            xadesBuilder.addReferenceTransformAlgorithm(algorithm);
+        }
+        sig.addPreProcessor(xadesBuilder.build());
 
+        sig.sign(privateKey);
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        XMLUtils.outputDOM(doc.getDocumentElement(), bos);
+        return bos.toByteArray();
+    }
+
+    /** Signs a {@code Content} element by Id reference, leaving the rest of the document uncovered. */
+    private byte[] signIdReferencedContent(PrivateKey privateKey, X509Certificate cert) throws Exception {
+        Document doc = TestUtils.newDocument();
+        Element root = doc.createElementNS("", "RootElement");
+        doc.appendChild(root);
+        Element content = doc.createElementNS("", "Content");
+        content.setAttributeNS(null, "Id", "content");
+        content.setIdAttributeNS(null, "Id", true);
+        content.appendChild(doc.createTextNode("Content to sign"));
+        root.appendChild(content);
+
+        XMLSignature sig = new XMLSignature(doc, null, XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA256,
+                Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
+        root.appendChild(sig.getElement());
+
+        Transforms transforms = new Transforms(doc);
+        transforms.addTransform(Transforms.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
+        sig.addDocument("#content", transforms, XMLCipher.SHA256);
+        sig.addKeyInfo(cert);
+        sig.addPreProcessor(XAdESSignatureProcessor.builder(cert)
+                .addReferenceTransformAlgorithm(Canonicalizer.ALGO_ID_C14N_EXCL_OMIT_COMMENTS)
+                .build());
         sig.sign(privateKey);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -343,7 +816,7 @@ class XAdESSignatureTest {
 
         // Validate XAdES-B-B properties if present
         XAdESValidationResult xadesResult = new XAdESBBValidator().validate(signature, cert);
-        if (xadesResult.isXAdESPresent() && !xadesResult.isValid()) {
+        if (!xadesResult.isValid()) {
             throw new AssertionError("XAdES-B-B validation failed: " + xadesResult.getViolations());
         }
 

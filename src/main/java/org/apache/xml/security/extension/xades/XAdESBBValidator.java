@@ -23,10 +23,12 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.signature.XMLSignatureInput;
+import org.apache.xml.security.transforms.Transforms;
 import org.apache.xml.security.utils.ClassLoaderUtils;
 import org.apache.xml.security.utils.Constants;
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.SAXException;
@@ -53,30 +55,54 @@ import java.util.List;
  *
  * <h3>Validation performed</h3>
  * <ol>
- *   <li><b>Presence check</b> — determines whether {@code xades132:QualifyingProperties}
- *       is present in the signature's {@code ds:Object} elements.  If not present the
- *       result is reported as {@link XAdESValidationResult#isXAdESPresent()} == {@code false}
- *       and no further checks are run.</li>
+ *   <li><b>Presence check</b> — XAdES is present if {@code ds:SignedInfo} contains a
+ *       {@code ds:Reference} with {@code @Type} {@link XAdESConstants#REFERENCE_TYPE_SIGNEDPROPERTIES}
+ *       or if {@code xades132:QualifyingProperties} is a direct child of a {@code ds:Object} that is
+ *       itself a direct child of the {@code ds:Signature}.  If neither holds the result is reported
+ *       as {@link XAdESValidationResult#isXAdESPresent()} == {@code false}.  A SignedProperties
+ *       reference without {@code QualifyingProperties} at that location, or more than one
+ *       {@code QualifyingProperties}, is a violation.</li>
+ *   <li><b>SignedProperties binding</b> — the {@code QualifyingProperties} must have exactly one
+ *       direct child {@code xades132:SignedProperties} with an {@code Id}, and {@code ds:SignedInfo}
+ *       must contain exactly one {@code ds:Reference} whose {@code @Type} equals
+ *       {@link XAdESConstants#REFERENCE_TYPE_SIGNEDPROPERTIES}. That reference's {@code @URI}
+ *       must name the {@code Id}, dereference to that very element, use only canonicalization
+ *       transforms ({@link XAdESConstants#ALLOWED_SIGNED_PROPERTIES_TRANSFORMS}), and its digest
+ *       must verify. If the binding fails, the remaining checks are skipped: properties that
+ *       are not covered by the signature are never reported as validated.</li>
  *   <li><b>XSD structural validation</b> — validates the {@code QualifyingProperties} subtree
  *       against the bundled XAdES v1.3.2 schema ({@code XAdES01903v132-201601.xsd}).</li>
  *   <li><b>Target attribute</b> — {@code QualifyingProperties/@Target} must equal
  *       {@code "#"} + the signature element {@code Id}.</li>
- *   <li><b>SignedProperties reference</b> — the signature must contain a
- *       {@code ds:Reference} whose {@code @Type} equals
- *       {@link XAdESConstants#REFERENCE_TYPE_SIGNEDPROPERTIES}.</li>
- *   <li><b>Signing certificate digest</b> — the {@code CertDigest} value inside
- *       {@code SigningCertificate/Cert} must match the SHA-256 (or configured algorithm)
- *       digest of the provided signing certificate.</li>
+ *   <li><b>Signing certificate digest</b> — the {@code CertDigest} value at
+ *       {@code SignedProperties/SignedSignatureProperties/SigningCertificateV2/Cert[1]} (or
+ *       {@code SigningCertificate/Cert[1]}) must match the SHA-256 (or configured algorithm) digest
+ *       of the provided signing certificate. Having both elements is a violation.</li>
  * </ol>
+ *
+ * <p>The validator re-verifies the digest of the {@code SignedProperties} reference only.
+ * The caller must still perform core {@link XMLSignature} verification
+ * ({@code SignatureValue} and all other references) and decide whether the signing certificate
+ * is trusted.
+ *
+ * <h3>What is and isn't covered</h3>
+ * <p>Only {@code xades132:SignedProperties} is bound to the signature.
+ * {@code QualifyingProperties/@Target}, {@code UnsignedProperties} and anything else outside
+ * {@code SignedProperties} are only checked for structure. A valid result does not make them
+ * trustworthy: callers must verify such content (for example timestamp tokens) independently.
  *
  * <h3>Usage</h3>
  * <pre>{@code
  * XAdESBBValidator validator = new XAdESBBValidator();
  * XAdESValidationResult result = validator.validate(signature, signingCertificate);
- * if (result.isXAdESPresent() && !result.isValid()) {
+ * if (!result.isValid()) {
+ *     // reject: either XAdES is absent or a check failed
  *     result.getViolations().forEach(System.out::println);
  * }
  * }</pre>
+ *
+ * <p>{@link XAdESValidationResult#isXAdESPresent()} is informational. Callers that require XAdES
+ * must check {@link XAdESValidationResult#isValid()}.
  *
  * <p>The schema is loaded once at class-load time and reused across instances.
  *
@@ -124,12 +150,21 @@ public final class XAdESBBValidator {
     }
 
 
+    /** Maximum length of an attacker-influenced value embedded in a violation message. */
+    private static final int MAX_MESSAGE_VALUE_LENGTH = 256;
+
     private final boolean secureValidation;
 
     public XAdESBBValidator() {
         this(true);
     }
 
+    /**
+     * @param secureValidation if {@code true}, the digest algorithms of the SignedProperties
+     *                         {@code ds:Reference} and of {@code CertDigest} must be in
+     *                         {@link XAdESConstants#APPROVED_CERT_DIGEST_ALGORITHM_URIS}. For untrusted
+     *                         input the {@link XMLSignature} must also be created with secure validation on.
+     */
     public XAdESBBValidator(boolean secureValidation) {
         this.secureValidation = secureValidation;
     }
@@ -137,49 +172,109 @@ public final class XAdESBBValidator {
     /**
      * Validates XAdES-B-B properties in {@code signature}.
      *
-     * @param signature          the cryptographically verified {@link XMLSignature}
-     *                           (core verification must have already succeeded)
+     * @param signature          the {@link XMLSignature} to check. The validator does not verify
+     *                           {@code SignatureValue}: {@link XAdESValidationResult#isValid()} never
+     *                           implies core validity, callers must call
+     *                           {@link XMLSignature#checkSignatureValue} separately
      * @param signingCertificate the certificate used to create the signature;
-     *                           used to check the {@code CertDigest} value
+     *                           used to check the {@code CertDigest} value; must not be
+     *                           {@code null}, a {@code null} value makes the result invalid
      * @return validation result; never {@code null}
      */
     public XAdESValidationResult validate(XMLSignature signature,
                                           X509Certificate signingCertificate) {
         List<String> violations = new ArrayList<>();
 
-        Element qualifyingProps = findQualifyingProperties(signature);
-        if (qualifyingProps == null) {
-            return XAdESValidationResult.notPresent();
+        // Presence is decided from SignedInfo too: it is covered by SignatureValue, so an attacker
+        // cannot hide XAdES by moving the unsigned ds:Object
+        List<Reference> spRefs;
+        try {
+            spRefs = findSignedPropertiesReferences(signature.getSignedInfo());
+        } catch (XMLSecurityException e) {
+            violations.add("Cannot read ds:SignedInfo references: " + sanitize(e.getMessage()));
+            return new XAdESValidationResult(true, violations);
+        }
+
+        List<Element> qualifyingPropsList = findQualifyingProperties(signature);
+        if (qualifyingPropsList.isEmpty()) {
+            if (spRefs.isEmpty()) {
+                return XAdESValidationResult.notPresent();
+            }
+            violations.add("SignedProperties reference present but no xades132:QualifyingProperties "
+                    + "found directly under ds:Signature/ds:Object");
+            return new XAdESValidationResult(true, violations);
+        }
+        if (qualifyingPropsList.size() > 1) {
+            violations.add("Multiple xades132:QualifyingProperties elements found in ds:Signature ("
+                    + qualifyingPropsList.size() + "); exactly one is allowed");
+            return new XAdESValidationResult(true, violations);
+        }
+        Element qualifyingProps = qualifyingPropsList.get(0);
+
+        Element signedProps = findSignedProperties(qualifyingProps, violations);
+        if (signedProps == null
+                || !validateSignedPropertiesBinding(spRefs, signedProps, violations)) {
+            // Unbound properties are attacker-controlled: do not validate their content
+            return new XAdESValidationResult(true, violations);
         }
 
         validateSchema(qualifyingProps, violations);
         validateTarget(qualifyingProps, signature, violations);
-        validateSignedPropertiesReference(signature, violations);
-        if (signingCertificate != null) {
-            validateCertDigest(qualifyingProps, signingCertificate, violations);
+        if (signingCertificate == null) {
+            violations.add("No signing certificate provided — SigningCertificate binding cannot be verified");
+        } else {
+            validateCertDigest(signedProps, signingCertificate, violations);
         }
 
         return new XAdESValidationResult(true, violations);
     }
 
-    // -------------------------------------------------------------------------
-    // XAdES element discovery
-    // -------------------------------------------------------------------------
+    /**
+     * Returns all {@code xades132:QualifyingProperties} that are direct children of a
+     * {@code ds:Object} that is a direct child of the signature element. Elements nested
+     * deeper (e.g. inside a counter-signature or a {@code ds:Manifest}) belong to other
+     * structures and are ignored.
+     */
+    private List<Element> findQualifyingProperties(XMLSignature signature) {
+        List<Element> result = new ArrayList<>();
+        for (Element object : XMLUtils.selectDsNodes(signature.getElement().getFirstChild(),
+                Constants._TAG_OBJECT)) {
+            result.addAll(Arrays.asList(XMLUtils.selectNodes(object.getFirstChild(),
+                    XAdESConstants.XADES_V132_NS, XAdESConstants.TAG_QUALIFYING_PROPERTIES)));
+        }
+        return result;
+    }
 
-    private Element findQualifyingProperties(XMLSignature signature) {
-        Element sigElement = signature.getElement();
-        NodeList objects = sigElement.getElementsByTagNameNS(
-                Constants.SignatureSpecNS, "Object");
-        for (int i = 0; i < objects.getLength(); i++) {
-            Element object = (Element) objects.item(i);
-            NodeList qpList = object.getElementsByTagNameNS(
-                    XAdESConstants.XADES_V132_NS,
-                    XAdESConstants.TAG_QUALIFYING_PROPERTIES);
-            if (qpList.getLength() > 0) {
-                return (Element) qpList.item(0);
+    private static List<Reference> findSignedPropertiesReferences(SignedInfo signedInfo)
+            throws XMLSecurityException {
+        List<Reference> result = new ArrayList<>();
+        for (int i = 0; i < signedInfo.getLength(); i++) {
+            Reference ref = signedInfo.item(i);
+            if (XAdESConstants.REFERENCE_TYPE_SIGNEDPROPERTIES.equals(ref.getType())) {
+                result.add(ref);
             }
         }
-        return null;
+        return result;
+    }
+
+    private Element findSignedProperties(Element qualifyingProps, List<String> violations) {
+        Element[] signedPropsList = XMLUtils.selectNodes(qualifyingProps.getFirstChild(),
+                XAdESConstants.XADES_V132_NS, XAdESConstants.TAG_SIGNED_PROPERTIES);
+        if (signedPropsList.length == 0) {
+            violations.add("No xades132:SignedProperties element found in QualifyingProperties");
+            return null;
+        }
+        if (signedPropsList.length > 1) {
+            violations.add("Multiple xades132:SignedProperties elements found in QualifyingProperties");
+            return null;
+        }
+        Element signedProps = signedPropsList[0];
+        String id = signedProps.getAttributeNS(null, "Id");
+        if (id.isBlank()) {
+            violations.add("xades132:SignedProperties has no Id attribute and cannot be referenced");
+            return null;
+        }
+        return signedProps;
     }
 
     // -------------------------------------------------------------------------
@@ -200,7 +295,7 @@ public final class XAdESBBValidator {
             validator.validate(new DOMSource(qualifyingProps));
             violations.addAll(schemaViolations);
         } catch (SAXException | IOException e) {
-            violations.add("XSD validation error: " + e.getMessage());
+            violations.add("XSD validation error: " + sanitize(e.getMessage()));
         }
     }
 
@@ -220,41 +315,107 @@ public final class XAdESBBValidator {
         }
         String expected = "#" + signatureId;
         if (!expected.equals(target)) {
-            violations.add("QualifyingProperties/@Target '" + target +
+            violations.add("QualifyingProperties/@Target '" + sanitize(target) +
                     "' does not match expected '" + expected + "'");
         }
     }
 
-    private void validateSignedPropertiesReference(XMLSignature signature,
-                                                   List<String> violations) {
+    /**
+     * Verifies that {@code signedProps} is the element covered by the signature: exactly one
+     * {@code SignedProperties}-typed reference exists, it points at and dereferences to this
+     * element, it only uses canonicalization transforms and its digest verifies.
+     *
+     * @return {@code true} if the binding holds; otherwise a violation has been added
+     */
+    private boolean validateSignedPropertiesBinding(List<Reference> spRefs,
+                                                    Element signedProps,
+                                                    List<String> violations) {
         try {
-            SignedInfo si = signature.getSignedInfo();
-            for (int i = 0; i < si.getLength(); i++) {
-                Reference ref = si.item(i);
-                if (XAdESConstants.REFERENCE_TYPE_SIGNEDPROPERTIES.equals(ref.getType())) {
-                    return; // found
+            if (spRefs.size() > 1) {
+                violations.add("Multiple ds:Reference elements with @Type='" +
+                        XAdESConstants.REFERENCE_TYPE_SIGNEDPROPERTIES + "' found");
+                return false;
+            }
+            if (spRefs.isEmpty()) {
+                violations.add("No ds:Reference with @Type='" +
+                        XAdESConstants.REFERENCE_TYPE_SIGNEDPROPERTIES +
+                        "' found — SignedProperties is not covered by the signature");
+                return false;
+            }
+            Reference spRef = spRefs.get(0);
+
+            String id = signedProps.getAttributeNS(null, "Id");
+            String uri = spRef.getURI();
+            if (!("#" + id).equals(uri) && !("#xpointer(id('" + id + "'))").equals(uri)
+                    && !("#xpointer(id(\"" + id + "\"))").equals(uri)) {
+                violations.add("SignedProperties reference URI '" + sanitize(uri) +
+                        "' does not point to SignedProperties Id '" + sanitize(id) + "'");
+                return false;
+            }
+
+            // The dereferenced node must be exactly the validated element; this also defeats
+            // duplicate-Id wrapping when secure validation is disabled in the resolver
+            XMLSignatureInput input = spRef.getContentsBeforeTransformation();
+            if (input == null || input.getSubNode() != signedProps) {
+                violations.add("SignedProperties reference '" + sanitize(uri) +
+                        "' does not resolve to the validated xades132:SignedProperties element");
+                return false;
+            }
+
+            Transforms transforms = spRef.getTransforms();
+            if (transforms != null) {
+                for (int i = 0; i < transforms.getLength(); i++) {
+                    String algorithm = transforms.item(i).getURI();
+                    if (!XAdESConstants.ALLOWED_SIGNED_PROPERTIES_TRANSFORMS.contains(algorithm)) {
+                        violations.add("Disallowed transform on SignedProperties reference: " + sanitize(algorithm));
+                        return false;
+                    }
                 }
             }
+
+            MessageDigestAlgorithm mda = spRef.getMessageDigestAlgorithm();
+            if (mda == null) {
+                violations.add("SignedProperties reference has no ds:DigestMethod/@Algorithm");
+                return false;
+            }
+            String digestUri = mda.getAlgorithmURI();
+            if (secureValidation && !XAdESConstants.APPROVED_CERT_DIGEST_ALGORITHM_URIS.contains(digestUri)) {
+                violations.add("SignedProperties reference uses a weak or disallowed digest algorithm: "
+                        + sanitize(digestUri));
+                return false;
+            }
+
+            if (!spRef.verify()) {
+                violations.add("SignedProperties reference digest does not verify — " +
+                        "SignedProperties has been modified");
+                return false;
+            }
+            return true;
         } catch (XMLSecurityException e) {
-            violations.add("Cannot read ds:SignedInfo references: " + e.getMessage());
-            return;
+            violations.add("Cannot verify SignedProperties reference: " + sanitize(e.getMessage()));
+            return false;
         }
-        violations.add("No ds:Reference with @Type='" +
-                XAdESConstants.REFERENCE_TYPE_SIGNEDPROPERTIES +
-                "' found — SignedProperties is not covered by the signature");
     }
 
-    private void validateCertDigest(Element qualifyingProps,
+    private void validateCertDigest(Element signedProps,
                                     X509Certificate signingCertificate,
                                     List<String> violations) {
-        // Find the first CertDigest inside SigningCertificate/Cert
-        NodeList certDigestNodes = qualifyingProps.getElementsByTagNameNS(
-                XAdESConstants.XADES_V132_NS, "CertDigest");
-        if (certDigestNodes.getLength() == 0) {
-            violations.add("No xades132:CertDigest element found in QualifyingProperties");
+        // SignedProperties/SignedSignatureProperties/SigningCertificate[V2]/Cert[1]/CertDigest
+        Element ssp = firstChildElement(signedProps, XAdESConstants.TAG_SIGNED_SIGNATURE_PROPERTIES);
+        Element signingCert = firstChildElement(ssp, XAdESConstants.TAG_SIGNING_CERTIFICATE);
+        Element signingCertV2 = firstChildElement(ssp, XAdESConstants.TAG_SIGNING_CERTIFICATE_V2);
+        if (signingCert != null && signingCertV2 != null) {
+            violations.add("Both SigningCertificate and SigningCertificateV2 present; exactly one is allowed");
             return;
         }
-        Element certDigest = (Element) certDigestNodes.item(0);
+        Element certDigest = firstChildElement(signingCertV2 != null ? signingCertV2 : signingCert,
+                XAdESConstants.TAG_CERT);
+        certDigest = firstChildElement(certDigest, XAdESConstants.TAG_CERT_DIGEST);
+        if (certDigest == null) {
+            violations.add("No xades132:CertDigest element found in " +
+                    "SignedProperties/SignedSignatureProperties/SigningCertificate[V2]/Cert");
+            return;
+        }
 
         String algorithmURI = getChildTextContent(certDigest,
                 Constants.SignatureSpecNS, "DigestMethod", "Algorithm");
@@ -271,15 +432,16 @@ public final class XAdESBBValidator {
         }
 
         if (secureValidation && !XAdESConstants.APPROVED_CERT_DIGEST_ALGORITHM_URIS.contains(algorithmURI)) {
-            violations.add("CertDigest uses a weak or disallowed digest algorithm: " + algorithmURI);
+            violations.add("CertDigest uses a weak or disallowed digest algorithm: " + sanitize(algorithmURI));
             return;
         }
 
         byte[] reportedDigest;
         try {
-            reportedDigest = Base64.getDecoder().decode(digestValueB64.trim());
+            // xs:base64Binary allows XML whitespace; any other non-alphabet character is rejected
+            reportedDigest = Base64.getDecoder().decode(digestValueB64.replaceAll("[ \\t\\r\\n]", ""));
         } catch (IllegalArgumentException e) {
-            violations.add("CertDigest/ds:DigestValue is not valid Base64: " + e.getMessage());
+            violations.add("CertDigest/ds:DigestValue is not valid Base64: " + sanitize(e.getMessage()));
             return;
         }
 
@@ -288,31 +450,57 @@ public final class XAdESBBValidator {
             byte[] certDer = signingCertificate.getEncoded();
             actualDigest = MessageDigestAlgorithm.getDigestInstance(algorithmURI).digest(certDer);
         } catch (CertificateEncodingException | XMLSecurityException e) {
-            violations.add("Cannot compute signing certificate digest: " + e.getMessage());
+            violations.add("Cannot compute signing certificate digest: " + sanitize(e.getMessage()));
             return;
         }
 
         if (!Arrays.equals(actualDigest, reportedDigest)) {
             violations.add("CertDigest does not match the digest of the signing certificate " +
-                    "(algorithm=" + algorithmURI + ")");
+                    "(algorithm=" + sanitize(algorithmURI) + ")");
         }
+    }
+
+    /**
+     * Makes an attacker-influenced value safe to embed in a violation message: control
+     * characters (including CR/LF) are replaced with {@code '?'} and the value is truncated.
+     */
+    private static String sanitize(String value) {
+        if (value == null) {
+            return "null";
+        }
+        boolean truncated = value.length() > MAX_MESSAGE_VALUE_LENGTH;
+        StringBuilder sb = new StringBuilder(truncated ? value.substring(0, MAX_MESSAGE_VALUE_LENGTH) : value);
+        for (int i = 0; i < sb.length(); i++) {
+            char c = sb.charAt(i);
+            if (Character.isISOControl(c) || c == ' ' || c == ' ') {
+                sb.setCharAt(i, '?');
+            }
+        }
+        return truncated ? sb.append("...").toString() : sb.toString();
     }
 
     // -------------------------------------------------------------------------
     // DOM helpers
     // -------------------------------------------------------------------------
 
+    /** Returns the first direct XAdES v1.3.2 child element, or {@code null} if absent or parent is {@code null}. */
+    private static Element firstChildElement(Element parent, String localName) {
+        if (parent == null) {
+            return null;
+        }
+        return XMLUtils.selectNode(parent.getFirstChild(), XAdESConstants.XADES_V132_NS, localName, 0);
+    }
+
     /**
-     * Returns the text content of a child element, or the value of {@code attributeName}
+     * Returns the text content of a direct child element, or the value of {@code attributeName}
      * on that child if {@code attributeName} is non-null.
      */
     private String getChildTextContent(Element parent, String ns, String localName,
                                        String attributeName) {
-        NodeList children = parent.getElementsByTagNameNS(ns, localName);
-        if (children.getLength() == 0) {
+        Element child = XMLUtils.selectNode(parent.getFirstChild(), ns, localName, 0);
+        if (child == null) {
             return null;
         }
-        Element child = (Element) children.item(0);
         if (attributeName != null) {
             return child.getAttribute(attributeName);
         }
@@ -332,17 +520,17 @@ public final class XAdESBBValidator {
 
         @Override
         public void warning(org.xml.sax.SAXParseException e) {
-            violations.add("XSD warning: " + e.getMessage());
+            violations.add("XSD warning: " + sanitize(e.getMessage()));
         }
 
         @Override
         public void error(org.xml.sax.SAXParseException e) {
-            violations.add("XSD error: " + e.getMessage());
+            violations.add("XSD error: " + sanitize(e.getMessage()));
         }
 
         @Override
         public void fatalError(org.xml.sax.SAXParseException e) throws org.xml.sax.SAXException {
-            violations.add("XSD fatal error: " + e.getMessage());
+            violations.add("XSD fatal error: " + sanitize(e.getMessage()));
             throw e;
         }
     }
