@@ -281,44 +281,11 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
         if (algorithm == null) {
             throw new NullPointerException();
         }
-        if (algorithm.equals(SignatureMethod.RSA_SHA1)) {
-            return new DOMSignatureMethod.SHA1withRSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA224)) {
-            return new DOMSignatureMethod.SHA224withRSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA256)) {
-            return new DOMSignatureMethod.SHA256withRSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA384)) {
-            return new DOMSignatureMethod.SHA384withRSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA512)) {
-            return new DOMSignatureMethod.SHA512withRSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_RIPEMD160)) {
-            return new DOMSignatureMethod.RIPEMD160withRSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA1_MGF1)) {
-            return new DOMSignatureMethod.SHA1withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA224_MGF1)) {
-            return new DOMSignatureMethod.SHA224withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA256_MGF1)) {
-            return new DOMSignatureMethod.SHA256withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA384_MGF1)) {
-            return new DOMSignatureMethod.SHA384withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA512_MGF1)) {
-            return new DOMSignatureMethod.SHA512withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA3_224_MGF1)) {
-            return new DOMSignatureMethod.SHA3_224withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA3_256_MGF1)) {
-            return new DOMSignatureMethod.SHA3_256withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA3_384_MGF1)) {
-            return new DOMSignatureMethod.SHA3_384withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_SHA3_512_MGF1)) {
-            return new DOMSignatureMethod.SHA3_512withRSAandMGF1(params);
-        } else if (algorithm.equals(DOMRSAPSSSignatureMethod.RSA_PSS)) {
+        // A few algorithms take caller-supplied parameters that don't fit the
+        // shared (URI -> JCA algorithm name) registry below, so they are
+        // constructed directly here rather than looked up.
+        if (algorithm.equals(DOMRSAPSSSignatureMethod.RSA_PSS)) {
             return new DOMRSAPSSSignatureMethod.RSAPSS(params);
-        } else if (algorithm.equals(DOMSignatureMethod.RSA_RIPEMD160_MGF1)) {
-            return new DOMSignatureMethod.RIPEMD160withRSAandMGF1(params);
-        } else if (algorithm.equals(SignatureMethod.DSA_SHA1)) {
-            return new DOMSignatureMethod.SHA1withDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.DSA_SHA256)) {
-            return new DOMSignatureMethod.SHA256withDSA(params);
         } else if (algorithm.equals(SignatureMethod.HMAC_SHA1)) {
             return new DOMHMACSignatureMethod.SHA1(params);
         } else if (algorithm.equals(DOMHMACSignatureMethod.HMAC_SHA224)) {
@@ -331,39 +298,12 @@ public final class DOMXMLSignatureFactory extends XMLSignatureFactory {
             return new DOMHMACSignatureMethod.SHA512(params);
         } else if (algorithm.equals(DOMHMACSignatureMethod.HMAC_RIPEMD160)) {
             return new DOMHMACSignatureMethod.RIPEMD160(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA1)) {
-            return new DOMSignatureMethod.SHA1withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA224)) {
-            return new DOMSignatureMethod.SHA224withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA256)) {
-            return new DOMSignatureMethod.SHA256withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA384)) {
-            return new DOMSignatureMethod.SHA384withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA512)) {
-            return new DOMSignatureMethod.SHA512withECDSA(params);
-        }  else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA3_224)) {
-            return new DOMSignatureMethod.SHA3_224withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA3_256)) {
-            return new DOMSignatureMethod.SHA3_256withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA3_384)) {
-            return new DOMSignatureMethod.SHA3_384withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_SHA3_512)) {
-            return new DOMSignatureMethod.SHA3_512withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ECDSA_RIPEMD160)) {
-            return new DOMSignatureMethod.RIPEMD160withECDSA(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ED25519)) {
-            return new DOMSignatureMethod.EDDSA_ED25519(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ED448)) {
-            return new DOMSignatureMethod.EDDSA_ED448(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ML_DSA_44)) {
-            return new DOMSignatureMethod.MLDSA_44(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ML_DSA_65)) {
-            return new DOMSignatureMethod.MLDSA_65(params);
-        } else if (algorithm.equals(DOMSignatureMethod.ML_DSA_87)) {
-            return new DOMSignatureMethod.MLDSA_87(params);
-        } else {
+        }
+        DOMSignatureMethod.AlgEntry entry = DOMSignatureMethod.lookup(algorithm);
+        if (entry == null) {
             throw new NoSuchAlgorithmException("unsupported algorithm");
         }
+        return entry.paramsConstructor.newInstance(params);
     }
 
     @Override
