@@ -234,6 +234,18 @@ public class JCEMapper {
             new Algorithm("Ed448", "Ed448", "Signature")
         );
         algorithmsMap.put(
+            XMLSignature.ALGO_ID_SIGNATURE_MLDSA_44,
+            new Algorithm("ML-DSA-44", "ML-DSA-44", "Signature")
+        );
+        algorithmsMap.put(
+            XMLSignature.ALGO_ID_SIGNATURE_MLDSA_65,
+            new Algorithm("ML-DSA-65", "ML-DSA-65", "Signature")
+        );
+        algorithmsMap.put(
+            XMLSignature.ALGO_ID_SIGNATURE_MLDSA_87,
+            new Algorithm("ML-DSA-87", "ML-DSA-87", "Signature")
+        );
+        algorithmsMap.put(
             XMLSignature.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5,
             new Algorithm("", "HmacMD5", "Mac", 0, 0)
         );

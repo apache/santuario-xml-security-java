@@ -60,11 +60,13 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 
+import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * DOM-based implementation of XMLSignature.
@@ -278,6 +280,8 @@ public final class DOMXMLSignature extends DOMStructure
             return validationStatus;
         }
 
+        checkForUnsupportedSignatureContext(localSigElem);
+
         // validate the signature
         boolean sigValidity = sv.validate(vc);
         if (!sigValidity) {
@@ -339,6 +343,30 @@ public final class DOMXMLSignature extends DOMStructure
         return validationStatus;
     }
 
+    /**
+     * Rejects a signature that carries an ML-DSA {@code SignatureContext} element
+     * (draft-eastlake-rfc9231bis-xmlsec-uris-09, section 3.3.15). The
+     * {@code java.security.Signature} API offers no way to pass a signature context
+     * to ML-DSA (see the Non-Goals of JEP 497), so such a signature can be neither
+     * created nor verified correctly here; bail out rather than silently ignoring
+     * the context.
+     */
+    private static void checkForUnsupportedSignatureContext(Element sigElem)
+        throws XMLSignatureException
+    {
+        if (sigElem == null) {
+            return;
+        }
+        NodeList contexts = sigElem.getElementsByTagNameNS(
+            Constants.XML_DSIG_NS_MORE_26_08, Constants._TAG_SIGNATURECONTEXT);
+        if (contexts.getLength() > 0) {
+            throw new XMLSignatureException("The ML-DSA SignatureContext element ("
+                + Constants.XML_DSIG_NS_MORE_26_08 + Constants._TAG_SIGNATURECONTEXT
+                + ") is not supported: the java.security.Signature API cannot pass a "
+                + "signature context to ML-DSA (JEP 497)");
+        }
+    }
+
     @Override
     public void sign(XMLSignContext signContext)
         throws MarshalException, XMLSignatureException
@@ -349,6 +377,8 @@ public final class DOMXMLSignature extends DOMStructure
         DOMSignContext context = (DOMSignContext)signContext;
         marshal(context.getParent(), context.getNextSibling(),
                 DOMUtils.getSignaturePrefix(context), context);
+
+        checkForUnsupportedSignatureContext(sigElem);
 
         // generate references and signature value
         List<Reference> allReferences = new ArrayList<>();

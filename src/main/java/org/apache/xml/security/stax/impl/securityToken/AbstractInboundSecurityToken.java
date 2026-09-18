@@ -19,6 +19,7 @@
 package org.apache.xml.security.stax.impl.securityToken;
 
 import java.security.Key;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.interfaces.DSAKey;
 import java.security.interfaces.ECKey;
@@ -139,6 +140,10 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
                 algorithmSuiteSecurityEvent.setKeyLength(((ECKey) key).getParams().getOrder().bitLength());
             } else if (key instanceof SecretKey) {
                 algorithmSuiteSecurityEvent.setKeyLength(key.getEncoded().length * 8);
+            } else if (key instanceof PrivateKey) {
+                // PQC or other asymmetric key types (e.g. ML-KEM): key length not classically defined
+                byte[] encoded = key.getEncoded();
+                algorithmSuiteSecurityEvent.setKeyLength(encoded != null ? encoded.length * 8 : 0);
             } else {
                 throw new XMLSecurityException("java.security.UnknownKeyType",
                                                new Object[] {key.getClass().getName()});
@@ -174,8 +179,9 @@ public abstract class AbstractInboundSecurityToken extends AbstractSecurityToken
             } else if (publicKey instanceof ECKey) {
                 algorithmSuiteSecurityEvent.setKeyLength(((ECKey) publicKey).getParams().getOrder().bitLength());
             } else {
-                throw new XMLSecurityException("java.security.UnknownKeyType",
-                                               new Object[] {publicKey.getClass().getName()});
+                // PQC or other asymmetric public key types (e.g. ML-DSA, ML-KEM): key length not classically defined
+                byte[] encoded = publicKey.getEncoded();
+                algorithmSuiteSecurityEvent.setKeyLength(encoded != null ? encoded.length * 8 : 0);
             }
             inboundSecurityContext.registerSecurityEvent(algorithmSuiteSecurityEvent);
         }
