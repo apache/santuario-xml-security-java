@@ -28,9 +28,11 @@ import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
 import java.security.spec.MGF1ParameterSpec;
 import java.util.Base64;
 import java.util.Deque;
+import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -45,6 +47,9 @@ import org.apache.xml.security.binding.xmlenc.CipherValueType;
 import org.apache.xml.security.binding.xmlenc.EncryptedKeyType;
 import org.apache.xml.security.binding.xmlenc11.MGFType;
 import org.apache.xml.security.binding.xop.Include;
+import org.apache.xml.security.encryption.XMLCipherUtil;
+import org.apache.xml.security.encryption.keys.content.derivedKey.KeyDerivationMethodImpl;
+import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.AbstractInputSecurityHeaderHandler;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
@@ -61,7 +66,10 @@ import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
 import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
+import org.apache.xml.security.utils.EncryptionConstants;
+import org.apache.xml.security.utils.KeyUtils;
 import org.apache.xml.security.utils.XMLUtils;
+import org.w3c.dom.Element;
 
 /**
  * An input handler for the EncryptedKey XML Structure
@@ -170,6 +178,17 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                         if (algorithmURI == null) {
                             throw new XMLSecurityException("stax.encryption.noEncAlgo");
                         }
+
+                        final InboundSecurityToken wrappingSecurityToken = getWrappingSecurityToken(wrappedSecurityToken);
+                        XMLSecurityConstants.AlgorithmUsage algorithmUsage =
+                                wrappingSecurityToken.isAsymmetric()
+                                        ? XMLSecurityConstants.Asym_Key_Wrap : XMLSecurityConstants.Sym_Key_Wrap;
+
+                        if (EncryptionConstants.ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID.equals(algorithmURI)) {
+                            return this.decryptedKey = getGenericHybridSecret(
+                                    wrappingSecurityToken, correlationID, algorithmUsage, symmetricAlgorithmURI);
+                        }
+
                         String jceName = JCEMapper.translateURItoJCEID(algorithmURI);
                         String jceProvider = JCEMapper.getJCEProviderFromURI(algorithmURI);
                         if (jceName == null) {
@@ -177,17 +196,8 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                                            new Object[] {algorithmURI});
                         }
 
-                        final InboundSecurityToken wrappingSecurityToken = getWrappingSecurityToken(wrappedSecurityToken);
-
                         Cipher cipher;
                         try {
-                            XMLSecurityConstants.AlgorithmUsage algorithmUsage;
-                            if (wrappingSecurityToken.isAsymmetric()) {
-                                algorithmUsage = XMLSecurityConstants.Asym_Key_Wrap;
-                            } else {
-                                algorithmUsage = XMLSecurityConstants.Sym_Key_Wrap;
-                            }
-
                             if (jceProvider == null) {
                                 cipher = Cipher.getInstance(jceName);
                             } else {
@@ -259,6 +269,100 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                             this.decryptedKey = XMLSecurityConstants.generateBytes(keyLength / 8);
                             return this.decryptedKey;
                         }
+                    }
+
+                    /**
+                     * Decapsulate/unwrap a CEK transported via KEM-based (Generic Hybrid Cipher) key
+                     * transport, per https://www.w3.org/TR/xmlsec-generic-hybrid/ (see SANTUARIO-633).
+                     * The {@code ghc:GenericHybridCipherMethod} element has no JAXB binding, so it is
+                     * read back as a raw DOM {@link Element} from the wildcard EncryptionMethod content
+                     * and parsed with the same DOM classes ({@link KeyDerivationMethodImpl},
+                     * {@link XMLCipherUtil}) used by the DOM {@code XMLCipher} API for the same structure.
+                     */
+                    private byte[] getGenericHybridSecret(InboundSecurityToken wrappingSecurityToken, String correlationID,
+                                                           XMLSecurityConstants.AlgorithmUsage algorithmUsage,
+                                                           String symmetricAlgorithmURI) throws XMLSecurityException {
+                        try {
+                            Element genericHybridCipherMethodElement = findAnyElement(
+                                    encryptedKeyType.getEncryptionMethod().getContent(),
+                                    XMLSecurityConstants.TAG_ghc_GenericHybridCipherMethod);
+                            if (genericHybridCipherMethodElement == null) {
+                                throw new XMLSecurityException("stax.unsupportedKeyTransp");
+                            }
+
+                            Element keyEncapsulationMethodElement = (Element) genericHybridCipherMethodElement
+                                    .getElementsByTagNameNS(XMLSecurityConstants.NS_GHC, "KeyEncapsulationMethod").item(0);
+                            Element dataEncapsulationMethodElement = (Element) genericHybridCipherMethodElement
+                                    .getElementsByTagNameNS(XMLSecurityConstants.NS_GHC, "DataEncapsulationMethod").item(0);
+                            if (keyEncapsulationMethodElement == null || dataEncapsulationMethodElement == null) {
+                                throw new XMLSecurityException("stax.unsupportedKeyTransp");
+                            }
+
+                            String kemAlgorithm = keyEncapsulationMethodElement.getAttributeNS(null, "Algorithm");
+                            String dataEncapsulationAlgorithm = dataEncapsulationMethodElement.getAttributeNS(null, "Algorithm");
+
+                            Element keyDerivationMethodElement = (Element) keyEncapsulationMethodElement
+                                    .getElementsByTagNameNS(XMLSecurityConstants.NS_XMLENC11, "KeyDerivationMethod").item(0);
+                            if (keyDerivationMethodElement == null) {
+                                throw new XMLSecurityException("stax.unsupportedKeyTransp");
+                            }
+
+                            int wrapKeyBitLength = KeyUtils.getAESKeyBitSizeForWrapAlgorithm(dataEncapsulationAlgorithm);
+                            KeyDerivationMethodImpl keyDerivationMethod = new KeyDerivationMethodImpl(keyDerivationMethodElement, null);
+                            KeyDerivationParameters kdp = XMLCipherUtil.constructKeyDerivationParameter(keyDerivationMethod, wrapKeyBitLength);
+
+                            Key wrapKeyToken = wrappingSecurityToken.getSecretKey(kemAlgorithm, algorithmUsage, correlationID);
+                            if (!(wrapKeyToken instanceof PrivateKey)) {
+                                throw new XMLSecurityException("stax.unsupportedKeyTransp");
+                            }
+
+                            if (encryptedKeyType.getCipherData() == null
+                                    || encryptedKeyType.getCipherData().getCipherValue() == null
+                                    || encryptedKeyType.getCipherData().getCipherValue().getContent() == null
+                                    || encryptedKeyType.getCipherData().getCipherValue().getContent().isEmpty()) {
+                                throw new XMLSecurityException("stax.encryption.noCipherValue");
+                            }
+
+                            byte[] encryptedBytes = getEncryptedBytes(encryptedKeyType.getCipherData().getCipherValue());
+                            byte[] sha1Bytes = generateDigest(encryptedBytes);
+                            String sha1Identifier = XMLUtils.encodeToString(sha1Bytes);
+                            super.setSha1Identifier(sha1Identifier);
+
+                            try {
+                                KeyUtils.KemDecapsulation kemResult = KeyUtils.kemDecapsulate(
+                                        (PrivateKey) wrapKeyToken, kemAlgorithm, encryptedBytes, kdp);
+                                String jceWrapId = JCEMapper.translateURItoJCEID(dataEncapsulationAlgorithm);
+                                Cipher cipher = Cipher.getInstance(jceWrapId);
+                                cipher.init(Cipher.UNWRAP_MODE, kemResult.getWrapKey());
+                                Key key = cipher.unwrap(kemResult.getWrappedKey(), "AES", Cipher.SECRET_KEY);
+                                return key.getEncoded();
+                            } catch (IllegalStateException e) {
+                                throw new XMLSecurityException(e);
+                            } catch (Exception e) {
+                                LOG.log(Level.WARNING, "Unwrapping of the encrypted key failed with error: "
+                                    + e.getMessage() + ". Generating a faked one to mitigate timing attacks.");
+
+                                int keyLength = JCEMapper.getKeyLengthFromURI(symmetricAlgorithmURI);
+                                return XMLSecurityConstants.generateBytes(keyLength / 8);
+                            }
+                        } catch (XMLSecurityException e) {
+                            throw e;
+                        } catch (Exception e) {
+                            throw new XMLSecurityException(e);
+                        }
+                    }
+
+                    private Element findAnyElement(List<Object> content, javax.xml.namespace.QName qname) {
+                        for (Object o : content) {
+                            if (o instanceof Element) {
+                                Element el = (Element) o;
+                                if (qname.getNamespaceURI().equals(el.getNamespaceURI())
+                                        && qname.getLocalPart().equals(el.getLocalName())) {
+                                    return el;
+                                }
+                            }
+                        }
+                        return null;
                     }
                 };
                 this.securityToken.setElementPath(responsibleXMLSecStartXMLEvent.getElementPath());

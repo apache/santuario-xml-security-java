@@ -138,6 +138,18 @@ public final class EncryptionConstants {
     /** Tag of Element KEY LENGTH **/
     public static final String _TAG_KEYLENGTH = "KeyLength";
 
+    /** Tag of Element GenericHybridCipherMethod **/
+    public static final String _TAG_GENERICHYBRIDCIPHERMETHOD = "GenericHybridCipherMethod";
+
+    /** Tag of Element KeyEncapsulationMethod **/
+    public static final String _TAG_KEYENCAPSULATIONMETHOD = "KeyEncapsulationMethod";
+
+    /** Tag of Element DataEncapsulationMethod **/
+    public static final String _TAG_DATAENCAPSULATIONMETHOD = "DataEncapsulationMethod";
+
+    /** Tag of Element KeyLen **/
+    public static final String _TAG_KEYLEN = "KeyLen";
+
     /** Field ENCRYPTIONSPECIFICATION_URL */
     public static final String ENCRYPTIONSPECIFICATION_URL =
         "http://www.w3.org/TR/2001/WD-xmlenc-core-20010626/";
@@ -153,6 +165,13 @@ public final class EncryptionConstants {
      */
     public static final String EncryptionSpec11NS =
         "http://www.w3.org/2009/xmlenc11#";
+
+    /**
+     * The namespace of the W3C XML Security: Generic Hybrid Cipher specification
+     * (https://www.w3.org/TR/xmlsec-generic-hybrid/)
+     */
+    public static final String EncryptionSpecGHCNS =
+        "http://www.w3.org/2010/xmlsec-ghc#";
 
     /** URI for content*/
     public static final String TYPE_CONTENT = EncryptionSpecNS + "Content";
@@ -219,6 +238,34 @@ public final class EncryptionConstants {
     /** Key Transport - OPTIONAL RSA-OAEP_11 */
     public static final String ALGO_ID_KEYTRANSPORT_RSAOAEP_11 =
         EncryptionConstants.EncryptionSpec11NS + "rsa-oaep";
+
+    /**
+     * Key Transport - Generic Hybrid Cipher (W3C xmlsec-generic-hybrid). Used as the
+     * top-level {@code xenc:EncryptionMethod} algorithm for KEM-based key transport (e.g.
+     * ML-KEM, see SANTUARIO-633); the actual key encapsulation algorithm is identified by
+     * the {@code KeyEncapsulationMethod/@Algorithm} attribute of the nested
+     * {@code ghc:GenericHybridCipherMethod} element (see {@link #ALGO_ID_KEYTRANSPORT_MLKEM_512}
+     * and friends below).
+     */
+    public static final String ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID =
+            EncryptionConstants.EncryptionSpecGHCNS + "generic-hybrid";
+
+    // URIs for ML-KEM (FIPS 203) key encapsulation, per
+    // draft-eastlake-rfc9231bis-xmlsec-uris-09 section 3.6.9. Used as the value of
+    // ghc:GenericHybridCipherMethod/ghc:KeyEncapsulationMethod/@Algorithm, not as a
+    // top-level xenc:EncryptionMethod algorithm (see SANTUARIO-633, ALGO_ID_KEYTRANSPORT_GENERIC_HYBRID).
+
+    /** Key Encapsulation - ML-KEM-512 (FIPS 203, NIST security level 1) */
+    public static final String ALGO_ID_KEYTRANSPORT_MLKEM_512 =
+            "http://www.w3.org/2026/08/xmldsig-more#ml-kem-512";
+
+    /** Key Encapsulation - ML-KEM-768 (FIPS 203, NIST security level 3) */
+    public static final String ALGO_ID_KEYTRANSPORT_MLKEM_768 =
+            "http://www.w3.org/2026/08/xmldsig-more#ml-kem-768";
+
+    /** Key Encapsulation - ML-KEM-1024 (FIPS 203, NIST security level 5) */
+    public static final String ALGO_ID_KEYTRANSPORT_MLKEM_1024 =
+            "http://www.w3.org/2026/08/xmldsig-more#ml-kem-1024";
 
     /** Key Agreement - OPTIONAL Diffie-Hellman */
     public static final String ALGO_ID_KEYAGREEMENT_DH =

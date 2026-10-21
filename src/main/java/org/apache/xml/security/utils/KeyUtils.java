@@ -18,6 +18,7 @@
  */
 package org.apache.xml.security.utils;
 
+import org.apache.xml.security.algorithms.JCEMapper;
 import org.apache.xml.security.algorithms.implementations.ECDSAUtils;
 import org.apache.xml.security.encryption.XMLEncryptionException;
 import org.apache.xml.security.encryption.keys.content.derivedKey.ConcatKDF;
@@ -33,10 +34,12 @@ import javax.crypto.KeyAgreement;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.lang.System.Logger.Level;
+import java.lang.reflect.Method;
 import java.security.*;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * A set of utility methods to handle keys.
@@ -311,5 +314,183 @@ public class KeyUtils {
 
         ConcatKDF concatKDF = new ConcatKDF();
         return concatKDF.deriveKey(sharedSecret, ckdfParameter);
+    }
+
+    // The only Key Encapsulation Method algorithms this library registers (see JCEMapper /
+    // security-config.xml). kemEncapsulate/kemDecapsulate are reachable with a KEM algorithm URI
+    // taken directly from parsed XML (ghc:KeyEncapsulationMethod/@Algorithm), so this whitelist is
+    // enforced explicitly rather than relying on javax.crypto.KEM#getInstance to reject anything
+    // else JCEMapper might resolve the URI to.
+    private static final Set<String> SUPPORTED_KEM_ALGORITHMS = Set.of(
+            EncryptionConstants.ALGO_ID_KEYTRANSPORT_MLKEM_512,
+            EncryptionConstants.ALGO_ID_KEYTRANSPORT_MLKEM_768,
+            EncryptionConstants.ALGO_ID_KEYTRANSPORT_MLKEM_1024);
+
+    // Fully-qualified javax.crypto.KEM class names. This module targets Java 11
+    // (see maven.compiler.release), but the KEM API (JEP 452) is only available since
+    // Java 21, so it is accessed via reflection rather than a compile-time import - the
+    // same reason the ML-DSA/ML-KEM JCA algorithm names are looked up dynamically rather
+    // than depending on BouncyCastle at compile time.
+    private static final String KEM_CLASS = "javax.crypto.KEM";
+    private static final String KEM_ENCAPSULATOR_CLASS = "javax.crypto.KEM$Encapsulator";
+    private static final String KEM_DECAPSULATOR_CLASS = "javax.crypto.KEM$Decapsulator";
+    private static final String KEM_ENCAPSULATED_CLASS = "javax.crypto.KEM$Encapsulated";
+
+    /**
+     * The result of a KEM encapsulation: the encapsulation/ciphertext (traditionally called "C0")
+     * to be sent to the recipient, and the AES key-wrap key derived from the KEM shared secret.
+     */
+    public static final class KemEncapsulation {
+        private final byte[] encapsulation;
+        private final SecretKey wrapKey;
+
+        KemEncapsulation(byte[] encapsulation, SecretKey wrapKey) {
+            this.encapsulation = encapsulation;
+            this.wrapKey = wrapKey;
+        }
+
+        public byte[] getEncapsulation() {
+            return encapsulation;
+        }
+
+        public SecretKey getWrapKey() {
+            return wrapKey;
+        }
+    }
+
+    /**
+     * The result of a KEM decapsulation: the AES key-wrap key derived from the KEM shared secret,
+     * and the remainder of the ciphertext (traditionally called "C1", the AES-wrapped CEK) once the
+     * leading KEM encapsulation octets have been stripped off.
+     */
+    public static final class KemDecapsulation {
+        private final SecretKey wrapKey;
+        private final byte[] wrappedKey;
+
+        KemDecapsulation(SecretKey wrapKey, byte[] wrappedKey) {
+            this.wrapKey = wrapKey;
+            this.wrappedKey = wrappedKey;
+        }
+
+        public SecretKey getWrapKey() {
+            return wrapKey;
+        }
+
+        public byte[] getWrappedKey() {
+            return wrappedKey;
+        }
+    }
+
+    /**
+     * Encapsulate a fresh shared secret to the recipient's KEM public key (e.g. ML-KEM, FIPS 203) and
+     * derive an AES key-wrap key from it, per the W3C "XML Security: Generic Hybrid Cipher" note
+     * (https://www.w3.org/TR/xmlsec-generic-hybrid/, section 5 "Using Key Encapsulation Algorithms for
+     * Key Transport"). Uses the JDK's {@code javax.crypto.KEM} API via reflection - see {@link #KEM_CLASS}.
+     *
+     * @param recipientPublicKey the recipient's KEM public key
+     * @param kemAlgorithmURI the KEM algorithm URI (e.g. {@code ALGO_ID_KEYTRANSPORT_MLKEM_512})
+     * @param keyDerivationParameter the key derivation parameters used to derive the AES key-wrap key
+     *                                from the KEM shared secret
+     * @return the KEM encapsulation (C0) and the derived AES key-wrap key
+     * @throws XMLEncryptionException if {@code kemAlgorithmURI} is not one of the registered ML-KEM
+     *          algorithms, the KEM API is unavailable (requires Java 21+), the KEM algorithm is not
+     *          supported by the configured JCE provider, or key derivation fails
+     */
+    public static KemEncapsulation kemEncapsulate(PublicKey recipientPublicKey, String kemAlgorithmURI,
+                                                   KeyDerivationParameters keyDerivationParameter)
+            throws XMLEncryptionException {
+        validateKemAlgorithm(kemAlgorithmURI);
+        try {
+            String jceKemName = JCEMapper.translateURItoJCEID(kemAlgorithmURI);
+            Object kem = kemGetInstance(jceKemName);
+            Object encapsulator = invoke(kem, kem.getClass(), "newEncapsulator",
+                    new Class<?>[]{PublicKey.class}, recipientPublicKey);
+            Object encapsulated = invoke(encapsulator, Class.forName(KEM_ENCAPSULATOR_CLASS), "encapsulate",
+                    new Class<?>[0]);
+            Class<?> encapsulatedClass = Class.forName(KEM_ENCAPSULATED_CLASS);
+            byte[] c0 = (byte[]) invoke(encapsulated, encapsulatedClass, "encapsulation", new Class<?>[0]);
+            SecretKey sharedSecret = (SecretKey) invoke(encapsulated, encapsulatedClass, "key", new Class<?>[0]);
+            byte[] kek = deriveKeyEncryptionKey(sharedSecret.getEncoded(), keyDerivationParameter);
+            return new KemEncapsulation(c0, new SecretKeySpec(kek, "AES"));
+        } catch (ReflectiveOperationException e) {
+            throw new XMLEncryptionException(e);
+        } catch (XMLSecurityException e) {
+            throw new XMLEncryptionException(e);
+        }
+    }
+
+    /**
+     * Decapsulate a shared secret using the recipient's KEM private key and derive the AES key-wrap
+     * key from it, splitting the leading KEM encapsulation octets (C0) off the combined ciphertext
+     * first (its length is algorithm-specific and obtained from the KEM API itself, so no hardcoded
+     * per-algorithm length table is required). See {@link #kemEncapsulate}.
+     *
+     * @param recipientPrivateKey the recipient's KEM private key
+     * @param kemAlgorithmURI the KEM algorithm URI (e.g. {@code ALGO_ID_KEYTRANSPORT_MLKEM_512})
+     * @param combinedCiphertext the concatenation of the KEM encapsulation (C0) and the AES-wrapped
+     *                            CEK (C1), as read from {@code xenc:CipherValue}
+     * @param keyDerivationParameter the key derivation parameters used to derive the AES key-wrap key
+     *                                from the KEM shared secret
+     * @return the derived AES key-wrap key, and the remaining AES-wrapped CEK bytes (C1)
+     * @throws XMLEncryptionException if {@code kemAlgorithmURI} is not one of the registered ML-KEM
+     *          algorithms (this method is reachable with an algorithm URI parsed directly from
+     *          untrusted input XML, so it is validated explicitly rather than delegating entirely to
+     *          the JCE provider), the KEM API is unavailable (requires Java 21+), the KEM algorithm is
+     *          not supported by the configured JCE provider, the ciphertext is shorter than the
+     *          algorithm's expected encapsulation size, or key derivation fails
+     */
+    public static KemDecapsulation kemDecapsulate(PrivateKey recipientPrivateKey, String kemAlgorithmURI,
+                                                   byte[] combinedCiphertext, KeyDerivationParameters keyDerivationParameter)
+            throws XMLEncryptionException {
+        validateKemAlgorithm(kemAlgorithmURI);
+        try {
+            String jceKemName = JCEMapper.translateURItoJCEID(kemAlgorithmURI);
+            Object kem = kemGetInstance(jceKemName);
+            Object decapsulator = invoke(kem, kem.getClass(), "newDecapsulator",
+                    new Class<?>[]{PrivateKey.class}, recipientPrivateKey);
+            Class<?> decapsulatorClass = Class.forName(KEM_DECAPSULATOR_CLASS);
+            int encapsulationSize = (int) invoke(decapsulator, decapsulatorClass, "encapsulationSize", new Class<?>[0]);
+            if (combinedCiphertext.length < encapsulationSize) {
+                throw new XMLEncryptionException("KeyDerivation.MissingParameters");
+            }
+            byte[] c0 = Arrays.copyOfRange(combinedCiphertext, 0, encapsulationSize);
+            byte[] c1 = Arrays.copyOfRange(combinedCiphertext, encapsulationSize, combinedCiphertext.length);
+            SecretKey sharedSecret = (SecretKey) invoke(decapsulator, decapsulatorClass, "decapsulate",
+                    new Class<?>[]{byte[].class}, (Object) c0);
+            byte[] kek = deriveKeyEncryptionKey(sharedSecret.getEncoded(), keyDerivationParameter);
+            return new KemDecapsulation(new SecretKeySpec(kek, "AES"), c1);
+        } catch (ReflectiveOperationException e) {
+            throw new XMLEncryptionException(e);
+        } catch (XMLSecurityException e) {
+            throw new XMLEncryptionException(e);
+        }
+    }
+
+    /**
+     * Restricts a Key Encapsulation Method algorithm URI (e.g. parsed from
+     * {@code ghc:KeyEncapsulationMethod/@Algorithm} of untrusted input XML) to the ML-KEM
+     * algorithms this library actually registers, rather than accepting any URI JCEMapper
+     * happens to resolve.
+     *
+     * @param kemAlgorithmURI the KEM algorithm URI to validate
+     * @throws XMLEncryptionException if the URI is not one of the supported ML-KEM algorithms
+     */
+    private static void validateKemAlgorithm(String kemAlgorithmURI) throws XMLEncryptionException {
+        if (!SUPPORTED_KEM_ALGORITHMS.contains(kemAlgorithmURI)) {
+            throw new XMLEncryptionException("algorithms.NoSuchAlgorithm",
+                    new Object[] { kemAlgorithmURI, "not a registered ML-KEM Key Encapsulation Method algorithm" });
+        }
+    }
+
+    private static Object kemGetInstance(String jceKemName) throws ReflectiveOperationException {
+        Class<?> kemClass = Class.forName(KEM_CLASS);
+        Method getInstance = kemClass.getMethod("getInstance", String.class);
+        return getInstance.invoke(null, jceKemName);
+    }
+
+    private static Object invoke(Object target, Class<?> declaringClass, String methodName, Class<?>[] paramTypes,
+                                  Object... args) throws ReflectiveOperationException {
+        Method method = declaringClass.getMethod(methodName, paramTypes);
+        return method.invoke(target, args);
     }
 }

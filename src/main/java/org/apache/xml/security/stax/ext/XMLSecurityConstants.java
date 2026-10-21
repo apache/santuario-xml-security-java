@@ -144,9 +144,12 @@ public class XMLSecurityConstants {
     public static final String NS_DSIG = "http://www.w3.org/2000/09/xmldsig#";
     public static final String NS_DSIG_MORE ="http://www.w3.org/2001/04/xmldsig-more#";
     public static final String NS_DSIG_MORE_2007_05 = "http://www.w3.org/2007/05/xmldsig-more#";
+    public static final String NS_DSIG_MORE_2021_04 = "http://www.w3.org/2021/04/xmldsig-more#";
     public static final String NS_DSIG11 = "http://www.w3.org/2009/xmldsig11#";
     public static final String NS_WSSE11 = "http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd";
     public static final String NS_XOP = "http://www.w3.org/2004/08/xop/include";
+    /** W3C "XML Security: Generic Hybrid Cipher" namespace (https://www.w3.org/TR/xmlsec-generic-hybrid/) */
+    public static final String NS_GHC = "http://www.w3.org/2010/xmlsec-ghc#";
 
     public static final String PREFIX_XENC = "xenc";
     public static final String PREFIX_XENC11 = "xenc11";
@@ -162,6 +165,22 @@ public class XMLSecurityConstants {
     public static final QName TAG_xenc_OAEPparams = new QName(NS_XMLENC, "OAEPparams", PREFIX_XENC);
 
     public static final QName TAG_xenc11_MGF = new QName(NS_XMLENC11, "MGF", PREFIX_XENC11);
+    public static final QName TAG_xenc11_KeyDerivationMethod = new QName(NS_XMLENC11, "KeyDerivationMethod", PREFIX_XENC11);
+
+    public static final String PREFIX_GHC = "ghc";
+    public static final QName TAG_ghc_GenericHybridCipherMethod = new QName(NS_GHC, "GenericHybridCipherMethod", PREFIX_GHC);
+    public static final QName TAG_ghc_KeyEncapsulationMethod = new QName(NS_GHC, "KeyEncapsulationMethod", PREFIX_GHC);
+    public static final QName TAG_ghc_DataEncapsulationMethod = new QName(NS_GHC, "DataEncapsulationMethod", PREFIX_GHC);
+    public static final QName TAG_ghc_KeyLen = new QName(NS_GHC, "KeyLen", PREFIX_GHC);
+
+    public static final String PREFIX_HKDF = "hkdf";
+    public static final QName TAG_hkdf_HKDFParams = new QName(NS_DSIG_MORE_2021_04, "HKDFParams", PREFIX_HKDF);
+    public static final QName TAG_hkdf_PRF = new QName(NS_DSIG_MORE_2021_04, "PRF", PREFIX_HKDF);
+    public static final QName TAG_hkdf_Salt = new QName(NS_DSIG_MORE_2021_04, "Salt", PREFIX_HKDF);
+    public static final QName TAG_hkdf_Info = new QName(NS_DSIG_MORE_2021_04, "Info", PREFIX_HKDF);
+    public static final QName TAG_hkdf_KeyLength = new QName(NS_DSIG_MORE_2021_04, "KeyLength", PREFIX_HKDF);
+    /** HKDF key derivation algorithm URI (draft-eastlake-rfc9231bis-xmlsec-uris-09 section 3.8.1) */
+    public static final String NS_HKDF = NS_DSIG_MORE_2021_04 + "hkdf";
 
     public static final String PREFIX_DSIG = "dsig";
     public static final String PREFIX_DSIG_MORE_PSS = "pss";

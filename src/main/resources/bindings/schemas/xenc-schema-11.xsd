@@ -55,7 +55,7 @@
 	<element name="KeyDerivationMethod" type="xenc11:KeyDerivationMethodType"/>
 	<complexType name="KeyDerivationMethodType">
 		<sequence>
-			<any namespace="##any" minOccurs="0" maxOccurs="unbounded"/>
+			<any namespace="##any" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
 		<attribute name="Algorithm" type="anyURI" use="required"/>
 	</complexType>
