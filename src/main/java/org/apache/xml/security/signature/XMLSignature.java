@@ -30,6 +30,7 @@ import java.security.spec.AlgorithmParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.crypto.SecretKey;
 
@@ -51,6 +52,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
 /**
@@ -211,6 +213,18 @@ public final class XMLSignature extends SignatureElementProxy {
     public static final String ALGO_ID_SIGNATURE_EDDSA_ED448 =
             "http://www.w3.org/2021/04/xmldsig-more#eddsa-ed448";
 
+    /**Signature - ML-DSA-44 (FIPS 204, URI per draft-eastlake-rfc9231bis-xmlsec-uris-09 section 3.3.15; see SANTUARIO-634) */
+    public static final String ALGO_ID_SIGNATURE_MLDSA_44 =
+            "http://www.w3.org/2026/08/xmldsig-more#ml-dsa-44";
+
+    /**Signature - ML-DSA-65 (FIPS 204, URI per draft-eastlake-rfc9231bis-xmlsec-uris-09 section 3.3.15; see SANTUARIO-634) */
+    public static final String ALGO_ID_SIGNATURE_MLDSA_65 =
+            "http://www.w3.org/2026/08/xmldsig-more#ml-dsa-65";
+
+    /**Signature - ML-DSA-87 (FIPS 204, URI per draft-eastlake-rfc9231bis-xmlsec-uris-09 section 3.3.15; see SANTUARIO-634) */
+    public static final String ALGO_ID_SIGNATURE_MLDSA_87 =
+            "http://www.w3.org/2026/08/xmldsig-more#ml-dsa-87";
+
 
     /**Signature - SHA3-224withECDSA */
     public static final String ALGO_ID_SIGNATURE_ECDSA_SHA3_224 =
@@ -233,6 +247,10 @@ public final class XMLSignature extends SignatureElementProxy {
             Constants.XML_DSIG_NS_MORE_07_05 + "rsa-pss";
 
     private static final Logger LOG = System.getLogger(XMLSignature.class.getName());
+
+    // ML-DSA URIs, the only algorithms for which a SignatureContext element is defined
+    private static final Set<String> ML_DSA_ALGORITHMS = Set.of(
+        ALGO_ID_SIGNATURE_MLDSA_44, ALGO_ID_SIGNATURE_MLDSA_65, ALGO_ID_SIGNATURE_MLDSA_87);
 
     /** ds:Signature.ds:SignedInfo element */
     private final SignedInfo signedInfo;
@@ -851,6 +869,7 @@ public final class XMLSignature extends SignatureElementProxy {
             );
         }
 
+        checkForUnsupportedSignatureContext();
 
         // snapshot the lists so that concurrent registration during sign() cannot
         // cause ConcurrentModificationException or skip newly added processors
@@ -888,6 +907,33 @@ public final class XMLSignature extends SignatureElementProxy {
         // invoke post-processors after the signature value has been set
         for (SignatureProcessor processor : postSnapshot) {
             processor.processSignature(this);
+        }
+    }
+
+    /**
+     * Rejects a signature that carries an ML-DSA {@code SignatureContext} element
+     * (draft-eastlake-rfc9231bis-xmlsec-uris-09, section 3.3.15). The
+     * {@code java.security.Signature} API offers no way to pass a signature context
+     * to ML-DSA (see the Non-Goals of JEP 497), so such a signature can be neither
+     * created nor verified correctly here; bail out rather than silently ignoring
+     * the context and producing/accepting a signature that does not match it.
+     * The element is only defined for ML-DSA, so signatures using any other
+     * algorithm are not inspected.
+     *
+     * @throws XMLSignatureException if a {@code SignatureContext} element is present
+     */
+    private void checkForUnsupportedSignatureContext() throws XMLSignatureException {
+        Element signatureElement = getElement();
+        String signatureMethodURI = signedInfo.getSignatureMethodURI();
+        if (signatureElement == null || signatureMethodURI == null
+            || !ML_DSA_ALGORITHMS.contains(signatureMethodURI)) {
+            return;
+        }
+        NodeList contexts = signatureElement.getElementsByTagNameNS(
+            Constants.XML_DSIG_NS_MORE_26_08, Constants._TAG_SIGNATURECONTEXT);
+        if (contexts.getLength() > 0) {
+            throw new XMLSignatureException("signature.SignatureContextUnsupported",
+                new Object[] {Constants.XML_DSIG_NS_MORE_26_08 + Constants._TAG_SIGNATURECONTEXT});
         }
     }
 
@@ -945,6 +991,8 @@ public final class XMLSignature extends SignatureElementProxy {
         // SignedInfo.
         // If followManifestsDuringValidation is true it will do the same for
         // References inside a Manifest.
+        checkForUnsupportedSignatureContext();
+
         try {
             SignedInfo si = this.getSignedInfo();
             //create a SignatureAlgorithms from the SignatureMethod inside

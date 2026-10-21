@@ -239,6 +239,18 @@ public class XMLSecurityUtils {
             abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(ECDSAUtils.encodePoint(ecPublicKey.getW(), ecPublicKey.getParams().getCurve())));
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_PublicKey);
             abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_ECKeyValue);
+        } else {
+            // Key types without a structured KeyValue form (e.g. ML-DSA, EdDSA) are carried as a
+            // dsig11:DEREncodedKeyValue holding the DER SubjectPublicKeyInfo, which is schema-valid
+            // inside dsig:KeyValue via its ##other wildcard. Without this, such a key produced an
+            // empty <dsig:KeyValue/> that the inbound processor rejects at schema validation.
+            byte[] encoded = publicKey.getEncoded();
+            if (encoded == null) {
+                throw new XMLSecurityException("stax.unsupportedKeyValue");
+            }
+            abstractOutputProcessor.createStartElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_DEREncodedKeyValue, false, null);
+            abstractOutputProcessor.createCharactersAndOutputAsEvent(outputProcessorChain, XMLUtils.encodeToString(encoded));
+            abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig11_DEREncodedKeyValue);
         }
 
         abstractOutputProcessor.createEndElementAndOutputAsEvent(outputProcessorChain, XMLSecurityConstants.TAG_dsig_KeyValue);

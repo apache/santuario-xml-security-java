@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.KeySelectorException;
@@ -60,11 +61,13 @@ import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 
+import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * DOM-based implementation of XMLSignature.
@@ -74,6 +77,12 @@ public final class DOMXMLSignature extends DOMStructure
     implements XMLSignature {
 
     private static final Logger LOG = System.getLogger(DOMXMLSignature.class.getName());
+
+    // ML-DSA URIs, the only algorithms for which a SignatureContext element is defined
+    private static final Set<String> ML_DSA_ALGORITHMS = Set.of(
+        DOMSignatureMethod.ML_DSA_44,
+        DOMSignatureMethod.ML_DSA_65,
+        DOMSignatureMethod.ML_DSA_87);
 
     private final String id;
     private final SignatureValue sv;
@@ -278,6 +287,8 @@ public final class DOMXMLSignature extends DOMStructure
             return validationStatus;
         }
 
+        checkForUnsupportedSignatureContext(localSigElem);
+
         // validate the signature
         boolean sigValidity = sv.validate(vc);
         if (!sigValidity) {
@@ -339,6 +350,33 @@ public final class DOMXMLSignature extends DOMStructure
         return validationStatus;
     }
 
+    /**
+     * Rejects a signature that carries an ML-DSA {@code SignatureContext} element
+     * (draft-eastlake-rfc9231bis-xmlsec-uris-09, section 3.3.15). The
+     * {@code java.security.Signature} API offers no way to pass a signature context
+     * to ML-DSA (see the Non-Goals of JEP 497), so such a signature can be neither
+     * created nor verified correctly here; bail out rather than silently ignoring
+     * the context. The element is only defined for ML-DSA, so signatures using any
+     * other algorithm are not inspected.
+     */
+    private void checkForUnsupportedSignatureContext(Element sigElem)
+        throws XMLSignatureException
+    {
+        String signatureMethodURI = si.getSignatureMethod().getAlgorithm();
+        if (sigElem == null || signatureMethodURI == null
+            || !ML_DSA_ALGORITHMS.contains(signatureMethodURI)) {
+            return;
+        }
+        NodeList contexts = sigElem.getElementsByTagNameNS(
+            Constants.XML_DSIG_NS_MORE_26_08, Constants._TAG_SIGNATURECONTEXT);
+        if (contexts.getLength() > 0) {
+            throw new XMLSignatureException("The ML-DSA SignatureContext element ("
+                + Constants.XML_DSIG_NS_MORE_26_08 + Constants._TAG_SIGNATURECONTEXT
+                + ") is not supported: the java.security.Signature API cannot pass a "
+                + "signature context to ML-DSA (JEP 497)");
+        }
+    }
+
     @Override
     public void sign(XMLSignContext signContext)
         throws MarshalException, XMLSignatureException
@@ -349,6 +387,8 @@ public final class DOMXMLSignature extends DOMStructure
         DOMSignContext context = (DOMSignContext)signContext;
         marshal(context.getParent(), context.getNextSibling(),
                 DOMUtils.getSignaturePrefix(context), context);
+
+        checkForUnsupportedSignatureContext(sigElem);
 
         // generate references and signature value
         List<Reference> allReferences = new ArrayList<>();

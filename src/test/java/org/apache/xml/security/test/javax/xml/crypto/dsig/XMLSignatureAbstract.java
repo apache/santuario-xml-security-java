@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.dom.DOMValidateContext;
@@ -146,6 +147,20 @@ abstract class XMLSignatureAbstract {
             boolean coreValidity = testInstance.validate(vc);
             // assert expected result
             assertTrue(coreValidity);
+        }
+    }
+
+    /**
+     * Validates a signed document using the given {@link KeySelector} instead of the
+     * always-embedded-cert {@link KeySelectors.RawX509KeySelector}, and returns the core
+     * validity result rather than asserting it - for negative tests that expect validation
+     * to fail (tampered signature, wrong key, etc).
+     */
+    protected boolean validateSignatureWithJcpApi(byte[] signedXml, KeySelector keySelector) throws Exception {
+        try (InputStream is = new ByteArrayInputStream(signedXml)) {
+            DOMValidateContext vc = testInstance.getValidateContext(is, keySelector, false);
+            updateIdReferences(vc, "SignedElement", "id");
+            return testInstance.validate(vc);
         }
     }
 

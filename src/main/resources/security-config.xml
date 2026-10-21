@@ -321,6 +321,28 @@
                     RequiredKey="EC"
                     JCEName="RIPEMD160withECDSA"/>
 
+         <!-- ML-DSA (FIPS 204) Signature Algorithms — URIs per draft-eastlake-rfc9231bis-xmlsec-uris-09 section 3.3.15 -->
+         <Algorithm URI="http://www.w3.org/2026/08/xmldsig-more#ml-dsa-44"
+                    Description="ML-DSA-44 Signature (FIPS 204, NIST security level 2)"
+                    AlgorithmClass="Signature"
+                    RequirementLevel="OPTIONAL"
+                    RequiredKey="ML-DSA-44"
+                    JCEName="ML-DSA-44"/>
+
+         <Algorithm URI="http://www.w3.org/2026/08/xmldsig-more#ml-dsa-65"
+                    Description="ML-DSA-65 Signature (FIPS 204, NIST security level 3)"
+                    AlgorithmClass="Signature"
+                    RequirementLevel="OPTIONAL"
+                    RequiredKey="ML-DSA-65"
+                    JCEName="ML-DSA-65"/>
+
+         <Algorithm URI="http://www.w3.org/2026/08/xmldsig-more#ml-dsa-87"
+                    Description="ML-DSA-87 Signature (FIPS 204, NIST security level 5)"
+                    AlgorithmClass="Signature"
+                    RequirementLevel="OPTIONAL"
+                    RequiredKey="ML-DSA-87"
+                    JCEName="ML-DSA-87"/>
+
          <!-- MAC Algorithms -->
          <Algorithm URI="http://www.w3.org/2001/04/xmldsig-more#hmac-md5"
                     Description="Message Authentication code using MD5"
