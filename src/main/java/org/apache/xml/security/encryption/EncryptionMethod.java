@@ -103,6 +103,71 @@ public interface EncryptionMethod {
     String getMGFAlgorithm();
 
     /**
+     * Returns the Key Encapsulation Method algorithm URI used for KEM-based key transport
+     * (W3C "XML Security: Generic Hybrid Cipher", https://www.w3.org/TR/xmlsec-generic-hybrid/),
+     * i.e. the {@code Algorithm} attribute of the {@code ghc:KeyEncapsulationMethod} element nested
+     * inside {@code ghc:GenericHybridCipherMethod}.
+     *
+     * @return the key encapsulation algorithm, or {@code null} if this is not a Generic Hybrid
+     *   Cipher {@code EncryptionMethod}.
+     */
+    String getKeyEncapsulationAlgorithm();
+
+    /**
+     * Sets the Key Encapsulation Method algorithm URI. See {@link #getKeyEncapsulationAlgorithm()}.
+     *
+     * @param algorithm the key encapsulation algorithm.
+     */
+    void setKeyEncapsulationAlgorithm(String algorithm);
+
+    /**
+     * Returns the {@code xenc11:KeyDerivationMethod} nested inside {@code ghc:KeyEncapsulationMethod},
+     * used to derive the data-encapsulation (AES key-wrap) key from the KEM shared secret.
+     *
+     * @return the key derivation method, or {@code null} if not set.
+     */
+    KeyDerivationMethod getKeyEncapsulationKeyDerivationMethod();
+
+    /**
+     * Sets the key derivation method. See {@link #getKeyEncapsulationKeyDerivationMethod()}.
+     *
+     * @param keyDerivationMethod the key derivation method.
+     */
+    void setKeyEncapsulationKeyDerivationMethod(KeyDerivationMethod keyDerivationMethod);
+
+    /**
+     * Returns the {@code ghc:KeyLen} value nested inside {@code ghc:KeyEncapsulationMethod}: the
+     * length, in bytes, of the derived data-encapsulation key.
+     *
+     * @return the key length in bytes, or a non-positive value if not set.
+     */
+    int getKeyEncapsulationKeyLength();
+
+    /**
+     * Sets the derived key length in bytes. See {@link #getKeyEncapsulationKeyLength()}.
+     *
+     * @param keyLength the key length in bytes.
+     */
+    void setKeyEncapsulationKeyLength(int keyLength);
+
+    /**
+     * Returns the Data Encapsulation Method algorithm URI, i.e. the {@code Algorithm} attribute of
+     * the {@code ghc:DataEncapsulationMethod} element nested inside {@code ghc:GenericHybridCipherMethod}
+     * (typically an AES-KeyWrap algorithm URI).
+     *
+     * @return the data encapsulation algorithm, or {@code null} if this is not a Generic Hybrid
+     *   Cipher {@code EncryptionMethod}.
+     */
+    String getDataEncapsulationAlgorithm();
+
+    /**
+     * Sets the Data Encapsulation Method algorithm URI. See {@link #getDataEncapsulationAlgorithm()}.
+     *
+     * @param algorithm the data encapsulation algorithm.
+     */
+    void setDataEncapsulationAlgorithm(String algorithm);
+
+    /**
      * Returns an iterator over all the additional elements contained in the
      * <code>EncryptionMethod</code>.
      *

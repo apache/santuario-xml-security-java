@@ -30,7 +30,7 @@
     <sequence>
       <element name='KeySize' minOccurs='0' type='xenc:KeySizeType'/>
       <element name='OAEPparams' minOccurs='0' type='base64Binary'/>
-      <any namespace='##other' minOccurs='0' maxOccurs='unbounded'/>
+      <any namespace='##other' processContents='lax' minOccurs='0' maxOccurs='unbounded'/>
     </sequence>
     <attribute name='Algorithm' type='anyURI' use='required'/>
   </complexType>
