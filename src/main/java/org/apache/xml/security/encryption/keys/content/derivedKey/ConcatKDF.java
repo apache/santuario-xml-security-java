@@ -161,7 +161,12 @@ public class ConcatKDF implements DerivationAlgorithm<ConcatKDFParams> {
         }
         // skip first two chars since they are padding bytes,
         kdfP = kdfP.substring(2);
-        return XMLCipherUtil.hexStringToByteArray(kdfP);
+        try {
+            return XMLCipherUtil.hexStringToByteArray(kdfP);
+        } catch (IllegalArgumentException e) {
+            LOG.log(Level.ERROR, "Invalid ConcatKDF parameter [{0}]! Value is not hexadecimal!", kdfP);
+            throw new XMLEncryptionException(e, "KeyDerivation.InvalidParameter", new Object[]{kdfParameter});
+        }
     }
 
     /**
