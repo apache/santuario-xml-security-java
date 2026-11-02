@@ -35,6 +35,13 @@ module org.apache.santuario.xmlsec {
     exports org.apache.xml.security.extension;
     exports org.apache.xml.security.algorithms;
     exports org.apache.xml.security.algorithms.implementations;
+    exports org.apache.xml.security.binding.excc14n;
+    exports org.apache.xml.security.binding.xmldsig;
+    exports org.apache.xml.security.binding.xmldsig11;
+    exports org.apache.xml.security.binding.xmldsigmore;
+    exports org.apache.xml.security.binding.xmlenc;
+    exports org.apache.xml.security.binding.xmlenc11;
+    exports org.apache.xml.security.binding.xop;
     exports org.apache.xml.security.c14n;
     exports org.apache.xml.security.c14n.helper;
     exports org.apache.xml.security.c14n.implementations;
@@ -65,6 +72,7 @@ module org.apache.santuario.xmlsec {
     opens org.apache.xml.security.binding.excc14n;
     opens org.apache.xml.security.binding.xmldsig;
     opens org.apache.xml.security.binding.xmldsig11;
+    opens org.apache.xml.security.binding.xmldsigmore;
     opens org.apache.xml.security.binding.xmlenc;
     opens org.apache.xml.security.binding.xmlenc11;
     opens org.apache.xml.security.binding.xop;
