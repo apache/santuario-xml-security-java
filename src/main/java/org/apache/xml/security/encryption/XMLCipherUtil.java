@@ -27,6 +27,7 @@ import org.apache.xml.security.encryption.params.HKDFParams;
 import org.apache.xml.security.encryption.params.KeyAgreementParameters;
 import org.apache.xml.security.encryption.params.KeyDerivationParameters;
 import org.apache.xml.security.exceptions.XMLSecurityException;
+import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.apache.xml.security.utils.KeyUtils;
 
@@ -277,11 +278,27 @@ public final class XMLCipherUtil {
             }
             HKDFParamsImpl hKDFParams = (HKDFParamsImpl) kdfParams;
             return HKDFParams.createBuilder(keyBitLength, hKDFParams.getPRFAlgorithm())
-                    .salt(hKDFParams.getSalt() != null ? Base64.getDecoder().decode(hKDFParams.getSalt()) : null)
-                    .info(hKDFParams.getInfo() != null ? Base64.getDecoder().decode(hKDFParams.getInfo()) : null)
+                    .salt(decodeBase64Parameter(hKDFParams.getSalt(), Constants._TAG_SALT))
+                    .info(decodeBase64Parameter(hKDFParams.getInfo(), EncryptionConstants._TAG_INFO))
                     .build();
         }
         throw new XMLEncryptionException("unknownAlgorithm", keyDerivationAlgorithm);
+    }
+
+    /**
+     * Base64-decodes an optional key derivation parameter read from the message. Malformed
+     * base64 is reported as an {@link XMLEncryptionException} rather than escaping as the
+     * {@link IllegalArgumentException} thrown by {@link Base64.Decoder#decode(String)}.
+     */
+    private static byte[] decodeBase64Parameter(String value, String parameterName) throws XMLEncryptionException {
+        if (value == null) {
+            return null;
+        }
+        try {
+            return Base64.getDecoder().decode(value);
+        } catch (IllegalArgumentException e) {
+            throw new XMLEncryptionException(e, "KeyDerivation.InvalidParameter", new Object[]{parameterName});
+        }
     }
 
     /**
