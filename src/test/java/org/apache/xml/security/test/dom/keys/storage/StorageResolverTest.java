@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -100,11 +101,6 @@ class StorageResolverTest {
         assertEquals(4, count);
 
         // Cannot go beyond last element
-        try {
-            iter.next();
-            fail("Expecting NoSuchElementException");
-        } catch (NoSuchElementException e) {
-            //
-        }
+        assertThrows(NoSuchElementException.class, iter::next);
     }
 }
