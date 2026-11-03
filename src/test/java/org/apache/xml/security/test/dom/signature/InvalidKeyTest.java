@@ -60,12 +60,8 @@ class InvalidKeyTest {
             trustStore.load(input, "testpw".toCharArray());
         }
 
-        try {
-            validate(trustStore.getCertificate("bedag-test").getPublicKey());
-            throw new Exception("Failure expected on a DSA key");
-        } catch (Exception e) {
-            // e.printStackTrace();
-        }
+        PublicKey dsaKey = trustStore.getCertificate("bedag-test").getPublicKey();
+        assertThrows(XMLSecurityException.class, () -> validate(dsaKey), "Failure expected on a DSA key");
         validate(trustStore.getCertificate("a70-garaio-frontend-u").getPublicKey());
     }
 

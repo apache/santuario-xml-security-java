@@ -283,6 +283,7 @@ class SignatureVerificationTest extends AbstractSignatureVerificationTest {
 
         try {
             StAX2DOM.readDoc(securityStreamReader);
+            fail("Failure expected on multiple signatures");
         } catch (XMLStreamException ex) {
             assertEquals("Multiple signatures are not supported.", ex.getCause().getMessage());
         }

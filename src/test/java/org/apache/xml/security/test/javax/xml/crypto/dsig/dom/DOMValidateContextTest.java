@@ -66,12 +66,14 @@ class DOMValidateContextTest {
     void testSetGetProperty() throws Exception {
         try {
             domVC.setProperty(null, "value");
+            fail("Should throw a NPE for null name");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null name");
         }
         try {
             domVC.getProperty(null);
+            fail("Should throw a NPE for null name");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null name");
@@ -89,6 +91,7 @@ class DOMValidateContextTest {
     void testSetGetNode() throws Exception {
         try {
             domVC.setNode(null);
+            fail("Should throw a NPE for null node");
         } catch (NullPointerException npe) {
         } catch (Exception ex) {
             fail("Should throw a NPE instead of " + ex + " for null node");
