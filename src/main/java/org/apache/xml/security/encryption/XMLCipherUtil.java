@@ -309,6 +309,8 @@ public final class XMLCipherUtil {
      *
      * @param hexString the hex string to convert
      * @return the byte array of the input param, empty array if the hex string is empty, or null if input param is null
+     * @throws IllegalArgumentException if the string has an odd length or contains a character that is not an
+     * ASCII hex digit
      */
     public static byte[] hexStringToByteArray(String hexString) {
         if (hexString == null){
@@ -318,11 +320,30 @@ public final class XMLCipherUtil {
             return new byte[0];
         }
         int len = hexString.length();
+        if (len % 2 != 0) {
+            throw new IllegalArgumentException("Hex string must have an even number of characters");
+        }
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hexString.charAt(i), 16) << 4)
-                    + Character.digit(hexString.charAt(i+1), 16));
+            data[i / 2] = (byte) ((hexDigit(hexString, i) << 4) + hexDigit(hexString, i + 1));
         }
         return data;
+    }
+
+    /**
+     * Returns the value of the ASCII hex digit at the given index. Unlike
+     * {@link Character#digit(char, int)}, which returns -1 for invalid characters and also accepts
+     * non-ASCII Unicode digits, this rejects anything outside {@code [0-9a-fA-F]}.
+     */
+    private static int hexDigit(String hexString, int index) {
+        char c = hexString.charAt(index);
+        if (c >= '0' && c <= '9') {
+            return c - '0';
+        } else if (c >= 'a' && c <= 'f') {
+            return c - 'a' + 10;
+        } else if (c >= 'A' && c <= 'F') {
+            return c - 'A' + 10;
+        }
+        throw new IllegalArgumentException("Invalid hex character at index " + index);
     }
 }
