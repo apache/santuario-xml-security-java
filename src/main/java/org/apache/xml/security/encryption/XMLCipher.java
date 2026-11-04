@@ -1241,7 +1241,11 @@ public class XMLCipher {
         }
 
         contextDocument = context;
-        ed = factory.newEncryptedData(element);
+        try {
+            ed = factory.newEncryptedData(element);
+        } catch (RuntimeException e) {
+            throw wrapUncheckedException(e);
+        }
 
         return ed;
     }
@@ -1272,7 +1276,11 @@ public class XMLCipher {
         }
 
         contextDocument = context;
-        ek = factory.newEncryptedKey(element);
+        try {
+            ek = factory.newEncryptedKey(element);
+        } catch (RuntimeException e) {
+            throw wrapUncheckedException(e);
+        }
         return ek;
     }
 
@@ -1456,6 +1464,15 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public Key decryptKey(EncryptedKey encryptedKey, String algorithm)
+        throws XMLEncryptionException {
+        try {
+            return decryptKeyInternal(encryptedKey, algorithm);
+        } catch (RuntimeException e) {
+            throw wrapUncheckedException(e);
+        }
+    }
+
+    private Key decryptKeyInternal(EncryptedKey encryptedKey, String algorithm)
         throws XMLEncryptionException {
         LOG.debug("Decrypting key from previously loaded EncryptedKey...");
 
@@ -1743,7 +1760,23 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public Key decryptKey(EncryptedKey encryptedKey) throws XMLEncryptionException {
-        return decryptKey(encryptedKey, ed.getEncryptionMethod().getAlgorithm());
+        String algorithm;
+        try {
+            algorithm = ed.getEncryptionMethod().getAlgorithm();
+        } catch (RuntimeException e) {
+            throw wrapUncheckedException(e);
+        }
+        return decryptKey(encryptedKey, algorithm);
+    }
+
+    /**
+     * Wraps an unchecked exception raised while processing (potentially attacker-supplied)
+     * encrypted content, e.g. from malformed base64 or a non-numeric element value, so that it
+     * is reported as the {@link XMLEncryptionException} declared by the public decrypt API.
+     */
+    private static XMLEncryptionException wrapUncheckedException(RuntimeException e) {
+        LOG.debug("Unchecked exception while processing encrypted content", e);
+        return new XMLEncryptionException(e);
     }
 
     /**
@@ -1765,6 +1798,14 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     private Document decryptElement(Element element) throws XMLEncryptionException {
+        try {
+            return decryptElementInternal(element);
+        } catch (RuntimeException e) {
+            throw wrapUncheckedException(e);
+        }
+    }
+
+    private Document decryptElementInternal(Element element) throws XMLEncryptionException {
         LOG.debug("Decrypting element...");
 
         if (element == null) {
@@ -1834,6 +1875,14 @@ public class XMLCipher {
      * @throws XMLEncryptionException
      */
     public byte[] decryptToByteArray(Element element) throws XMLEncryptionException {
+        try {
+            return decryptToByteArrayInternal(element);
+        } catch (RuntimeException e) {
+            throw wrapUncheckedException(e);
+        }
+    }
+
+    private byte[] decryptToByteArrayInternal(Element element) throws XMLEncryptionException {
         LOG.debug("Decrypting to ByteArray...");
 
         if (cipherMode != DECRYPT_MODE) {
@@ -2443,7 +2492,8 @@ public class XMLCipher {
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_CARRIEDKEYNAME).item(0);
             if (null != carriedNameElement) {
-                result.setCarriedName(carriedNameElement.getFirstChild().getNodeValue());
+                // CarriedKeyName is an xs:string, so an empty element is a valid (empty) name
+                result.setCarriedName(XMLUtils.getFullTextChildrenFromNode(carriedNameElement));
             }
 
             return result;
@@ -2473,8 +2523,9 @@ public class XMLCipher {
         /**
          * @param element
          * @return a new EncryptionMethod
+         * @throws XMLEncryptionException if the KeySize or OAEPparams child is malformed
          */
-        EncryptionMethod newEncryptionMethod(Element element) {
+        EncryptionMethod newEncryptionMethod(Element element) throws XMLEncryptionException {
             String encAlgorithm = element.getAttributeNS(null, EncryptionConstants._ATT_ALGORITHM);
             EncryptionMethod result = newEncryptionMethod(encAlgorithm);
 
@@ -2483,9 +2534,16 @@ public class XMLCipher {
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_KEYSIZE).item(0);
             if (null != keySizeElement) {
-                result.setKeySize(
-                    Integer.parseInt(
-                        keySizeElement.getFirstChild().getNodeValue()));
+                String keySize = XMLUtils.getFullTextChildrenFromNode(keySizeElement).trim();
+                if (keySize.isEmpty()) {
+                    throw new XMLEncryptionException("empty", "The xenc:KeySize element is empty");
+                }
+                try {
+                    result.setKeySize(Integer.parseInt(keySize));
+                } catch (NumberFormatException e) {
+                    throw new XMLEncryptionException(e, "empty",
+                        new Object[] {"The xenc:KeySize element does not contain a valid integer"});
+                }
             }
 
             Element oaepParamsElement =
@@ -2493,8 +2551,14 @@ public class XMLCipher {
                     EncryptionConstants.EncryptionSpecNS,
                     EncryptionConstants._TAG_OAEPPARAMS).item(0);
             if (null != oaepParamsElement) {
-                String oaepParams = oaepParamsElement.getFirstChild().getNodeValue();
-                result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
+                // OAEPparams is xs:base64Binary, so an empty element decodes to an empty octet string
+                String oaepParams = XMLUtils.getFullTextChildrenFromNode(oaepParamsElement);
+                try {
+                    result.setOAEPparams(XMLUtils.decode(oaepParams.getBytes(StandardCharsets.UTF_8)));
+                } catch (IllegalArgumentException e) {
+                    throw new XMLEncryptionException(e, "empty",
+                        new Object[] {"The xenc:OAEPparams element does not contain valid base64"});
+                }
             }
 
             Element digestElement =

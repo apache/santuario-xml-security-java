@@ -284,7 +284,11 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                     }
                 }
 
-                return Base64.getMimeDecoder().decode(sb.toString());
+                try {
+                    return Base64.getMimeDecoder().decode(sb.toString());
+                } catch (IllegalArgumentException e) {
+                    throw new XMLSecurityException(e);
+                }
             }
 
             @Override
