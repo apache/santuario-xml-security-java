@@ -233,7 +233,7 @@ public class ECKeyValue extends Signature11ElementProxy implements KeyValueConte
             try {
                 String content = XMLUtils.getFullTextChildrenFromNode(curElem);
                 ecPoint = decodePoint(XMLUtils.decode(content), ecParams.getCurve());
-            } catch (IOException ioe) {
+            } catch (IOException | IllegalArgumentException ioe) {
                 throw new MarshalException("Invalid EC Point", ioe);
             }
 

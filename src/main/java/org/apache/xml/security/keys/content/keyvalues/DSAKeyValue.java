@@ -114,7 +114,8 @@ public class DSAKeyValue extends SignatureElementProxy implements KeyValueConten
             KeyFactory dsaFactory = KeyFactory.getInstance("DSA");
 
             return dsaFactory.generatePublic(pkspec);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
+            // IllegalArgumentException: a key component is not valid base64
             throw new XMLSecurityException(ex);
         }
     }

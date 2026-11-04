@@ -821,6 +821,14 @@ public class KeyInfo extends ElementProxy {
      * @throws KeyResolverException
      */
     public PublicKey getPublicKey() throws KeyResolverException {
+        try {
+            return getPublicKeyInternal();
+        } catch (RuntimeException ex) {
+            throw wrapUncheckedException(ex);
+        }
+    }
+
+    private PublicKey getPublicKeyInternal() throws KeyResolverException {
         PublicKey pk = this.getPublicKeyFromInternalResolvers();
 
         if (pk != null) {
@@ -911,6 +919,14 @@ public class KeyInfo extends ElementProxy {
      * @throws KeyResolverException
      */
     public X509Certificate getX509Certificate() throws KeyResolverException {
+        try {
+            return getX509CertificateInternal();
+        } catch (RuntimeException ex) {
+            throw wrapUncheckedException(ex);
+        }
+    }
+
+    private X509Certificate getX509CertificateInternal() throws KeyResolverException {
         // First search using the individual resolvers from the user
         X509Certificate cert = this.getX509CertificateFromInternalResolvers();
 
@@ -1011,6 +1027,14 @@ public class KeyInfo extends ElementProxy {
      * @throws KeyResolverException
      */
     public SecretKey getSecretKey() throws KeyResolverException {
+        try {
+            return getSecretKeyInternal();
+        } catch (RuntimeException ex) {
+            throw wrapUncheckedException(ex);
+        }
+    }
+
+    private SecretKey getSecretKeyInternal() throws KeyResolverException {
         SecretKey sk = this.getSecretKeyFromInternalResolvers();
 
         if (sk != null) {
@@ -1102,6 +1126,14 @@ public class KeyInfo extends ElementProxy {
      * @throws KeyResolverException
      */
     public PrivateKey getPrivateKey() throws KeyResolverException {
+        try {
+            return getPrivateKeyInternal();
+        } catch (RuntimeException ex) {
+            throw wrapUncheckedException(ex);
+        }
+    }
+
+    private PrivateKey getPrivateKeyInternal() throws KeyResolverException {
         PrivateKey pk = this.getPrivateKeyFromInternalResolvers();
 
         if (pk != null) {
@@ -1235,5 +1267,15 @@ public class KeyInfo extends ElementProxy {
     @Override
     public String getBaseNamespace() {
         return Constants.SignatureSpecNS;
+    }
+
+    /**
+     * Wraps an unchecked exception raised while resolving a key from (potentially attacker-supplied)
+     * KeyInfo content, e.g. from malformed base64 or a non-numeric X509SerialNumber, so that it is
+     * reported as the {@link KeyResolverException} declared by the public key-retrieval methods.
+     */
+    private static KeyResolverException wrapUncheckedException(RuntimeException ex) {
+        LOG.log(Level.DEBUG, "Unchecked exception while resolving a key from KeyInfo", ex);
+        return new KeyResolverException(ex);
     }
 }
