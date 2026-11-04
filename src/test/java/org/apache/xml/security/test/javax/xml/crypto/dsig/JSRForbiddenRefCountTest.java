@@ -33,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This is a test for a forbidden number of references when secure validation is enabled.
@@ -52,6 +53,7 @@ class JSRForbiddenRefCountTest {
 
         try {
             new DOMSignedInfo(signedInfoElement, context, null);
+            fail("Failure expected on secure validation");
         } catch (MarshalException ex) {
             String error =
                 "A maximum of 30 references per Manifest are allowed with secure validation";
