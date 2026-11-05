@@ -774,7 +774,11 @@ public class Reference extends SignatureElementProxy {
             );
         }
         String content = XMLUtils.getFullTextChildrenFromNode(digestValueElement);
-        return XMLUtils.decode(content);
+        try {
+            return XMLUtils.decode(content);
+        } catch (IllegalArgumentException ex) {
+            throw new XMLSecurityException(ex, "Base64Decoding");
+        }
     }
 
 

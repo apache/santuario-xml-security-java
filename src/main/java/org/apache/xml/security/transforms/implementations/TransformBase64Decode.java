@@ -82,12 +82,12 @@ public class TransformBase64Decode extends TransformSpi {
             StringBuilder sb = new StringBuilder();
             traverseElement((Element)el, sb);
             if (os == null) {
-                byte[] decodedBytes = XMLUtils.decode(sb.toString());
+                byte[] decodedBytes = decodeBase64(sb.toString());
                 XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                 output.setSecureValidation(secureValidation);
                 return output;
             }
-            byte[] bytes = XMLUtils.decode(sb.toString());
+            byte[] bytes = decodeBase64(sb.toString());
             os.write(bytes);
             XMLSignatureInput output = new XMLSignatureInput((byte[])null);
             output.setSecureValidation(secureValidation);
@@ -96,7 +96,7 @@ public class TransformBase64Decode extends TransformSpi {
         } else if (input.isOctetStream() || input.isNodeSet()) {
             if (os == null) {
                 byte[] base64Bytes = input.getBytes();
-                byte[] decodedBytes = XMLUtils.decode(base64Bytes);
+                byte[] decodedBytes = decodeBase64(base64Bytes);
                 XMLSignatureInput output = new XMLSignatureInput(decodedBytes);
                 output.setSecureValidation(secureValidation);
                 return output;
@@ -116,6 +116,22 @@ public class TransformBase64Decode extends TransformSpi {
         }
 
         throw new TransformationException("empty", new Object[] {"Unrecognized XMLSignatureInput state"});
+    }
+
+    private static byte[] decodeBase64(String encoded) throws TransformationException {
+        try {
+            return XMLUtils.decode(encoded);
+        } catch (IllegalArgumentException ex) {
+            throw new TransformationException(ex, "Base64Decoding");
+        }
+    }
+
+    private static byte[] decodeBase64(byte[] encoded) throws TransformationException {
+        try {
+            return XMLUtils.decode(encoded);
+        } catch (IllegalArgumentException ex) {
+            throw new TransformationException(ex, "Base64Decoding");
+        }
     }
 
     private void traverseElement(Element node, StringBuilder sb) {
