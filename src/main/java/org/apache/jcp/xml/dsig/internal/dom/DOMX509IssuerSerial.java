@@ -40,6 +40,9 @@ import org.w3c.dom.Node;
 public final class DOMX509IssuerSerial extends DOMStructure
     implements X509IssuerSerial {
 
+    /** The maximum number of characters accepted in an X509SerialNumber read from a document. */
+    private static final int MAX_SERIAL_NUMBER_LENGTH = 100;
+
     private final String issuerName;
     private final BigInteger serialNumber;
 
@@ -81,7 +84,23 @@ public final class DOMX509IssuerSerial extends DOMStructure
                                                         "X509SerialNumber",
                                                         XMLSignature.XMLNS);
         issuerName = iNElem.getFirstChild().getNodeValue();
-        serialNumber = new BigInteger(sNElem.getFirstChild().getNodeValue());
+        if (sNElem == null) {
+            throw new MarshalException("Missing X509SerialNumber element");
+        }
+        // xs:integer collapses surrounding whitespace
+        String serialNumberText = sNElem.getTextContent().trim();
+        // RFC 5280 limits certificate serial numbers to 20 octets (at most 49 decimal digits); the
+        // bound is generous, but stops attacker-supplied values driving the super-linear cost of
+        // BigInteger(String) on very long digit strings
+        if (serialNumberText.length() > MAX_SERIAL_NUMBER_LENGTH) {
+            throw new MarshalException(
+                "X509SerialNumber exceeds the maximum length of " + MAX_SERIAL_NUMBER_LENGTH + " characters");
+        }
+        try {
+            serialNumber = new BigInteger(serialNumberText);
+        } catch (NumberFormatException ex) {
+            throw new MarshalException("Invalid X509SerialNumber", ex);
+        }
     }
 
     @Override
