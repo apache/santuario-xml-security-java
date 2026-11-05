@@ -33,8 +33,10 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -68,6 +70,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -1691,5 +1694,82 @@ public class SignatureVerificationTest extends AbstractSignatureVerificationTest
         } catch (XMLStreamException ex) {
             assertTrue(ex.getMessage().contains("Invalid digest of reference"));
         }
+    }
+
+    /**
+     * A DOCTYPE in the untrusted input must be rejected if the caller supplied an
+     * XMLStreamReader created by a factory with DTD support enabled.
+     */
+    @Test
+    void testSignatureVerificationWithDTDRejected() throws Exception {
+        XMLInputFactory dtdEnabledFactory = XMLInputFactory.newInstance();
+        dtdEnabledFactory.setProperty(XMLInputFactory.SUPPORT_DTD, true);
+        dtdEnabledFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+
+        XMLStreamReader securityStreamReader = verifySignedDocumentWithDTD(dtdEnabledFactory, null);
+
+        XMLStreamException ex = assertThrows(XMLStreamException.class, () -> StAX2DOM.readDoc(securityStreamReader));
+        assertTrue(ex.getCause() instanceof XMLSecurityException);
+        assertTrue(ex.getCause().getMessage().contains("Document type declarations are not allowed"),
+            ex.getCause().getMessage());
+    }
+
+    /**
+     * A reader created with DTD support disabled ignores the DOCTYPE, so the document must still
+     * verify (e.g. readers created by Apache CXF's StaxUtils).
+     */
+    @Test
+    void testSignatureVerificationWithDTDIgnoredByReader() throws Exception {
+        XMLInputFactory dtdDisabledFactory = XMLInputFactory.newInstance();
+        dtdDisabledFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        dtdDisabledFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false);
+        dtdDisabledFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+
+        TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
+        XMLStreamReader securityStreamReader = verifySignedDocumentWithDTD(dtdDisabledFactory, securityEventListener);
+        StAX2DOM.readDoc(securityStreamReader);
+
+        checkSecurityEvents(securityEventListener);
+        checkSignedElementSecurityEvents(securityEventListener);
+    }
+
+    private XMLStreamReader verifySignedDocumentWithDTD(
+        XMLInputFactory factory, TestSecurityEventListener securityEventListener
+    ) throws Exception {
+        // Read in plaintext document
+        Document document = XMLUtils.readResource("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml",
+            getClass().getClassLoader(), false);
+
+        // Set up the Key
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        keyStore.load(
+            this.getClass().getClassLoader().getResource("transmitter.jks").openStream(),
+            "default".toCharArray()
+        );
+        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+
+        // Sign using DOM
+        List<String> localNames = new ArrayList<>();
+        localNames.add("PaymentInfo");
+        XMLSignature sig = signUsingDOM(
+            "http://www.w3.org/2000/09/xmldsig#rsa-sha1", document, localNames, key
+        );
+        sig.addKeyInfo(cert);
+
+        javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        transformer.transform(new DOMSource(document), new StreamResult(baos));
+
+        // Prepend a DOCTYPE that doesn't alter the signed content
+        String signedXml = "<!DOCTYPE PurchaseOrder [<!ENTITY unused \"value\">]>"
+            + new String(baos.toByteArray(), StandardCharsets.UTF_8);
+        XMLStreamReader xmlStreamReader = factory.createXMLStreamReader(
+            new ByteArrayInputStream(signedXml.getBytes(StandardCharsets.UTF_8)));
+
+        XMLSecurityProperties properties = new XMLSecurityProperties();
+        InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
+        return inboundXMLSec.processInMessage(xmlStreamReader, null, securityEventListener);
     }
 }

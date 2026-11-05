@@ -20,6 +20,7 @@ package org.apache.xml.security.stax.impl.processor.input;
 
 import java.util.NoSuchElementException;
 
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
@@ -44,6 +45,7 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
     private static final Integer maximumAllowedXMLStructureDepth =
             Integer.valueOf(ConfigurationProperties.getProperty("MaximumAllowedXMLStructureDepth"));
     private int currentXMLStructureDepth;
+    private final boolean rejectDTD;
     private final XMLStreamReader xmlStreamReader;
     private XMLSecStartElement parentXmlSecStartElement;
     private boolean EOF = false;
@@ -52,6 +54,22 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
         super(securityProperties);
         setPhase(XMLSecurityConstants.Phase.PREPROCESSING);
         this.xmlStreamReader = xmlStreamReader;
+        this.rejectDTD = !Boolean.parseBoolean(ConfigurationProperties.getProperty("AllowDTD"))
+            && !isDTDSupportDisabled(xmlStreamReader);
+    }
+
+    /**
+     * A reader created with XMLInputFactory.SUPPORT_DTD=false still reports a DOCTYPE as a DTD event,
+     * but neither processes the internal subset nor fetches an external one, and leaves entity
+     * references unexpanded. Such a document is passed through as before. Any other reader
+     * (DTD support enabled, or not reported) would process the DTD while we pull events from it.
+     */
+    private static boolean isDTDSupportDisabled(XMLStreamReader xmlStreamReader) {
+        try {
+            return Boolean.FALSE.equals(xmlStreamReader.getProperty(XMLInputFactory.SUPPORT_DTD));
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @Override
@@ -67,6 +85,17 @@ public class XMLEventReaderInputProcessor extends AbstractInputProcessor {
     }
 
     private XMLSecEvent processEventInternal() throws XMLStreamException {
+        if (rejectDTD) {
+            // The XMLStreamReader is supplied by the caller and was created by a factory with
+            // DTD support enabled (or doesn't say). Pulling further events would make it process
+            // the DTD of the untrusted input (entity expansion, external fetches), so reject any
+            // document type declaration or entity reference before reading it, as the DOM code
+            // does when secure validation is enabled.
+            int eventType = xmlStreamReader.getEventType();
+            if (XMLStreamConstants.DTD == eventType || XMLStreamConstants.ENTITY_REFERENCE == eventType) {
+                throw new XMLStreamException(new XMLSecurityException("secureProcessing.AllowDTD"));
+            }
+        }
         XMLSecEvent xmlSecEvent = XMLSecEventFactory.allocate(xmlStreamReader, parentXmlSecStartElement);
         if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
             currentXMLStructureDepth++;
