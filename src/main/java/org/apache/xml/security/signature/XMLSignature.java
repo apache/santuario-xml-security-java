@@ -567,7 +567,11 @@ public final class XMLSignature extends SignatureElementProxy {
         }
 
         // create a SignedInfo object from that element
-        this.signedInfo = new SignedInfo(signedInfoElem, baseURI, secureValidation, provider);
+        try {
+            this.signedInfo = new SignedInfo(signedInfoElem, baseURI, secureValidation, provider);
+        } catch (RuntimeException ex) {
+            throw new XMLSignatureException(ex);
+        }
         // get signedInfoElem again in case it has changed
         signedInfoElem = XMLUtils.getNextElement(element.getFirstChild());
 
@@ -700,7 +704,11 @@ public final class XMLSignature extends SignatureElementProxy {
      */
     public byte[] getSignatureValue() throws XMLSignatureException {
         String content = XMLUtils.getFullTextChildrenFromNode(signatureValueElement);
-        return XMLUtils.decode(content);
+        try {
+            return XMLUtils.decode(content);
+        } catch (IllegalArgumentException ex) {
+            throw new XMLSignatureException(ex, "Base64Decoding");
+        }
     }
 
     /**
@@ -983,6 +991,10 @@ public final class XMLSignature extends SignatureElementProxy {
         } catch (XMLSignatureException ex) {
             throw ex;
         } catch (XMLSecurityException ex) {
+            throw new XMLSignatureException(ex);
+        } catch (RuntimeException ex) {
+            // Malformed (attacker-supplied) signature content must be reported as the declared
+            // exception type, not escape as e.g. IllegalArgumentException or NullPointerException
             throw new XMLSignatureException(ex);
         }
     }

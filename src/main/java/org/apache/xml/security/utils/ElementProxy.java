@@ -382,7 +382,11 @@ public abstract class ElementProxy {
      * @throws XMLSecurityException
      */
     public byte[] getBytesFromTextChild() throws XMLSecurityException {
-        return XMLUtils.decode(getTextFromTextChild());
+        try {
+            return XMLUtils.decode(getTextFromTextChild());
+        } catch (IllegalArgumentException ex) {
+            throw new XMLSecurityException(ex, "Base64Decoding");
+        }
     }
 
     /**

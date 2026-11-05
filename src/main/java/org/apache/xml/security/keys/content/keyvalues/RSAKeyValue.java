@@ -106,7 +106,8 @@ public class RSAKeyValue extends SignatureElementProxy implements KeyValueConten
             PublicKey pk = rsaFactory.generatePublic(rsaKeyspec);
 
             return pk;
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | IllegalArgumentException ex) {
+            // IllegalArgumentException: a key component is not valid base64
             throw new XMLSecurityException(ex);
         }
     }
