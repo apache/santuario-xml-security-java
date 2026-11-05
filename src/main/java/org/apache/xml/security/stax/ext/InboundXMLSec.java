@@ -72,6 +72,10 @@ public class InboundXMLSec {
     /**
      * Warning:
      * configure your xmlStreamReader correctly. Otherwise you can create a security hole.
+     * If the xmlStreamReader does not report XMLInputFactory.SUPPORT_DTD=false, a document type
+     * declaration in the input is rejected by default (see the "AllowDTD" configuration property).
+     * This check only sees the DTD event when it is reached: it cannot undo DTD processing the
+     * xmlStreamReader has already done, e.g. before it was handed over or if it parses DTDs eagerly.
      * At minimum configure the following properties:
      * xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
      * xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
@@ -92,6 +96,10 @@ public class InboundXMLSec {
     /**
      * Warning:
      * configure your xmlStreamReader correctly. Otherwise you can create a security hole.
+     * If the xmlStreamReader does not report XMLInputFactory.SUPPORT_DTD=false, a document type
+     * declaration in the input is rejected by default (see the "AllowDTD" configuration property).
+     * This check only sees the DTD event when it is reached: it cannot undo DTD processing the
+     * xmlStreamReader has already done, e.g. before it was handed over or if it parses DTDs eagerly.
      * At minimum configure the following properties:
      * xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
      * xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);

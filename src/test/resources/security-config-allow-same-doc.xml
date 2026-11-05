@@ -27,6 +27,7 @@
         <Property NAME="AllowMD5Algorithm" VAL="false"/>
         <Property NAME="AllowNotSameDocumentReferences" VAL="true"/>
         <Property NAME="MaximumAllowedXMLStructureDepth" VAL="100"/>
+        <Property NAME="AllowDTD" VAL="false"/>
         <Property NAME="MaximumAllowedEncryptedDataEvents" VAL="200"/>
         <Property NAME="DefaultLanguageCode" VAL="en"/>
         <Property NAME="DefaultCountryCode" VAL="US"/>

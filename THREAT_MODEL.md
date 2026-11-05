@@ -228,6 +228,9 @@ attacker-controlled and governed by §5a/§8.
 - **Treat decrypted/verified bytes as untrusted** until your own validation
   passes; apply resource limits at the boundary.
 - Protect signing/decryption private keys (caller-side key management).
+- **Harden the `XMLStreamReader` you pass to the StAX API** — create it with
+  `SUPPORT_DTD=false` and `IS_SUPPORTING_EXTERNAL_ENTITIES=false`. The library
+  parses with your reader, not its own (§11a).
 
 ## §11 Known misuse patterns
 
@@ -253,6 +256,19 @@ attacker-controlled and governed by §5a/§8.
 - **Findings in the retired C++ project / archived repos** — `OUT-OF-MODEL:
   unsupported-component` (§3).
 - **JCE-provider primitive issues** (RNG, GCM) — out of layer (§5).
+- **XXE / entity expansion / external-DTD fetch by a caller-built
+  `XMLStreamReader`** passed to `InboundXMLSec.processInMessage` — non-finding:
+  the reader and its parser configuration belong to the caller (§6/§10). As a
+  backstop, the StAX inbound path rejects DTD and `ENTITY_REFERENCE` events
+  from any reader that does not report `SUPPORT_DTD=false` (opt out with the
+  `AllowDTD` configuration property); readers with DTD support disabled, such
+  as Apache CXF's, ignore the DOCTYPE and are passed through. The backstop
+  cannot undo parsing the caller's reader has already done: a reader advanced
+  past the prolog, or one that resolves the DTD eagerly, is outside that check.
+  `OUT-OF-MODEL: trusted-input`. Still in scope: a DOCTYPE from a DTD-enabled
+  reader at `START_DOCUMENT` reaching the library unrejected with `AllowDTD`
+  unset, or a reader reporting `SUPPORT_DTD=false` that nonetheless expands
+  entities or fetches external resources while the library pulls events.
 
 ## §12 Conditions that would change this model
 
