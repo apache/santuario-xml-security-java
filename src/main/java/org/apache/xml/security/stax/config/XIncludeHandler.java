@@ -31,6 +31,8 @@ import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -57,7 +59,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Absolutely primitive XInclude#xpointer scheme handling
@@ -155,7 +156,7 @@ public class XIncludeHandler extends DefaultHandler {
             if (document == null) {
                 DOMResult domResult = new DOMResult();
                 try {
-                    XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+                    XMLReader xmlReader = createSecureXMLReader();
                     SAXTransformerFactory saxTransformerFactory = (SAXTransformerFactory) TransformerFactory.newInstance();
                     saxTransformerFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
                     try {
@@ -260,6 +261,25 @@ public class XIncludeHandler extends DefaultHandler {
     @Override
     public void fatalError(SAXParseException e) throws SAXException {
         LOG.log(Level.ERROR, e.getMessage(), e);
+    }
+
+    /**
+     * Creates an XMLReader for included documents that is hardened in the same way as the
+     * parser used for the top-level configuration document (see {@link Init}): secure
+     * processing enabled, DOCTYPE declarations disallowed, no XInclude support in the parser
+     * itself and namespace aware.
+     */
+    private static XMLReader createSecureXMLReader() throws SAXException {
+        try {
+            SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+            saxParserFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+            saxParserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            saxParserFactory.setXIncludeAware(false);
+            saxParserFactory.setNamespaceAware(true);
+            return saxParserFactory.newSAXParser().getXMLReader();
+        } catch (ParserConfigurationException e) {
+            throw new SAXException(e);
+        }
     }
 
     private NodeList evaluateXPointer(String xpointer, Node node) throws SAXException {
