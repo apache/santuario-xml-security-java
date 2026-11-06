@@ -140,6 +140,33 @@ path have differed). This reshapes §8/§9/§11a/§13 simultaneously:
 - If it is **on by default** everywhere, the §8 properties hold out of the
   box. **This is wave-1 Q6 and the most important question in the model.**
 
+**StAX has no secure-validation switch.** The `org.apache.xml.security.secureValidation`
+property and `setSecureValidation(...)` are DOM / JSR-105 settings; the
+streaming stack (`XMLSec`, `InboundXMLSec`, `*InputProcessor`) never reads
+them. Instead, StAX applies the equivalent protections **by default** from its
+configuration file, `security-config.xml` (loaded by
+`org.apache.xml.security.stax.config.Init`):
+
+| DOM check under secure validation | StAX equivalent (default) |
+| --- | --- |
+| `Transform`s-per-`Reference` cap | `MaximumAllowedTransformsPerReference` = 5 |
+| `Reference`s-per-`Manifest` cap | `MaximumAllowedReferencesPerManifest` = 30 |
+| MD5 digest / HMAC-MD5 / RSA-MD5 rejection | `AllowMD5Algorithm` = false |
+| DTD rejection | `AllowDTD` = false (see §11a for the backstop's limits) |
+| XSLT / XPath transforms forbidden | not registered in `TransformAlgorithms` at all |
+| no remote/local dereferencing of `Reference` URIs | `AllowNotSameDocumentReferences` = false |
+
+StAX additionally bounds `MaximumAllowedXMLStructureDepth` (100) and
+`MaximumAllowedEncryptedDataEvents` (200), which have no DOM counterpart.
+These settings can only be relaxed by the caller supplying a different
+configuration (`XMLSec.init(URI)` / `Init.init(URI, ...)`); that configuration
+is trusted input (§6/§7). For StAX, therefore, read "secure validation on" in
+§8 and §13 as "the shipped `security-config.xml` defaults", and "secure
+validation off" as "the caller loaded a configuration that relaxes them"
+(`OUT-OF-MODEL: non-default-build`). A §8 property that the DOM stack enforces
+under secure validation but StAX does not enforce under its defaults is a §12
+divergence and in scope.
+
 ## §6 Assumptions about inputs
 
 Per-parameter trust for the security-critical entry points:
@@ -219,7 +246,10 @@ attacker-controlled and governed by §5a/§8.
 
 ## §10 Downstream responsibilities
 
-- **Enable secure validation** for any XML from outside your trust boundary.
+- **Enable secure validation** for any XML from outside your trust boundary
+  (DOM / JSR-105). On the StAX path there is no flag to set: keep the shipped
+  `security-config.xml` defaults, and do not load a configuration that relaxes
+  them for untrusted input (§5a).
 - **Check what was signed** — verify the signature's `Reference`s resolve to
   the exact content you are about to trust (defeat XSW); prefer ID-based
   references you control and re-check post-verify.
@@ -269,6 +299,13 @@ attacker-controlled and governed by §5a/§8.
   reader at `START_DOCUMENT` reaching the library unrejected with `AllowDTD`
   unset, or a reader reporting `SUPPORT_DTD=false` that nonetheless expands
   entities or fetches external resources while the library pulls events.
+- **"StAX has no `secureValidation` flag / ignores
+  `org.apache.xml.security.secureValidation`"** — non-finding on its own: the
+  StAX stack applies the equivalent checks by default via
+  `security-config.xml` (§5a). Still in scope: a specific §8 property that DOM
+  enforces under secure validation but StAX does not under its shipped
+  defaults (§12). Relaxing the defaults with a caller-supplied configuration is
+  `OUT-OF-MODEL: non-default-build`.
 
 ## §12 Conditions that would change this model
 
@@ -302,6 +339,8 @@ attacker-controlled and governed by §5a/§8.
 - **Q6.** **Secure validation defaults** — for each entry point (native
   `org.apache.xml.security` vs JSR-105 `javax.xml.crypto`, DOM vs StAX, and by
   version), is secure validation **on by default**, or must the caller opt in?
+  *(StAX answered in §5a: no flag; equivalent checks on by default via
+  `security-config.xml`.)*
   This decides whether secure-validation-off findings are `VALID` or
   `OUT-OF-MODEL: non-default-build`. (§5a/§8/§9/§11a/§13.)
 - **Q-XSW.** Confirm the project's official position that **signature-coverage
