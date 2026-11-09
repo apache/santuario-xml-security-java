@@ -55,6 +55,8 @@ public class XMLSecurityStreamReader implements XMLStreamReader, AutoCloseable {
     private boolean standalone;
     private boolean standaloneSet;
     private String characterEncodingScheme;
+    private boolean finalized;
+    private XMLStreamException finalException;
 
     private static final String ERR_STATE_NOT_ELEM = "Current state not START_ELEMENT or END_ELEMENT";
     private static final String ERR_STATE_NOT_STELEM = "Current state not START_ELEMENT";
@@ -98,7 +100,42 @@ public class XMLSecurityStreamReader implements XMLStreamReader, AutoCloseable {
         } catch (XMLSecurityException e) {
             throw new XMLStreamException(e);
         }
+        if (eventType == END_DOCUMENT) {
+            // Run the end-of-document security checks (e.g. "message is not secured",
+            // "unprocessed references") as soon as the whole document has been read, so that
+            // a caller which reads to END_DOCUMENT gets the verdict even without calling close().
+            doFinal();
+        }
         return eventType;
+    }
+
+    /**
+     * Runs the final checks of the input processor chain at most once. A failure is remembered
+     * and re-thrown on every later call, so that a caller which ignores the exception thrown
+     * from next() still gets it from close().
+     */
+    private void doFinal() throws XMLStreamException {
+        if (finalized) {
+            if (finalException != null) {
+                throw finalException;
+            }
+            return;
+        }
+        finalized = true;
+        try {
+            inputProcessorChain.reset();
+            inputProcessorChain.doFinal();
+        } catch (XMLSecurityException e) {
+            finalException = new XMLStreamException(e);
+            throw finalException;
+        } catch (XMLStreamException e) {
+            finalException = e;
+            throw e;
+        } catch (RuntimeException e) {
+            // Remember unexpected failures too, so that close() cannot succeed after them.
+            finalException = new XMLStreamException(e);
+            throw e;
+        }
     }
 
     private XMLSecEvent getCurrentEvent() {
@@ -206,12 +243,7 @@ public class XMLSecurityStreamReader implements XMLStreamReader, AutoCloseable {
 
     @Override
     public void close() throws XMLStreamException {
-        try {
-            inputProcessorChain.reset();
-            inputProcessorChain.doFinal();
-        } catch (XMLSecurityException e) {
-            throw new XMLStreamException(e);
-        }
+        doFinal();
     }
 
     @Override
