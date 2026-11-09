@@ -83,6 +83,16 @@ public class InboundXMLSec {
      * <p></p>
      * This method is the entry point for the incoming security-engine.
      * Hand over the original XMLStreamReader and use the returned one for further processing
+     * <p></p>
+     * Warning:
+     * the returned XMLStreamReader delivers events <b>before</b> they are verified. Signature and
+     * digest checks run while the document is being read (a digest is compared at the end tag of
+     * the referenced element), and the final checks (for example that the document is secured at
+     * all and that every reference was processed) run when END_DOCUMENT is reached or when
+     * {@link XMLStreamReader#close()} is called. Any of these checks fails by throwing an
+     * XMLStreamException. Do not trust or act on the content until the stream has been read up to
+     * END_DOCUMENT without an exception; if you stop reading early, call close() and treat an
+     * exception from it as a verification failure.
      *
      * @param xmlStreamReader The original XMLStreamReader
      * @return A new XMLStreamReader which does transparently the security processing.
@@ -107,6 +117,16 @@ public class InboundXMLSec {
      * <p></p>
      * This method is the entry point for the incoming security-engine.
      * Hand over the original XMLStreamReader and use the returned one for further processing
+     * <p></p>
+     * Warning:
+     * the returned XMLStreamReader delivers events <b>before</b> they are verified. Signature and
+     * digest checks run while the document is being read (a digest is compared at the end tag of
+     * the referenced element), and the final checks (for example that the document is secured at
+     * all and that every reference was processed) run when END_DOCUMENT is reached or when
+     * {@link XMLStreamReader#close()} is called. Any of these checks fails by throwing an
+     * XMLStreamException. Do not trust or act on the content until the stream has been read up to
+     * END_DOCUMENT without an exception; if you stop reading early, call close() and treat an
+     * exception from it as a verification failure.
      *
      * @param xmlStreamReader The original XMLStreamReader
      * @param requestSecurityEvents A List of requested SecurityEvents
