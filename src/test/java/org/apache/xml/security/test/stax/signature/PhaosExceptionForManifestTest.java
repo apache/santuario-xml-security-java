@@ -21,10 +21,8 @@ package org.apache.xml.security.test.stax.signature;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerFactory;
@@ -73,9 +71,7 @@ class PhaosExceptionForManifestTest {
         Document document = XMLUtils.readResource("com/phaos/phaos-xmldsig-three/signature-rsa-detached-b64-transform.xml",
             getClass().getClassLoader(), false);
 
-        // Set up the key
-        byte[] hmacKey = "test".getBytes(StandardCharsets.US_ASCII);
-        SecretKey key = new SecretKeySpec(hmacKey, "http://www.w3.org/2000/09/xmldsig#hmac-sha1");
+        // The signature is verified with the RSA key in the document's ds:KeyValue
 
         // XMLUtils.outputDOM(document, System.out);
 
@@ -91,7 +87,6 @@ class PhaosExceptionForManifestTest {
 
         // Verify signature
         XMLSecurityProperties properties = new XMLSecurityProperties();
-        properties.setSignatureVerificationKey(key);
         InboundXMLSec inboundXMLSec = XMLSec.getInboundWSSec(properties);
         TestSecurityEventListener securityEventListener = new TestSecurityEventListener();
         XMLStreamReader securityStreamReader =
