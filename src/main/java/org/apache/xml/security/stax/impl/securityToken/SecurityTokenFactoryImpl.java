@@ -97,7 +97,7 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         throw new XMLSecurityException("stax.noKey", new Object[] {keyUsage});
     }
 
-    private InboundSecurityToken getDefaultSecurityToken(XMLSecurityProperties securityProperties, final InboundSecurityContext inboundSecurityContext, SecurityTokenConstants.KeyUsage keyUsage) {
+    private InboundSecurityToken getDefaultSecurityToken(XMLSecurityProperties securityProperties, final InboundSecurityContext inboundSecurityContext, SecurityTokenConstants.KeyUsage keyUsage) throws XMLSecurityException {
         AbstractInboundSecurityToken token =
                 new AbstractInboundSecurityToken(inboundSecurityContext, IDGenerator.generateID(null),
                         SecurityTokenConstants.KeyIdentifier_NoKeyInfo, false) {
@@ -269,17 +269,27 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
     }
 
     private static void setTokenKey(XMLSecurityProperties securityProperties, SecurityTokenConstants.KeyUsage keyUsage,
-                                    AbstractInboundSecurityToken token) {
+                                    AbstractInboundSecurityToken token) throws XMLSecurityException {
         Key key = null;
-        if (SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage)) {
+        boolean signatureVerification = SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage);
+        if (signatureVerification) {
             key = securityProperties.getSignatureVerificationKey();
         } else if (SecurityTokenConstants.KeyUsage_Decryption.equals(keyUsage)) {
             key = securityProperties.getDecryptionKey();
         }
+        // A configured signature verification key is authoritative: it must be used whatever the
+        // KeyInfo contains, including a ds:KeyValue, which would otherwise supply its own key.
         if (key instanceof PublicKey
-            && !SecurityTokenConstants.KeyValueToken.equals(token.getTokenType())) {
+            && (signatureVerification || !SecurityTokenConstants.KeyValueToken.equals(token.getTokenType()))) {
             token.setPublicKey((PublicKey) key);
         } else {
+            // A configured symmetric (e.g. HMAC) verification key cannot be combined with KeyInfo
+            // that resolves to an asymmetric key (X509Data, KeyValue): verifying with the
+            // document-supplied public key would bypass the configured key.
+            if (signatureVerification && key != null && token.isAsymmetric()) {
+                throw new XMLSecurityException("stax.signatureVerificationKeyMismatch",
+                                               new Object[] {key.getAlgorithm()});
+            }
             token.setSecretKey("", key);
         }
     }
