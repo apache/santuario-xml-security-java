@@ -62,11 +62,11 @@ public class ResourceResolverContext {
             return true;
         }
         if (uriToResolve != null) {
-            if (uriToResolve.startsWith("file:") || uriToResolve.startsWith("http:")) {
+            if (uriToResolve.startsWith("file:") || ResolverUtils.hasExplicitNonFileScheme(uriToResolve)) {
                 return false;
             }
             if (!uriToResolve.isEmpty() && uriToResolve.charAt(0) != '#' &&
-                    baseUri != null && (baseUri.startsWith("file:") || baseUri.startsWith("http:"))) {
+                    baseUri != null && (baseUri.startsWith("file:") || ResolverUtils.hasExplicitNonFileScheme(baseUri))) {
                 return false;
             }
         }

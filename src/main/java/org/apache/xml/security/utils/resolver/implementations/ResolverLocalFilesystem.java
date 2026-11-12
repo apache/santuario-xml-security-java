@@ -29,6 +29,7 @@ import org.apache.xml.security.signature.XMLSignatureFileInput;
 import org.apache.xml.security.utils.resolver.ResourceResolverContext;
 import org.apache.xml.security.utils.resolver.ResourceResolverException;
 import org.apache.xml.security.utils.resolver.ResourceResolverSpi;
+import org.apache.xml.security.utils.resolver.ResolverUtils;
 
 /**
  * A simple ResourceResolver for requests into the local filesystem.
@@ -64,15 +65,18 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
             return false;
         }
 
-        if (context.uriToResolve.isEmpty() || context.uriToResolve.charAt(0) == '#' ||
-            context.uriToResolve.startsWith("http:")) {
+        if (context.uriToResolve.isEmpty() || context.uriToResolve.charAt(0) == '#') {
             return false;
         }
 
         try {
             LOG.log(Level.DEBUG, "I was asked whether I can resolve {0}", context.uriToResolve);
 
-            if (context.uriToResolve.startsWith("file:") || context.baseUri.startsWith("file:")) {
+            // At least one of uriToResolve or baseUri must start with "file:", and
+            // neither may carry a different explicit scheme (e.g. http:, https:, ftp:).
+            if ((context.uriToResolve.startsWith("file:") || context.baseUri.startsWith("file:"))
+                    && !ResolverUtils.hasExplicitNonFileScheme(context.uriToResolve)
+                    && !ResolverUtils.hasExplicitNonFileScheme(context.baseUri)) {
                 LOG.log(Level.DEBUG, "I state that I can resolve {0}", context.uriToResolve);
                 return true;
             }
