@@ -306,7 +306,12 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     DecryptionThread decryptionThread = new DecryptionThread(subInputProcessorChain, isSecurityHeaderEvent, nextEvent);
                     Key decryptionKey =
                         inboundSecurityToken.getSecretKey(algorithmURI, XMLSecurityConstants.Enc, encryptedDataType.getId());
-                    decryptionKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, decryptionKey.getEncoded());
+                    byte[] keyBytes = decryptionKey.getEncoded();
+                    if (SecurityTokenConstants.KeyIdentifier_EncryptedKey.equals(inboundSecurityToken.getKeyIdentifier())) {
+                        // A key taken directly from an EncryptedKey must not reveal its length
+                        keyBytes = XMLEncryptedKeyInputHandler.matchKeyLength(keyBytes, algorithmURI);
+                    }
+                    decryptionKey = XMLSecurityUtils.prepareSecretKey(algorithmURI, keyBytes);
                     decryptionThread.setSecretKey(decryptionKey);
                     decryptionThread.setSymmetricCipher(symCipher);
                     decryptionThread.setIvLength(ivLength);
