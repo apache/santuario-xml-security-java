@@ -98,7 +98,23 @@ public class ResourceResolverTest {
     }
 
     @Test
-    public void testIsSafeURIToResolveFile() throws Exception {
+    void testLocalFileWithHttpBaseURI() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        uriAttr.setValue("pom.xml");
+
+        ResolverLocalFilesystem resolverLFS = new ResolverLocalFilesystem();
+        ResourceResolverContext resolverContext =
+            new ResourceResolverContext(uriAttr, "http://base", false);
+        try {
+            assertFalse(resolverLFS.engineCanResolveURI(resolverContext));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    void testIsSafeURIToResolveFile() throws Exception {
         Document doc = TestUtils.newDocument();
         Attr uriAttr = doc.createAttribute("URI");
         String file = resolveFile("pom.xml").toURI().toString();

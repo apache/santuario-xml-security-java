@@ -68,20 +68,23 @@ public class ResolverLocalFilesystem extends ResourceResolverSpi {
             return false;
         }
 
-        if (context.uriToResolve.isEmpty() || context.uriToResolve.charAt(0) == '#' ||
-            context.uriToResolve.startsWith("http:")) {
+        if (context.uriToResolve.isEmpty() || context.uriToResolve.charAt(0) == '#') {
             return false;
         }
 
-        try {
-            LOG.debug("I was asked whether I can resolve {}", context.uriToResolve);
+        LOG.debug("I was asked whether I can resolve {0}", context.uriToResolve);
 
-            if (context.uriToResolve.startsWith("file:") || context.baseUri.startsWith("file:")) {
-                LOG.debug("I state that I can resolve {}", context.uriToResolve);
+        String uriToResolveScheme = scheme(context.uriToResolve);
+
+        if (uriToResolveScheme == null) {
+            String baseUriScheme = scheme(context.baseUri);
+            if ("file".equals(baseUriScheme)) {
+                LOG.debug("I state that I can resolve {0}", context.uriToResolve);
                 return true;
             }
-        } catch (Exception e) {
-            LOG.debug(e.getMessage(), e);
+        } else if (uriToResolveScheme.equals("file")) {
+            LOG.debug("I state that I can resolve {0}", context.uriToResolve);
+            return true;
         }
 
         LOG.debug("But I can't");
