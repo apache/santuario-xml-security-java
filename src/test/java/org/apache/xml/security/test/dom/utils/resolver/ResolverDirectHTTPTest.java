@@ -32,7 +32,9 @@ import org.junit.jupiter.api.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
+import static org.apache.xml.security.test.XmlSecTestEnvironment.resolveFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -148,5 +150,22 @@ class ResolverDirectHTTPTest {
         ResourceResolverContext context =
             new ResourceResolverContext(uri, url, true, resolverProperties);
         resolverDirectHTTP.engineResolveURI(context);
+    }
+
+    @Test
+    void testLocalFileWithHttpBaseURI() throws Exception {
+        Document doc = TestUtils.newDocument();
+        Attr uriAttr = doc.createAttribute("URI");
+        String file = resolveFile("pom.xml").toURI().toString();
+        uriAttr.setValue(file);
+
+        ResolverDirectHTTP resolverDirectHTTP = new ResolverDirectHTTP();
+        ResourceResolverContext resolverContext =
+            new ResourceResolverContext(uriAttr, url, false);
+        try {
+            assertFalse(resolverDirectHTTP.engineCanResolveURI(resolverContext));
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
     }
 }

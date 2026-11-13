@@ -205,6 +205,8 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
      */
     @Override
     public boolean engineCanResolveURI(ResourceResolverContext context) {
+        LOG.log(Level.DEBUG, "I was asked whether I can resolve {0}", context.uriToResolve);
+
         if (context.uriToResolve == null) {
             LOG.log(Level.DEBUG, "quick fail, uri == null");
             return false;
@@ -215,10 +217,14 @@ public class ResolverDirectHTTP extends ResourceResolverSpi {
             return false;
         }
 
-        LOG.log(Level.DEBUG, "I was asked whether I can resolve {0}", context.uriToResolve);
-
-        if (context.uriToResolve.startsWith("http:") ||
-            context.baseUri != null && context.baseUri.startsWith("http:")) {
+        String uriToResolveScheme = scheme(context.uriToResolve);
+        if (uriToResolveScheme == null) {
+            String baseUriScheme = scheme(context.baseUri);
+            if ("http".equals(baseUriScheme) || "https".equals(baseUriScheme)) {
+                LOG.log(Level.DEBUG, "I state that I can resolve {0}", context.uriToResolve);
+                return true;
+            }
+        } else if (uriToResolveScheme.equals("http") || uriToResolveScheme.equals("https")) {
             LOG.log(Level.DEBUG, "I state that I can resolve {0}", context.uriToResolve);
             return true;
         }
