@@ -34,6 +34,7 @@ import org.apache.xml.security.algorithms.implementations.SignatureBaseRSA;
 import org.apache.xml.security.algorithms.implementations.SignatureDSA;
 import org.apache.xml.security.algorithms.implementations.SignatureECDSA;
 import org.apache.xml.security.algorithms.implementations.SignatureEDDSA;
+import org.apache.xml.security.algorithms.implementations.SignatureMLDSA;
 import org.apache.xml.security.exceptions.AlgorithmAlreadyRegisteredException;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
@@ -512,6 +513,15 @@ public class SignatureAlgorithm extends Algorithm {
         );
         algorithmHash.put(
                 XMLSignature.ALGO_ID_SIGNATURE_EDDSA_ED448, SignatureEDDSA.SignatureEd448.class
+        );
+        algorithmHash.put(
+                XMLSignature.ALGO_ID_SIGNATURE_MLDSA_44, SignatureMLDSA.SignatureMLDSA44.class
+        );
+        algorithmHash.put(
+                XMLSignature.ALGO_ID_SIGNATURE_MLDSA_65, SignatureMLDSA.SignatureMLDSA65.class
+        );
+        algorithmHash.put(
+                XMLSignature.ALGO_ID_SIGNATURE_MLDSA_87, SignatureMLDSA.SignatureMLDSA87.class
         );
         algorithmHash.put(
             XMLSignature.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5, IntegrityHmac.IntegrityHmacMD5.class
