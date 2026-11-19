@@ -22,6 +22,7 @@
 package org.apache.jcp.xml.dsig.internal.dom;
 
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.XMLConstants;
@@ -39,6 +40,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Useful static DOM utility methods.
@@ -48,6 +50,9 @@ public final class DOMUtils {
 
     // class cannot be instantiated
     private DOMUtils() {}
+
+    /** Attribute names treated as XML ID attributes when scanning for ID declarations. */
+    private static final List<String> ID_ATTRIBUTE_NAMES = Arrays.asList("Id", "ID", "id");
 
     /**
      * Returns the owner document of the specified node.
@@ -92,7 +97,7 @@ public final class DOMUtils {
                                         String nsURI, String prefix)
     {
         String qName = (prefix == null || prefix.length() == 0)
-                       ? tag : prefix + ":" + tag;
+                ? tag : prefix + ":" + tag;
         return doc.createElementNS(nsURI, qName);
     }
 
@@ -158,13 +163,13 @@ public final class DOMUtils {
      *    equal to {@code localName}
      */
     public static Element getFirstChildElement(Node node, String localName, String namespaceURI)
-        throws MarshalException
+            throws MarshalException
     {
         return verifyElement(getFirstChildElement(node), localName, namespaceURI);
     }
 
     private static Element verifyElement(Element elem, String localName, String namespaceURI)
-        throws MarshalException
+            throws MarshalException
     {
         if (elem == null) {
             throw new MarshalException("Missing " + localName + " element");
@@ -172,9 +177,9 @@ public final class DOMUtils {
         String name = elem.getLocalName();
         String namespace = elem.getNamespaceURI();
         if (!name.equals(localName) || namespace == null && namespaceURI != null
-            || namespace != null && !namespace.equals(namespaceURI)) {
+                || namespace != null && !namespace.equals(namespaceURI)) {
             throw new MarshalException("Invalid element name: " +
-                namespace + ":" + name + ", expected " + namespaceURI + ":" + localName);
+                    namespace + ":" + name + ", expected " + namespaceURI + ":" + localName);
         }
         return elem;
     }
@@ -225,7 +230,7 @@ public final class DOMUtils {
      * equal to {@code localName}
      */
     public static Element getNextSiblingElement(Node node, String localName, String namespaceURI)
-        throws MarshalException
+            throws MarshalException
     {
         return verifyElement(getNextSiblingElement(node), localName, namespaceURI);
     }
@@ -282,7 +287,7 @@ public final class DOMUtils {
     public static String getNSPrefix(XMLCryptoContext context, String nsURI) {
         if (context != null) {
             return context.getNamespacePrefix
-                (nsURI, context.getDefaultNamespacePrefix());
+                    (nsURI, context.getDefaultNamespacePrefix());
         } else {
             return null;
         }
@@ -335,29 +340,29 @@ public final class DOMUtils {
     }
 
     public static boolean paramsEqual(AlgorithmParameterSpec spec1,
-        AlgorithmParameterSpec spec2) {
+                                      AlgorithmParameterSpec spec2) {
         if (spec1 == spec2) {
             return true;
         }
         if (spec1 instanceof XPathFilter2ParameterSpec &&
-            spec2 instanceof XPathFilter2ParameterSpec) {
+                spec2 instanceof XPathFilter2ParameterSpec) {
             return paramsEqual((XPathFilter2ParameterSpec)spec1,
-                               (XPathFilter2ParameterSpec)spec2);
+                    (XPathFilter2ParameterSpec)spec2);
         }
         if (spec1 instanceof ExcC14NParameterSpec &&
-            spec2 instanceof ExcC14NParameterSpec) {
+                spec2 instanceof ExcC14NParameterSpec) {
             return paramsEqual((ExcC14NParameterSpec) spec1,
-                               (ExcC14NParameterSpec)spec2);
+                    (ExcC14NParameterSpec)spec2);
         }
         if (spec1 instanceof XPathFilterParameterSpec &&
-            spec2 instanceof XPathFilterParameterSpec) {
+                spec2 instanceof XPathFilterParameterSpec) {
             return paramsEqual((XPathFilterParameterSpec)spec1,
-                               (XPathFilterParameterSpec)spec2);
+                    (XPathFilterParameterSpec)spec2);
         }
         if (spec1 instanceof XSLTTransformParameterSpec &&
-            spec2 instanceof XSLTTransformParameterSpec) {
+                spec2 instanceof XSLTTransformParameterSpec) {
             return paramsEqual((XSLTTransformParameterSpec)spec1,
-                               (XSLTTransformParameterSpec)spec2);
+                    (XSLTTransformParameterSpec)spec2);
         }
         return false;
     }
@@ -377,8 +382,8 @@ public final class DOMUtils {
             XPathType type = types.get(i);
             XPathType otype = otypes.get(i);
             if (!type.getExpression().equals(otype.getExpression()) ||
-                !type.getNamespaceMap().equals(otype.getNamespaceMap()) ||
-                type.getFilter() != otype.getFilter()) {
+                    !type.getNamespaceMap().equals(otype.getNamespaceMap()) ||
+                    type.getFilter() != otype.getFilter()) {
                 return false;
             }
         }
@@ -407,10 +412,10 @@ public final class DOMUtils {
             return false;
         }
         Node ostylesheetElem =
-            ((javax.xml.crypto.dom.DOMStructure) ostylesheet).getNode();
+                ((javax.xml.crypto.dom.DOMStructure) ostylesheet).getNode();
         XMLStructure stylesheet = spec1.getStylesheet();
         Node stylesheetElem =
-            ((javax.xml.crypto.dom.DOMStructure) stylesheet).getNode();
+                ((javax.xml.crypto.dom.DOMStructure) stylesheet).getNode();
         return nodesEqual(stylesheetElem, ostylesheetElem);
     }
 
@@ -421,5 +426,41 @@ public final class DOMUtils {
             return XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(namespaceURI);
         }
         return false;
+    }
+
+    /**
+     * Recursively walks the DOM tree rooted at {@code node} and calls
+     * {@link Element#setIdAttribute(String, boolean)} for every attribute whose local name
+     * is one of {@code Id}, {@code ID}, or {@code id}. This is required so that
+     * {@link Document#getElementById} correctly resolves same-document ID references in
+     * XAdES-generated structures.
+     *
+     * @param node the root node to start from
+     */
+    public static void setIdFlagToIdAttributes(Node node) {
+        setIdFlagToIdAttributes(node, ID_ATTRIBUTE_NAMES);
+    }
+
+    /**
+     * Recursively walks the DOM tree rooted at {@code node} and calls
+     * {@link Element#setIdAttribute(String, boolean)} for every attribute whose local name
+     * is in {@code idAttributeNames}.
+     *
+     * @param node             the root node to start from
+     * @param idAttributeNames the list of attribute local names to treat as Id attributes
+     */
+    public static void setIdFlagToIdAttributes(Node node, List<String> idAttributeNames) {
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
+            Element element = (Element) node;
+            for (String idName : idAttributeNames) {
+                if (element.hasAttribute(idName)) {
+                    element.setIdAttribute(idName, true);
+                }
+            }
+            NodeList children = element.getChildNodes();
+            for (int i = 0; i < children.getLength(); i++) {
+                setIdFlagToIdAttributes(children.item(i), idAttributeNames);
+            }
+        }
     }
 }
