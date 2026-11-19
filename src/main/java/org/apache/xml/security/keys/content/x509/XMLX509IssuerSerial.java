@@ -27,6 +27,7 @@ import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.utils.Constants;
 import org.apache.xml.security.utils.RFC2253Parser;
 import org.apache.xml.security.utils.SignatureElementProxy;
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -35,14 +36,32 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
     private static final Logger LOG = System.getLogger(XMLX509IssuerSerial.class.getName());
 
     /**
+     * The maximum number of characters accepted in an X509SerialNumber read from a document.
+     * RFC 5280 limits certificate serial numbers to 20 octets (at most 49 decimal digits); the
+     * bound is generous, but stops attacker-supplied values driving the super-linear cost of
+     * {@link BigInteger#BigInteger(String)} on very long digit strings.
+     */
+    static final int MAX_SERIAL_NUMBER_LENGTH = 100;
+
+    /**
      * Constructor XMLX509IssuerSerial
+     *
+     * The X509SerialNumber is validated here, so that a value read from a (potentially
+     * attacker-supplied) document is rejected with a checked exception, and so that
+     * {@link #getSerialNumber()}, {@link #equals(Object)} and {@link #hashCode()} cannot fail on it.
      *
      * @param element
      * @param baseURI
-     * @throws XMLSecurityException
+     * @throws XMLSecurityException if the X509SerialNumber element is missing, longer than
+     * {@value #MAX_SERIAL_NUMBER_LENGTH} characters, or not a valid integer
      */
     public XMLX509IssuerSerial(Element element, String baseURI) throws XMLSecurityException {
         super(element, baseURI);
+        try {
+            parseSerialNumber();
+        } catch (IllegalArgumentException ex) {
+            throw new XMLSecurityException(ex, "empty", new Object[] {"Invalid X509SerialNumber: " + ex.getMessage()});
+        }
     }
 
     /**
@@ -99,10 +118,25 @@ public class XMLX509IssuerSerial extends SignatureElementProxy implements XMLX50
      * Method getSerialNumber
      *
      * @return the serial number
+     * @throws IllegalArgumentException only if the X509SerialNumber element was removed or changed to
+     * an invalid value after this object was constructed (the value is validated on construction)
      */
     public BigInteger getSerialNumber() {
-        String text =
-            this.getTextFromChildElement(Constants._TAG_X509SERIALNUMBER, Constants.SignatureSpecNS);
+        return parseSerialNumber();
+    }
+
+    private BigInteger parseSerialNumber() {
+        Element serialNumberElement =
+            XMLUtils.selectNode(getFirstChild(), Constants.SignatureSpecNS, Constants._TAG_X509SERIALNUMBER, 0);
+        if (serialNumberElement == null) {
+            throw new IllegalArgumentException("Missing X509SerialNumber element");
+        }
+        // xs:integer collapses surrounding whitespace
+        String text = serialNumberElement.getTextContent().trim();
+        if (text.length() > MAX_SERIAL_NUMBER_LENGTH) {
+            throw new IllegalArgumentException(
+                "X509SerialNumber exceeds the maximum length of " + MAX_SERIAL_NUMBER_LENGTH + " characters");
+        }
         LOG.log(Level.DEBUG, "X509SerialNumber text: {0}", text);
 
         return new BigInteger(text);
