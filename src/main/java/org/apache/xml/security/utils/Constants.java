@@ -70,6 +70,12 @@ public final class Constants {
     /** The 2021 xmldsig-more URL for Internet Engineering Task Force (IETF) algorithms **/
     public static final String XML_DSIG_NS_MORE_21_04 = "http://www.w3.org/2021/04/xmldsig-more#";
 
+    /** The 2026 xmldsig-more URL for IETF algorithms (draft-eastlake-rfc9231bis-xmlsec-uris-09), e.g. ML-DSA **/
+    public static final String XML_DSIG_NS_MORE_26_08 = "http://www.w3.org/2026/08/xmldsig-more#";
+
+    /** Tag of the ML-DSA {@code SignatureContext} element (draft-eastlake-rfc9231bis-xmlsec-uris-09, section 3.3.15) **/
+    public static final String _TAG_SIGNATURECONTEXT = "SignatureContext";
+
     /** The URI for XML spec*/
     public static final String XML_LANG_SPACE_SpecNS = "http://www.w3.org/XML/1998/namespace";
 

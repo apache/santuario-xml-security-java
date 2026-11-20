@@ -33,6 +33,7 @@ import org.apache.xml.security.binding.xmldsig.KeyValueType;
 import org.apache.xml.security.binding.xmldsig.RSAKeyValueType;
 import org.apache.xml.security.binding.xmldsig.X509DataType;
 import org.apache.xml.security.binding.xmldsig.X509IssuerSerialType;
+import org.apache.xml.security.binding.xmldsig11.DEREncodedKeyValueType;
 import org.apache.xml.security.binding.xmldsig11.ECKeyValueType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
@@ -74,6 +75,17 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                     = XMLSecurityUtils.getQNameType(keyInfoType.getContent(), XMLSecurityConstants.TAG_dsig_KeyValue);
             if (keyValueType != null) {
                 return getSecurityToken(keyValueType, securityProperties, inboundSecurityContext, keyUsage);
+            }
+
+            // DEREncodedKeyValue as a direct KeyInfo child, the XML Signature 1.1 placement
+            // (the nested-in-KeyValue placement is handled in the KeyValue branch above)
+            final DEREncodedKeyValueType derEncodedKeyValueType = XMLSecurityUtils.getQNameType(
+                    keyInfoType.getContent(), XMLSecurityConstants.TAG_dsig11_DEREncodedKeyValue);
+            if (derEncodedKeyValueType != null) {
+                DEREncodedKeyValueSecurityToken token =
+                        new DEREncodedKeyValueSecurityToken(derEncodedKeyValueType, inboundSecurityContext);
+                setTokenKey(securityProperties, keyUsage, token);
+                return token;
             }
 
             // KeyName
@@ -162,6 +174,14 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
         if (ecKeyValueType != null) {
             ECKeyValueSecurityToken token =
                     new ECKeyValueSecurityToken(ecKeyValueType, inboundSecurityContext);
+            setTokenKey(securityProperties, keyUsage, token);
+            return token;
+        }
+        final DEREncodedKeyValueType derEncodedKeyValueType =
+                XMLSecurityUtils.getQNameType(keyValueType.getContent(), XMLSecurityConstants.TAG_dsig11_DEREncodedKeyValue);
+        if (derEncodedKeyValueType != null) {
+            DEREncodedKeyValueSecurityToken token =
+                    new DEREncodedKeyValueSecurityToken(derEncodedKeyValueType, inboundSecurityContext);
             setTokenKey(securityProperties, keyUsage, token);
             return token;
         }
