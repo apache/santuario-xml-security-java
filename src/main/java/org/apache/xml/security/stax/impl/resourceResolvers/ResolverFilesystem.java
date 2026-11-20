@@ -20,6 +20,8 @@ package org.apache.xml.security.stax.impl.resourceResolvers;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
@@ -46,10 +48,15 @@ public class ResolverFilesystem implements ResourceResolver, ResourceResolverLoo
 
     @Override
     public ResourceResolverLookup canResolve(String uri, String baseURI) {
-        if (uri == null) {
+        if (uri == null || uri.isEmpty() || uri.charAt(0) == '#') {
             return null;
         }
-        if (uri.startsWith("file:") || baseURI != null && baseURI.startsWith("file:")) {
+        String uriScheme = ResolverUtils.scheme(uri);
+        if (uriScheme == null) {
+            if ("file".equals(ResolverUtils.scheme(baseURI))) {
+                return this;
+            }
+        } else if ("file".equals(uriScheme)) {
             return this;
         }
         return null;
@@ -83,7 +90,7 @@ public class ResolverFilesystem implements ResourceResolver, ResourceResolverLoo
             if (tmp.getFragment() != null) {
                 tmp = new URI(tmp.getScheme(), tmp.getSchemeSpecificPart(), null);
             }
-            return tmp.toURL().openStream();
+            return Files.newInputStream(Paths.get(tmp));
         } catch (Exception e) {
             throw new XMLSecurityException(e);
         }
