@@ -320,6 +320,29 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
         }
     }
 
+    /**
+     * Prepare the key an EncryptedKey yielded for direct use with the given algorithm, without
+     * telling the sender whether the key transport decryption succeeded.
+     *
+     * A failed key unwrap is answered with a random key of the length the algorithm requires.
+     * An unwrap that succeeds but yields a key of some other length must be answered the same
+     * way: rejecting it would reveal that the private key operation produced a well-formed
+     * plaintext, which is the signal a Bleichenbacher-style attack on the key transport looks for,
+     * and the sender can provoke it at will by choosing the EncryptedData algorithm.
+     *
+     * This applies only where the EncryptedKey's key is itself the content key. A key used as
+     * input to key derivation need not have the length of the derived key's algorithm, and a key
+     * from any other token or source carries no such signal.
+     */
+    public static byte[] matchKeyLength(byte[] secret, String algorithmURI) throws XMLSecurityException {
+        int keyLength = JCEMapper.getKeyLengthFromURI(algorithmURI);
+        if (keyLength > 0 && secret.length * 8 != keyLength) {
+            LOG.log(Level.DEBUG, "The key recovered from the EncryptedKey does not match {0}", algorithmURI);
+            return XMLSecurityConstants.generateBytes(keyLength / 8);
+        }
+        return secret;
+    }
+
     protected void handleReferenceList(final InputProcessorChain inputProcessorChain,
                                        final EncryptedKeyType encryptedKeyType,
                                        final XMLSecurityProperties securityProperties) throws XMLSecurityException {
