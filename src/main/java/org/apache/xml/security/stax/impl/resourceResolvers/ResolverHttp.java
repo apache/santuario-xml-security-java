@@ -25,7 +25,6 @@ import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.stax.ext.ResourceResolver;
@@ -42,7 +41,6 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
 
     private String uri;
     private String baseURI;
-    private Pattern pattern = Pattern.compile("^http[s]?://.*");
 
     public ResolverHttp() {
     }
@@ -58,10 +56,16 @@ public class ResolverHttp implements ResourceResolver, ResourceResolverLookup {
 
     @Override
     public ResourceResolverLookup canResolve(String uri, String baseURI) {
-        if (uri == null) {
+        if (uri == null || uri.isEmpty() || uri.charAt(0) == '#') {
             return null;
         }
-        if (pattern.matcher(uri).matches() || baseURI != null && pattern.matcher(baseURI).matches()) {
+        String uriScheme = ResolverUtils.scheme(uri);
+        if (uriScheme == null) {
+            String baseURIScheme = ResolverUtils.scheme(baseURI);
+            if ("http".equals(baseURIScheme) || "https".equals(baseURIScheme)) {
+                return this;
+            }
+        } else if ("http".equals(uriScheme) || "https".equals(uriScheme)) {
             return this;
         }
         return null;
