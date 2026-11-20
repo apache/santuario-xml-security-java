@@ -149,7 +149,7 @@ public class XMLEncryption11Test {
         String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
-        keygen.init(256);
+        keygen.init(128);
         SecretKey sessionKey = keygen.generateKey();
 
         SecurePart securePart =
@@ -199,7 +199,7 @@ public class XMLEncryption11Test {
         String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
-        keygen.init(256);
+        keygen.init(128);
         SecretKey sessionKey = keygen.generateKey();
 
         SecurePart securePart =
@@ -265,7 +265,7 @@ public class XMLEncryption11Test {
         String filename = "org/w3c/www/interop/xmlenc-core-11/plaintext.xml";
 
         KeyGenerator keygen = KeyGenerator.getInstance("AES");
-        keygen.init(256);
+        keygen.init(192);
         SecretKey sessionKey = keygen.generateKey();
 
         SecurePart securePart =
