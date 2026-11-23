@@ -1812,4 +1812,78 @@ public class SignatureCreationTest extends AbstractSignatureCreationTest {
         // Verify using DOM
         verifyUsingDOMWithoutIdAndDefaultTransform(document, cert.getPublicKey(), properties.getSignatureSecureParts());
     }
+
+    private KeyStore loadKeyStore(String keyStoreFile, String password) throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("jks");
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(keyStoreFile)) {
+            keyStore.load(inputStream, password.toCharArray());
+        }
+        return keyStore;
+    }
+
+    /**
+     * Signing an element that already contains a signature with the enveloped-signature transform
+     * must still cover the existing signature, so that a conformant (DOM) verifier accepts it.
+     */
+    @Test
+    void testEnvelopedSignatureOverExistingSignature() throws Exception {
+        KeyStore keyStore = loadKeyStore("transmitter.jks", "default");
+        Key key = keyStore.getKey("transmitter", "default".toCharArray());
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+
+        // First pass: sign PaymentInfo
+        XMLSecurityProperties innerProperties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        innerProperties.setActions(actions);
+        innerProperties.setSignatureKey(key);
+        innerProperties.setSignatureCerts(new X509Certificate[]{cert});
+        innerProperties.addSignaturePart(new SecurePart(
+            new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element));
+        ByteArrayOutputStream innerOutput = new ByteArrayOutputStream();
+        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(
+                "ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml")) {
+            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+            XMLStreamWriter xmlStreamWriter =
+                XMLSec.getOutboundXMLSec(innerProperties).processOutMessage(innerOutput, StandardCharsets.UTF_8.name());
+            XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+            xmlStreamWriter.close();
+            xmlStreamReader.close();
+        }
+
+        // Second pass: sign the whole PurchaseOrder, enveloped
+        XMLSecurityProperties outerProperties = new XMLSecurityProperties();
+        outerProperties.setActions(actions);
+        outerProperties.setSignatureKey(key);
+        outerProperties.setSignatureCerts(new X509Certificate[]{cert});
+        SecurePart securePart = new SecurePart(
+            new QName("urn:example:po", "PurchaseOrder"),
+            SecurePart.Modifier.Content,
+            new String[]{
+                "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
+                "http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
+            },
+            "http://www.w3.org/2001/04/xmlenc#sha256"
+        );
+        outerProperties.addSignaturePart(securePart);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (InputStream is = new ByteArrayInputStream(innerOutput.toByteArray())) {
+            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+            XMLStreamWriter xmlStreamWriter =
+                XMLSec.getOutboundXMLSec(outerProperties).processOutMessage(baos, StandardCharsets.UTF_8.name(), null);
+            XmlReaderToWriter.writeAll(xmlStreamReader, xmlStreamWriter);
+            xmlStreamWriter.close();
+            xmlStreamReader.close();
+        }
+
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            document = XMLUtils.read(is, false);
+        }
+        assertEquals(2, document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Signature").getLength());
+
+        // The outer signature is the first Signature in document order
+        verifyUsingDOM(document, cert, outerProperties.getSignatureSecureParts());
+    }
 }

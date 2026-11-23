@@ -24,16 +24,14 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.stax.ext.XMLSecurityConstants;
-import org.apache.xml.security.stax.ext.stax.XMLSecEndElement;
 import org.apache.xml.security.stax.ext.stax.XMLSecEvent;
-import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
 
 /**
  */
 public class TransformEnvelopedSignature extends TransformIdentity {
 
-    private int curLevel;
-    private int sigElementLevel = -1;
+    // depth within a ds:Signature element being removed; 0 when outside one
+    private int depthInSignature;
 
     @Override
     public XMLSecurityConstants.TransformMethod getPreferredTransformMethod(XMLSecurityConstants.TransformMethod forInput) {
@@ -49,24 +47,23 @@ public class TransformEnvelopedSignature extends TransformIdentity {
 
     @Override
     public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
-        if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
-            curLevel++;
-            XMLSecStartElement xmlSecStartElement = xmlSecEvent.asStartElement();
-            if (XMLSecurityConstants.TAG_dsig_Signature.equals(xmlSecStartElement.getName())) {
-                sigElementLevel = curLevel;
-                return;
+        int eventType = xmlSecEvent.getEventType();
+        if (depthInSignature > 0) {
+            // inside a removed Signature: drop everything, including any nested elements
+            // (and nested Signature elements) until its own end tag
+            if (XMLStreamConstants.START_ELEMENT == eventType) {
+                depthInSignature++;
+            } else if (XMLStreamConstants.END_ELEMENT == eventType) {
+                depthInSignature--;
             }
-        } else if (XMLStreamConstants.END_ELEMENT == xmlSecEvent.getEventType()) {
-            XMLSecEndElement xmlSecEndElement = xmlSecEvent.asEndElement();
-            if (sigElementLevel == curLevel && XMLSecurityConstants.TAG_dsig_Signature.equals(xmlSecEndElement.getName())) {
-                sigElementLevel = -1;
-                return;
-            }
-            curLevel--;
+            return;
         }
-        if (sigElementLevel == -1) {
-            super.transform(xmlSecEvent);
+        if (XMLStreamConstants.START_ELEMENT == eventType
+            && XMLSecurityConstants.TAG_dsig_Signature.equals(xmlSecEvent.asStartElement().getName())) {
+            depthInSignature = 1;
+            return;
         }
+        super.transform(xmlSecEvent);
     }
 
     @Override

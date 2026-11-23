@@ -18,11 +18,14 @@
  */
 package org.apache.xml.security.test.stax.transformer;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -191,5 +194,60 @@ public class TransformEnvelopedSignatureTest {
         transformEnvelopedSignature.doFinal();
 
         assertEquals(207, byteArrayOutputStream.size());
+    }
+
+    /**
+     * A ds:Signature nested inside a removed ds:Signature must not end the removal early.
+     */
+    @Test
+    void testNestedSignatureRemovedCompletely() throws Exception {
+        TransformEnvelopedSignature transformEnvelopedSignature = new TransformEnvelopedSignature();
+        final List<String> startElements = new ArrayList<>();
+        transformEnvelopedSignature.setTransformer(new Transformer() {
+            @Override
+            public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
+            }
+
+            @Override
+            public void setTransformer(Transformer transformer) throws XMLSecurityException {
+            }
+
+            @Override
+            public void setProperties(Map<String, Object> properties) throws XMLSecurityException {
+            }
+
+            @Override
+            public XMLSecurityConstants.TransformMethod getPreferredTransformMethod(XMLSecurityConstants.TransformMethod forInput) {
+                return XMLSecurityConstants.TransformMethod.XMLSecEvent;
+            }
+
+            @Override
+            public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
+                if (xmlSecEvent.isStartElement()) {
+                    startElements.add(xmlSecEvent.asStartElement().getName().getLocalPart());
+                }
+            }
+
+            @Override
+            public void transform(InputStream inputStream) throws XMLStreamException {
+                fail("unexpected call to transform(InputStream");
+            }
+
+            @Override
+            public void doFinal() throws XMLStreamException {
+            }
+        });
+
+        String xml = "<root xmlns:ds=\"http://www.w3.org/2000/09/xmldsig#\"><a/>"
+            + "<ds:Signature><ds:Object><ds:Signature><x/></ds:Signature><inner/></ds:Object></ds:Signature>"
+            + "<b/></root>";
+        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+            new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+        while (xmlSecEventReader.hasNext()) {
+            transformEnvelopedSignature.transform((XMLSecEvent) xmlSecEventReader.nextEvent());
+        }
+        transformEnvelopedSignature.doFinal();
+
+        assertEquals(Arrays.asList("root", "a", "b"), startElements);
     }
 }

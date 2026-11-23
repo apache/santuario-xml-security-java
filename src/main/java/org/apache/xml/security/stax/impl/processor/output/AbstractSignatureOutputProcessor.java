@@ -216,6 +216,14 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
         for (int i = transforms.length - 1; i >= 0; i--) {
             String transform = transforms[i];
 
+            if (XMLSecurityConstants.NS_XMLDSIG_ENVELOPED_SIGNATURE.equals(transform)) {
+                // The enveloped-signature transform removes the Signature element that contains
+                // it. When signing, that Signature is only inserted after the digest has been
+                // computed, so it never appears here; any ds:Signature that does appear is
+                // another signature, which must stay covered. So it is a no-op on output.
+                continue;
+            }
+
             Map<String, Object> transformerProperties = null;
             if (getSecurityProperties().isAddExcC14NInclusivePrefixes() &&
                     XMLSecurityConstants.NS_C14N_EXCL_OMIT_COMMENTS.equals(transform)) {
@@ -244,6 +252,11 @@ public abstract class AbstractSignatureOutputProcessor extends AbstractOutputPro
                 parentTransformer = XMLSecurityUtils.getTransformer(
                         null, outputStream, transformerProperties, transform, XMLSecurityConstants.DIRECTION.OUT);
             }
+        }
+        if (parentTransformer == null) {
+            // only no-op transforms were given
+            parentTransformer = new TransformIdentity();
+            parentTransformer.setOutputStream(outputStream);
         }
         return parentTransformer;
     }
