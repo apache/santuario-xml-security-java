@@ -1361,4 +1361,59 @@ class SignatureCreationTest extends AbstractSignatureCreationTest {
         }
         return keyStore;
     }
+
+    /**
+     * Signing an element that already contains a signature with the enveloped-signature transform
+     * must still cover the existing signature, so that a conformant (DOM) verifier accepts it.
+     */
+    @Test
+    void testEnvelopedSignatureOverExistingSignature() throws Exception {
+        KeyStore keyStore = XmlSecTestEnvironment.getTransmitterKeyStore();
+        Key key = keyStore.getKey("transmitter", TRANSMITTER_KS_PASSWORD.toCharArray());
+        X509Certificate cert = (X509Certificate)keyStore.getCertificate("transmitter");
+
+        // First pass: sign PaymentInfo
+        XMLSecurityProperties innerProperties = new XMLSecurityProperties();
+        List<XMLSecurityConstants.Action> actions = new ArrayList<>();
+        actions.add(XMLSecurityConstants.SIGNATURE);
+        innerProperties.setActions(actions);
+        innerProperties.setSignatureKey(key);
+        innerProperties.setSignatureCerts(new X509Certificate[]{cert});
+        innerProperties.addSignaturePart(new SecurePart(
+            new QName("urn:example:po", "PaymentInfo"), SecurePart.Modifier.Element));
+        byte[] innerSigned = process("ie/baltimore/merlin-examples/merlin-xmlenc-five/plaintext.xml", innerProperties, null);
+
+        // Second pass: sign the whole PurchaseOrder, enveloped
+        XMLSecurityProperties outerProperties = new XMLSecurityProperties();
+        outerProperties.setActions(actions);
+        outerProperties.setSignatureKey(key);
+        outerProperties.setSignatureCerts(new X509Certificate[]{cert});
+        SecurePart securePart = new SecurePart(
+            new QName("urn:example:po", "PurchaseOrder"),
+            SecurePart.Modifier.Content,
+            new String[]{
+                "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
+                "http://www.w3.org/TR/2001/REC-xml-c14n-20010315"
+            },
+            "http://www.w3.org/2001/04/xmlenc#sha256"
+        );
+        outerProperties.addSignaturePart(securePart);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (InputStream is = new ByteArrayInputStream(innerSigned)) {
+            XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(is);
+            XMLStreamWriter xmlStreamWriter =
+                XMLSec.getOutboundXMLSec(outerProperties).processOutMessage(baos, StandardCharsets.UTF_8.name(), null);
+            XmlReaderToWriter.writeAllAndClose(xmlStreamReader, xmlStreamWriter);
+        }
+
+        Document document;
+        try (InputStream is = new ByteArrayInputStream(baos.toByteArray())) {
+            document = XMLUtils.read(is, false);
+        }
+        assertEquals(2, document.getElementsByTagNameNS("http://www.w3.org/2000/09/xmldsig#", "Signature").getLength());
+
+        // The outer signature is the first Signature in document order
+        verifyUsingDOM(document, cert, outerProperties.getSignatureSecureParts());
+    }
 }
