@@ -65,7 +65,9 @@ public class TrimmerOutputStream extends FilterOutputStream {
             return;
         }
         if (bufferedCount >= buffer.length) {
-            flushBuffer();
+            // the buffer is full: let the array path keep the possible end correctly
+            write(new byte[] {(byte) b}, 0, 1);
+            return;
         }
         buffer[bufferedCount++] = (byte) b;
     }
@@ -90,9 +92,20 @@ public class TrimmerOutputStream extends FilterOutputStream {
         }
 
         if (len >= (buffer.length - bufferedCount)) {
-            out.write(buffer, 0, bufferedCount);
-            out.write(b, off, len - endTrimLength);
-            System.arraycopy(b, off + len - endTrimLength, buffer, 0, endTrimLength);
+            if (len >= endTrimLength) {
+                // the possible end lies entirely within the new data
+                out.write(buffer, 0, bufferedCount);
+                out.write(b, off, len - endTrimLength);
+                System.arraycopy(b, off + len - endTrimLength, buffer, 0, endTrimLength);
+            } else {
+                // the possible end spans the buffered bytes and the new data. As
+                // len >= buffer.length - bufferedCount and buffer.length >= endTrimLength,
+                // at least keepFromBuffer bytes are buffered.
+                int keepFromBuffer = endTrimLength - len;
+                out.write(buffer, 0, bufferedCount - keepFromBuffer);
+                System.arraycopy(buffer, bufferedCount - keepFromBuffer, buffer, 0, keepFromBuffer);
+                System.arraycopy(b, off, buffer, keepFromBuffer, len);
+            }
             bufferedCount = endTrimLength;
             return;
         }
