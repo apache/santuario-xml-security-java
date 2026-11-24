@@ -71,7 +71,7 @@ public class TransformBase64Decode extends TransformIdentity {
     @Override
     public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
         int eventType = xmlSecEvent.getEventType();
-        if (XMLStreamConstants.CHARACTERS == eventType) {
+        if (XMLStreamConstants.CHARACTERS == eventType || XMLStreamConstants.CDATA == eventType) {
             if (getOutputStream() != null) {
                 //we have an output stream
                 //encoding shouldn't matter here, because the data is Base64 encoded and is therefore in the ASCII range.
@@ -172,9 +172,10 @@ public class TransformBase64Decode extends TransformIdentity {
                             }
                         };
                     }
-                    if (childOutputMethod != null) {
-                        childOutputMethod.transform(xmlSecEvent.asCharacters().getData().getBytes());
-                    }
+                }
+                // every chunk of text must be passed on, not only the first one
+                if (childOutputMethod != null) {
+                    childOutputMethod.transform(xmlSecEvent.asCharacters().getData().getBytes());
                 }
             }
         }

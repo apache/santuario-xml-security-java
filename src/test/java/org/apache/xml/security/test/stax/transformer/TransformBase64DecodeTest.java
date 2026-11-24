@@ -18,10 +18,12 @@
  */
 package org.apache.xml.security.test.stax.transformer;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -334,5 +336,88 @@ public class TransformBase64DecodeTest {
         transformBase64Decode.doFinal();
 
         assertEquals(615, byteArrayOutputStream.size());
+    }
+
+    private static final String DECODED = "Hello, world!";
+
+    /** Runs every event of the document through the transform, with a child transform collecting the bytes. */
+    private byte[] decodeWithChildTransformer(String xml) throws Exception {
+        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        transformBase64Decode.setTransformer(new Transformer() {
+            @Override
+            public void setOutputStream(OutputStream outputStream) throws XMLSecurityException {
+            }
+
+            @Override
+            public void setTransformer(Transformer transformer) throws XMLSecurityException {
+            }
+
+            @Override
+            public void setProperties(Map<String, Object> properties) throws XMLSecurityException {
+            }
+
+            @Override
+            public XMLSecurityConstants.TransformMethod getPreferredTransformMethod(XMLSecurityConstants.TransformMethod forInput) {
+                return XMLSecurityConstants.TransformMethod.InputStream;
+            }
+
+            @Override
+            public void transform(XMLSecEvent xmlSecEvent) throws XMLStreamException {
+                fail("unexpected call to transform(XMLSecEvent");
+            }
+
+            @Override
+            public void transform(InputStream inputStream) throws XMLStreamException {
+                try {
+                    XMLSecurityUtils.copy(inputStream, byteArrayOutputStream);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void doFinal() throws XMLStreamException {
+            }
+        });
+        runEvents(transformBase64Decode, xml);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private byte[] decodeToOutputStream(String xml) throws Exception {
+        TransformBase64Decode transformBase64Decode = new TransformBase64Decode();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        transformBase64Decode.setOutputStream(byteArrayOutputStream);
+        runEvents(transformBase64Decode, xml);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private void runEvents(TransformBase64Decode transformBase64Decode, String xml) throws Exception {
+        XMLEventReader xmlSecEventReader = xmlInputFactory.createXMLEventReader(
+            new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+        while (xmlSecEventReader.hasNext()) {
+            transformBase64Decode.transform((XMLSecEvent) xmlSecEventReader.nextEvent());
+        }
+        transformBase64Decode.doFinal();
+    }
+
+    /** Text split into several chunks (here by a comment) must all be decoded, not only the first chunk. */
+    @Test
+    void testSplitTextWithChildTransformer() throws Exception {
+        byte[] decoded = decodeWithChildTransformer("<e>SGVsbG8s<!-- split -->IHdvcmxkIQ==</e>");
+        assertEquals(DECODED, new String(decoded, StandardCharsets.UTF_8));
+    }
+
+    /** Base64 text in a CDATA section is text content and must be decoded. */
+    @Test
+    void testCDATAWithChildTransformer() throws Exception {
+        byte[] decoded = decodeWithChildTransformer("<e><![CDATA[SGVsbG8s]]>IHdvcmxkIQ==</e>");
+        assertEquals(DECODED, new String(decoded, StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void testCDATAToOutputStream() throws Exception {
+        byte[] decoded = decodeToOutputStream("<e><![CDATA[SGVsbG8s]]>IHdvcmxkIQ==</e>");
+        assertEquals(DECODED, new String(decoded, StandardCharsets.UTF_8));
     }
 }
