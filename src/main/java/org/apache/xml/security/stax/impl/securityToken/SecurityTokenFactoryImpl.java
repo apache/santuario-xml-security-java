@@ -25,6 +25,7 @@ import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.apache.xml.security.binding.xmldsig.DSAKeyValueType;
@@ -181,6 +182,15 @@ public class SecurityTokenFactoryImpl extends SecurityTokenFactory {
                 );
         if (certBytes != null) {
             X509Certificate cert = getCertificateFromBytes(certBytes);
+            // With a configured verification key, the signature is verified with that key, but the
+            // certificate is still reported in the token and its security event. Do not let the
+            // document attach a certificate for some other key.
+            Key verificationKey = securityProperties.getSignatureVerificationKey();
+            if (SecurityTokenConstants.KeyUsage_Signature_Verification.equals(keyUsage)
+                && verificationKey instanceof PublicKey
+                && !Arrays.equals(verificationKey.getEncoded(), cert.getPublicKey().getEncoded())) {
+                throw new XMLSecurityException("stax.signatureVerificationKeyCertificateMismatch");
+            }
             TokenType tokenType = SecurityTokenConstants.X509V3Token;
             if (cert.getVersion() == 1) {
                 tokenType = SecurityTokenConstants.X509V1Token;

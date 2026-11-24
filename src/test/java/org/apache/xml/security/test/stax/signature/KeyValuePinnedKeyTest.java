@@ -20,10 +20,12 @@ package org.apache.xml.security.test.stax.signature;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.Key;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -129,5 +131,40 @@ class KeyValuePinnedKeyTest extends AbstractSignatureVerificationTest {
         byte[] signed = sign(new KeyPair(cert.getPublicKey(), priv), cert);
         Key hmacKey = new SecretKeySpec(new byte[32], "HmacSHA256");
         assertThrows(XMLStreamException.class, () -> verify(signed, hmacKey));
+    }
+
+    /**
+     * With a pinned key, a certificate in the KeyInfo that does not contain that key must be
+     * rejected, rather than reported in the security events as if it identified the signer.
+     */
+    @Test
+    void testOtherCertificateRejectedWhenKeyPinned() throws Exception {
+        KeyStore transmitter = XmlSecTestEnvironment.getTransmitterKeyStore();
+        X509Certificate signerCert = (X509Certificate) transmitter.getCertificate("transmitter");
+        PrivateKey signerKey = (PrivateKey) transmitter.getKey("transmitter",
+            XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD.toCharArray());
+
+        KeyStore receiver = KeyStore.getInstance("JKS");
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("receiver.jks")) {
+            receiver.load(is, "default".toCharArray());
+        }
+        X509Certificate otherCert = (X509Certificate) receiver.getCertificate("receiver");
+
+        byte[] signed = sign(new KeyPair(signerCert.getPublicKey(), signerKey), otherCert);
+        assertThrows(XMLStreamException.class, () -> verify(signed, signerCert.getPublicKey()));
+    }
+
+    /**
+     * With a pinned key, a certificate in the KeyInfo that contains that key is accepted.
+     */
+    @Test
+    void testMatchingCertificateAcceptedWhenKeyPinned() throws Exception {
+        KeyStore transmitter = XmlSecTestEnvironment.getTransmitterKeyStore();
+        X509Certificate signerCert = (X509Certificate) transmitter.getCertificate("transmitter");
+        PrivateKey signerKey = (PrivateKey) transmitter.getKey("transmitter",
+            XmlSecTestEnvironment.TRANSMITTER_KS_PASSWORD.toCharArray());
+
+        byte[] signed = sign(new KeyPair(signerCert.getPublicKey(), signerKey), signerCert);
+        verify(signed, signerCert.getPublicKey());
     }
 }
