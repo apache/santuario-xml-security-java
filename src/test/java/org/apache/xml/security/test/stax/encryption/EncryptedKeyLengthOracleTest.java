@@ -45,7 +45,6 @@ import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.stax.ext.InboundXMLSec;
 import org.apache.xml.security.stax.ext.XMLSec;
 import org.apache.xml.security.stax.ext.XMLSecurityProperties;
-import org.apache.xml.security.test.XmlSecTestEnvironment;
 import org.apache.xml.security.test.stax.utils.StAX2DOM;
 import org.apache.xml.security.utils.XMLUtils;
 import org.junit.jupiter.api.Test;
