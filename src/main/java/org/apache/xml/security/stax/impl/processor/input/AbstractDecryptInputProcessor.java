@@ -331,6 +331,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     thread.start();
 
                     decryptInputStream = decryptionThread.getPipedInputStream();
+                    decryptedEventReaderInputProcessor.setDecryptionPipe(decryptInputStream);
                 }
 
                 InputStream prologInputStream;  //NOPMD
@@ -626,6 +627,9 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
         private boolean rootElementProcessed;
         private EncryptedDataType encryptedDataType;
         private Thread decryptionThread;
+        private InputStream decryptionPipe;
+        // element depth inside the wrapper element around the decrypted content
+        private int wrapperContentDepth;
 
         public AbstractDecryptedEventReaderInputProcessor(
                 XMLSecurityProperties securityProperties, SecurePart.Modifier encryptionModifier,
@@ -655,6 +659,34 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             this.xmlStreamReader = xmlStreamReader;
         }
 
+        public void setDecryptionPipe(InputStream decryptionPipe) {
+            this.decryptionPipe = decryptionPipe;
+        }
+
+        /**
+         * Stop the decryption thread when the decrypted content is not read to its end, so that it
+         * does not stay blocked writing to the pipe: closing the reading end makes its writes fail.
+         */
+        private void abortDecryption() {
+            if (decryptionPipe != null) {
+                try {
+                    decryptionPipe.close();
+                } catch (IOException e) { //NOPMD
+                    //ignore, we are aborting anyway
+                }
+            }
+            if (decryptionThread != null) {
+                decryptionThread.interrupt();
+            }
+        }
+
+        @Override
+        public void doFinal(InputProcessorChain inputProcessorChain) throws XMLStreamException, XMLSecurityException {
+            // still in the chain: the decrypted content was not read to its end
+            abortDecryption();
+            super.doFinal(inputProcessorChain);
+        }
+
         @Override
         public XMLSecEvent processHeaderEvent(InputProcessorChain inputProcessorChain)
                 throws XMLStreamException, XMLSecurityException {
@@ -669,6 +701,16 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
 
         private XMLSecEvent processEvent(InputProcessorChain inputProcessorChain, boolean headerEvent)
                 throws XMLStreamException, XMLSecurityException {
+            try {
+                return processDecryptedEvent(inputProcessorChain, headerEvent);
+            } catch (XMLStreamException | XMLSecurityException | RuntimeException e) {
+                abortDecryption();
+                throw e;
+            }
+        }
+
+        private XMLSecEvent processDecryptedEvent(InputProcessorChain inputProcessorChain, boolean headerEvent)
+                throws XMLStreamException, XMLSecurityException {
             //did an exception occur during decryption in the decryption thread?
             testAndThrowUncaughtException();
 
@@ -676,6 +718,7 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
             //here we request the next XMLEvent from the decryption thread
             //instead from the processor-chain as we normally would do
             if (XMLStreamConstants.START_ELEMENT == xmlSecEvent.getEventType()) {
+                wrapperContentDepth++;
                 currentXMLStructureDepth++;
                 if (currentXMLStructureDepth > maximumAllowedXMLStructureDepth) {
                     throw new XMLSecurityException(
@@ -696,7 +739,12 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     parentXmlSecStartElement = parentXmlSecStartElement.getParentXMLSecStartElement();
                 }
 
-                if (xmlSecEvent.asEndElement().getName().equals(wrapperElementName)) {
+                // The wrapper element ends when the depth inside it returns to zero. Its name alone
+                // is not enough: the decrypted content may contain an element with the same name.
+                // Its random prefix means the content cannot close the wrapper itself.
+                if (wrapperContentDepth > 0) {
+                    wrapperContentDepth--;
+                } else if (xmlSecEvent.asEndElement().getName().equals(wrapperElementName)) {
                     InputProcessorChain subInputProcessorChain = inputProcessorChain.createSubChain(this);
 
                     //skip EncryptedHeader Element when we processed it.
@@ -878,15 +926,6 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 //close to get Cipher.doFinal() called
                 outputStreamWriter.close();
 
-                // Clean the secret key from memory now that we're done with it
-                if (secretKey instanceof Destroyable) {
-                    try {
-                        ((Destroyable)secretKey).destroy();
-                    } catch (DestroyFailedException e) {
-                        LOG.log(Level.DEBUG, "Error destroying key: {0}", e.getMessage());
-                    }
-                }
-
                 LOG.log(Level.DEBUG, "Decryption thread finished");
 
             } catch (Exception e) {
@@ -898,6 +937,15 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                     //ignore since we will throw the original exception below
                 }
                 throw new UncheckedXMLSecurityException(e);
+            } finally {
+                // Clean the secret key from memory now that we're done with it
+                if (secretKey instanceof Destroyable) {
+                    try {
+                        ((Destroyable)secretKey).destroy();
+                    } catch (DestroyFailedException e) {
+                        LOG.log(Level.DEBUG, "Error destroying key: {0}", e.getMessage());
+                    }
+                }
             }
         }
 
