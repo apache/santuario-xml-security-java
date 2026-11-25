@@ -53,6 +53,7 @@ import org.apache.xml.security.binding.xmldsig.SignedInfoType;
 import org.apache.xml.security.binding.xmldsigmore.RSAPSSParamsType;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.apache.xml.security.stax.config.TransformerAlgorithmMapper;
 import org.apache.xml.security.stax.ext.AbstractInputSecurityHeaderHandler;
 import org.apache.xml.security.stax.ext.InboundSecurityContext;
 import org.apache.xml.security.stax.ext.InputProcessorChain;
@@ -65,6 +66,7 @@ import org.apache.xml.security.stax.ext.stax.XMLSecEventFactory;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithm;
 import org.apache.xml.security.stax.impl.algorithms.SignatureAlgorithmFactory;
 import org.apache.xml.security.stax.impl.transformer.canonicalizer.Canonicalizer20010315_Excl;
+import org.apache.xml.security.stax.impl.transformer.canonicalizer.CanonicalizerBase;
 import org.apache.xml.security.stax.impl.util.IDGenerator;
 import org.apache.xml.security.stax.impl.util.SignerOutputStream;
 import org.apache.xml.security.stax.securityToken.InboundSecurityToken;
@@ -142,6 +144,15 @@ public abstract class AbstractSignatureInputHandler extends AbstractInputSecurit
             }
 
         } else {
+            // A CanonicalizationMethod outside the standard ones must still be a canonicalization
+            // algorithm (e.g. a custom one), not some other transform such as base64 or the
+            // enveloped-signature transform, as in the DOM API. An unknown URI is reported by
+            // getTransformerClass.
+            Class<?> transformerClass =
+                TransformerAlgorithmMapper.getTransformerClass(c14NMethod, XMLSecurityConstants.DIRECTION.IN);
+            if (!CanonicalizerBase.class.isAssignableFrom(transformerClass)) {
+                throw new XMLSecurityException("c14n.Canonicalizer.NoSuchCanonicalizer", new Object[] {c14NMethod});
+            }
             iterator = reparseSignedInfo(inputProcessorChain, securityProperties, signatureType, eventDeque, index).descendingIterator();
             index = 0;
         }
