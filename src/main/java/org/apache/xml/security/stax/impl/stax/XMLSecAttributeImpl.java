@@ -27,6 +27,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
 import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
+import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * Class to let XML-Attributes be comparable how it is requested by C14N
@@ -129,23 +130,6 @@ public class XMLSecAttributeImpl extends XMLSecEventBaseImpl implements XMLSecAt
     }
 
     private void writeEncoded(Writer writer, String text) throws IOException {
-        final int length = text.length();
-
-        int i = 0;
-        int idx = 0;
-        while (i < length) {
-            char c = text.charAt(i);
-            if (c == '&') {
-                writer.write(text, idx, i - idx);
-                writer.write("&amp;");
-                idx = i + 1;
-            } else if (c == '"') {
-                writer.write(text, idx, i - idx);
-                writer.write("&quot;");
-                idx = i + 1;
-            }
-            i++;
-        }
-        writer.write(text, idx, length - idx);
+        writer.write(XMLUtils.escapeAttributeValue(text));
     }
 }

@@ -38,6 +38,7 @@ import javax.xml.stream.events.Namespace;
 import org.apache.xml.security.stax.ext.stax.XMLSecAttribute;
 import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
 import org.apache.xml.security.stax.ext.stax.XMLSecStartElement;
+import org.apache.xml.security.utils.XMLUtils;
 
 /**
  */
@@ -273,7 +274,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
                     writer.write(nsPrefix);
                 }
                 writer.write("=\"");
-                writer.write(xmlSecNamespace.getValue());
+                writer.write(XMLUtils.escapeAttributeValue(xmlSecNamespace.getValue()));
                 writer.write('"');
             }
 
@@ -286,7 +287,7 @@ public class XMLSecStartElementImpl extends XMLSecEventBaseImpl implements XMLSe
                 }
                 writer.write(xmlSecAttribute.getName().getLocalPart());
                 writer.write("=\"");
-                writer.write(xmlSecAttribute.getValue());
+                writer.write(XMLUtils.escapeAttributeValue(xmlSecAttribute.getValue()));
                 writer.write('"');
             }
 
