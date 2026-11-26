@@ -30,6 +30,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.xml.security.stax.ext.stax.XMLSecNamespace;
+import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * Class to let XML-Namespaces be comparable how it is requested by C14N
@@ -170,31 +171,14 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
     }
 
     private void writeEncoded(Writer writer, String text) throws IOException {
-        final int length = text.length();
-
-        int i = 0;
-        int idx = 0;
-        while (i < length) {
-            char c = text.charAt(i);
-            if (c == '&') {
-                writer.write(text, idx, i - idx);
-                writer.write("&amp;");
-                idx = i + 1;
-            } else if (c == '"') {
-                writer.write(text, idx, i - idx);
-                writer.write("&quot;");
-                idx = i + 1;
-            }
-            i++;
-        }
-        writer.write(text, idx, length - idx);
+        writer.write(XMLUtils.escapeAttributeValue(text));
     }
 
     @Override
     public String toString() {
         if (this.prefix == null || this.prefix.isEmpty()) {
-            return "xmlns=\"" + this.uri + "\"";
+            return "xmlns=\"" + XMLUtils.escapeAttributeValue(this.uri) + "\"";
         }
-        return "xmlns:" + this.prefix + "=\"" + this.uri + "\"";
+        return "xmlns:" + this.prefix + "=\"" + XMLUtils.escapeAttributeValue(this.uri) + "\"";
     }
 }
