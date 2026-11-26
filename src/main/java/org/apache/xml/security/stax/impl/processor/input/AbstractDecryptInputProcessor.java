@@ -89,6 +89,7 @@ import org.apache.xml.security.stax.securityToken.SecurityTokenConstants;
 import org.apache.xml.security.stax.securityToken.SecurityTokenFactory;
 import org.apache.xml.security.stax.securityToken.SecurityTokenProvider;
 import org.apache.xml.security.utils.UnsyncByteArrayInputStream;
+import org.apache.xml.security.utils.XMLUtils;
 
 /**
  * Processor for decryption of EncryptedData XML structures
@@ -398,7 +399,8 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                 stringBuilder.append(' ');
 
                 String prefix = comparableNamespace.getPrefix();
-                String uri = comparableNamespace.getNamespaceURI();
+                // the URI is the decoded value from the encrypted document: escape it again
+                String uri = XMLUtils.escapeAttributeValue(comparableNamespace.getNamespaceURI());
                 if (prefix == null || prefix.isEmpty()) {
                     stringBuilder.append("xmlns=\"");
                     stringBuilder.append(uri);

@@ -27,6 +27,7 @@ import java.util.Map;
 
 import org.apache.xml.security.c14n.Canonicalizer;
 import org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.apache.xml.security.utils.XMLUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -103,7 +104,7 @@ public abstract class AbstractSerializer implements Serializer {
                             outputStreamWriter.write(" ");
                             outputStreamWriter.write(nodeName);
                             outputStreamWriter.write("=\"");
-                            outputStreamWriter.write(att.getNodeValue());
+                            outputStreamWriter.write(XMLUtils.escapeAttributeValue(att.getNodeValue()));
                             outputStreamWriter.write("\"");
                             storedNamespaces.put(nodeName, att.getNodeValue());
                         }
