@@ -18,11 +18,14 @@
  */
 package org.apache.xml.security.test.stax;
 
+import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
@@ -45,7 +48,10 @@ import org.apache.xml.security.stax.impl.stax.XMLSecEntityDeclarationImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecEntityReferenceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecNamespaceImpl;
 import org.apache.xml.security.stax.impl.stax.XMLSecProcessingInstructionImpl;
+import org.apache.xml.security.test.stax.utils.XMLSecEventAllocator;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -106,7 +112,7 @@ class XMLSecEventTest {
         stringWriter = new StringWriter();
         xmlSecAttribute = new XMLSecAttributeImpl(new QName("test"), " & \" > < ");
         xmlSecAttribute.writeAsEncodedUnicode(stringWriter);
-        assertEquals("test=\" &amp; &quot; > < \"", stringWriter.toString());
+        assertEquals("test=\" &amp; &quot; &gt; &lt; \"", stringWriter.toString());
     }
 
     @Test
@@ -153,7 +159,7 @@ class XMLSecEventTest {
         stringWriter = new StringWriter();
         xmlSecNamespace = XMLSecNamespaceImpl.getInstance("test", " & \" > < ");
         xmlSecNamespace.writeAsEncodedUnicode(stringWriter);
-        assertEquals("xmlns:test=\" &amp; &quot; > < \"", stringWriter.toString());
+        assertEquals("xmlns:test=\" &amp; &quot; &gt; &lt; \"", stringWriter.toString());
     }
 
     @Test
@@ -194,5 +200,31 @@ class XMLSecEventTest {
             }
         }
         assertEquals(secWriter.toString(), stdWriter.toString());
+    }
+
+    /**
+     * writeAsEncodedUnicode must produce well-formed XML that reads back to the same attribute
+     * and namespace values, including characters that must be escaped.
+     */
+    @Test
+    void testWriteAsEncodedUnicodeRoundTrip() throws Exception {
+        String xml = "<p:root xmlns:p=\"urn:a&amp;b&lt;c&quot;d&#9;e&#10;f\""
+            + " attr=\"1&lt;2 &amp; 3&gt;2 &quot;q&quot;&#13;x\"><child/></p:root>";
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        xmlInputFactory.setEventAllocator(new XMLSecEventAllocator());
+        XMLEventReader reader = xmlInputFactory.createXMLEventReader(
+            new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+        StringWriter stringWriter = new StringWriter();
+        while (reader.hasNext()) {
+            ((XMLSecEvent) reader.nextEvent()).writeAsEncodedUnicode(stringWriter);
+        }
+
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+        Document document = documentBuilderFactory.newDocumentBuilder().parse(
+            new ByteArrayInputStream(stringWriter.toString().getBytes(StandardCharsets.UTF_8)));
+        Element root = document.getDocumentElement();
+        assertEquals("urn:a&b<c\"d\te\nf", root.getNamespaceURI());
+        assertEquals("1<2 & 3>2 \"q\"\rx", root.getAttribute("attr"));
     }
 }
