@@ -123,11 +123,15 @@ JSR-105 paths). With secure validation **on**, the library:
 - rejects DTDs / disables external entity and `RetrievalMethod`/`KeyInfo`
   remote dereferencing,
 - forbids dangerous transforms (notably **XSLT**),
-- enforces minimum key sizes and rejects known-weak digest/MAC/signature
-  algorithms (e.g. MD5, SHA-1-in-signatures, RSA < 1024-ish, HMAC truncation),
+- rejects MD5-based digest, signature and MAC algorithms,
 - caps the number of `Reference`/`Transform` elements to bound expansion.
 *(documented — these are the historical CVE mitigations folded into secure
-validation; exact set is Q-confirmed in §14.)*
+validation; exact set confirmed against the code in §14 Q7.)*
+
+Secure validation does **not** enforce a minimum key size, does not reject
+SHA-1-based algorithms, and does not restrict which encryption or
+key-transport algorithms a document may use; that policy is the caller's
+(§9/§10).
 
 **The insecure-default problem (must be resolved by the maintainer).** Whether
 secure validation is **on by default** depends on entry point and version
@@ -177,7 +181,7 @@ Per-parameter trust for the security-critical entry points:
 | signature verify | `KeyInfo` (embedded key/cert) | **yes** | establish trust in the resolved key — do not trust `KeyInfo` blindly |
 | signature verify | `Reference` URI / `Transform` chain | **yes** | rely on secure validation to bound transforms/derefs |
 | decrypt | `EncryptedData` / `EncryptedKey` | **yes** | secure validation; treat decrypted bytes as untrusted |
-| decrypt | algorithm identifiers | **yes** | secure validation enforces allow-list |
+| decrypt | algorithm identifiers | **yes** | restrict the algorithms you accept; no allow-list is enforced (§9/§10) |
 | sign / encrypt | content to protect, signing key | **no** — caller-supplied trusted | protect the private key (caller) |
 
 Plus: the parser-level inputs (DOCTYPE, entities, external refs) are
@@ -206,10 +210,13 @@ attacker-controlled and governed by §5a/§8.
    deref transforms) are disallowed under secure validation. *Violation:*
    XSLT/script or remote fetch via a `Transform`. *Severity:* critical.
    *(documented.)*
-3. **Weak-algorithm rejection.** Known-weak digest/MAC/signature algorithms and
-   undersized keys are rejected under secure validation. *Violation:* a
-   signature accepted under MD5/short-HMAC/short-RSA. *Severity:* critical.
-   *(documented — folds prior CVEs.)*
+3. **MD5 and truncated-HMAC rejection.** MD5-based digest, signature and MAC
+   algorithms are rejected under secure validation (DOM / JSR-105) and by
+   default in StAX (`AllowMD5Algorithm`). An `HMACOutputLength` shorter than the
+   digest output is always rejected (DOM), and StAX always compares the full
+   MAC. *Violation:* a signature or digest accepted under MD5, or a truncated
+   HMAC accepted. *Severity:* critical. *(documented — folds prior CVEs.)*
+   This property does **not** cover key sizes or SHA-1 (§9).
 4. **Expansion bounding.** The number of `Reference`/`Transform` elements is
    capped to bound CPU/memory under secure validation. *Violation:* super-
    linear blowup from many references/transforms. *Severity:* security
@@ -232,6 +239,12 @@ attacker-controlled and governed by §5a/§8.
 - **It does not establish key trust.** Resolving a key from `KeyInfo` is a
   convenience, not a trust decision; certificate-path validation / key pinning
   is the caller's (§3/§10).
+- **It does not enforce key strength or algorithm policy.** Secure validation
+  does not reject undersized keys (e.g. short RSA/DSA keys or small EC curves)
+  or SHA-1-based algorithms, and decryption accepts any supported encryption
+  and key-transport algorithm the document names (e.g. CBC as well as GCM,
+  RSA v1.5 as well as OAEP). Deciding which keys and algorithms are acceptable
+  is the caller's (§10).
 - **No protection if secure validation is disabled.** With it off, XXE, XSLT
   transforms, weak algorithms, and unbounded expansion are all reachable — by
   design, for backward-compatible processing of *trusted* XML. *(documented —
@@ -255,6 +268,12 @@ attacker-controlled and governed by §5a/§8.
   references you control and re-check post-verify.
 - **Establish key trust independently** — validate the cert chain / match the
   key against an allow-list; never trust `KeyInfo`-embedded keys implicitly.
+- **Enforce your key and algorithm policy** — check the size of the verification
+  or decryption key (for example as part of certificate validation), and
+  restrict the signature, digest, encryption and key-transport algorithms you
+  accept: with DOM / JSR-105 by inspecting `SignedInfo` and `EncryptionMethod`;
+  with StAX by rejecting unwanted algorithms and key lengths in a
+  `SecurityEventListener` on `AlgorithmSuiteSecurityEvent`.
 - **Treat decrypted/verified bytes as untrusted** until your own validation
   passes; apply resource limits at the boundary.
 - Protect signing/decryption private keys (caller-side key management).
@@ -299,6 +318,11 @@ attacker-controlled and governed by §5a/§8.
   reader at `START_DOCUMENT` reaching the library unrejected with `AllowDTD`
   unset, or a reader reporting `SUPPORT_DTD=false` that nonetheless expands
   entities or fetches external resources while the library pulls events.
+- **"Accepts a short RSA/DSA/EC key" / "accepts SHA-1" / "decrypts with an
+  algorithm the sender chose"** — non-finding on its own: key-strength and
+  algorithm policy are the caller's (§9/§10). `BY-DESIGN: property-disclaimed`.
+  Still in scope: MD5 or a truncated HMAC accepted with secure validation on
+  (§8.3).
 - **"StAX has no `secureValidation` flag / ignores
   `org.apache.xml.security.secureValidation`"** — non-finding on its own: the
   StAX stack applies the equivalent checks by default via
@@ -352,6 +376,11 @@ attacker-controlled and governed by §5a/§8.
 - **Q7.** Exact set enforced by secure validation: which algorithms/key sizes
   are rejected, which transforms are forbidden, and the caps on
   `Reference`/`Transform` counts? (§8.)
+  *(Answered from the code: MD5 digest, signature and MAC algorithms are
+  rejected; no minimum key size and no SHA-1 rejection; an `HMACOutputLength`
+  shorter than the digest is rejected regardless of secure validation; XSLT is
+  forbidden; at most 5 `Transform`s per `Reference` and 30 `Reference`s per
+  `SignedInfo`/`Manifest`. Decryption enforces no algorithm allow-list.)*
 - **Q3/Q5.** Which transforms or key-resolvers can dereference remote/local
   URIs, and are any enabled even under secure validation? (§5/§8/§9.)
 - **Q8.** Do you make any protocol-level guarantee (decryption-oracle, replay,
