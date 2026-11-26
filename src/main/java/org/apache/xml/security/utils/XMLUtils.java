@@ -514,6 +514,52 @@ public final class XMLUtils {
         }
     }
 
+    /**
+     * Escape a value for use inside a double-quoted XML attribute, so that it is read back
+     * unchanged: the markup characters are replaced by entity references, and tab, newline and
+     * carriage return by character references (which attribute-value normalization would
+     * otherwise turn into spaces).
+     *
+     * @param value the attribute value
+     * @return the escaped value
+     */
+    public static String escapeAttributeValue(String value) {
+        if (value == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder(value.length() + 16);
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            switch (c) {
+                case '&':
+                    sb.append("&amp;");
+                    break;
+                case '<':
+                    sb.append("&lt;");
+                    break;
+                case '>':
+                    sb.append("&gt;");
+                    break;
+                case '"':
+                    sb.append("&quot;");
+                    break;
+                case '\t':
+                    sb.append("&#9;");
+                    break;
+                case '\n':
+                    sb.append("&#10;");
+                    break;
+                case '\r':
+                    sb.append("&#13;");
+                    break;
+                default:
+                    sb.append(c);
+                    break;
+            }
+        }
+        return sb.toString();
+    }
+
     public static String encodeToString(byte[] bytes) {
         if (ignoreLineBreaks) {
             return Base64.getEncoder().encodeToString(bytes);
