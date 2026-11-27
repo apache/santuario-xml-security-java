@@ -32,7 +32,7 @@ import org.w3c.dom.Attr;
 /**
  * An XmlAttrStack that is shared between the Canonical XML 1.0 and 1.1 implementations.
  */
-class XmlAttrStack {
+public class XmlAttrStack {
 
     private static final org.slf4j.Logger LOG =
         org.slf4j.LoggerFactory.getLogger(XmlAttrStack.class);
@@ -166,7 +166,7 @@ class XmlAttrStack {
         col.addAll(loa.values());
     }
 
-    private static String joinURI(String baseURI, String relativeURI) throws URISyntaxException {
+    public static String joinURI(String baseURI, String relativeURI) throws URISyntaxException {
         String bscheme = null;
         String bauthority = null;
         String bpath = "";
