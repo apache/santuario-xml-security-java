@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
@@ -54,6 +55,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  */
@@ -129,6 +131,8 @@ public class XMLSecEventTest {
         XMLSecEntityDeclaration xmlSecEntityDeclaration = new XMLSecEntityDeclarationImpl("test");
         xmlSecEntityDeclaration.writeAsEncodedUnicode(stringWriter);
         assertEquals("<!ENTITY test \"\">", stringWriter.toString());
+        assertEquals(XMLStreamConstants.ENTITY_DECLARATION, xmlSecEntityDeclaration.getEventType());
+        assertFalse(xmlSecEntityDeclaration.isEntityReference());
     }
 
     @Test
