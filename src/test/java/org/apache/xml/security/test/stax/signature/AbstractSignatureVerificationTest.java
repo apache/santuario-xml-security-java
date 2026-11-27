@@ -137,7 +137,9 @@ public class AbstractSignatureVerificationTest {
             Key signingKey
     ) throws Exception {
         String c14nMethod = "http://www.w3.org/2001/10/xml-exc-c14n#";
-        return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, (List<ReferenceInfo>)null);
+        String digestMethod = "http://www.w3.org/2000/09/xmldsig#sha1";
+        return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, referenceC14Nmethod,
+                digestMethod, null, null, null);
     }
 
 
@@ -246,6 +248,28 @@ public class AbstractSignatureVerificationTest {
             ResourceResolverSpi resourceResolverSpi,
             AlgorithmParameterSpec spec
     ) throws Exception {
+        return signUsingDOM(algorithm, document, localNames, signingKey, c14nMethod, c14nMethod,
+                digestMethod, additionalReferences, resourceResolverSpi, spec);
+    }
+
+    /**
+     * Sign the document using DOM
+     *
+     * @param c14nMethod the canonicalization method of SignedInfo
+     * @param referenceTransform the transform of the References to the elements in localNames
+     */
+    protected XMLSignature signUsingDOM( //NOPMD - test helper; the other overloads supply defaults
+            String algorithm,
+            Document document,
+            List<String> localNames,
+            Key signingKey,
+            String c14nMethod,
+            String referenceTransform,
+            String digestMethod,
+            List<ReferenceInfo> additionalReferences,
+            ResourceResolverSpi resourceResolverSpi,
+            AlgorithmParameterSpec spec
+    ) throws Exception {
         XMLSignature sig = new XMLSignature(document, "", algorithm, 0, c14nMethod, null, spec);
         if (resourceResolverSpi != null) {
             sig.addResourceResolver(resourceResolverSpi);
@@ -269,7 +293,7 @@ public class AbstractSignatureVerificationTest {
                 elementToSign.setIdAttributeNS(null, "Id", true);
 
                 Transforms transforms = new Transforms(document);
-                transforms.addTransform(c14nMethod);
+                transforms.addTransform(referenceTransform);
                 sig.addDocument("#" + id, transforms, digestMethod);
             }
         }
