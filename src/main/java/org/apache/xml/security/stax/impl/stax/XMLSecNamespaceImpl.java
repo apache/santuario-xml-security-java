@@ -20,9 +20,6 @@ package org.apache.xml.security.stax.impl.stax;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
@@ -38,10 +35,7 @@ import org.apache.xml.security.utils.XMLUtils;
  */
 public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XMLSecNamespace {
 
-    private static final Map<String, Map<String, XMLSecNamespace>> XMLSEC_NS_MAP =
-            Collections.synchronizedMap(new WeakHashMap<>());
-
-    private String prefix;
+    private final String prefix;
     private final String uri;
     private QName qName;
 
@@ -60,23 +54,9 @@ public final class XMLSecNamespaceImpl extends XMLSecEventBaseImpl implements XM
         if (uriToUse == null) {
             uriToUse = "";
         }
-        Map<String, XMLSecNamespace> nsMap = XMLSEC_NS_MAP.get(prefixToUse);
-        if (nsMap != null) {
-            XMLSecNamespace xmlSecNamespace = nsMap.get(uriToUse);
-            if (xmlSecNamespace != null) {
-                return xmlSecNamespace;
-            } else {
-                xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
-                nsMap.put(uriToUse, xmlSecNamespace);
-                return xmlSecNamespace;
-            }
-        } else {
-            nsMap = new WeakHashMap<>();
-            XMLSecNamespace xmlSecNamespace = new XMLSecNamespaceImpl(prefixToUse, uriToUse);
-            nsMap.put(uriToUse, xmlSecNamespace);
-            XMLSEC_NS_MAP.put(prefixToUse, nsMap);
-            return xmlSecNamespace;
-        }
+        // Namespace declarations come from the processed documents, so they are not cached: a
+        // static cache would keep every distinct namespace ever seen in memory.
+        return new XMLSecNamespaceImpl(prefixToUse, uriToUse);
     }
 
     @Override
