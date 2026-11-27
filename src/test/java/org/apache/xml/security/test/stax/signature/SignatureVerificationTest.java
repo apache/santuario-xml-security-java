@@ -1185,6 +1185,9 @@ class SignatureVerificationTest extends AbstractSignatureVerificationTest {
                 "http://www.w3.org/2000/09/xmldsig#rsa-sha1",
                 document, localNames, "http://www.w3.org/2000/09/xmldsig#base64", key
         );
+        // the Reference must really use the base64 transform
+        assertEquals("http://www.w3.org/2000/09/xmldsig#base64",
+                     sig.getSignedInfo().item(0).getTransforms().item(0).getURI());
 
         // Add KeyInfo
         sig.addKeyInfo(cert);
