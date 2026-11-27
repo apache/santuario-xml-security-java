@@ -72,11 +72,6 @@ public class XMLSecEntityDeclarationImpl extends XMLSecEventBaseImpl implements 
     }
 
     @Override
-    public boolean isEntityReference() {
-        return true;
-    }
-
-    @Override
     public void writeAsEncodedUnicode(Writer writer) throws XMLStreamException {
         try {
             writer.write("<!ENTITY ");
