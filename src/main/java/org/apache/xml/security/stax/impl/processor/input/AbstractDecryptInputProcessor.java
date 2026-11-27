@@ -30,7 +30,6 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -904,9 +903,10 @@ public abstract class AbstractDecryptInputProcessor extends AbstractInputProcess
                         .setEncode(false)
                         .get();
                 ivSplittingOutputStream.setParentOutputStream(replaceableOuputStream);
+                //the characters are the already-parsed base64 text, so whatever the document's
+                //encoding, they are ASCII
                 OutputStreamWriter outputStreamWriter = //NOPMD
-                        new OutputStreamWriter(base64OutputStream,
-                                               Charset.forName(inputProcessorChain.getDocumentContext().getEncoding()));
+                        new OutputStreamWriter(base64OutputStream, StandardCharsets.US_ASCII);
 
                 //read the encrypted data from the stream until an end-element occurs and write then
                 //to the decrypter-stream
