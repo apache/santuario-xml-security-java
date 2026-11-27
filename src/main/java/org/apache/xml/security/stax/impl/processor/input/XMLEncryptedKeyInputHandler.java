@@ -71,6 +71,12 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
 
     private static final transient Logger LOG = LoggerFactory.getLogger(XMLEncryptedKeyInputHandler.class);
 
+    /**
+     * Length in bits of the random key used in place of an EncryptedKey that cannot be unwrapped,
+     * when the algorithm the key is used with does not define a key length.
+     */
+    private static final int DEFAULT_FAKE_KEY_LENGTH = 256;
+
     @Override
     public void handle(final InputProcessorChain inputProcessorChain, final XMLSecurityProperties securityProperties,
                        final Deque<XMLSecEvent> eventQueue, final Integer index) throws XMLSecurityException {
@@ -256,6 +262,11 @@ public class XMLEncryptedKeyInputHandler extends AbstractInputSecurityHeaderHand
                                     "Generating a faked one to mitigate timing attacks.");
 
                             int keyLength = JCEMapper.getKeyLengthFromURI(symmetricAlgorithmURI);
+                            if (keyLength <= 0) {
+                                // e.g. HMAC algorithms, which accept a key of any length: an empty
+                                // key would fail in a way a wrong key of normal length does not
+                                keyLength = DEFAULT_FAKE_KEY_LENGTH;
+                            }
                             this.decryptedKey = XMLSecurityConstants.generateBytes(keyLength / 8);
                             return this.decryptedKey;
                         }
