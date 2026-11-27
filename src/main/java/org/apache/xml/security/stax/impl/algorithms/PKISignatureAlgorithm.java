@@ -84,6 +84,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey) throws XMLSecurityException {
+        checkKeyType(signingKey, PrivateKey.class);
         initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey);
@@ -94,6 +95,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey, SecureRandom secureRandom) throws XMLSecurityException {
+        checkKeyType(signingKey, PrivateKey.class);
         initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey, secureRandom);
@@ -104,6 +106,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey, AlgorithmParameterSpec algorithmParameterSpec) throws XMLSecurityException {
+        checkKeyType(signingKey, PrivateKey.class);
         initSignIntLen(signingKey);
         try {
             signature.initSign((PrivateKey) signingKey);
@@ -139,6 +142,7 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitVerify(Key verificationKey) throws XMLSecurityException {
+        checkKeyType(verificationKey, PublicKey.class);
         try {
             signature.initVerify((PublicKey) verificationKey);
         } catch (InvalidKeyException e) {
@@ -169,6 +173,13 @@ public class PKISignatureAlgorithm implements SignatureAlgorithm {
             signature.setParameter(params);
         } catch (InvalidAlgorithmParameterException e) {
             throw new XMLSecurityException(e);
+        }
+    }
+
+    private static void checkKeyType(Key key, Class<? extends Key> expectedType) throws XMLSecurityException {
+        if (!expectedType.isInstance(key)) {
+            throw new XMLSecurityException("algorithms.WrongKeyForThisOperation",
+                new Object[] {key == null ? null : key.getClass().getName(), expectedType.getName()});
         }
     }
 }

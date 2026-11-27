@@ -28,6 +28,7 @@ import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Mac;
+import javax.crypto.SecretKey;
 
 import org.apache.xml.security.exceptions.XMLSecurityException;
 
@@ -62,6 +63,7 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey) throws XMLSecurityException {
+        checkSecretKey(signingKey);
         try {
             mac.init(signingKey);
         } catch (InvalidKeyException e) {
@@ -71,6 +73,7 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey, SecureRandom secureRandom) throws XMLSecurityException {
+        checkSecretKey(signingKey);
         try {
             mac.init(signingKey);
         } catch (InvalidKeyException e) {
@@ -80,6 +83,7 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitSign(Key signingKey, AlgorithmParameterSpec algorithmParameterSpec) throws XMLSecurityException {
+        checkSecretKey(signingKey);
         try {
             mac.init(signingKey, algorithmParameterSpec);
         } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
@@ -94,6 +98,7 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineInitVerify(Key verificationKey) throws XMLSecurityException {
+        checkSecretKey(verificationKey);
         try {
             mac.init(verificationKey);
         } catch (InvalidKeyException e) {
@@ -109,5 +114,16 @@ public class HMACSignatureAlgorithm implements SignatureAlgorithm {
 
     @Override
     public void engineSetParameter(AlgorithmParameterSpec params) throws XMLSecurityException {
+    }
+
+    /**
+     * An HMAC must be keyed with a secret key. In particular a public key must not be accepted:
+     * some JCE providers would use its (public) encoding as the HMAC key.
+     */
+    private static void checkSecretKey(Key key) throws XMLSecurityException {
+        if (!(key instanceof SecretKey)) {
+            throw new XMLSecurityException("algorithms.WrongKeyForThisOperation",
+                new Object[] {key == null ? null : key.getClass().getName(), SecretKey.class.getName()});
+        }
     }
 }
