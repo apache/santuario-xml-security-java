@@ -629,6 +629,11 @@ public final class XMLUtils {
         return base64Decoder.wrap(stream);
     }
 
+
+    /**
+     * @deprecated The method was intended for internal use and will be removed in future versions.
+     */
+    @Deprecated
     public static boolean isIgnoreLineBreaks() {
         return ignoreLineBreaks;
     }
@@ -949,6 +954,10 @@ public final class XMLUtils {
         }
     }
 
+    /**
+     * @deprecated The method was intended for internal use and will be removed in future versions.
+     */
+    @Deprecated
     public static boolean ignoreLineBreaks() {
         return ignoreLineBreaks;
     }
