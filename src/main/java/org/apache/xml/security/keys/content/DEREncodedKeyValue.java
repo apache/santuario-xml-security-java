@@ -18,6 +18,8 @@
  */
 package org.apache.xml.security.keys.content;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -36,10 +38,13 @@ import org.w3c.dom.Element;
  */
 public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyInfoContent {
 
+    private static final Logger LOG = System.getLogger(DEREncodedKeyValue.class.getName());
+
     /** JCA algorithm key types supported by this implementation. */
     private static final String[] supportedKeyTypes = { "RSA", "DSA", "EC",
             "DiffieHellman", "DH", "XDH", "X25519", "X448",
             "EdDSA", "Ed25519", "Ed448",
+            "ML-DSA-44", "ML-DSA-65", "ML-DSA-87",
             "RSASSA-PSS"};
 
     /**
@@ -120,8 +125,12 @@ public class DEREncodedKeyValue extends Signature11ElementProxy implements KeyIn
                 if (publicKey != null) {
                     return publicKey;
                 }
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) { //NOPMD
-                // Do nothing, try the next type
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException | RuntimeException e) {
+                LOG.log(Level.DEBUG, () -> "Unable to decode DEREncodedKeyValue as key type " + keyType, e);
+                // Try the next type. Some providers (e.g. BouncyCastle's XDH/EdDSA
+                // KeyFactorySpi) throw an unchecked exception such as ArrayIndexOutOfBoundsException
+                // instead of InvalidKeySpecException for malformed or short input, which must not
+                // propagate since the encoded key here could be untrusted.
             }
         }
         throw new XMLSecurityException("DEREncodedKeyValue.UnsupportedEncodedKey");
